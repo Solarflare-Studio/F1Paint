@@ -11,6 +11,7 @@ class F1Gui {
         // this.colourbackgroundTopColour = '#ff0000';
         this.scaleDevice = 1.0;
         this.currentPage = 1;
+        this.inPresets = false;
         this.currentProgress = 0;
 
         this.processJSON = processJSON;
@@ -126,7 +127,29 @@ class F1Gui {
     // updateLayerLabel(_current, _total) {
 	//     document.getElementById('f1layercurrent').innerHTML = "Layer " + (_current+1) + " of " + _total;
 	// }
+    //======================
+    // showPresetPage(showit) {
+    //     if(showit) {
+    //         this.inPresets = true;
+    //         document.getElementById('patternColours').classList.add('hidden');
+    //         document.getElementById('paintpresetsblock').classList.remove('hidden');
 
+    //         document.getElementById('backbutton').classList.add('hidden');
+    //         document.getElementById('nextbutton').classList.add('hidden');
+    //         document.getElementById('confirmbutton').classList.remove('hidden');            
+    //     }
+    //     else {
+    //         this.inPresets = false;
+    //         document.getElementById('paintpresetsblock').classList.add('hidden');
+    //         document.getElementById('patternColours').classList.remove('hidden');
+
+    //         document.getElementById('confirmbutton').classList.add('hidden');            
+    //         document.getElementById('backbutton').classList.remove('hidden');
+    //         document.getElementById('nextbutton').classList.remove('hidden');
+    //     }
+
+    //     // keep confirm button up
+    // }
     //======================
 	pickedChannelPaint(_index) {
 //    pickedChannelPaint(_index) {
@@ -251,6 +274,7 @@ class F1Gui {
         document.getElementById("progressbarPage").classList.add("hidden");
 
         document.getElementById("ARpage").classList.add("hidden");
+        // document.getElementById('paintpresetsblock').classList.add('hidden');
 
         
 

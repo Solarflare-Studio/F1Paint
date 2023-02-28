@@ -1,4 +1,4 @@
-const paintshopversion= "v0.1.8.3";
+const paintshopversion= "v0.1.8.7";
 
 
 
@@ -59,7 +59,8 @@ window.backNextPage = backNextPage;
 window.onChangePaint = onChangePaint;
 
 window.onConfirm = onConfirm;
-window.onPreselectedPaint = onPreselectedPaint;
+window.onDefaultPaint = onDefaultPaint;
+window.onPreselectedPage = onPreselectedPage;
 window.onRandomPaint = onRandomPaint;
 
 window.expandDropdown = expandDropdown;
@@ -276,7 +277,7 @@ var f1MetalRough = new F1MetalRough(isHelmet, renderSize,f1fnames);
 var f1PostRender = new F1PostRender(isHelmet, renderSize,f1fnames);
 var f1SpecialFX =  new F1SpecialFX(isHelmet, renderSize,f1fnames);
 var f1Text = new F1Text(f1Layers.mapUniforms, f1MetalRough.mapUniforms);
-var f1Ribbons = new F1Ribbons();
+var f1Ribbons = new F1Ribbons(f1Materials);
 
 
 f1Gui.updateProgress(5,'pipelines');
@@ -614,6 +615,17 @@ document.getElementById('c_tonemap').onchange = function () {
 		renderer.toneMapping = THREE.ACESFilmicToneMapping;// THREE.LinearToneMapping;
 	}
 }
+document.getElementById('c_sfxRibbonSlider').onchange = function () {
+	self.amount = this.value/10.0;
+	console.log(this.value);
+
+	document.getElementById('c_sfxRibbonSliderTxt').innerHTML = 'ribbon bloom: ' + self.amount;
+
+	f1SpecialFX.f1BloomRibbonPass.strength = self.amount;
+
+	
+}
+
 
 
 //==================================================
@@ -1274,10 +1286,10 @@ function initScenes()
 
 	// limit mouse zoom
 	if(!userConsole) {
-		controls.minDistance = 34;// 70;
-		controls.maxDistance = 155;
+		controls.minDistance = 70;
+		controls.maxDistance = 200;
 		controls.minPolarAngle = Math.PI / 6; // radians
-		controls.maxPolarAngle = Math.PI / 2; // radians
+		controls.maxPolarAngle = Math.PI / 2.15; // radians
 	
 	}
 
@@ -1607,7 +1619,17 @@ function onChangePaint(index) {
 
 }
 //==================================================
-function onPreselectedPaint() {
+function onPreselectedPage() {
+
+	onDefaultPaint();
+
+	// disabled preset colour picker
+	// f1Gui.showPresetPage(true);
+
+}
+
+//==================================================
+function onDefaultPaint() {
 
 	// 
 	f1SpecialFX.mapUniforms.leadin.value = 2.0;
@@ -1744,22 +1766,28 @@ function onRandomPaint() {
 //==================================================
 function onConfirm() {
 
-	if(f1Gui.currentPage==5) { // final page so create map and launch AR
-		doBuildBasemap=4; // generate and save the images
-//		onLaunchARButton();
-	}
-	else {
+	// if(f1Gui.inPresets) {
+	// 	f1Gui.showPresetPage(false);
+	// }
+	// else 
+	// {
+		if(f1Gui.currentPage==5) { // final page so create map and launch AR
+			doBuildBasemap=4; // generate and save the images
+	//		onLaunchARButton();
+		}
+		else {
 
-		if(selectedChan<=2)
-			patternItems.useCustom = true; // now no longer reading defaults when changing patterns, will use custom
-		else if(selectedChan<=4)
-			patternItems.useCustomTag = true;
-		else if(selectedChan<=5)
-			patternItems.useCustomDecal = true;
-			
+			if(selectedChan<=2)
+				patternItems.useCustom = true; // now no longer reading defaults when changing patterns, will use custom
+			else if(selectedChan<=4)
+				patternItems.useCustomTag = true;
+			else if(selectedChan<=5)
+				patternItems.useCustomDecal = true;
+				
 
-		f1Gui.confirm(selectedChan);
-	}
+			f1Gui.confirm(selectedChan);
+		}
+	// }
 }
 //==================================================
 function getDateTimeStampString() {

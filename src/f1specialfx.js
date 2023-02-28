@@ -11,6 +11,8 @@ class F1SpecialFX {
    
     constructor(isHelmet, renderSize,f1fnames,liveryData) {
 
+      this.f1BloomRibbonPass = 0;
+
       this.finalComposer = 0;
       this.fxComposer = 0;
       this.fxRibbonComposer = 0;
@@ -658,13 +660,13 @@ class F1SpecialFX {
       this.fxComposer.addPass( f1BloomPass );
       //
       const renderRibbonScene = new RenderPass( scene, camera );
-      const f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 512, 512 ), 5.25, 0.70, 0.000015);
+      this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 512, 512 ), 5.25, 0.70, 0.000015);
 //      const f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 1024, 1024 ), 0.01, 0.01, 0.5);
 
       this.fxRibbonComposer = new EffectComposer(renderer);
       this.fxRibbonComposer.renderToScreen = false;
       this.fxRibbonComposer.addPass( renderRibbonScene );
-      this.fxRibbonComposer.addPass( f1BloomRibbonPass ); // todo render bloom
+      this.fxRibbonComposer.addPass( this.f1BloomRibbonPass ); // todo render bloom
 
 
     

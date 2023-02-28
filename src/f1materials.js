@@ -14,6 +14,7 @@ class F1Materials {
         this.totalTexturesAttempted = 0;
         this.alltexturesloaded = false;
         this.filetimeout = 0;
+        this.keepRibbon = 0;
         this.init();
     }
     init() {
@@ -446,8 +447,10 @@ class F1Materials {
                 f1Garage.garageWall.material.needsUpdate=true;
             }
             else if(filetype==11) {  // ribbon
-                tex.premultiplyAlpha = false;
+                // tex.premultiplyAlpha = false;
+                tex.premultiplyAlpha = true;
                 f1Ribbons.uniforms.texture1.value = tex; // method with shader to distort and texture frag
+                this.keepRibbon = tex;
 
                 // this.ribbonMaterial.uniforms.baseTexture.value = tex; // method with shader to distort and texture frag
                 // f1Ribbons.ribbonMaterial.map = tex; // method with normal mat and buffergeom...todo

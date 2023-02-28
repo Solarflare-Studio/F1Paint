@@ -180,7 +180,7 @@
                                         <div id="presetandrandomblock" class="flexpair heightx3">
                                             <div class="preset">
                                                 <div>PRESET PAINT</div>
-                                                <div class="randomandpreset" onclick="onPreselectedPaint();">
+                                                <div class="randomandpreset" onclick="onPreselectedPage();">
                                                     <img width='auto' height='100%' src="./assets/inapp/preselectedpaint.png"/>
                                                 </div>
                                             </div>
@@ -192,6 +192,21 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- may or may not be having preset colour thumbs to choose from
+                                    <div id="paintpresetsblock" class="f1patterncolours hidden">
+                                        pick a colour set
+                                        <div id="layerPresets_ins" class="layerPresetsContainer scrollbox">
+                                            <div class="patternContainer"><div class="pattern" patternid="4001" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                            <div class="patternContainer"><div class="pattern" patternid="4002" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                            <div class="patternContainer"><div class="pattern" patternid="4003" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                            <div class="patternContainer"><div class="pattern" patternid="4004" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                            <div class="patternContainer"><div class="pattern" patternid="4005" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                            <div class="patternContainer"><div class="pattern" patternid="4006" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                            <div class="patternContainer"><div class="pattern" patternid="4007" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                            <div class="patternContainer"><div class="pattern" patternid="4008" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                        </div>
+                                    </div>
+                                    -->
                                     <div id="paintachannelblock" class="f1patterncolours hidden">
                                         <div id="whichchanneltext">WHICH CHANNEL</div>
                                         <div>
@@ -395,6 +410,9 @@
 
                 <div class="console_button expandbutton" onclick="expandDropdown('sfxexpander');">SFX</div>
                 <div class="console_button shrunk expander" id="sfxexpander">
+                    <div id="c_sfxRibbonSliderTxt" class="slidertxt">ribbon bloom</div>
+                    <input type="range" min="0" max="300" value="6" class="slider" id="c_sfxRibbonSlider">
+
                     <div id="c_sfxSliderTxt" class="slidertxt">bloom</div>
                     <input type="range" min="0" max="25" value="6" class="slider" id="c_sfxSlider">
 <!--                

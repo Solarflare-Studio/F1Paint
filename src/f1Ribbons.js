@@ -33,18 +33,18 @@ class ABend {
 class F1Ribbons {
 
    
-    constructor() {
+    constructor(f1Materials) {
 
         this.prevupdate = new Date().getTime();
         this.timer1 = 0;
         
 
-        this.init();
+        this.init(f1Materials);
     }
 
 
 
-    init() {
+    init(f1Materials) {
         console.log(">> init F1 Ribbons and fx");
         this.enabled=true;
 
@@ -53,10 +53,10 @@ class F1Ribbons {
         this.boxroot = new THREE.Object3D();
         this.root.visible=this.enabled;
         this.enableGlow = true;
-        this.setupRibbonMaterials();
+        this.ribbonGeometry = new THREE.PlaneGeometry(200, 15, 64,2);
+        this.setupRibbonMaterials(f1Materials);
 
         // this.ribbonGeometry = new THREE.BoxGeometry(200, 15, 2, 64,2,2);
-        this.ribbonGeometry = new THREE.PlaneGeometry(200, 15, 64,2);
 
         document.getElementById('c_bendmodcon').onchange = function () {
             var modcon = this.value;
@@ -115,7 +115,7 @@ class F1Ribbons {
 
     }
     // ==============================================
-    setupRibbonMaterials() {
+    setupRibbonMaterials(f1Materials) {
         this.uniforms = {
             texture1: { value: 0 },  // base pattern
             fTime: { value: 0.0},
@@ -203,11 +203,14 @@ class F1Ribbons {
             blendEquation: THREE.AddEquation,
             blendSrc: THREE.SrcAlphaFactor,
             blendDst: THREE.OneMinusSrcAlphaFactor,
-            // alphaTest: 0.1,
+            alphaTest: 0.1,
           depthWrite: false, // disable writing to depth buffer
         //   depthTest: false, // disable depth testing            
           depthTest: true, // disable depth testing            
         });
+        if(f1Materials.keepRibbon!=0) {
+           this.uniforms.texture1.value = f1Materials.keepRibbon;
+        }
 
 
         this.ribbonMaterialsimple = new THREE.MeshStandardMaterial( {

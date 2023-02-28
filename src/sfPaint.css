@@ -510,6 +510,16 @@
 	flex-wrap: wrap;
     justify-content: space-between;
 }
+.layerPresetsContainer {
+	overflow-y: auto;
+/*	height: calc(var(--layersTagContainerHeight))!important; */
+	height: 100px;
+	
+	width:100%;
+	display: flex;
+	flex-wrap: wrap;
+    justify-content: space-between;
+}
 
 
 .patternContainer{
