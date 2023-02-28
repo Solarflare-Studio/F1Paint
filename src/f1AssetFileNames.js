@@ -10,7 +10,7 @@ class F1AssetFileNames {
                             './assets/car/F1PS_F1_V03_NewUV_AO.png',            // customisable ao
                             './assets/car/MetalRough.png',         // customisable metal
                             './assets/car/MetalRough.png',     // customisable rough
-                            './assets/car/static/V04/F1PS_F1_V04_NewUV_BaseColor.jpg',      // static base map always stays the same
+                            './assets/car/static/V05/F1PS_F1_V05_NewUV_BaseColor.jpg',      // static base map always stays the same
                             './assets/car/static/V04/F1PS_F1_V04_NewUV_Normal.jpg',         // static base normal
                             './assets/car/static/V04/F1PS_F1_V04_NewUV_AO.jpg',             // static base ao
                             './assets/car/static/V04/F1PS_F1_V04_NewUV_Metal.jpg',          // static base metal

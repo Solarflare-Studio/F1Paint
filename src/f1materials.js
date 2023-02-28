@@ -9,6 +9,7 @@ class F1Materials {
         this.envmapStrength = 4.5;// 2.5;//3.5;
         this.totalTexturesLoaded = 0;
         this.totalTexturesAttempted = 0;
+        this.alltexturesloaded = false;
         this.filetimeout = 0;
         this.init();
     }
@@ -171,7 +172,7 @@ class F1Materials {
         //         );
     }
     //======================
-    loadEnvMap(f1CarHelmet,f1Garage) {
+    loadEnvMap(f1CarHelmet,f1Garage,f1Gui) {
 
         // const px = new THREE.TextureLoader('./assets/cubemap-static/px.png');
         console.log("ENVMAP >> *** Environment map trying to load cube map env");
@@ -190,7 +191,8 @@ class F1Materials {
 
                     self.quickSetMaps(result,f1CarHelmet,f1Garage);
 
-
+                    f1Gui.updateProgress(5,'envmap');
+                    self.alltexturesloaded = true;
 
 
                 });
@@ -298,13 +300,16 @@ class F1Materials {
                 side: THREE.DoubleSide,
                 // blending: THREE.AdditiveBlending,
                 // depthWrite: false,
-                depthWrite: true,
+                // depthWrite: true,
                 // opacity: 1,
-                transparent: true,
+                // transparent: true,
 
                 // color: new THREE.Color(0.41,0.4,0.4),
                 // envMap: this.envMap,
                 normalScale: new THREE.Vector2(-0.2, 0.2),
+
+                depthTest: true,
+
 
             }
         );
@@ -357,7 +362,7 @@ class F1Materials {
             setTimeout(function() {
                 clearTimeout(this.filetimeout);
 
-                _self.loadEnvMap(f1CarHelmet,f1Garage);
+                _self.loadEnvMap(f1CarHelmet,f1Garage,f1Gui);
             },1000);
             
             return;
@@ -381,8 +386,7 @@ class F1Materials {
 
             tex.encoding = THREE.LinearEncoding
             // tex.encoding = THREE.sRGBEncoding;
-
-            
+ 
             tex.flipY = false;
             tex.premultiplyAlpha = true;
             tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
@@ -436,13 +440,24 @@ class F1Materials {
             }
             else if(filetype==11) {  // ribbon
                 tex.premultiplyAlpha = false;
+                f1Ribbons.uniforms.texture1.value = tex; // method with shader to distort and texture frag
 
                 // this.ribbonMaterial.uniforms.baseTexture.value = tex; // method with shader to distort and texture frag
-                f1Ribbons.ribbonMaterial.map = tex; // method with normal mat and buffergeom...todo
-
-                f1Ribbons.ribbonMaterial.needsUpdate=true;
+                // f1Ribbons.ribbonMaterial.map = tex; // method with normal mat and buffergeom...todo
+                // f1Ribbons.ribbonMaterial.needsUpdate=true;
             }
+            else if(filetype==12) {  // glow floor
+                tex.premultiplyAlpha = false;
+                f1Ribbons.floorGlowMat.map = tex; // 
+                f1Ribbons.floorGlowMat.needsUpdate=true;
+            }
+            else if(filetype==13) {  // scene bg
+                tex.premultiplyAlpha = false;
+                f1Garage.backgroundImage = tex;
 
+                // f1Garage.backgroundMat.map = tex;
+//                f1Garage.backgroundMat.needsUpdate=true;
+            }
           
 
             if(newfilenames.length!=0)

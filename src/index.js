@@ -1,4 +1,4 @@
-const paintshopversion= "v0.1.7.6";
+const paintshopversion= "v0.1.8.0";
 
 
 
@@ -245,6 +245,7 @@ var mainLight;
 var mainLight2;
 var ambLight;
 var dirLight;
+var dirLightFloor;
 
 var keepControlsTarget = 0;
 var timelastinteracted = clock.getElapsedTime();
@@ -494,8 +495,8 @@ function onloaded()
 }
 //==================================================
 var deb_specialPipelineToggle = true;
-var deb_ribbonToggle = false;
-f1Ribbons.root.visible=false;
+var deb_ribbonToggle = f1Ribbons.enabled;
+
 
 
 function onConsole(_switch) {
@@ -514,11 +515,14 @@ function onConsole(_switch) {
 	}
 	else if(_switch==2) {
 		deb_ribbonToggle=!deb_ribbonToggle;
-		if(!deb_ribbonToggle) {
-			f1Ribbons.root.visible=false;
-		}
-		else
-			f1Ribbons.root.visible=true;
+		f1Ribbons.enabled =!f1Ribbons.enabled;
+		f1Ribbons.root.visible=f1Ribbons.enabled;
+	}
+	else if(_switch==3) { // ribbon glow
+		f1Ribbons.enableGlow = !f1Ribbons.enableGlow;
+
+
+//		f1Ribbons.createBentMesh();
 	}
 }
 
@@ -556,14 +560,19 @@ document.getElementById('c_lightsDSlider').oninput = function () {
 	self.amount = this.value/10.0;
 	document.getElementById('c_lightsDSliderTxt').innerHTML = 'dir light: ' + self.amount;
 	dirLight.intensity = 0.5 * self.amount;
+//	dirLightFloor.intensity = 0.5 * self.amount;
 }
 document.getElementById('c_sfxSlider').oninput = function () {
 	self.amount = this.value/10.0;
 	document.getElementById('c_sfxSliderTxt').innerHTML = 'sfx bloom: ' + self.amount;
 
 	f1SpecialFX.finalPass.uniforms.bloomAmount.value = self.amount;
-
 }
+// bend
+
+
+//
+
 
 
 document.getElementById('c_tonemap').onchange = function () {
@@ -730,7 +739,9 @@ function introNextPage(nextPage) {
 		document.getElementById('tut2block').classList.add('fadedout');
 
 		// enable tools
+		f1Gui.updateProgress(5,'activating');
 		onPatternsTab();
+
 
 		document.getElementById('palette_tools').classList.remove('disabledUserEvents');
 	}
@@ -850,13 +861,20 @@ function initScenes()
 	// sceneFX.background = null;
 
 
+
+
+
+
 	scene = new THREE.Scene();
-//	scene.background = null;
+	//scene.background = null;
 	// scene.background =  new THREE.Color( 0xffd933 );
 	scene.background =  new THREE.Color( 0x555555 );
 
 	camera = new THREE.PerspectiveCamera( 45, renderSize / renderSize, 0.1, 900 );
-	camera.position.set(0,0, 120);
+	// camera.position.set(0,0, 120);
+	camera.position.set(44,36, 90);
+
+
 	
 	camera.layers.enable(2);
 	camera.layers.disable(3);
@@ -879,7 +897,7 @@ function initScenes()
 
 	//=====================
     // POST RENDER EFFECTS
-	f1SpecialFX.setupBloom(scene, camera,renderer,renderSize);
+	f1SpecialFX.setupBloom(scene, camera,renderer,renderSize,f1Garage);
 
 
 /*
@@ -1198,7 +1216,7 @@ function initScenes()
 
 
 	
-	// scene.add( f1Ribbons.getSceneObjects(f1Materials) );
+	scene.add( f1Ribbons.getSceneObjects(f1Materials) );
 //
 	
 
@@ -1218,19 +1236,24 @@ function initScenes()
 	controls.enablePan = true;
 
 
-	controls.minPolarAngle = Math.PI / 6; // radians
-	controls.maxPolarAngle = Math.PI / 2; // radians
 
 	// try dampening
-	controls.enableDamping=true;
-	controls.dampingFactor=0.05;
-	// controls.enableDamping=false;
+	// controls.enableDamping=true;
+	// controls.dampingFactor=0.05;
+	controls.enableDamping=false;
 
 
 	// limit mouse zoom
-	controls.minDistance = 30;// 70;
+	if(!userConsole) {
+		controls.minDistance = 34;// 70;
+		controls.maxDistance = 155;
+		controls.minPolarAngle = Math.PI / 6; // radians
+		controls.maxPolarAngle = Math.PI / 2; // radians
+	
+	}
+
 	// controls.maxDistance = 130;
-	controls.maxDistance = 180;
+
 
 
 	// controls.target = new THREE.Vector3(0,-8, 0);
@@ -2125,6 +2148,7 @@ function postRenderProcess() {
 //==================================
 function renderpipeline() {
 
+
 	if(deb_specialPipelineToggle) {
 		specialrenderpipeline();
 		return;
@@ -2136,7 +2160,7 @@ function renderpipeline() {
 	// }
 
 	camera.layers.enableAll();
-	if(!deb_ribbonToggle)
+	if(!f1Ribbons.enabled)
 		camera.layers.disable(3);
 
 	// render the rough / metal map to offscreen
@@ -2222,7 +2246,7 @@ function specialrenderpipeline() {
 		if(!isHelmet)
 			f1CarHelmet.baseFXMesh.material = f1SpecialFX.blackMat;
 		f1CarHelmet.specialFXMesh.material = f1SpecialFX.blackMat;
-		if(deb_ribbonToggle)
+		if(f1Ribbons.enabled)
 			camera.layers.enable(3);
 		f1SpecialFX.fxRibbonComposer.render();
 		camera.layers.disable(3);
@@ -2232,7 +2256,11 @@ function specialrenderpipeline() {
 	camera.layers.enable(1);
 
 
-	scene.background =  new THREE.Color( 0x555555 );
+	
+	if(f1Garage.backgroundImage!=0)
+		scene.background = f1Garage.backgroundImage;
+	else
+		scene.background =  new THREE.Color( 0x555555 );
 
 //
 	if(f1CarHelmet.specialFXMesh) {
@@ -2243,6 +2271,8 @@ function specialrenderpipeline() {
 
 	camera.layers.enableAll();
 	camera.layers.disable(3);
+
+
 
 	f1SpecialFX.finalComposer.render();
 
@@ -2304,6 +2334,7 @@ function parseCookieLivery() {
 
 }
 //==================================================
+var nowallloaded=false;
 function animate() 
 {
 	// if not loaded json yet
@@ -2336,7 +2367,11 @@ function animate()
 		requestAnimationFrame( animate );
 		return;
 	}
-	
+	if(!nowallloaded && f1Materials.alltexturesloaded) {
+		nowallloaded=true;
+
+		scene.background = f1Garage.backgroundImage;
+	}
 	//
 	requestAnimationFrame( animate );
 
@@ -2363,11 +2398,11 @@ function animate()
 		// }
 		var elapsed = (clock.getElapsedTime() - timelastinteracted)/8.0;
 		if(elapsed>1.0) elapsed = 1.0;
-		if(!interacting)
+		if(!interacting && !userConsole)
 			controls.target = controls.target.lerpVectors ( controls.target, keepControlsTarget, elapsed );
 
-		
-		
+		if(f1Ribbons.enabled)
+			f1Ribbons.update();
 		controls.update();
 		TWEEN.update();
 
@@ -2385,7 +2420,6 @@ function animate()
 	} );
 
 
-	f1Ribbons.update();
 
 
 

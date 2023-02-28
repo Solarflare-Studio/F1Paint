@@ -53,7 +53,7 @@
             .progress-bar {
                 width: 50%;
                 height: 20px;
-                background-color: rgb(119, 115, 115);
+                background-color: rgb(161, 148, 148);
                 border-radius: 25px;
                 position: relative;
                 margin: 50px auto;
@@ -61,7 +61,7 @@
             #progress {
                 height: 100%;
                 border-radius: 25px;
-                background-color: green;
+                background-color: rgb(22, 198, 22);
                 width: 0;
                 position: absolute;
                 top: 0;
@@ -397,17 +397,43 @@
                 <div class="console_button shrunk expander" id="sfxexpander">
                     <div id="c_sfxSliderTxt" class="slidertxt">bloom</div>
                     <input type="range" min="0" max="25" value="6" class="slider" id="c_sfxSlider">
+<!--                
                     <div class="console_button">
                         <label for="specialFXpipe_input"> specialFXpipe</label><br>
                         <input  class="introbutton" onclick="onConsole(1)" type="checkbox" id="specialFXpipe_input" name="check" checked>
                     </div>
+-->                    
                     <div class="console_button">
                         <label for="ribbon_input"> xtras</label><br>
                         <input  class="introbutton" onclick="onConsole(2)" type="checkbox" id="ribbon_input" name="check" checked>
+                        <input  class="introbutton" onclick="onConsole(4)" type="checkbox" id="ribbonGlow_input" name="check" checked>
+                        <!-- <input  class="introbutton" onclick="onConsole(3)" type="button" id="ribbon_generate" name="rib" checked> -->
+
+                        <div class="console_button">
+                            <select id="c_bend" name="c_bend">
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                            </select>
+                            <select id="c_bendmodcon" name="c_bendmodcon">
+                                <option value=-1>LEFT</option>
+                                <option value=1>RIGHT</option>
+                                <option value=0>NONE</option>
+                                <option value=1>X</option>
+                                <option value=2>Y</option>
+                                <option value=4>Z</option>
+                            </select>
+
+                            <div id="c_bendFSliderTxt" class="slidertxt">force</div>
+                            <input type="range" min="-200" max="200" value="50" class="slider" id="c_bendFSlider">
+                            <div id="c_bendPSliderTxt" class="slidertxt">pos</div>
+                            <input type="range" min="0" max="100" value="0" class="slider" id="c_bendPSlider">
+                            <div id="c_bendASliderTxt" class="slidertxt">angle</div>
+                            <input type="range" min="0" max="360" value="10" class="slider" id="c_bendASlider">
+                        </div>
                     </div>
                 </div>
-
-<!--                <div class="introbutton" onclick="onConsole(1)">special pipeline</div>-->
             </div>
         </div>
     </body>

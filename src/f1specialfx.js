@@ -92,6 +92,8 @@ class F1SpecialFX {
           name: 'blackMaterial',
         });
 
+
+
 /*
         this.blackMat = new  THREE.MeshBasicMaterial({
           name: 'blackMaterial',
@@ -631,7 +633,17 @@ class F1SpecialFX {
     }
 
     //
-    setupBloom(scene, camera,renderer,renderSize) {
+    setupBloom(scene, camera,renderer,renderSize,f1Garage) {
+
+
+      // setup static scene
+      const staticscene = new THREE.Scene();
+      staticscene.add( new THREE.Mesh( this.planeGeometry, f1Garage.backgroundMat ) );
+      const renderSceneBackground = new RenderPass( staticscene, camera );
+
+    
+
+
 
       const renderScene = new RenderPass( scene, camera );
       const f1BloomPass = new UnrealBloomPass(new THREE.Vector2( 1024, 1024 ), 3.0, 0.75, 0.00015);
@@ -646,7 +658,7 @@ class F1SpecialFX {
       this.fxComposer.addPass( f1BloomPass );
       //
       const renderRibbonScene = new RenderPass( scene, camera );
-      const f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 1024, 1024 ), 3.25, 1.0, 0.015);
+      const f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 512, 512 ), 5.25, 0.70, 0.000015);
 //      const f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 1024, 1024 ), 0.01, 0.01, 0.5);
 
       this.fxRibbonComposer = new EffectComposer(renderer);
@@ -665,7 +677,7 @@ class F1SpecialFX {
             bloomTexture: { value: this.fxComposer.renderTarget2.texture },
             bloomRibbonTexture: { value: this.fxRibbonComposer.renderTarget2.texture },
             amountBloom: { value: 0.0 },
-            bloomAmount: { value: 0.5 },
+            bloomAmount: { value: 0.72 },
           },
           vertexShader: `
           varying vec2 vUv;
@@ -699,7 +711,6 @@ class F1SpecialFX {
             float a = max(max(colBloom.x,colBloom.y),colBloom.z) * bloomAmount;
             vec4 outcol = mix(colbase,colBloom,a);
             outcol = max(outcol,colRibbon);
-
 
             gl_FragColor = vec4(outcol.xyz,colBloom.a * colbase.a * colRibbon.a );
             return;
@@ -776,7 +787,13 @@ class F1SpecialFX {
       this.finalPass.needsSwap = true;
     
       this.finalComposer = new EffectComposer( renderer );
+
+      
+      // this.finalComposer.addPass( renderSceneBackground );
+
       this.finalComposer.addPass( renderScene );
+
+
       this.finalComposer.addPass( this.finalPass );
     
       this.finalComposer.setSize(renderSize,renderSize);

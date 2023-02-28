@@ -85,6 +85,7 @@
     top: 3em;
     left: 0;
 	text-align: center;
+	max-width: 20%;
 }
 .console {
     margin-left: 5%;
@@ -109,7 +110,7 @@
 }
 .expander {
 	overflow: hidden;
-	max-height: 15em;
+	max-height: 55em;
 }
 .expandbutton{
 	background-color: rgb(156, 135, 96);

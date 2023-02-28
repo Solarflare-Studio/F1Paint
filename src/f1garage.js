@@ -10,6 +10,7 @@ class F1Garage {
     }
     init(f1materials,f1Gui) {
         this.planeGeometry = new THREE.PlaneGeometry(1024,1024);
+
         this.f1materials = f1materials;
         this.f1Gui = f1Gui;
         var _self = this;
@@ -18,6 +19,15 @@ class F1Garage {
         this.garageRoot = new THREE.Object3D();
         this.garageMaterial = f1materials.newGarageMat();
         this.garageMaterial.color = new THREE.Color( 0x131313)
+
+        this.backgroundImage = 0;
+        this.backgroundMat =  new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            side: THREE.DoubleSide, // render both front and back faces
+            // depthWrite: false, // disable writing to depth buffer
+            // depthTest: false, // disable depth testing
+            name: 'scene background',
+        });
 
         // _self.f1materials.loadMaps(_self.garageMaterial, 
         //     './assets/garage/whitefloor.jpg',// './assets/garage/concretetiles.jpg',//             './assets/garage/floor.jpg',
@@ -93,7 +103,7 @@ class F1Garage {
 
 
 
-        let garageFloor = new THREE.Mesh( this.planeGeometry, this.garageMaterial );
+        let garageFloor = new THREE.Mesh( new THREE.CircleGeometry( 350, 32 ), this.garageMaterial );
         garageFloor.layers.set(1);
         garageFloor.rotateX((Math.PI / 180)*90);
         garageFloor.scale.set(0.5,0.5,0.5);
@@ -101,7 +111,7 @@ class F1Garage {
         garageFloor.receiveShadow = false;
         this.garageRoot.add(garageFloor);
 
-        this.garageRoot.position.set(0,20,0);
+        this.garageRoot.position.set(0,20,-20);
 
         
         // and shadow layer
