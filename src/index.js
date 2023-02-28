@@ -1,4 +1,4 @@
-const paintshopversion= "v0.1.8.0";
+const paintshopversion= "v0.1.8.3";
 
 
 
@@ -505,8 +505,25 @@ function onConsole(_switch) {
 
 	const console = document.getElementById('console');
 	if(_switch==0) {
-		if(console.className == 'hidden')
+		if(console.className == 'hidden') {
+			// update values in sliders
+			document.getElementById('c_tonemappingSliderTxt').innerHTML = 'toneMapping : ' + renderer.toneMappingExposure;
+			const tmtype = renderer.toneMapping == 
+				THREE.LinearToneMapping ? 'linear' : renderer.toneMapping == THREE.CineonToneMapping ? 'cineon'
+				: 'aces';
+			document.getElementById('c_tonemap').value = tmtype;
+
+			if(document.getElementById('c_envstrength').value=="car")
+				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envmapStrength;
+				else if(document.getElementById('c_envstrength').value=="carstatic")
+				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrBase;
+			else 
+				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrGar;
+
+			
+			
 			console.classList.remove('hidden');
+		}
 		else
 			console.classList.add('hidden');
 	}
@@ -533,6 +550,8 @@ document.getElementById('c_tonemappingSlider').oninput = function () {
 	renderer.toneMappingExposure = self.amount;
 }
 
+
+
 document.getElementById('c_envStrengthSlider').oninput = function () {
 	self.amount = this.value/10.0;// ((this.value / 100.0)*6.0) + 0.5;
 	document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + self.amount;
@@ -540,7 +559,7 @@ document.getElementById('c_envStrengthSlider').oninput = function () {
 		f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,0);
 	else
 	if(document.getElementById('c_envstrength').value=="carstatic")
-		f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,1);
+		f1Materials.setEnvStrength(self.amount * 150.0,f1CarHelmet,f1Garage,1);
 	else
 		f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,2);
 	
@@ -568,10 +587,17 @@ document.getElementById('c_sfxSlider').oninput = function () {
 
 	f1SpecialFX.finalPass.uniforms.bloomAmount.value = self.amount;
 }
-// bend
+// 
+document.getElementById('c_envstrength').onchange = function () {
+	console.log(this.value);
+	if(this.value=="car")
+		document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envmapStrength;
+	else if(this.value=="carstatic")
+		document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrBase;
+	else 
+		document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrGar;
 
-
-//
+}
 
 
 
@@ -803,9 +829,12 @@ function initit()
 	// renderer.toneMapping = THREE.CineonToneMapping;//ACESFilmicToneMapping;// THREE.LinearToneMapping;
 	// renderer.toneMappingExposure = 2.9;// 2.7;
 
-	renderer.toneMapping = THREE.ACESFilmicToneMapping;// THREE.LinearToneMapping;
-	renderer.toneMappingExposure = 2.0;// 2.7;
+	// renderer.toneMapping = THREE.ACESFilmicToneMapping;// THREE.LinearToneMapping;
+	// renderer.toneMappingExposure = 2.0;// 2.7;
 
+	// lees settings
+	renderer.toneMapping = THREE.LinearToneMapping;
+	renderer.toneMappingExposure = 0.9;
 
 
 	// document.getElementById('c_tonemap').value = "cineon";
@@ -1195,16 +1224,16 @@ function initScenes()
 	f1CarHelmet.init(f1Materials,f1Layers, isHelmet, f1fnames, f1MetalRough,f1Gui,f1SpecialFX, f1Garage,f1Ribbons);
 
 	// lights
-	mainLight = createSpotLight(0.65);
-	mainLight2 = createSpotLight(0.65);
+	mainLight = createSpotLight(2.0*0.6);
+	mainLight2 = createSpotLight(2.0*0.6);
 
 	mainLight.position.set( 90, 100, 70 );
 	mainLight2.position.set( -90, 100, 70 );
 
 //	ambLight = new THREE.AmbientLight( 0xffff00,10.0 ); // soft white light
-	ambLight = new THREE.AmbientLight( 0xffffff, 0.4 ); // soft white light
+	ambLight = new THREE.AmbientLight( 0xffffff, 2.0*0.5 ); // soft white light
 
-	dirLight = new THREE.DirectionalLight( 0xffffff, 1.1);
+	dirLight = new THREE.DirectionalLight( 0xffffff, 2.0*0.5);
 	dirLight.position.set( 0, 20, -50);
 	dirLight.target = f1CarHelmet.theHelmet;
 

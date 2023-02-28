@@ -55,12 +55,14 @@ class F1CarHelmet {
 
             metalnessMap: f1MetalRough.bufferMapSceneTarget.texture,
             roughnessMap: f1MetalRough.bufferMapSceneTarget.texture,
-            emissiveMap: f1SpecialFX.bufferMapSceneTarget.texture, // check todo
+        //    emissiveMap: f1SpecialFX.bufferMapSceneTarget.texture, // check todo
             color: new THREE.Color(0xffffff),
             shadowSide: THREE.FrontSide,// THREE.DoubleSide,
             emissive: new THREE.Color(0,0,0),
-            normalScale: new THREE.Vector2(-0.5, 0.5)
+            normalScale: new THREE.Vector2(-0.5, 0.5),
             // envMap: this.envMap
+            side: THREE.DoubleSide
+
           })
         
         // car model has two meshes
@@ -76,8 +78,10 @@ class F1CarHelmet {
                 aoMapIntensity: 1.0,
                 color: new THREE.Color(0xffffff),
                 shadowSide: THREE.FrontSide,// THREE.DoubleSide,
+                
                 emissive: new THREE.Color(0,0,0),
-                normalScale: new THREE.Vector2(-0.5, 0.5)
+                normalScale: new THREE.Vector2(-0.5, 0.5),
+                side: THREE.DoubleSide
                 // envMap: this.envMap
             })
             // this.theBaseMaterial.color = new THREE.Color(0xffffff)

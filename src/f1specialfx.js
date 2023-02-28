@@ -677,7 +677,7 @@ class F1SpecialFX {
             bloomTexture: { value: this.fxComposer.renderTarget2.texture },
             bloomRibbonTexture: { value: this.fxRibbonComposer.renderTarget2.texture },
             amountBloom: { value: 0.0 },
-            bloomAmount: { value: 0.72 },
+            bloomAmount: { value: 0.1 },
           },
           vertexShader: `
           varying vec2 vUv;

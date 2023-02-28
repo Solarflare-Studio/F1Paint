@@ -177,10 +177,12 @@
     position: absolute;
     align-items: center;
     display: inline-flex;
-    right: inherit;
+    right: 2%;
     font-size: 2em;
     opacity: 0.5;
 	transition: transform 0.5s;
+	color: white;
+	border: 2px solid;
 }
 
 .fontNormal {
