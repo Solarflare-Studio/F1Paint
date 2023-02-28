@@ -1,0 +1,68 @@
+{
+"Patterns": [
+ {
+  "name": "Pattern 1",
+  "id": 0,
+  "layer": 0,
+  "thumbnail": "layer_1_pattern_1_thumbnail.png",
+  "Channels": [
+   {
+    "channelName": "Chan 1",
+    "image": "layer_1_pattern_1_chan_1.png",
+    "defaultColour": "250,50,50"
+   },
+   {
+    "channelName": "Chan 2",
+    "image": "layer_1_pattern_1_chan_2.png",
+    "defaultColour": "50,250,50"
+   },
+   {
+    "channelName": "Chan 3",
+    "image": "layer_1_pattern_1_chan_3.png",
+    "defaultColour": "50,50,250"
+   }
+  ]
+ },
+ {
+  "name": "Pattern 2",
+  "id": 1,
+  "layer": 0,
+  "thumbnail": "layer_1_pattern_2_thumbnail.png",
+  "Channels": [
+   {
+    "channelName": "Chan 1",
+    "image": "layer_1_pattern_2_chan_1.png",
+    "defaultColour": "250,50,50"
+   },
+   {
+    "channelName": "Chan 2",
+    "image": "layer_1_pattern_2_chan_2.png",
+    "defaultColour": "50,250,50"
+   },
+   {
+    "channelName": "Chan 3",
+    "image": "layer_1_pattern_2_chan_3.png",
+    "defaultColour": "50,50,250"
+   }
+  ]
+ },
+ {
+  "name": "Pattern 3",
+  "id": 2,
+  "layer": 1,
+  "thumbnail": "layer_2_pattern_3_thumbnail.png",
+  "Channels": [
+   {
+    "channelName": "Chan 1",
+    "image": "layer_2_pattern_3_chan_1.png",
+    "defaultColour": "250,50,50"
+   },
+   {
+    "channelName": "Chan 2",
+    "image": "layer_2_pattern_3_chan_2.png",
+    "defaultColour": "50,50,250"
+   }
+  ]
+ }
+]
+}

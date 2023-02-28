@@ -1,0 +1,33 @@
+{
+  "name": "sfsPaint",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --config ./webpack.dev.js",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "exports-loader": "^3.0.0",
+    "html-loader": "^2.1.2",
+    "html-webpack-plugin": "^5.3.2",
+    "imports-loader": "^3.0.0",
+    "php-loader": "^0.2.0",
+    "webpack": "^5.52.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.11.1"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.271.0",
+    "@aws-sdk/credential-provider-cognito-identity": "^3.271.0",
+    "@aws-sdk/credential-providers": "^3.271.0",
+    "fs": "0.0.1-security",
+    "three": "^0.132.2",
+    "three.modifiers": "^2.5.7",
+    "troika-three-text": "^0.43.0",
+    "webpack-php-loader": "^0.5.0"
+  }
+}
