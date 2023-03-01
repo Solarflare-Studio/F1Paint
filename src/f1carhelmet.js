@@ -184,7 +184,8 @@ class F1CarHelmet {
             const filelist = new Array();
             const filetypelist = new Array();
             
-            filelist.push('./assets/garage/whitefloor.jpg'); // garage floor
+            // filelist.push('./assets/garage/whitefloor.jpg'); // garage floor
+            filelist.push('./assets/garage/concretetiles.png' ); // floor
             filetypelist.push( 7 );
             filelist.push('./assets/garage/concretetiles.jpg' ); // floor roughmap
             filetypelist.push( 8 );
@@ -242,6 +243,7 @@ class F1CarHelmet {
             // filelist.push('./assets/inapp/ribbon1.jpg'); // ribbon textures..
             //filelist.push('./assets/garage/ribbon2.jpg'); // ribbon textures..
             filelist.push('./assets/garage/ribbon2.png'); // ribbon textures..
+            // filelist.push('./assets/sfx/ribbon3.png'); // ribbon textures..
             filetypelist.push( 11 );
             filelist.push('./assets/sfx/floorglow.jpg'); // flow glow texture
             filetypelist.push( 12 );

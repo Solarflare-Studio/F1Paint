@@ -1,4 +1,4 @@
-const paintshopversion= "v0.1.8.7";
+const paintshopversion= "v0.1.8.8";
 
 
 
@@ -248,7 +248,8 @@ var ambLight;
 var dirLight;
 var dirLightFloor;
 
-var keepControlsTarget = 0;
+var centredControlsTarget = 0;
+
 var timelastinteracted = clock.getElapsedTime();
 var interacting = false;
 // var layerTexture_2;
@@ -1300,7 +1301,7 @@ function initScenes()
 	// controls.target = new THREE.Vector3(0,-8, 0);
 	// controls.target = new THREE.Vector3(0,-8, -1); // good when tabs werent in the way
 	controls.target = new THREE.Vector3(0,-8, 5); // with tabs infringing into 3d...
-	keepControlsTarget = new THREE.Vector3(0,-8, 5);
+	centredControlsTarget = new THREE.Vector3(0,-8, 5);
 
 	controls.addEventListener('end', () => {
 		// console.log('stopped dragging!');
@@ -2453,10 +2454,14 @@ function animate()
 		// if(camera.position.y<-0.8) {
 		// 	camera.position.y=-0.8;
 		// }
-		var elapsed = (clock.getElapsedTime() - timelastinteracted)/8.0;
-		if(elapsed>1.0) elapsed = 1.0;
-		if(!interacting && !userConsole)
-			controls.target = controls.target.lerpVectors ( controls.target, keepControlsTarget, elapsed );
+		// var elapsed = (clock.getElapsedTime() - timelastinteracted)/8.0;
+		// console.log("elapsed=" + elapsed);
+		// if(elapsed>1.0) elapsed = 1.0;
+		// if(!interacting && !userConsole)
+		// 	controls.target = controls.target.lerpVectors ( controls.target, centredControlsTarget, elapsed );
+		// if(!interacting && !userConsole)
+		if(!userConsole)
+			controls.target = controls.target.lerpVectors ( controls.target, centredControlsTarget, 0.01 );
 
 		if(f1Ribbons.enabled)
 			f1Ribbons.update();

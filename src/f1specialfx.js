@@ -660,7 +660,8 @@ class F1SpecialFX {
       this.fxComposer.addPass( f1BloomPass );
       //
       const renderRibbonScene = new RenderPass( scene, camera );
-      this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 512, 512 ), 5.25, 0.70, 0.000015);
+      this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 512, 512 ), 4.25, 0.70, 0.000015);
+//      this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 512, 512 ), 5.25, 0.70, 0.000015);
 //      const f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 1024, 1024 ), 0.01, 0.01, 0.5);
 
       this.fxRibbonComposer = new EffectComposer(renderer);
@@ -679,7 +680,7 @@ class F1SpecialFX {
             bloomTexture: { value: this.fxComposer.renderTarget2.texture },
             bloomRibbonTexture: { value: this.fxRibbonComposer.renderTarget2.texture },
             amountBloom: { value: 0.0 },
-            bloomAmount: { value: 0.1 },
+            bloomAmount: { value: 0.15 },
           },
           vertexShader: `
           varying vec2 vUv;

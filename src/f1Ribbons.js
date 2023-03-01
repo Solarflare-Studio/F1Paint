@@ -119,6 +119,7 @@ class F1Ribbons {
         this.uniforms = {
             texture1: { value: 0 },  // base pattern
             fTime: { value: 0.0},
+            faderTime: { value: 0.0},
           };
   
         this.ribbonMaterial = new THREE.ShaderMaterial({
@@ -127,12 +128,19 @@ class F1Ribbons {
             uniforms: this.uniforms,
             vertexShader: `
             varying vec2 vUv;
+            varying float viewerDistance;
 
             void main() {
                 vUv = uv;
                 vec3 pos = position;
-                
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+
+                vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+                gl_Position = projectionMatrix * mvPosition;
+              
+                // Calculate distance from camera
+                viewerDistance = length(mvPosition.xyz);
+                              
+//                gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
             }
             `,
             fragmentShader: `
@@ -140,6 +148,8 @@ class F1Ribbons {
 
             varying vec2 vUv;
             uniform float fTime;
+            uniform float faderTime;
+            varying float viewerDistance;
 
 //==================================================================          
             vec3 getEndFade(vec3 vin, float edge) {
@@ -164,33 +174,96 @@ class F1Ribbons {
 
                 vec4 colour = texture2D(texture1, uv);
                 vec3 outcolour = vec3(1,0,0) * max(max(colour.r,colour.g),colour.b);
-                outcolour = getEndFade(outcolour, 0.9);
+                // outcolour = getEndFade(outcolour, 0.9);
+
+                // if(uv.y >= fTime - 0.2 && uv.y <= fTime + 0.2) {
+                //     float amnt=1.0;
+                //     if(uv.y < fTime) {
+                //         amnt = (uv.y - fTime + 0.2) / 0.2;
+                //     }
+                //     else if(uv.y > fTime) {
+                //         amnt = 1.0 - ((uv.y - fTime) / 0.2);
+                //     }
+                //     outcolour *= amnt;
+                // }
+
+
 
                 uv = vUv.yx + vec2(0,g_rate);
                 uv.x = (uv.x*0.6) + 0.5;
                 colour = texture2D(texture1, uv);
+                // if(uv.y >= fTime - 0.2 && uv.y <= fTime + 0.2) {
+
+                //     float amnt=1.0;
+                //     if(uv.y < fTime) {
+                //         amnt = (uv.y - fTime + 0.2) / 0.2;
+                //     }
+                //     else if(uv.y > fTime) {
+                //         amnt = 1.0 - ((uv.y - fTime) / 0.2);
+                //     }
+                //     colour *= amnt;
+                // }
+
+
                 outcolour = max(outcolour, vec3(0.7,0.6,0) * max(max(colour.r,colour.g),colour.b));
                 outcolour = getEndFade(outcolour, 0.75);
 
                 uv = vUv.yx + vec2(0,b_rate);
                 uv.x = (uv.x*1.3) + 0.5;
                 colour = texture2D(texture1, uv);
+                // if(uv.y >= fTime - 0.2 && uv.y <= fTime + 0.2) {
+
+                //     float amnt=1.0;
+                //     if(uv.y < fTime) {
+                //         amnt = (uv.y - fTime + 0.2) / 0.2;
+                //     }
+                //     else if(uv.y > fTime) {
+                //         amnt = 1.0 - ((uv.y - fTime) / 0.2);
+                //     }
+                //     colour *= amnt;
+                // }
+
+
+
                 float b = max(max(colour.r,colour.g),colour.b);
                 outcolour = max(outcolour, vec3(0.2,0.2,1) * max(max(colour.r,colour.g),colour.b));
                 outcolour = getEndFade(outcolour, 0.6);
 
+
+                // if(vUv.y < 0.2) {
+                //     float amnt = (vUv.y / 0.2);
+                //     a = a * amnt;
+                //     outcolour*=amnt;
+                // }
+                // else if(vUv.y >= 0.8) {
+                //     float amnt = (1.0-((vUv.y-0.8) / 0.2));
+                //     a = a * amnt;
+                //     outcolour*=amnt;
+                // }
+
+                float v = 1.0;
+                // if( viewerDistance >= 200.0) {
+                //     float amnt = (viewerDistance - 200.0) / 300.0;
+                //     if(amnt>1.0) amnt=1.0;
+                //     amnt = 1.0 - amnt;
+                //     outcolour *= amnt;
+                // }
+                if( viewerDistance <= 100.0) {
+                    float amnt = (viewerDistance ) / 100.0;
+                    if(amnt>1.0) amnt=1.0;
+                    // amnt = 1.0 - amnt;
+                    outcolour *= amnt;
+                }
+                else if( viewerDistance >= 200.0) {
+                    float amnt = (viewerDistance - 200.0) / 300.0;
+                    if(amnt>1.0) amnt=1.0;
+                    amnt = 1.0 - amnt;
+                    outcolour *= amnt;
+                }
+
+
                 float a = max(outcolour.r,max(outcolour.g,outcolour.b));
 
-                if(vUv.y < 0.2) {
-                    float amnt = (vUv.y / 0.2);
-                    a = a * amnt;
-                    outcolour*=amnt;
-                }
-                else if(vUv.y >= 0.8) {
-                    float amnt = (1.0-((vUv.y-0.8) / 0.2));
-                    a = a * amnt;
-                    outcolour*=amnt;
-                }
 
                 gl_FragColor = vec4(outcolour,a);
 
@@ -392,7 +465,7 @@ class F1Ribbons {
         // ok, another ribbon
         this.ribbonMesh2 = this.ribbonMesh.clone();
         this.ribbonMesh2.position.set(-20,25,-80 );
-        this.ribbonMesh2.scale.set(3,4,2);
+        this.ribbonMesh2.scale.set(2,3,1.5);
         this.ribbonMesh2.rotateZ((Math.PI / 180)*180);
 //        this.ribbonMesh2.rotateZ((Math.PI / 180)*-45);
 
@@ -502,6 +575,18 @@ class F1Ribbons {
         const uvflow = (currenttime*0.25) % 5000;
 
         this.uniforms.fTime.value = uvflow/5000.0;
+        
+        const modded = (currenttime*0.00005)%360;
+        const sined = (Math.sin( modded * (3.14159265 * 2.0) ) + 1.0)*0.5;
+
+        this.uniforms.faderTime.value = sined;
+
+        // console.log('a=' + sined);
+
+//        const t = (this.uniforms.faderTime.value % 360) * (3.14159265 * 2.0);
+//        const sinefade = (Math.sin(t)+1.0)*0.5;
+
+//        console.log('this.uniforms.faderTime.value = '+ this.uniforms.faderTime.value);
         // console.log('this.uniforms.fTime.value= '+this.uniforms.fTime.value);
         if(elapsed < 10)
             return;

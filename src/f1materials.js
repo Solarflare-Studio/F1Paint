@@ -300,7 +300,7 @@ class F1Materials {
                 fog: false,
                 metalness: 0.50,
                 envMapIntensity: 1.0,
-                roughness: 0.3,
+                roughness: 0.5,
                 emissiveIntensity: 1,
                 aoMapIntensity: 1.0,
 
@@ -310,7 +310,7 @@ class F1Materials {
                 // depthWrite: false,
                 // depthWrite: true,
                 // opacity: 1,
-                // transparent: true,
+                transparent: true,
 
                 // color: new THREE.Color(0.41,0.4,0.4),
                 // envMap: this.envMap,

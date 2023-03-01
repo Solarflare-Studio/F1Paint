@@ -28,7 +28,7 @@ class F1Gui {
     }
 
     updateProgress(percent,msg) {
-        const maxprogress = 80;
+        const maxprogress = 90;
         const progress = document.getElementById("progress");
         this.currentProgress = this.currentProgress + percent;
         progress.style.width = ((this.currentProgress / maxprogress)*100) + "%";
