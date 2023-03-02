@@ -11,3 +11,4 @@ dist/*.png
 dist/*.js
 dist/*.webmanifest
 dist/*.html
+dist/main.js
