@@ -174,12 +174,12 @@ class F1Gui {
             else if(_index==4)
                 layerMsg = "STYLE COLOUR";
         }
-        else if(_index==5) { // decal
+        else if(_index==5) { // sponsor
             document.getElementById('paintdecalblock').classList.remove('hidden');
             document.getElementById('decalblock').classList.add('hidden');
             document.getElementById('layer3decals_ins').classList.add('hidden');
 
-            layerMsg = "DECAL COLOUR";
+            layerMsg = "SPONSOR COLOUR";
 
         }
 

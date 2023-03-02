@@ -7,7 +7,7 @@ class F1Materials {
     constructor() {
         this.toloadlist = new Array();
         this.envmapStrength = 7.0;// lees car setting
-        this.envstrBase = 3.5;
+        this.envstrBase = 3.5 * 100;
         this.envstrGar = 1.5;
         
         this.totalTexturesLoaded = 0;
@@ -208,9 +208,9 @@ class F1Materials {
         if(which==2) {
             this.envstrGar = strength;
 
-            f1Garage.garageWall.material.envMapIntensity = this.envmapStrength;
             f1Garage.garageMaterial.envMapIntensity = this.envstrGar;
             f1Garage.garageMaterial.needsUpdate=true;
+            f1Garage.garageWall.material.envMapIntensity = this.envmapStrength;
             f1Garage.garageWall.material.needsUpdate=true;   
         }
         else if(which==0){
@@ -298,9 +298,9 @@ class F1Materials {
             {
                 name: 'garagenewMaterial',
                 fog: false,
-                metalness: 0.50,
+                metalness: 0.5,
                 envMapIntensity: 1.0,
-                roughness: 0.5,
+                roughness: 0.6,
                 emissiveIntensity: 1,
                 aoMapIntensity: 1.0,
 

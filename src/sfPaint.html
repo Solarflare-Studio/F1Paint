@@ -88,10 +88,26 @@
             @font-face {
                 font-family: "F1PaintShopBoldFont";
                 src: url('./assets/fonts/Formula1-Display-Bold.otf') format("truetype");	
-                font-weight: bold;
+                /* font-weight: bold; */
+                font-weight: normal;
                 font-style: normal;
-                    
             }
+            @font-face {
+                font-family: "F1PaintShopBlackFont";
+                src: url('./assets/fonts/Formula1-Display-Black.otf') format("truetype");
+                font-weight: normal;
+                font-style: normal;
+            }
+
+            @font-face {
+                font-family: "F1PaintShopWideFont";
+                src: url('./assets/fonts/Formula1-Display-Wide.otf') format("truetype");	
+                font-weight: normal;
+                font-style: normal;
+            }
+
+
+
         </style>
     </head>
     <body onload='setTimeout( onloaded,1000)'>
@@ -236,7 +252,7 @@
                                                     <div>Enter your 2 character tag</div>
 
                                                     <label id="taginputcontainer" class="input disabledButton">
-                                                        <input id="taginput" class="tagInput__field" type="text" placeholder="F1" maxlength=2 />
+                                                        <input id="taginput" class="tagInput__field" type="text" placeholder="F1" maxlength=2 value="F1" />
                                                     </label>
                                                 </div>
                                             </div>
@@ -274,12 +290,12 @@
                                         <div id="getdecalblockheight">
                                             <div id="decalColours" class="f1patterncolours">
                                                 <div>
-                                                    <div class="channelblock">DECAL COLOUR
+                                                    <div class="channelblock">SPONSOR COLOUR
                                                         <div id="decalpaintbutton" class="paintButtons" onclick="onChangePaint(5);"></div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="channelblock">Choose a decal</div>
+                                            <div class="channelblock">CHOOSE A SPONSOR</div>
                                         </div>
                                         <div id="layer3decals_ins" class="layerDecalsContainer scrollbox"></div>
                                         <div id="paintdecalblock" class="f1patterncolours hidden">
@@ -389,9 +405,28 @@
                         <option value="aces">ACES</option>
                     </select>
                 </div>
-                <div class="console_button">
+                <div class="console_button expandbutton" onclick="expandDropdown('tagsexpander');">Tags</div>
+                <div class="console_button shrunk expander" id="tagsexpander">
+                    <select id="c_whichtag" name="c_whichtag">
+                        <option value=0>Pos 1</option>
+                        <option value=1>Pos 2</option>
+                        <option value=2>Pos 3</option>
+                        <option value=2>Pos 4</option>
+                    </select>
+                    <div id="c_tagXSliderTxt" class="slidertxt">pos X:</div>
+                    <input type="range" min="-1000" max="1000" value="500" class="slider" id="c_tagXSlider">
+                    <div id="c_tagYSliderTxt" class="slidertxt">pos Y:</div>
+                    <input type="range" min="-1000" max="1000" value="500" class="slider" id="c_tagYSlider">
+                    <div id="c_tagScaleSliderTxt" class="slidertxt">scale:</div>
+                    <input type="range" min="0" max="2000" value="1000" class="slider" id="c_tagScaleSlider">
+                    <div id="c_tagRotSliderTxt" class="slidertxt">pos Y:</div>
+                    <input type="range" min="0" max="36000" value="0" class="slider" id="c_tagRotSlider">
+
+                </div>                
+                <div class="console_button expandbutton" onclick="expandDropdown('envexpander');">Env map</div>
+                <div class="console_button shrunk expander" id="envexpander">
                     <div id="c_envStrengthSliderTxt" class="slidertxt">envStrength</div>
-                    <input type="range" min="1" max="150" value="50" class="slider" id="c_envStrengthSlider">
+                    <input type="range" min="0" max="1500" value="500" class="slider" id="c_envStrengthSlider">
                     <select id="c_envstrength" name="envstrength">
                         <option value="car">Car</option>
                         <option value="carstatic">Car static</option>
@@ -420,7 +455,7 @@
                         <label for="specialFXpipe_input"> specialFXpipe</label><br>
                         <input  class="introbutton" onclick="onConsole(1)" type="checkbox" id="specialFXpipe_input" name="check" checked>
                     </div>
--->                    
+-->                 
                     <div class="console_button">
                         <label for="ribbon_input"> xtras</label><br>
                         <input  class="introbutton" onclick="onConsole(2)" type="checkbox" id="ribbon_input" name="check" checked>

@@ -49,6 +49,7 @@ class PatternItems {
     }
     // ===============================================
     buildGUI(patternsData) { // ,layerPatternThumbElements) {
+        console.log('>> adding thumbs');
         var layer1PatternDiv = document.getElementById('layer1patterns_ins');
         var layer2TagsDiv = document.getElementById('layer2tags_ins');
         var layer3DecalsDiv = document.getElementById('layer3decals_ins');
@@ -94,7 +95,7 @@ class PatternItems {
         this.currentPatternElement  = this.layerNoneElements[0];
         */
         for(var i=0;i<patternsData['Patterns'].length;i++) {
-            console.log(">> found pattern item.. ");
+//            console.log(">> found pattern item.. ");
             var thumbContainer = document.createElement("div");
             thumbContainer.classList.add("patternContainer");
 
@@ -208,8 +209,9 @@ class PatternItems {
 
        
         // layerPatternThumbElements[currentLayer] = thepatternelement;
-
-        if(thefile=='./patterns/smallblankimage.png') {
+        // IS NULL PATTERN
+        // if(thefile=='./patterns/smallblackimage.jpg') {
+        if(patternsData['Patterns'][which].id == -1 && currentLayer!=0) { // a null one
             if(currentLayer==0) {
                 document.getElementById('layer1patterns_ins').classList.remove('disabledButton');
                 // never!
@@ -223,6 +225,9 @@ class PatternItems {
 
                 f1MetalRoughmapUniforms.useTag.value = 0;
 
+                thepatternelement.classList.add('patternSelected');
+                this.currentPatternElement = thepatternelement;
+
             }
             else if(currentLayer==2) {
                 document.getElementById('layer3decals_ins').classList.remove('disabledButton');
@@ -230,6 +235,9 @@ class PatternItems {
                 f1MetalRoughmapUniforms.useDecal.value = 0;
 
                 f1SpecialFX.mapUniforms.useDecal.value = 0;
+
+                thepatternelement.classList.add('patternSelected');
+                this.currentPatternElement = thepatternelement;
 
             }
             setTimeout(function() {
@@ -247,6 +255,7 @@ class PatternItems {
             }, 350); // sfx lead in
             // f1SpecialFXmapUniforms.leadin.value = 0.0;
         }
+        // IS A PATTERN/DECAL/SPONSOR
         else {
             // if(currentLayer==1) {
             //     mapUniforms.useTag.value = 1;
@@ -290,7 +299,7 @@ class PatternItems {
                 tex.encoding = THREE.LinearEncoding;
 
                 // f1SpecialFXmapUniforms.leadin.value = 0.0;
-	// f1SpecialFX.finalPass.uniforms.amountBloom.value = 1.0;
+                // f1SpecialFX.finalPass.uniforms.amountBloom.value = 1.0;
 
                 // if(f1SpecialFX.finalPass.uniforms.amountBloom.value != 0.0)
                 //     f1SpecialFX.startFX();
@@ -327,13 +336,15 @@ class PatternItems {
                     else if(currentLayer==1) {
                         mapUniforms.useTag.value = 1;
                         f1SpecialFX.mapUniforms.useTag.value = 1;
+                        liveryData['Layers'].tagfontstyle = patternsData['Patterns'][which].style;
 
                         f1MetalRoughmapUniforms.useTag.value = 1;
                         f1Text.tagPattern = tex;
                         // f1Text.locations = patternsData['Patterns'][which].location; // todo
                         f1Text.locations = 1;
                         document.getElementById('taginputcontainer').classList.remove('disabledButton');
-
+                        f1Text.fontstyle = liveryData['Layers'].tagfontstyle;
+                        f1Text.fixText();
                         f1Text.composite();
                     }
                     else if(currentLayer==2) {

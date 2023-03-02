@@ -18,8 +18,8 @@ class F1Garage {
 
         this.garageRoot = new THREE.Object3D();
         this.garageMaterial = f1materials.newGarageMat();
-        // this.garageMaterial.color = new THREE.Color( 0x131313)
-        this.garageMaterial.color = new THREE.Color( 0x181818)
+        this.garageMaterial.color = new THREE.Color( 0x121212)
+        // this.garageMaterial.color = new THREE.Color( 0x181818)
 
         this.backgroundImage = 0;
         this.backgroundMat =  new THREE.MeshBasicMaterial({
@@ -104,7 +104,8 @@ class F1Garage {
 
 
 
-        let garageFloor = new THREE.Mesh( new THREE.CircleGeometry( 350, 32 ), this.garageMaterial );
+        // let garageFloor = new THREE.Mesh( new THREE.CircleGeometry( 350, 32 ), this.garageMaterial );
+        let garageFloor = new THREE.Mesh( new THREE.CircleGeometry( 160, 32 ), this.garageMaterial );
         garageFloor.layers.set(1);
         garageFloor.rotateX((Math.PI / 180)*90);
         garageFloor.scale.set(0.5,0.5,0.5);

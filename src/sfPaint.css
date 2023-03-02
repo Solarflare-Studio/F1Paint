@@ -101,6 +101,10 @@
 	transition: 0.3s;
 }
 
+.IroBox {
+	margin-bottom: 30px;
+}
+
 .slider {
 	width: -webkit-fill-available;
 }

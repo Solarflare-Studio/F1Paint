@@ -112,7 +112,7 @@ class F1SpecialFX {
 
         var _self = this;
 
-        this.baseLayer = new THREE.TextureLoader().load('./patterns/smallblankimage.png', (tex) => {
+        this.baseLayer = new THREE.TextureLoader().load('./patterns/smallblackimage.jpg', (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
 
@@ -204,6 +204,8 @@ class F1SpecialFX {
                   c = mix(c,cv,amnt);
                   c = max(c,colour.r * vec3(1,0,0));
 
+
+
                   if(fTime>0.8) {
                     // c = mix(c,rc, ((fTime-0.8)/0.2) );
                     // c = mix(rc,vec3(1,1,1),0.5);
@@ -221,7 +223,19 @@ class F1SpecialFX {
                     amnt = sin(calc * (3.1415926538 * 0.5));
                     float cosit = 1.0*(sin(calc * (3.1415926538 * 0.5)));
                     // cosit = 1.0;
+                    float alpha=1.0;
+                    
+                    if(amnt<0.3) {
+                      alpha = mix(0.0,1.0, (amnt/0.3));
+                    }
 
+
+                    vec3 c= mix(vec3(0,0,0),vec3(1,0,0),cosit);
+                    gl_FragColor = vec4(c,alpha*0.5*amnt);
+
+
+
+                    /*
                     vec3 rc = (colour.r) * chan1Colour;
                     vec3 gc = (colour.g) * chan2Colour;
                     vec3 bc = (colour.b) * chan3Colour;
@@ -243,6 +257,7 @@ class F1SpecialFX {
                       c=vec3(0,1,0);
                       gl_FragColor = vec4(c,alpha*0.85*beta);
                     }
+                    */
                   }
                   else {
                     amnt = sin(calc * (3.1415926538 * 0.5));
@@ -680,7 +695,7 @@ class F1SpecialFX {
             bloomTexture: { value: this.fxComposer.renderTarget2.texture },
             bloomRibbonTexture: { value: this.fxRibbonComposer.renderTarget2.texture },
             amountBloom: { value: 0.0 },
-            bloomAmount: { value: 0.15 },
+            bloomAmount: { value: 0.28 },
           },
           vertexShader: `
           varying vec2 vUv;

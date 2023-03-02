@@ -185,9 +185,9 @@ class F1CarHelmet {
             const filetypelist = new Array();
             
             // filelist.push('./assets/garage/whitefloor.jpg'); // garage floor
-            filelist.push('./assets/garage/concretetiles.png' ); // floor
+            filelist.push('./assets/garage/concretetilesSquare.jpg' ); // floor
             filetypelist.push( 7 );
-            filelist.push('./assets/garage/concretetiles.jpg' ); // floor roughmap
+            filelist.push('./assets/garage/concretetilesSquare.jpg' ); // floor roughmap
             filetypelist.push( 8 );
             filelist.push('./assets/garage/walls.jpg' ); // garage walls
             filetypelist.push( 9 );

@@ -16,12 +16,12 @@ class F1Layers {
         this.baseLayer = new THREE.TextureLoader().load('./patterns/smallredimage.png', (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
-        this.tagLayer = new THREE.TextureLoader().load('./patterns/smallblankimage.png', (tex) => {
+        this.tagLayer = new THREE.TextureLoader().load('./patterns/smallblackimage.jpg', (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
 
 
-        this.decalLayer = new THREE.TextureLoader().load('./patterns/smallblankimage.png', (tex) => {
+        this.decalLayer = new THREE.TextureLoader().load('./patterns/smallblackimage.jpg', (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
 

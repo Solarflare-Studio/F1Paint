@@ -25,8 +25,8 @@
         "name": "Blank Tag",
         "id": -1,
         "layer": 1,
-        "thumbnail": "smallblankimage.png",
-        "image": "smallblankimage.png",
+        "thumbnail": "smallblackimage.jpg",
+        "image": "smallblackimage.jpg",
         "Channels": [
          {
           "channelName": "Chan 1",
@@ -46,8 +46,8 @@
         "name": "Blank Decal",
         "id": -1,
         "layer": 2,
-        "thumbnail": "smallblankimage.png",
-        "image": "smallblankimage.png",
+        "thumbnail": "smallblackimage.jpg",
+        "image": "smallblackimage.jpg",
         "Channels": [
          {
           "channelName": "Chan 1",

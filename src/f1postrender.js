@@ -16,7 +16,7 @@ class F1PostRender {
 
         var _self = this;
 
-        this.baseLayer = new THREE.TextureLoader().load('./patterns/smallblankimage.png', (tex) => {
+        this.baseLayer = new THREE.TextureLoader().load('./patterns/smallblackimage.jpg', (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
 

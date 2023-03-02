@@ -1,4 +1,4 @@
-const paintshopversion= "v0.1.8.8";
+const paintshopversion= "v0.1.9.0";
 
 
 
@@ -361,7 +361,38 @@ let textpts = new Array(7.29, 61.86,7.29, 58.52,7.29, 55.20,7.29, 51.87,7.29, 48
 
 // It's all sliders
 const forcedsizeofcolourpicker = window.innerWidth * 0.5;
-const forcedheightofcolourpicker = forcedsizeofcolourpicker / 10.0;
+const forcedheightofcolourpicker = window.innerHeight * 0.08;
+
+//
+var colorPatternPicker = new iro.ColorPicker("#colourWheelPicker", {
+	width: forcedsizeofcolourpicker,
+	boxHeight: forcedheightofcolourpicker,
+	color: "rgb(255, 0, 0)",
+	borderWidth: 1,
+	margin: 40, // strange doesnt work
+	borderColor: "#fff",
+	layout: [
+	  {
+		component: iro.ui.Box,
+	  },
+	  {
+		component: iro.ui.Slider,
+		options: {
+		  id: 'hue-slider',
+		  sliderType: 'hue'
+		}
+	  }
+	]
+  });
+
+//
+
+
+
+
+
+
+/*
 const colorPatternPicker = new iro.ColorPicker("#colourWheelPicker", {
 	handleRadius: '5',
 	width: forcedsizeofcolourpicker,
@@ -391,8 +422,8 @@ const colorPatternPicker = new iro.ColorPicker("#colourWheelPicker", {
 		}
 	  },
 	]
-  });
-  
+});
+*/
 
 colorPatternPicker.on('input:change', function(color) {
 
@@ -510,6 +541,7 @@ function onConsole(_switch) {
 		if(console.className == 'hidden') {
 			// update values in sliders
 			document.getElementById('c_tonemappingSliderTxt').innerHTML = 'toneMapping : ' + renderer.toneMappingExposure;
+			document.getElementById('c_tonemappingSlider').value = renderer.toneMappingExposure;
 			const tmtype = renderer.toneMapping == 
 				THREE.LinearToneMapping ? 'linear' : renderer.toneMapping == THREE.CineonToneMapping ? 'cineon'
 				: 'aces';
@@ -555,13 +587,16 @@ document.getElementById('c_tonemappingSlider').oninput = function () {
 
 
 document.getElementById('c_envStrengthSlider').oninput = function () {
-	self.amount = this.value/10.0;// ((this.value / 100.0)*6.0) + 0.5;
+	self.amount = this.value/100.0;// ((this.value / 100.0)*6.0) + 0.5;
 	document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + self.amount;
 	if(document.getElementById('c_envstrength').value=="car")
 		f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,0);
 	else
-	if(document.getElementById('c_envstrength').value=="carstatic")
-		f1Materials.setEnvStrength(self.amount * 150.0,f1CarHelmet,f1Garage,1);
+	if(document.getElementById('c_envstrength').value=="carstatic") {
+		document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + self.amount * 100;
+
+		f1Materials.setEnvStrength(self.amount * 100.0,f1CarHelmet,f1Garage,1);
+	}
 	else
 		f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,2);
 	
@@ -592,12 +627,18 @@ document.getElementById('c_sfxSlider').oninput = function () {
 // 
 document.getElementById('c_envstrength').onchange = function () {
 	console.log(this.value);
-	if(this.value=="car")
+	if(this.value=="car") {
 		document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envmapStrength;
-	else if(this.value=="carstatic")
+		document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theHelmetMaterial.envMapIntensity * 100.0;
+	}
+	else if(this.value=="carstatic") {
 		document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrBase;
-	else 
+		document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theBaseMaterial.envMapIntensity * 1.0; // static gets 100x
+	}
+	else { // garage
 		document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrGar;
+		document.getElementById('c_envStrengthSlider').value = f1Garage.garageMaterial.envMapIntensity * 100.0;
+	}
 
 }
 
@@ -1247,7 +1288,7 @@ function initScenes()
 	ambLight = new THREE.AmbientLight( 0xffffff, 2.0*0.5 ); // soft white light
 
 	dirLight = new THREE.DirectionalLight( 0xffffff, 2.0*0.5);
-	dirLight.position.set( 0, 20, -50);
+	dirLight.position.set( 0, 30, -30);
 	dirLight.target = f1CarHelmet.theHelmet;
 
 
@@ -2144,9 +2185,12 @@ function postRenderProcess() {
 		// const thearlink = 'https://https://solarflarestudio.8thwall.app/f1testmarkerv5/?u=' + userID + '&d='+ datetime;// +'&m=c&t='+(new Date());
 
 		// marker v6 version latest
-		const thearlink = 'https://solarflarestudio.8thwall.app/f1testmarkerv6/?u=' + userID + '&d='+ datetime;// +'&m=c&t='+(new Date());
-		// marker f1 fanzone ar version latest
-		// const thearlink = 'https://solarflarestudio.8thwall.app/f1-fanzone-ar/?u=' + userID + '&d='+ datetime;// +'&m=c&t='+(new Date());
+
+		// this is the one the client is using...
+		// const thearlink = 'https://solarflarestudio.8thwall.app/f1testmarkerv6/?u=' + userID + '&d='+ datetime;// +'&m=c&t='+(new Date());
+
+		// marker f1 fanzone ar version latest V2
+		const thearlink = 'https://solarflarestudio.8thwall.app/f1-fanzone-ar-v2/?u=' + userID + '&d='+ datetime;// +'&m=c&t='+(new Date());
 		
 
 		console.log(">> AR url('" + thearlink + "')")
@@ -2415,6 +2459,9 @@ function animate()
 
 
 		f1Text.init(processJSON);
+		f1Text.isDebug = userConsole;
+
+
 		// f1Text.setProcessJSON(processJSON);
 		initScenes();
 		// f1Gui.updateLayerLabel(f1Layers.currentLayer, processJSON.totLayers);

@@ -36,7 +36,7 @@ class F1Ribbons {
     constructor(f1Materials) {
 
         this.prevupdate = new Date().getTime();
-        this.timer1 = 0;
+        this.timer1 = this.prevupdate;
         
 
         this.init(f1Materials);
@@ -248,22 +248,27 @@ class F1Ribbons {
                 //     amnt = 1.0 - amnt;
                 //     outcolour *= amnt;
                 // }
-                if( viewerDistance <= 100.0) {
-                    float amnt = (viewerDistance ) / 100.0;
+
+                float amnt =1.0;
+                if( viewerDistance <= 150.0) {
+                    amnt = (viewerDistance ) / 150.0;
                     if(amnt>1.0) amnt=1.0;
                     // amnt = 1.0 - amnt;
-                    outcolour *= amnt;
+                    outcolour *= amnt * amnt;
+
                 }
-                else if( viewerDistance >= 200.0) {
-                    float amnt = (viewerDistance - 200.0) / 300.0;
-                    if(amnt>1.0) amnt=1.0;
-                    amnt = 1.0 - amnt;
-                    outcolour *= amnt;
-                }
+                // else if( viewerDistance >= 200.0) {
+                //     float amnt = (viewerDistance - 200.0) / 300.0;
+                //     if(amnt>1.0) amnt=1.0;
+                //     amnt = 1.0 - amnt;
+                //     outcolour *= amnt;
+                // }
 
 
                 float a = max(outcolour.r,max(outcolour.g,outcolour.b));
 
+                a = a * faderTime * amnt;
+                outcolour *= faderTime;
 
                 gl_FragColor = vec4(outcolour,a);
 
@@ -418,11 +423,11 @@ class F1Ribbons {
 
 
 
-        bends.push(new ABend(2.0, 0.25, 0.0,   0.0, 0.75, 0.0,    30000, TWEEN.Easing.Cubic.InOut,1)); // static
+        bends.push(new ABend(2.0, 0.25, 0.0,   2.0, 0.75, 0.0,    30000, TWEEN.Easing.Cubic.InOut,1)); // static
         bends.push(new ABend(-2.0, 0.5, 0.0,   -2.0, 0.5, 2.0 * Math.PI,    30000, TWEEN.Easing.Linear.None,2));
 
         this.createBentMeshParams(bends);
-        this.createTwist([2, new Vector3(1,0,0), TWEEN.Easing.Linear.None, 0.0, 20000, 0]);// 1]);
+        this.createTwist([1.3, new Vector3(1,0,0), TWEEN.Easing.Linear.None, 0.0, 20000, 0]);// 1]);
 
         // 0=twistcount, 1=vec3 dir 2=tweentype, 3=target, 4=duration, 5=yoyo
 
@@ -442,19 +447,19 @@ class F1Ribbons {
 
      
         
-        const boxgeometry = new THREE.BoxGeometry( 10, 10, 10 );
-        const boxMesh = new THREE.Mesh( boxgeometry, this.redf1mat );
-        this.boxroot.add(boxMesh);
+        // const boxgeometry = new THREE.BoxGeometry( 10, 10, 10 );
+        // const boxMesh = new THREE.Mesh( boxgeometry, this.redf1mat );
+        // this.boxroot.add(boxMesh);
 
-        // const boxlamp = new THREE.PointLight(0xff0000,5.0,200);
-        this.barlamp = new THREE.RectAreaLight(0xff0000,70,10,10);
-        // const barlamphelper = new RectAreaLightHelper( barlamp );
-        // barlamp.add( barlamphelper ); // helper must be added as a child of the light
-        this.barlamp.rotateX(-3.14159265 * 0.5);
+        // // const boxlamp = new THREE.PointLight(0xff0000,5.0,200);
+        // this.barlamp = new THREE.RectAreaLight(0xff0000,70,10,10);
+        // // const barlamphelper = new RectAreaLightHelper( barlamp );
+        // // barlamp.add( barlamphelper ); // helper must be added as a child of the light
+        // this.barlamp.rotateX(-3.14159265 * 0.5);
 
-        this.boxroot.add(this.barlamp);
-        this.boxroot.layers.set(3);
-        this.boxroot.position.set(-35,25,-80 );
+        // this.boxroot.add(this.barlamp);
+        // this.boxroot.layers.set(3);
+        // this.boxroot.position.set(-35,25,-80 );
 
         //
 
@@ -469,14 +474,45 @@ class F1Ribbons {
         this.ribbonMesh2.rotateZ((Math.PI / 180)*180);
 //        this.ribbonMesh2.rotateZ((Math.PI / 180)*-45);
 
+        // also try moving them far and near
+        new TWEEN.Tween(this.ribbonMesh2.position)
+        .to({
+                x: -20,
+                y: -25,
+                z: -120
+            },
+            32000
+        )
+        .repeat(Infinity)
+        .yoyo(true)
+        .easing(TWEEN.Easing.Back.InOut)
+        .start()
+        new TWEEN.Tween(this.ribbonMesh.position)
+        .to({
+                x: 0,
+                y: 30,
+                z: -80
+
+            },
+            30000
+        )
+        .repeat(Infinity)
+        .yoyo(true)
+        .easing(TWEEN.Easing.Back.InOut)
+        .start()        
+
+
 
         this.root.add(this.ribbonMesh2);
 
 
-        const planeCrop = new THREE.PlaneGeometry(300,300);
+        // const planeCrop = new THREE.PlaneGeometry(300,300);
+        // const planeCrop = new THREE.CircleGeometry( 160, 32 ); // same as garage floor
+        const planeCrop = new THREE.CircleGeometry( 80, 32 ); // same as garage floor
+
         const planeCropMesh = new THREE.Mesh( planeCrop, this.floorGlowMat );
         planeCropMesh.rotateX((Math.PI / 180)*-90);
-        planeCropMesh.position.set(0,-9.5,0);
+        planeCropMesh.position.set(0,-9.8,0);
         planeCropMesh.layers.set(3);
 
         this.root.add(planeCropMesh);
@@ -486,6 +522,7 @@ class F1Ribbons {
         return this.root;
     }
     //======================
+    /*
     stretchAnimation(obj, scale, duration) {
 
         const _self = this;
@@ -566,7 +603,64 @@ class F1Ribbons {
 
         
     }
+    */
     //======================
+    mathPulse(a) {
+
+        const tweak = 1.0;
+
+        let w1 = 0.5 * tweak;
+        let w2 = 0.75 * tweak;
+        let w3 = 1.0 * tweak;
+        let p1 = 0.2 * tweak;
+        let p2 = Math.PI/2;
+        let p3 = Math.PI;
+        let A1 = 0.2;
+        let A2 = 0.3;
+        let A3 = 0.5;
+        let wm = 0.1;
+        let A3m = 0.2;
+
+        let combinedAmplitude = Math.sqrt(A1*A1 + A2*A2 + A3*A3 + 2*A1*A2*Math.cos(w1*a - w2*a + p2 - p1) + 2*A1*A3*Math.cos(w1*a - w3*a + p3 - p1) + 2*A2*A3*Math.cos(w2*a - w3*a + p3 - p2));
+        let combinedWave = A1*Math.sin(w1*a + p1) + A2*Math.sin(w2*a + p2) + A3*Math.sin(w3*a + p3) + A3m*Math.sin(wm*a)*A3;
+        return (combinedWave/combinedAmplitude + 1)/2;
+
+
+        // return A1 * Math.sin(w1 * a + p1) +
+        //        A2 * Math.sin(w2 * a + p2) +
+        //        (A3 + A3m * Math.sin(wm * a)) * Math.sin(w3 * a + p3);
+      }
+
+    sineWave(t) {
+        return (1 + Math.sin(2*Math.PI*t - Math.PI/2))/2;
+    }
+      
+    easedSineWave(t) {
+        const easeInDuration = 0.1; // time to ease into 1
+        const easeOutDuration = 0.6; // time to ease out of 1
+        const easeInFactor = this.easeFactor(t, easeInDuration);
+        const easeOutFactor = this.easeFactor(t, easeOutDuration);
+        const easedValue = this.sineWave(t) * easeOutFactor + (1 - easeInFactor);
+        return easedValue;
+    }
+    
+    easeFactor(t, duration) {
+        const halfDuration = duration / 2;
+        const startTime = 0.5 - halfDuration;
+        const endTime = 0.5 + halfDuration;
+        if (t < startTime) {
+            return 0;
+        } else if (t < 0.5) {
+            return 0.5 * (1 + Math.sin(Math.PI * (t - startTime) / duration - Math.PI / 2));
+        } else if (t < endTime) {
+            return 1;
+        } else {
+            return 0.5 * (1 + Math.sin(Math.PI * (t - endTime) / duration - Math.PI / 2));
+        }
+    }
+      
+
+
     update() {
 
         const currenttime = new Date().getTime();
@@ -577,9 +671,21 @@ class F1Ribbons {
         this.uniforms.fTime.value = uvflow/5000.0;
         
         const modded = (currenttime*0.00005)%360;
-        const sined = (Math.sin( modded * (3.14159265 * 2.0) ) + 1.0)*0.5;
+        // const sined = (Math.sin( modded * (3.14159265 * 2.0) ) + 1.0)*0.5;
+        // this.uniforms.faderTime.value = (sined*0.5)+0.5;
 
-        this.uniforms.faderTime.value = sined;
+
+        
+        // let a = (currenttime*0.0005) % (2 * Math.PI);
+        // const glow = this.mathPulse(a);
+
+        const glow = this.easedSineWave(modded*0.25);
+        console.log(glow);
+
+        this.uniforms.faderTime.value = glow;
+
+
+
 
         // console.log('a=' + sined);
 

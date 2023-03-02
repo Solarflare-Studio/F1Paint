@@ -19,10 +19,10 @@ class F1MetalRough {
         this.baseLayer = new THREE.TextureLoader().load(f1fnames.car_files[4], (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
-        this.tagLayer = new THREE.TextureLoader().load('./patterns/smallblankimage.png', (tex) => {
+        this.tagLayer = new THREE.TextureLoader().load('./patterns/smallblackimage.jpg', (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
-        this.decalLayer = new THREE.TextureLoader().load('./patterns/smallblankimage.png', (tex) => {
+        this.decalLayer = new THREE.TextureLoader().load('./patterns/smallblackimage.jpg', (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
 
@@ -148,7 +148,14 @@ class F1MetalRough {
                     float roughnesstag = color2.g * tagChannel2Rough *  color2.a;
 
                     vec4 outcoltag = vec4(0,roughnesstagstyle,metalnesstagstyle ,1);
-                    outcoltag = vec4(mix(outcoltag.xyz, vec3(0,roughnesstag,metalnesstag), color2.g ),1);
+                    // outcoltag = vec4(mix(outcoltag.xyz, vec3(0,roughnesstag,metalnesstag), color2.g ),1);
+
+                    if(color2.g>0.0) {
+                      if(color2.g<0.2) 
+                        outcoltag = vec4(mix(outcoltag.xyz, vec3(0,roughnesstag,metalnesstag), color2.g ),1);
+                      else
+                        outcoltag = vec4(0,roughnesstag,metalnesstag,1);
+                    }
                     
                     outcol = mix(outcol,outcoltag,color2.a);
                 }
@@ -161,7 +168,14 @@ class F1MetalRough {
                     float roughnessdecal2 = color3.g * decalChannel1Rough *  color3.a;
 
                     vec4 outcoldecal = vec4(0,roughnessdecal,metalnessdecal ,1);
-                    outcoldecal = vec4(mix(outcoldecal.xyz, vec3(0,roughnessdecal2,metalnessdecal2), color3.g ),1);
+                    // outcoldecal = vec4(mix(outcoldecal.xyz, vec3(0,roughnessdecal2,metalnessdecal2), color3.g ),1);
+
+                    if(color3.g>0.0) {
+                      if(color3.g<0.2) 
+                        outcoldecal = vec4(mix(outcoldecal.xyz, vec3(0,roughnessdecal2,metalnessdecal2), color3.g ),1);
+                      else
+                        outcoldecal = vec4(0,roughnessdecal2,metalnessdecal2,1);
+                    }
 
 
                     outcol = mix(outcol,outcoldecal,color3.a);

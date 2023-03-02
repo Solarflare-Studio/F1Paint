@@ -91,7 +91,7 @@ class ProcessJSON {
                 var modeltype = 'car';
                 if(isHelmet) modeltype = 'helmet';
                 if(cookie_livery_value=="") { // we havent any livery cookie yet - so create 
-                    this.liveryData = { name: userName, model: modeltype, timestamp: "000000_0000", email: userEmail, uniqueid: userID, tagtext: 'F1', Layers: layersList};
+                    this.liveryData = { name: userName, model: modeltype, timestamp: "000000_0000", email: userEmail, uniqueid: userID, tagtext: 'F1', tagfontstyle:1, Layers: layersList};
                     // if cookie doesn't exist, create livery cookie
                     var d = new Date();
                     d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000)); // Expires in 1 year
