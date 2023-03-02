@@ -9,6 +9,7 @@ dist/*.txt
 dist/*.jpg
 dist/*.png
 dist/*.js
+dist/*.svg
 dist/*.webmanifest
 dist/*.html
 dist/main.js
