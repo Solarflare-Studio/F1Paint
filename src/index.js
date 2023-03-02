@@ -219,8 +219,8 @@ if(userCarOrHelmet=='h')
 	isHelmet = true;
 
 // var isHelmet = true;
-// var renderSize = 2048;//1024;
-var renderSize = 1024;
+var renderSize = 2048;//1024;
+// var renderSize = 1024;
 
 // set files names
 var f1fnames = new F1AssetFileNames();
@@ -1739,21 +1739,23 @@ function onChangePaint(index) {
 
 	
 	var metalroughtype = processJSON.liveryData['Layers'][currentLayer].Channels[chan].metalroughtype;
-	if(metalroughtype==0) { // gloss
-		document.getElementById('glossbutton').classList.add('nextButton');
-		document.getElementById('mattebutton').classList.remove('nextButton');
-		document.getElementById('metallicbutton').classList.remove('nextButton');
-	}
-	else if(metalroughtype==1) { // matte
-		document.getElementById('glossbutton').classList.remove('nextButton');
-		document.getElementById('mattebutton').classList.add('nextButton');
-		document.getElementById('metallicbutton').classList.remove('nextButton');
-	}
-	else if(metalroughtype==2) { // metallic
-		document.getElementById('glossbutton').classList.remove('nextButton');
-		document.getElementById('mattebutton').classList.remove('nextButton');
-		document.getElementById('metallicbutton').classList.add('nextButton');
-	}
+
+	setMaterial(metalroughtype,selectedChan);
+	// if(metalroughtype==0) { // gloss
+	// 	document.getElementById('glossbutton').classList.add('nextButton');
+	// 	document.getElementById('mattebutton').classList.remove('nextButton');
+	// 	document.getElementById('metallicbutton').classList.remove('nextButton');
+	// }
+	// else if(metalroughtype==1) { // matte
+	// 	document.getElementById('glossbutton').classList.remove('nextButton');
+	// 	document.getElementById('mattebutton').classList.add('nextButton');
+	// 	document.getElementById('metallicbutton').classList.remove('nextButton');
+	// }
+	// else if(metalroughtype==2) { // metallic
+	// 	document.getElementById('glossbutton').classList.remove('nextButton');
+	// 	document.getElementById('mattebutton').classList.remove('nextButton');
+	// 	document.getElementById('metallicbutton').classList.add('nextButton');
+	// }
 
 
 

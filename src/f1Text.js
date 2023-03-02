@@ -1,7 +1,5 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
 
-
-
 class F1Text {
 
    
@@ -399,17 +397,6 @@ class F1Text {
         canvas.remove(); // probably!
         return texture;
 
-        // Create a material for the text
-        let textMaterial = new THREE.MeshBasicMaterial({ map: texture });
-
-        // Create a plane geometry for the text
-        let textGeometry = new THREE.PlaneGeometry(canvas.width, canvas.height);
-
-        // Create a mesh for the text
-        let textMesh = new THREE.Mesh(textGeometry, textMaterial);
-
-        // Add the text mesh to the scene
-        scene.add(textMesh);        
     }
 
     //======================
