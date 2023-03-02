@@ -189,10 +189,17 @@ class F1CarHelmet {
             filetypelist.push( 7 );
             filelist.push('./assets/garage/concretetilesSquare.jpg' ); // floor roughmap
             filetypelist.push( 8 );
-            filelist.push('./assets/garage/walls.jpg' ); // garage walls
-            filetypelist.push( 9 );
+            // filelist.push('./assets/garage/walls.jpg' ); // garage walls
+            // filetypelist.push( 9 );
             filelist.push('./assets/sfx/scenebackground.jpg' ); // garage walls
             filetypelist.push( 13 );
+
+            filelist.push('./assets/garage/ribbon2.png'); // ribbon textures..
+            // filelist.push('./assets/sfx/ribbon3.png'); // ribbon textures..
+            filetypelist.push( 11 );
+            filelist.push('./assets/sfx/floorglow.jpg'); // flow glow texture
+            filetypelist.push( 12 );            
+
 
             if(_self.isHelmet) { // really is helmet
 
@@ -242,11 +249,7 @@ class F1CarHelmet {
 
             // filelist.push('./assets/inapp/ribbon1.jpg'); // ribbon textures..
             //filelist.push('./assets/garage/ribbon2.jpg'); // ribbon textures..
-            filelist.push('./assets/garage/ribbon2.png'); // ribbon textures..
-            // filelist.push('./assets/sfx/ribbon3.png'); // ribbon textures..
-            filetypelist.push( 11 );
-            filelist.push('./assets/sfx/floorglow.jpg'); // flow glow texture
-            filetypelist.push( 12 );
+
 
             filelist.push('envmap'); // force load of envmap now then
             filetypelist.push( 10 );

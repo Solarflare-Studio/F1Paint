@@ -33,7 +33,6 @@ class F1Gui {
         this.currentProgress = this.currentProgress + percent;
         progress.style.width = ((this.currentProgress / maxprogress)*100) + "%";
         console.log(">> percent loaded = " + this.currentProgress + " - " + msg);
-
     }
     //===================================
     updateProgress2(percent) {
@@ -817,7 +816,7 @@ class F1Gui {
 //        toolsElement.style.top = toolsPosY + 'px';
 
         const patternsWidth = (toolsWidth-36) * 0.45;
-        const patternsHeight = patternsWidth * 0.5;
+        const patternsHeight = patternsWidth * 0.44;
         
         rootElement.style.setProperty('--patternWidth', patternsWidth + 'px');
         rootElement.style.setProperty('--patternHeight', patternsHeight + 'px');

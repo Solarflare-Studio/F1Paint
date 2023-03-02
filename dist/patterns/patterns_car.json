@@ -1,7 +1,7 @@
 {
 "Patterns": [  
   {
-    "name": "Blank Pattern",
+    "name": "BLANK",
     "id": -1,
     "layer": 0,
     "thumbnail": "smallredimage.png",
@@ -23,7 +23,7 @@
     ]
   },
   {
-    "name": "Blank Tag",
+    "name": "BLANK",
     "id": -1,
     "layer": 1,
     "thumbnail": "smallblankimage.png",
@@ -45,7 +45,7 @@
     ]
   },
   {
-    "name": "Blank Decal",
+    "name": "BLANK",
     "id": -1,
     "layer": 2,
     "thumbnail": "smallblankimage.png",
@@ -67,7 +67,7 @@
     ]
   },
   {
-    "name": "18",
+    "name": "SUPER 18",
     "id": 1001,
     "layer": 0,
     "thumbnail": "car/F1_Customizable_ColorMask_Design_18_thumb.jpg",
@@ -89,7 +89,7 @@
     ]
   },  
   {
-    "name": "20",
+    "name": "FAB 20",
     "id": 1002,
     "layer": 0,
     "thumbnail": "car/F1PS_F1_Car_Customizable_ColorMask_thumb.jpg",
@@ -111,11 +111,11 @@
     ]
   },  
   {
-    "name": "18",
+    "name": "TEST NEONCOMPLEX",
     "id": 1003,
     "layer": 0,
     "thumbnail": "car/F1_Customizable_ColorMask_Design_18_thumb.jpg",
-    "image": "car/F1_Customizable_ColorMask_Design_18_JPEG.jpg",
+    "image": "car/BodyTest-NeonComplex.jpg",
     "style": 0,
     "Channels": [
      {
@@ -133,11 +133,11 @@
     ]
   },  
   {
-    "name": "20",
+    "name": "TEST NEON",
     "id": 1004,
     "layer": 0,
-    "thumbnail": "car/F1PS_F1_Car_Customizable_ColorMask_thumb.jpg",
-    "image": "car/F1PS_F1_Car_Customizable_ColorMask_JPEG.jpg",
+    "thumbnail": "car/test1thumb.jpg",
+    "image": "car/BodyTest-Neon.jpg",
     "style": 0,
     "Channels": [
      {
@@ -155,11 +155,11 @@
     ]
   },  
   {
-    "name": "18",
+    "name": "TEST BLUE",
     "id": 1005,
     "layer": 0,
-    "thumbnail": "car/F1_Customizable_ColorMask_Design_18_thumb.jpg",
-    "image": "car/F1_Customizable_ColorMask_Design_18_JPEG.jpg",
+    "thumbnail": "car/test2thumb.jpg",
+    "image": "car/BodyTest-Blue.png",
     "style": 0,
     "Channels": [
      {
@@ -177,11 +177,11 @@
     ]
   },  
   {
-    "name": "20",
+    "name": "TEST DUO",
     "id": 1006,
     "layer": 0,
-    "thumbnail": "car/F1PS_F1_Car_Customizable_ColorMask_thumb.jpg",
-    "image": "car/F1PS_F1_Car_Customizable_ColorMask_JPEG.jpg",
+    "thumbnail": "car/test3thumb.jpg",
+    "image": "car/BodyTest-Duo.png",
     "style": 0,
     "Channels": [
      {

@@ -4,11 +4,12 @@ import * as THREE from '../node_modules/three/build/three.module.js';
 
 class F1Materials {
 
-    constructor() {
+    constructor(f1Settings) {
         this.toloadlist = new Array();
-        this.envmapStrength = 7.0;// lees car setting
-        this.envstrBase = 3.5 * 100;
-        this.envstrGar = 1.5;
+
+        this.envmapStrength = f1Settings.envcarintensity;// 7.0;// lees car setting
+        this.envstrBase = f1Settings.envcarbaseintensity;// 3.5 * 100;
+        this.envstrGar = f1Settings.envgarageintensity;// 1.5;
         
         this.totalTexturesLoaded = 0;
         this.totalTexturesAttempted = 0;
@@ -198,7 +199,7 @@ class F1Materials {
                     f1Gui.updateProgress(5,'envmap');
                     self.alltexturesloaded = true;
 
-
+                    
                 });
 
 

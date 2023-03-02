@@ -680,7 +680,7 @@ class F1Ribbons {
         // const glow = this.mathPulse(a);
 
         const glow = this.easedSineWave(modded*0.25);
-        console.log(glow);
+        // console.log(glow);
 
         this.uniforms.faderTime.value = glow;
 

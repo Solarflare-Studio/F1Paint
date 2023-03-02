@@ -1,4 +1,4 @@
-const paintshopversion= "v0.1.9.0";
+// const paintshopversion= "v0.1.8.92";
 
 
 
@@ -41,6 +41,7 @@ import {F1PostRender} from'./f1postrender'
 import {F1SpecialFX} from'./f1specialfx'
 import {F1Text} from'./f1Text'
 import {F1Ribbons} from'./f1Ribbons'
+import {F1Settings} from './F1Settings'
 //import { setQuaternionFromProperEuler } from 'three/src/math/mathutils.js';
 
 
@@ -73,6 +74,9 @@ window.onMinMax = onMinMax;
 window.onConsole = onConsole;
 
 //===================================
+const f1Settings = new F1Settings();
+
+
 // const AWS = require('aws-sdk');
 // import { DynamoDBClient, 
 // 	ListTablesCommand 
@@ -238,6 +242,8 @@ var selectedTagIndex = -1;
 var selectedDecalIndex = -1;
 var selectedPatternIndex = -1;
 
+var loadedtime = 0;
+
 var controls;
 const gltfLoader = new GLTFLoader();
 // var specialFXscene;
@@ -246,6 +252,7 @@ var mainLight;
 var mainLight2;
 var ambLight;
 var dirLight;
+var dirLight2;
 var dirLightFloor;
 
 var centredControlsTarget = 0;
@@ -266,7 +273,8 @@ f1Gui.updateProgress(5,'patterns');
 
 // processJSON.writePatterns();
 
-var f1Materials  = new F1Materials();
+var f1Materials  = new F1Materials(f1Settings);
+
 
 // var f1Garage = new F1Garage(f1Materials,f1Gui);
 
@@ -365,11 +373,11 @@ const forcedheightofcolourpicker = window.innerHeight * 0.08;
 
 //
 var colorPatternPicker = new iro.ColorPicker("#colourWheelPicker", {
+	// handleSvg: '#colourhandle',
 	width: forcedsizeofcolourpicker,
 	boxHeight: forcedheightofcolourpicker,
 	color: "rgb(255, 0, 0)",
 	borderWidth: 1,
-	margin: 40, // strange doesnt work
 	borderColor: "#fff",
 	layout: [
 	  {
@@ -424,13 +432,23 @@ const colorPatternPicker = new iro.ColorPicker("#colourWheelPicker", {
 	]
 });
 */
-
+var colourpickersamplehidetimer = 0;
 colorPatternPicker.on('input:change', function(color) {
 
 	var tmpcol = new THREE.Color(color.hexString);
 	var tmpv4 = new THREE.Vector4(tmpcol.r,tmpcol.g,tmpcol.b,1.0);
 
 	f1Gui.setBackgroundColourByID('coloursample',color.hexString);
+	// position sample
+// 	const sampleshower = document.getElementById('sampleshower');
+// //	console.log()
+// 	// display colour picker sample
+// 	document.getElementById('coloursample').classList.remove('hidden');
+// 	clearTimeout(colourpickersamplehidetimer);
+// 	colourpickersamplehidetimer = setTimeout( function() {
+// 		document.getElementById('coloursample').classList.add('hidden');
+// 	}, 500);
+
 	var currentLayer = f1Gui.currentPage-1;
 	if(f1Gui.currentPage>1) currentLayer--;
 
@@ -496,6 +514,9 @@ function onloaded()
 		document.getElementById('versionid').classList.add('console');
 		document.getElementById('versionid').classList.add('console_button');	
 	}
+	document.getElementById('progressblock').classList.remove('hidden');
+	
+
 	// inline ar
 	// createObserver();  // handles intersection observer behavior
 	// dateCheck();  // sets today's date in the article
@@ -504,7 +525,7 @@ function onloaded()
 
 
 
-	var loadedtime = new Date().getTime();
+	loadedtime = new Date().getTime();
 	var timeDiff = loadedtime - loadtime; //in ms
 
 	// fade out loading splash
@@ -530,7 +551,138 @@ function onloaded()
 var deb_specialPipelineToggle = true;
 var deb_ribbonToggle = f1Ribbons.enabled;
 
+//=======================================================================
+function setupConsoleListeners() {
 
+	// fill the values
+	document.getElementById('c_tonemappingSliderTxt').innerHTML = 'toneMapping : ' + f1Settings.tonemappingamount;
+	document.getElementById('c_tonemappingSlider').value = f1Settings.tonemappingamount * 10.0;
+
+
+	
+
+	// tone mapping
+	document.getElementById('c_tonemappingSlider').oninput = function () {
+		self.amount = this.value/10.0;// ((this.value / 100.0)*6.0) + 0.5;
+		document.getElementById('c_tonemappingSliderTxt').innerHTML = 'toneMapping : ' + self.amount;
+		// renderer.toneMapping = THREE.ACESFilmicToneMapping;// THREE.LinearToneMapping;
+		renderer.toneMappingExposure = self.amount;
+	}
+	document.getElementById('c_tonemap').onchange = function () {
+		console.log(this.value);
+		if(this.value=="linear") {
+			renderer.toneMapping = THREE.LinearToneMapping;
+		}
+		else if(this.value=="cineon") {
+			renderer.toneMapping = THREE.CineonToneMapping;//ACESFilmicToneMapping;// THREE.LinearToneMapping;
+	
+		}
+		else if(this.value=="aces") {
+			renderer.toneMapping = THREE.ACESFilmicToneMapping;// THREE.LinearToneMapping;
+		}
+		else if(this.value=="reinhard") {
+			renderer.toneMapping = THREE.ReinhardToneMapping;// THREE.LinearToneMapping;
+		}
+
+		
+	}	
+	// env strength
+	document.getElementById('c_envStrengthSlider').oninput = function () {
+		self.amount = this.value/100.0;// ((this.value / 100.0)*6.0) + 0.5;
+		document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + self.amount;
+		if(document.getElementById('c_envstrength').value=="car")
+			f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,0);
+		else
+		if(document.getElementById('c_envstrength').value=="carstatic") {
+			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + self.amount * 100;
+	
+			f1Materials.setEnvStrength(self.amount * 100.0,f1CarHelmet,f1Garage,1);
+		}
+		else
+			f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,2);
+	}
+	document.getElementById('c_envstrength').onchange = function () {
+		console.log(this.value);
+		if(this.value=="car") {
+			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envmapStrength;
+			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theHelmetMaterial.envMapIntensity * 100.0;
+		}
+		else if(this.value=="carstatic") {
+			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrBase;
+			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theBaseMaterial.envMapIntensity * 1.0; // static gets 100x
+		}
+		else { // garage
+			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrGar;
+			document.getElementById('c_envStrengthSlider').value = f1Garage.garageMaterial.envMapIntensity * 100.0;
+		}
+	
+	}	
+	// lights
+	document.getElementById('c_whichlight').onchange = function () {
+		console.log(this.value);
+		const c_lightIntensitySlider = document.getElementById('c_lightIntensitySlider');
+		const c_lightIntensitySliderTxt = document.getElementById('c_lightIntensitySliderTxt');
+		if(this.value=="spot1") {
+			c_lightIntensitySliderTxt.innerHTML = "intensity= " + mainLight.intensity;
+			c_lightIntensitySlider.value = mainLight.intensity * 100.0;
+		}
+		else if(this.value=="spot2") {
+			c_lightIntensitySliderTxt.innerHTML = "intensity= " + mainLight2.intensity;
+			c_lightIntensitySlider.value = mainLight2.intensity * 100.0;
+
+		}
+		else if(this.value=="dir") {
+			c_lightIntensitySliderTxt.innerHTML = "intensity= " + dirLight.intensity;
+			c_lightIntensitySlider.value = dirLight.intensity * 100.0;
+
+		}
+		else if(this.value=="dir2") {
+			c_lightIntensitySliderTxt.innerHTML = "intensity= " + dirLight2.intensity;
+			c_lightIntensitySlider.value = dirLight2.intensity * 100.0;
+
+		}
+		else if(this.value=="amb") {
+			c_lightIntensitySliderTxt.innerHTML = "intensity= " + ambLight.intensity;
+			c_lightIntensitySlider.value = ambLight.intensity * 100.0;
+		}
+	}
+	document.getElementById('c_lightIntensitySlider').oninput = function () {
+		const which = document.getElementById('c_whichlight').value;
+		const val = this.value / 100.0;
+		if(which=="spot1") mainLight.intensity = val;
+		else if(which=="spot2") mainLight2.intensity = val;
+		else if(which=="dir") dirLight.intensity = val;
+		else if(which=="dir2") dirLight2.intensity = val;
+		else if(which=="amb") ambLight.intensity = val;
+		document.getElementById('c_lightIntensitySliderTxt').innerHTML = "intensity= " + val;
+
+	}
+		
+
+	// sfx
+	document.getElementById('c_sfxSlider').oninput = function () {
+		self.amount = this.value/10.0;
+		document.getElementById('c_sfxSliderTxt').innerHTML = 'sfx bloom: ' + self.amount;
+	
+		f1SpecialFX.finalPass.uniforms.bloomAmount.value = self.amount;
+	}
+	// ribbon
+	document.getElementById('c_sfxRibbonSlider').onchange = function () {
+		self.amount = this.value/10.0;
+		console.log(this.value);
+	
+		document.getElementById('c_sfxRibbonSliderTxt').innerHTML = 'ribbon bloom: ' + self.amount;
+	
+		f1SpecialFX.f1BloomRibbonPass.strength = self.amount;
+	
+		
+	}
+	
+	
+}
+
+//=======================================================================
+//remove below before release todo
 
 function onConsole(_switch) {
 	if(userConsole==0)
@@ -543,8 +695,8 @@ function onConsole(_switch) {
 			document.getElementById('c_tonemappingSliderTxt').innerHTML = 'toneMapping : ' + renderer.toneMappingExposure;
 			document.getElementById('c_tonemappingSlider').value = renderer.toneMappingExposure;
 			const tmtype = renderer.toneMapping == 
-				THREE.LinearToneMapping ? 'linear' : renderer.toneMapping == THREE.CineonToneMapping ? 'cineon'
-				: 'aces';
+				THREE.LinearToneMapping ? 'linear' : renderer.toneMapping == THREE.CineonToneMapping ? 'cineon' 
+				:  renderer.toneMapping == THREE.ReinhardToneMapping ? 'reinhard' : 'aces';
 			document.getElementById('c_tonemap').value = tmtype;
 
 			if(document.getElementById('c_envstrength').value=="car")
@@ -577,96 +729,16 @@ function onConsole(_switch) {
 	}
 }
 
-document.getElementById('c_tonemappingSlider').oninput = function () {
-	self.amount = this.value/10.0;// ((this.value / 100.0)*6.0) + 0.5;
-	document.getElementById('c_tonemappingSliderTxt').innerHTML = 'toneMapping : ' + self.amount;
-	// renderer.toneMapping = THREE.ACESFilmicToneMapping;// THREE.LinearToneMapping;
-	renderer.toneMappingExposure = self.amount;
-}
 
 
 
-document.getElementById('c_envStrengthSlider').oninput = function () {
-	self.amount = this.value/100.0;// ((this.value / 100.0)*6.0) + 0.5;
-	document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + self.amount;
-	if(document.getElementById('c_envstrength').value=="car")
-		f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,0);
-	else
-	if(document.getElementById('c_envstrength').value=="carstatic") {
-		document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + self.amount * 100;
-
-		f1Materials.setEnvStrength(self.amount * 100.0,f1CarHelmet,f1Garage,1);
-	}
-	else
-		f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,2);
-	
-}
-document.getElementById('c_lightsSlider').oninput = function () {
-	self.amount = this.value/10.0;// ((this.value / 100.0)*6.0) + 0.5;
-	document.getElementById('c_lightsSliderTxt').innerHTML = 'spots: ' + self.amount;
-	mainLight.intensity = 0.6 * self.amount;
-	mainLight2.intensity = 0.6 * self.amount;	
-}
-document.getElementById('c_lightsASlider').oninput = function () {
-	self.amount = this.value/10.0;
-	document.getElementById('c_lightsASliderTxt').innerHTML = 'ambient light: ' + self.amount;
-	ambLight.intensity = 0.5 * self.amount;
-}
-document.getElementById('c_lightsDSlider').oninput = function () {
-	self.amount = this.value/10.0;
-	document.getElementById('c_lightsDSliderTxt').innerHTML = 'dir light: ' + self.amount;
-	dirLight.intensity = 0.5 * self.amount;
-//	dirLightFloor.intensity = 0.5 * self.amount;
-}
-document.getElementById('c_sfxSlider').oninput = function () {
-	self.amount = this.value/10.0;
-	document.getElementById('c_sfxSliderTxt').innerHTML = 'sfx bloom: ' + self.amount;
-
-	f1SpecialFX.finalPass.uniforms.bloomAmount.value = self.amount;
-}
-// 
-document.getElementById('c_envstrength').onchange = function () {
-	console.log(this.value);
-	if(this.value=="car") {
-		document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envmapStrength;
-		document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theHelmetMaterial.envMapIntensity * 100.0;
-	}
-	else if(this.value=="carstatic") {
-		document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrBase;
-		document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theBaseMaterial.envMapIntensity * 1.0; // static gets 100x
-	}
-	else { // garage
-		document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrGar;
-		document.getElementById('c_envStrengthSlider').value = f1Garage.garageMaterial.envMapIntensity * 100.0;
-	}
-
-}
 
 
 
-document.getElementById('c_tonemap').onchange = function () {
-	console.log(this.value);
-	if(this.value=="linear") {
-		renderer.toneMapping = THREE.LinearToneMapping;
-	}
-	else if(this.value=="cineon") {
-		renderer.toneMapping = THREE.CineonToneMapping;//ACESFilmicToneMapping;// THREE.LinearToneMapping;
 
-	}
-	else if(this.value=="aces") {
-		renderer.toneMapping = THREE.ACESFilmicToneMapping;// THREE.LinearToneMapping;
-	}
-}
-document.getElementById('c_sfxRibbonSlider').onchange = function () {
-	self.amount = this.value/10.0;
-	console.log(this.value);
 
-	document.getElementById('c_sfxRibbonSliderTxt').innerHTML = 'ribbon bloom: ' + self.amount;
 
-	f1SpecialFX.f1BloomRibbonPass.strength = self.amount;
 
-	
-}
 
 
 
@@ -784,8 +856,13 @@ function seekPatternThumb(patternblock,layer) {
 }
 //==================================================
 function introNextPage(nextPage) {
-	if(nextPage==1) { // have clicked on first intro page Ok button ==> fade in tutorial page 1
+	if(nextPage==0) { // first page Okeyed
 		document.getElementById('welcomeblock').classList.add('fadedout');
+		document.getElementById('intro2block').classList.remove('hidden');
+	}
+	else if(nextPage==1) { // have clicked on second intro page Ok button ==> fade in tutorial page 1
+		document.getElementById('intro2block').classList.add('fadedout');
+
 
 		seekPatternThumb(document.getElementById('layer1patterns_ins'),0).click();
 		// patternItems.layerNoneElements[0].click(); // force first empty pattern
@@ -835,10 +912,13 @@ function introNextPage(nextPage) {
 function initit()
 {
 	// update version
-	document.getElementById('versionid').innerHTML=paintshopversion;
+	// document.getElementById('versionid').innerHTML=paintshopversion;
 
-	// aws test
-	//
+	// document.addEventListener('touchmove', function(event) {
+	// 	event.preventDefault();
+	//   }, { passive: false });
+	
+
 
 
 
@@ -887,8 +967,13 @@ function initit()
 	// renderer.toneMappingExposure = 2.0;// 2.7;
 
 	// lees settings
-	renderer.toneMapping = THREE.LinearToneMapping;
-	renderer.toneMappingExposure = 0.9;
+	// renderer.toneMapping = THREE.LinearToneMapping;
+	// renderer.toneMappingExposure = 0.9;
+
+	// reinhard
+	renderer.toneMapping = f1Settings.tonemappingtype ;// THREE.ReinhardToneMapping;
+	renderer.toneMappingExposure = f1Settings.tonemappingamount;
+
 
 
 	// document.getElementById('c_tonemap').value = "cineon";
@@ -1278,24 +1363,41 @@ function initScenes()
 	f1CarHelmet.init(f1Materials,f1Layers, isHelmet, f1fnames, f1MetalRough,f1Gui,f1SpecialFX, f1Garage,f1Ribbons);
 
 	// lights
-	mainLight = createSpotLight(2.0*0.6);
-	mainLight2 = createSpotLight(2.0*0.6);
+	mainLight = createSpotLight(f1Settings.mainLight1Intensity);
+	mainLight2 = createSpotLight(f1Settings.mainLight2Intensity);
+	mainLight.position.set( 110, 80, 70 );
+	mainLight2.position.set( -110, 80, 70 );
 
-	mainLight.position.set( 90, 100, 70 );
-	mainLight2.position.set( -90, 100, 70 );
+	ambLight = new THREE.AmbientLight( 0xffffff, f1Settings.ambientLightIntensity ); 
 
-//	ambLight = new THREE.AmbientLight( 0xffff00,10.0 ); // soft white light
-	ambLight = new THREE.AmbientLight( 0xffffff, 2.0*0.5 ); // soft white light
-
-	dirLight = new THREE.DirectionalLight( 0xffffff, 2.0*0.5);
-	dirLight.position.set( 0, 30, -30);
+	dirLight = new THREE.DirectionalLight( 0xffffff, f1Settings.dirLight1Intensity);
+	dirLight.position.set( 90, 80, -30);
 	dirLight.target = f1CarHelmet.theHelmet;
+
+	dirLight2 = new THREE.DirectionalLight( 0xffffff, f1Settings.dirLight2Intensity);
+	dirLight2.position.set( -90, 80, -30);
+	dirLight2.target = f1CarHelmet.theHelmet;
 
 
 	scene.add(mainLight);
 	scene.add(mainLight2);
 	scene.add( ambLight );
 	scene.add( dirLight );
+	scene.add( dirLight2 );
+
+
+
+	// const dirhelper = new THREE.DirectionalLightHelper( dirLight, 5 );
+	// scene.add( dirhelper );
+	// const dirhelper2 = new THREE.DirectionalLightHelper( dirLight2, 5 );
+	// scene.add( dirhelper2 );
+	// const spot1helper = new THREE.PointLightHelper( mainLight );
+	// scene.add( spot1helper );
+	// const spot2helper = new THREE.PointLightHelper( mainLight2 );
+	// scene.add( spot2helper );
+
+
+
 
 
 	
@@ -1332,8 +1434,10 @@ function initScenes()
 		controls.maxDistance = 200;
 		controls.minPolarAngle = Math.PI / 6; // radians
 		controls.maxPolarAngle = Math.PI / 2.15; // radians
-	
 	}
+	else
+		setupConsoleListeners();
+
 
 	// controls.maxDistance = 130;
 
@@ -2051,19 +2155,19 @@ function setMaterial(glosstype,theChan) {
 
 
 	if(glosstype==0) { // gloss
-		document.getElementById('glossbutton').classList.add('nextButton');
-		document.getElementById('mattebutton').classList.remove('nextButton');
-		document.getElementById('metallicbutton').classList.remove('nextButton');
+		document.getElementById('glossbutton').classList.add('whiteButton');
+		document.getElementById('mattebutton').classList.remove('whiteButton');
+		document.getElementById('metallicbutton').classList.remove('whiteButton');
 	}
 	else if(glosstype==1) { // matte
-		document.getElementById('glossbutton').classList.remove('nextButton');
-		document.getElementById('mattebutton').classList.add('nextButton');
-		document.getElementById('metallicbutton').classList.remove('nextButton');
+		document.getElementById('glossbutton').classList.remove('whiteButton');
+		document.getElementById('mattebutton').classList.add('whiteButton');
+		document.getElementById('metallicbutton').classList.remove('whiteButton');
 	}
 	else if(glosstype==2) { // metallic
-		document.getElementById('glossbutton').classList.remove('nextButton');
-		document.getElementById('mattebutton').classList.remove('nextButton');
-		document.getElementById('metallicbutton').classList.add('nextButton');
+		document.getElementById('glossbutton').classList.remove('whiteButton');
+		document.getElementById('mattebutton').classList.remove('whiteButton');
+		document.getElementById('metallicbutton').classList.add('whiteButton');
 	}
 
 }
@@ -2472,8 +2576,22 @@ function animate()
 		requestAnimationFrame( animate );
 		return;
 	}
+	// detect if we have completed loading assets
 	if(!nowallloaded && f1Materials.alltexturesloaded) {
 		nowallloaded=true;
+
+		document.getElementById('waittilloaded').classList.remove('hidden');
+		document.getElementById('waitingmessage').classList.add('hidden');
+
+		const speedy = new Date().getTime() - loadedtime;
+		if(speedy>2000)
+			document.getElementById('progressblock').classList.add('hidden');
+		else {
+			setTimeout(function()	{
+				document.getElementById('progressblock').classList.add('hidden');
+			}, 2000);
+		}
+
 
 		scene.background = f1Garage.backgroundImage;
 	}

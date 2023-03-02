@@ -96,6 +96,7 @@ class PatternItems {
         */
         for(var i=0;i<patternsData['Patterns'].length;i++) {
 //            console.log(">> found pattern item.. ");
+
             var thumbContainer = document.createElement("div");
             thumbContainer.classList.add("patternContainer");
 
@@ -103,6 +104,17 @@ class PatternItems {
             thumbimage.classList.add("pattern");
             thumbimage.setAttribute('patternId', patternsData['Patterns'][i].id);
             thumbimage.setAttribute('onClick', "onPatternPicked("+ (i) +",'./patterns/" + patternsData['Patterns'][i].image + "',this)");
+
+
+            var thumbdescription = document.createElement("div");
+            thumbdescription.innerHTML=patternsData['Patterns'][i].name;
+            thumbdescription.classList.add("patterndescription");
+            thumbdescription.classList.add("hidden");
+
+
+
+            thumbimage.appendChild(thumbdescription);
+
 
             if( patternsData['Patterns'][i].id==-1) {
 
@@ -202,8 +214,10 @@ class PatternItems {
 
     
 
-        if(this.currentPatternElement!=0)
+        if(this.currentPatternElement!=0) {
             this.currentPatternElement.classList.remove('patternSelected');
+            this.currentPatternElement.children[0].classList.add('hidden');
+        }
 
 
 
@@ -227,6 +241,9 @@ class PatternItems {
 
                 thepatternelement.classList.add('patternSelected');
                 this.currentPatternElement = thepatternelement;
+                // Show description name
+                this.currentPatternElement.children[0].classList.remove('hidden');
+
 
             }
             else if(currentLayer==2) {
@@ -238,8 +255,13 @@ class PatternItems {
 
                 thepatternelement.classList.add('patternSelected');
                 this.currentPatternElement = thepatternelement;
+                // Show description name
+                this.currentPatternElement.children[0].classList.remove('hidden');
 
             }
+ 
+
+
             setTimeout(function() {
                 liveryData['Layers'][currentLayer].patternId = patternId;// which; // todo, make this the pattern id
                 liveryData['Layers'][currentLayer].filename = thefile;
@@ -479,7 +501,9 @@ class PatternItems {
             //        this.useCustom = false;
                     thepatternelement.classList.add('patternSelected');
                     this.currentPatternElement = thepatternelement;
-            
+                    // Show description name
+                    this.currentPatternElement.children[0].classList.remove('hidden');
+
 
 
 

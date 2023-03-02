@@ -11,24 +11,24 @@
 	--layersDecalsContainerHeight: 150px;
 
 /*	--loadingPageCol: #000000; */
-	--introPageCol: #ffffff;
+	--introPageCol: #000000;
 	--introPanelCol: #d9d9d9;
-	--introTextCol: #575757;
+	--introTextCol: #ffffff;
 
-	--nextbuttonCol:#575757;
+	--nextbuttonCol:#ffffff;
 	--nextbuttonTextCol:#ffffff;
 
 	--buttonCol:#d9d9d9;
 	--buttonBordCol:#575757;
 	--buttonSelCol: #575757;
 	--buttonHovCol: #a9a9a9;
-	--buttonTextCol: #575757;
+	--buttonTextCol: #ffffff;
 	--buttonTextSelCol: #ffffff;
 	--buttonDisabledTextCol: #575757;
 /*	--buttonDisabledCol: #202020;	*/
 	
 
-	--guiTextColour: #d9d9d9;
+	--guiTextColour: #ffffff;
 	--guiPanelCol: #d9d9d9;
 	--guiTabTextCol: #d9d9d9;
 	--guiTabActive: #151420;
@@ -78,6 +78,76 @@
 		display: block!important;
 		opacity: 1!important;
 	}
+}
+
+.redButton {
+	background-color: #ff1e00;
+    padding: 10px;
+	border: solid 2px #ff1e00;
+	color: #FFFFFF;
+
+}
+.blackButton {
+	background-color: #151420;
+	border: solid 2px #FFFFFF;
+	color: #FFFFFF;
+
+}
+.whiteButton {
+	background-color: #ffffff;
+	border: solid 2px #FFFFFF;
+	color: #ff1e00;
+}
+
+.button {
+    padding: 10px;
+}
+
+
+.button:active {
+	background-color: #FFFFFF;
+	transition: 0.7s;
+	color: #151420;
+}
+
+#progressblock {
+
+	color: var(--buttonCol);
+	font-size: 0.7em;
+	
+    bottom: calc(40vh * -1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;	
+}
+
+.progress-bar {
+	width: 50%;
+	height: 20px;
+	background-color: rgb(161, 148, 148);
+	border-radius: 25px;
+	/* position: relative; */
+	/* margin: 50px auto; */
+}
+#progress {
+	height: 100%;
+	border-radius: 25px;
+	background-color: rgb(22, 198, 22);
+	width: 0;
+	/* position: absolute; */
+	top: 0;
+	left: 0;
+}
+#progress2 {
+	height: 100%;
+	border-radius: 25px;
+	background-color: green;
+	width: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 #console {
@@ -280,11 +350,6 @@
 	pointer-events: none!important;
 }
 
-.nextButton {
-	background-color: var(--nextbuttonCol)!important;
-	border: solid 2px var(--nextbuttonCol)!important;
-	color: var(--nextbuttonTextCol)!important;
-}
 
 .mainButtons {
 	width:45%;
@@ -294,7 +359,6 @@
 }
 
 .introbutton {
-	background-color: var(--buttonCol);
     padding: 10px;
 	border: solid 2px var(--buttonBordCol);
 	color: var(--buttonTextCol);
@@ -527,6 +591,7 @@
 }
 
 
+
 .patternContainer{
 	margin: 2px;
 	padding: 2px;
@@ -561,8 +626,17 @@
 	min-width: 100%;
 	min-height: 100%;
 	background-size: 100%;
-
+	align-items: end; /*for text desc */
+	display: flex; /*for text desc */
 }
+.patterndescription {
+	background-color: red;
+	width: 100%;
+}
+.forceshow {
+	display:block!important;
+}
+
 .patternSelected {
 	border: solid 2px var(--thumbSelBorder)!important;
 
@@ -731,7 +805,7 @@
 
 .colourWheelPicker {
 	background-color: #f0f01000;
-	margin-top: 18px;
+	/* margin-top: 18px; */
     margin-bottom: 18px;
 }
 
