@@ -1395,7 +1395,8 @@ function initScenes()
 
 	// limit mouse zoom
 	if(!userConsole) {
-		controls.minDistance = 70;
+		// controls.minDistance = 70;
+		controls.minDistance = 30;
 		controls.maxDistance = 200;
 		controls.minPolarAngle = Math.PI / 6; // radians
 		controls.maxPolarAngle = Math.PI / 2.15; // radians
@@ -1420,7 +1421,7 @@ function initScenes()
 		controls.enablePan=true;
 
 	});
-	controls.addEventListener('start', () => {
+	controls.addEventListener('start', (e) => {
 		// console.log('start dragging!');
 		timelastinteracted =  clock.getElapsedTime();
 		interacting=true;
@@ -1442,23 +1443,6 @@ function initScenes()
 			// controls.enablePan=true;
 			// controls.enabled=true;
 
-		}
-
-			const distance = controls.getDistance();
-		if ((isHelmet && distance < 170) || (!isHelmet && distance < 170)) {
-
-			// const campos = camera.position;
-			// console.log('camera:' + campos);
-
-			// controls.setDistance(270);
-			// controls.update();
-		//   const tween = new TWEEN.Tween({ distance })
-		// 	.to({ distance: 70 }, 500)
-		// 	.easing(TWEEN.Easing.Quadratic.Out)
-		// 	.onUpdate(() => {
-		// 	  controls.setDistance(tween._object.distance);
-		// 	})
-		// 	.start();
 		}
 	  });
 
@@ -2592,8 +2576,24 @@ function animate()
 		// if(!interacting && !userConsole)
 		// 	controls.target = controls.target.lerpVectors ( controls.target, centredControlsTarget, elapsed );
 		// if(!interacting && !userConsole)
-		if(!userConsole)
+		if(!userConsole) {
+			// re-centres camera
 			controls.target = controls.target.lerpVectors ( controls.target, centredControlsTarget, 0.01 );
+			// zooms out to minimum if breached
+
+			if(!interacting) {
+				if (controls.object.position.distanceTo(controls.target) < 70.0) {
+					const evt = new Event('wheel', {bubbles: true, cancelable: true});
+					evt.deltaY = +2;
+					threecanvasElement.dispatchEvent(evt);
+				}
+			}
+
+
+			//console.log(controls.getDistance());
+
+			
+		}
 
 		if(f1Ribbons.enabled)
 			f1Ribbons.update();

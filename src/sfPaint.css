@@ -208,12 +208,13 @@
 
 }
 
-#ARpage {
+/* #ARpage {
     position: absolute;
-    width: 100%;	/*var(--screenWidth); */
+    width: 100%;	
     height: 100%;
     z-index: 1;
-}
+} 
+*/
 
 /* min / max screen chevron button */
 .gg-chevron-double-right {
@@ -300,6 +301,7 @@
 }
 
 .rotatemsg {
+	z-index: 99;
 	font-size:2em;
 	display: none;
 	opacity: 0;

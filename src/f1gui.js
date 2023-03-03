@@ -272,7 +272,7 @@ class F1Gui {
         document.getElementById("launchARPage").classList.add("hidden");
         document.getElementById("progressbarPage").classList.add("hidden");
 
-        document.getElementById("ARpage").classList.add("hidden");
+        // document.getElementById("ARpage").classList.add("hidden");
         // document.getElementById('paintpresetsblock').classList.add('hidden');
 
         
