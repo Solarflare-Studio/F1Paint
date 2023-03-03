@@ -225,18 +225,19 @@ class PatternItems {
         // layerPatternThumbElements[currentLayer] = thepatternelement;
         // IS NULL PATTERN
         // if(thefile=='./patterns/smallblackimage.jpg') {
+        var isNone = false;
         if(patternsData['Patterns'][which].id == -1 && currentLayer!=0) { // a null one
             if(currentLayer==0) {
                 document.getElementById('layer1patterns_ins').classList.remove('disabledButton');
                 // never!
             }
             else if(currentLayer==1) {
+                isNone=true;
                 document.getElementById('layer2tags_ins').classList.remove('disabledButton');
                 document.getElementById('taginputcontainer').classList.add('disabledButton');
                 mapUniforms.useTag.value = 0;
 
                 f1SpecialFX.mapUniforms.useTag.value = 0;
-
                 f1MetalRoughmapUniforms.useTag.value = 0;
 
                 thepatternelement.classList.add('patternSelected');
@@ -247,6 +248,8 @@ class PatternItems {
 
             }
             else if(currentLayer==2) {
+                isNone=true;
+
                 document.getElementById('layer3decals_ins').classList.remove('disabledButton');
                 mapUniforms.useDecal.value = 0;
                 f1MetalRoughmapUniforms.useDecal.value = 0;
@@ -262,23 +265,27 @@ class PatternItems {
  
 
 
-            setTimeout(function() {
-                liveryData['Layers'][currentLayer].patternId = patternId;// which; // todo, make this the pattern id
-                liveryData['Layers'][currentLayer].filename = thefile;
+            // setTimeout(function() {
+            //     liveryData['Layers'][currentLayer].patternId = patternId;// which; // todo, make this the pattern id
+            //     liveryData['Layers'][currentLayer].filename = thefile;
         
-                f1SpecialFX.mapUniforms.leadin.value = 0.0;
-                if(!f1Gui.isAuto) {
-                   f1SpecialFX.startFX(1000); // sfx lead out
-                }
-                else
-                    f1Gui.isAuto=false;
+            //     f1SpecialFX.mapUniforms.leadin.value = 0.0;
+            //     if(!f1Gui.isAuto) {
+            //        f1SpecialFX.startFX(1000); // sfx lead out
+            //     }
+            //     else
+            //         f1Gui.isAuto=false;
 
                     
-            }, 350); // sfx lead in
+            // }, 350); // sfx lead in
             // f1SpecialFXmapUniforms.leadin.value = 0.0;
         }
+
+// try without the else!
+
         // IS A PATTERN/DECAL/SPONSOR
-        else {
+        // else 
+        {
             // if(currentLayer==1) {
             //     mapUniforms.useTag.value = 1;
             //     f1MetalRoughmapUniforms.useTag.value = 1;
@@ -355,7 +362,7 @@ class PatternItems {
                         mapUniforms.texture1Base.value = tex;
                         f1MetalRoughmapUniforms.texture1Base.value = tex;
                     }
-                    else if(currentLayer==1) {
+                    else if(currentLayer==1 && !isNone) {
                         mapUniforms.useTag.value = 1;
                         f1SpecialFX.mapUniforms.useTag.value = 1;
                         liveryData['Layers'].tagfontstyle = patternsData['Patterns'][which].style;
@@ -369,7 +376,7 @@ class PatternItems {
                         f1Text.fixText();
                         f1Text.composite();
                     }
-                    else if(currentLayer==2) {
+                    else if(currentLayer==2 && !isNone) {
 
                         mapUniforms.useDecal.value = 1;
                         f1MetalRoughmapUniforms.useDecal.value = 1;

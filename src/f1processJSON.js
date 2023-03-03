@@ -16,10 +16,10 @@ class ProcessJSON {
     }
 
     //======================
-    writePatterns() {
-        console.log(">> save patterns json");
-        this.writeJSON('./patterns/patterns.json');
-    }
+    // writePatterns() {
+    //     console.log(">> save patterns json");
+    //     this.writeJSON('./patterns/patterns.json');
+    // }
     //======================
 
     loadPatterns(isHelmet,userID,userName,userEmail,cookie_livery_value) {
@@ -121,19 +121,19 @@ class ProcessJSON {
         xhr.send();        
     }
     //======================
-    writeJSON(filename) {
+    // writeJSON(filename) {
 
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', filename, true);
-          xhr.setRequestHeader('Content-Type', 'application/json');
-          xhr.onload = function() {
-            console.log('JSON file saved');
-          };
-          var strung = JSON.stringify(this.patternsJSONdata, null, 1).replace(/\n /g, "\n");
-        //   var strung = JSON.stringify(this.patternsJSONdata);
-          console.log(strung);
-        //   xhr.send(strung);
-    }
+    //       var xhr = new XMLHttpRequest();
+    //       xhr.open('POST', filename, true);
+    //       xhr.setRequestHeader('Content-Type', 'application/json');
+    //       xhr.onload = function() {
+    //         console.log('JSON file saved');
+    //       };
+    //       var strung = JSON.stringify(this.patternsJSONdata, null, 1).replace(/\n /g, "\n");
+    //     //   var strung = JSON.stringify(this.patternsJSONdata);
+    //       console.log(strung);
+    //     //   xhr.send(strung);
+    // }
 
     //======================
     processStrung(strung) {

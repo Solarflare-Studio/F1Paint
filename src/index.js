@@ -252,8 +252,8 @@ var interacting = false;
 // var layerTexture_2;
 // var fxStartTime = clock.getElapsedTime();
 
-// var f1Aws = new F1Aws();
-// f1Aws.loadfromAWS('languages','languages.json');
+var f1Aws = new F1Aws();
+f1Aws.loadfromAWS('languages','languages.json',0);
 
 
 var patternItems = new PatternItems(!cookie_livery_value == "");

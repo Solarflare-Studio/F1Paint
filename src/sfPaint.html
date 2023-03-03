@@ -95,35 +95,38 @@
                         <div id="loadingindicatorblock">
                             <img id="loadingindicatorimage" src="./assets/inapp/F1_LoadingAnim_Wheel-256.gif" />
                         </div>
-
                     </div>       
                 </div>
                 <div id="welcomeblock" class="splashblock fadedout">
                     <div class="hcentre">
-                        <div>WELCOME</div><br>
-                        <div class="fontNormal">Time to customise your very own F1 Car. Get ready to deck out your very own livery and make unique to your style.</div>
-                        <div class="buttonpanel">
-                            <div id="introokbutton" class="redButton button hidden" onclick="introNextPage(0);">NEXT</div>
-                            <div id="introcarbutton" class="introbutton button" onclick="switchModel(false);introNextPage(0);">Car</div>
-                            <div id="introhelmetbutton" class="introbutton button" onclick="switchModel(true);introNextPage(0);">Helmet</div>
+                        <div id="l_text_1">WELCOME</div><br>
+                        <div class="fontNormal" id="l_text_2">Time to customise your very own F1 Car. Get ready to deck out your very own livery and make unique to your style.</div>
+                        <div id="languagechoices" class="hidden">
+                            <select id='s_languagechoices'>
+                            </select>
+                        </div>
+                        <div id="firstbuttonpanel" class="buttonpanel hidden">
+                            <div id="introokbutton" class="redButton button hidden" onclick="introNextPage(0);"><div id="l_text_3">NEXT</div></div>
+                            <div id="introcarbutton" class="introbutton button" onclick="switchModel(false);introNextPage(0);"><div id="l_text_4">Car</div></div>
+                            <div id="introhelmetbutton" class="introbutton button" onclick="switchModel(true);introNextPage(0);"><div id="l_text_5">Helmet</div></div>
                         </div>
                     </div>
                 </div>
                 <div id="intro2block" class="splashblock hidden">
                     <div class="hcentre fontNormal">
-                        <div>Here's some more intro</div><br>
-                        <div>[TEXT / IMAGES REQUIRED]</div><br>
-                        <div id="waitingmessage">We're just tidying the garage for you.....</div>
+                        <div id="l_text_6">Here's some more intro</div><br>
+                        <div id="l_text_7">[TEXT / IMAGES REQUIRED]</div><br>
+                        <div id="waitingmessage"><div  id="l_text_8">We're just tidying the garage for you.....</div></div>
 
                         <div id="waittilloaded" class="buttonpanel hidden">
-                            <div class="redButton button" onclick="introNextPage(1);">oK</div>
+                            <div class="redButton button" onclick="introNextPage(1);"><div id="l_text_9">OK</div></div>
                         </div>
                     </div>
                 </div>
                 <div id="tut1block" class="splashblock fadedout helpboxbottom">
                     <div id="tut1interior" class="hcentre fontNormal">
-                        <div>[TEXT / IMAGES REQUIRED] Above is the 3D area which shows your car straight from the engineers.</div><br>
-                        <div>You can touch and drag the 3D panel to look around the car.</div><br>
+                        <div id="l_text_10">[TEXT / IMAGES REQUIRED] Above is the 3D area which shows your car straight from the engineers.</div><br>
+                        <div id="l_text_11">You can touch and drag the 3D panel to look around the car.</div><br>
                         <div class="buttonpanel">
                             <div class="redButton button" onclick="introNextPage(2);">Next</div>
                         </div>
@@ -384,7 +387,7 @@
             <div class="rotatemsg">Please rotate your device to Portrait.</div>
         </div>
     </div>
-    <div id="versionid" onclick="onConsole(0)">v0.1.9.1</div>
+    <div id="versionid" onclick="onConsole(0)">v0.1.9.2</div>
         <div id="console" class="hidden">
             <div class="console">
                 <div class="console_button expandbutton" onclick="expandDropdown('toneexpander');">Tone</div>

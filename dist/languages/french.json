@@ -1,0 +1,49 @@
+{
+"dialogues": [  
+  {
+    "name": "l_text_1",
+    "text": "Salut!"
+  },
+  {
+    "name": "l_text_2",
+    "text": "Il est temps de personnaliser votre propre voiture F1. Préparez-vous à décorer votre propre livrée et à la rendre unique à votre style."
+  },
+  {
+    "name": "l_text_3",
+    "text": "SUIVANTE"
+  },
+  {
+    "name": "l_text_4",
+    "text": "CAR"
+  },
+  {
+    "name": "l_text_5",
+    "text": "HELMET"
+  },
+  {
+    "name": "l_text_6",
+    "text": "Voici une autre introduction"
+  },
+  {
+    "name": "l_text_7",
+    "text": "[TEXTE / IMAGES OBLIGATOIRES]"
+  },
+  {
+    "name": "l_text_8",
+    "text": "Nous sommes juste en train de ranger le garage pour vous....."
+  },
+  {
+    "name": "l_text_9",
+    "text": "D'ACCORD"
+  },
+  {
+    "name": "l_text_10",
+    "text": "[TEXTE / IMAGES REQUIS] Ci-dessus se trouve la zone 3D qui montre votre voiture directement des ingénieurs"
+  },
+  {
+    "name": "l_text_11",
+    "text": "Vous pouvez toucher et faire glisser le panneau 3D pour regarder autour de la voiture."
+  }
+]
+}
+
