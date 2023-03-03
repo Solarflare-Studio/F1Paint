@@ -253,6 +253,8 @@ var interacting = false;
 // var fxStartTime = clock.getElapsedTime();
 
 // var f1Aws = new F1Aws();
+// f1Aws.loadfromAWS('languages','languages.json');
+
 
 var patternItems = new PatternItems(!cookie_livery_value == "");
 var processJSON = new ProcessJSON(patternItems);

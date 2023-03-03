@@ -17,15 +17,15 @@ class F1Aws {
         const { S3Client, PutObjectCommand, ListObjectsCommand, DeleteObjectCommand, DeleteObjectsCommand } = require("@aws-sdk/client-s3");
           
           // Set the AWS Region
-        this.REGION = "eu-west-2"; //REGION
+        this.region = "eu-west-2"; //REGION
         this.albumBucketName = "f1-fanzone-paintshop"; //BUCKET_NAME        
         this.IdentityPoolId = "eu-west-2:cbf69f68-9773-42df-90ba-9f93aa42132b";
 
-          // Initialize the Amazon Cognito credentials provider
+          // Initialize the Amazon Cognito credentials provider for writing images
         this.s3 = new S3Client({
-            region: REGION,
+            region: this.region,
             credentials: fromCognitoIdentityPool({
-              client: new CognitoIdentityClient({ region: REGION }),
+              client: new CognitoIdentityClient({ region: this.region }),
               identityPoolId: this.IdentityPoolId, // IDENTITY_POOL_ID
             }),
           });
@@ -33,8 +33,36 @@ class F1Aws {
 
     }
     //======================
-    loadfromAWS(folder,file) {
-        console.log(">> loading aws file :" + folder +"/" + file);
+    haveLoadedLanguageChoice(data) {
+        console.log(">> have loaded language choice json file from aws.");
+
+    }
+    //======================
+
+
+    loadFile(url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'json';
+        xhr.onload = function() {
+          var status = xhr.status;
+          if (status === 200) {
+            callback(null, xhr.response);
+          } else {
+            callback(status, xhr.response);
+          }
+        };
+        xhr.send();
+    }
+
+    //======================
+    loadfromAWS(folder,file,type) {
+
+    }
+    //======================
+    /*
+    loadfromAWS(folder,file,type) {
+        console.log(">> loading aws file type : " + type + " from " + folder +"/" + file);
 
 
         AWS.config.region = this.REGION; // Region
@@ -58,31 +86,24 @@ class F1Aws {
 
           const thefile = bucketUrl + file;
           
-
-          // const thumbimage = document.createElement('img')
-          // thumbimage.classList.add('preview_map')
-          // document.getElementById('testimage').append(thumbimage)
           setTimeout( function() {
-            tryLoadAWS(mapfile)
-          } , 1000)
+            if(type==0) // language root file
+                loadFile(thefile,
+                    function(err, data) {
+                        if (err !== null) {
+                            console.log(">> ERROR loading language choice json");
+                        } else {
+                            haveLoadedLanguageChoice(data); 
+                        }
+                      }
+                    );
+          } , 100)
           
-/*          const custommap = new THREE.TextureLoader().load(mapfile, (tex) => {
-            tex.encoding = THREE.LinearEncoding
-
-            tex.flipY = false
-            tex.premultiplyAlpha = true
-            tex.wrapS = THREE.RepeatWrapping
-            tex.wrapT = THREE.RepeatWrapping
-
-            modelCustomMaterial.map = tex
-            modelCustomMaterial.needsUpdate = true
-            console.log(">> loaded custom map file " + modelCustomMaterial.name)
-          })  
-*/          
 
 
        });
     }
+    */
     //======================
 
 
