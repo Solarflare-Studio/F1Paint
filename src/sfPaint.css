@@ -110,17 +110,21 @@
 	color: #151420;
 }
 
-#progressblock {
+.progressblock {
 
 	color: var(--buttonCol);
 	font-size: 0.7em;
 	
-    bottom: calc(40vh * -1);
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;	
+}
+
+#progressblock {
+    bottom: calc(40vh * -1);
+
 }
 
 .progress-bar {
@@ -145,7 +149,7 @@
 	border-radius: 25px;
 	background-color: green;
 	width: 0;
-	position: absolute;
+	/* position: absolute; */
 	top: 0;
 	left: 0;
 }
@@ -597,7 +601,7 @@
 	padding: 2px;
     width: var(--patternWidth);
     height: var(--patternHeight);
-    margin-bottom: 1.5em;
+    margin-bottom: .90em;
 }
 
 

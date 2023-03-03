@@ -425,6 +425,7 @@ class F1Gui {
             var self=this;
 
             var posy = new THREE.Vector3(0,0,0);
+            
 
             new TWEEN.Tween(posy)
             .to(
@@ -456,7 +457,7 @@ class F1Gui {
 
 
                 // document.getElementById("launchbutton").classList.remove("hidden");
-                // document.getElementById("launchARPage").classList.remove("hidden");
+                document.getElementById("launchARPage").classList.remove("hidden");
                 document.getElementById('backbutton').classList.remove('hidden');
 
             }, 1500);
@@ -782,8 +783,11 @@ class F1Gui {
         rootElement.style.setProperty('--rootFontSize', fontsizepix + 'px');
         rootElement.style.setProperty('--gapHeightBase', gapHeightBase + 'px');
 
-        colorPatternPicker.handleRadius = fontsizepix * 0.4;
-        colorPatternPicker.width = w * 0.5;
+        // colorPatternPicker.handleRadius = fontsizepix * 0.4;
+        // colorPatternPicker.width = w * 0.5;
+        // colorPatternPicker.props.handleRadius = fontsizepix * 0.4;
+        // colorPatternPicker.props.width = w * 0.5;
+        // have moved changing colour picker into f1engine, todo check delete / create if onsize...
 
 
 

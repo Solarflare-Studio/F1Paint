@@ -1,32 +1,22 @@
 // const paintshopversion= "v0.1.8.92";
 
-
-
 import * as THREE from '../node_modules/three/build/three.module.js';
-
 import { TWEEN } from '../node_modules/three/examples/jsm/libs/tween.module.min'
-
 import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js';
-
 import { GLTFLoader } from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js'
 
 // import { SavePass } from '../node_modules/three/examples/jsm/postprocessing/SavePass.js';
 // import { TexturePass } from '../node_modules/three/examples/jsm/postprocessing/TexturePass.js';
-
-
 // import { GlitchPass } from '../node_modules/three/examples/jsm/postprocessing/GlitchPass.js';
 // import { DotScreenPass } from '../node_modules/three/examples/jsm/postprocessing/DotScreenPass.js';
 // import { HalftonePass } from '../node_modules/three/examples/jsm/postprocessing/HalftonePass.js';
 // import { BloomPass } from '../node_modules/three/examples/jsm/postprocessing/BloomPass.js';
-//import { F1BloomPass } from '../node_modules/three/examples/jsm/postprocessing/F1BloomPass.js';
-
+// import { F1BloomPass } from '../node_modules/three/examples/jsm/postprocessing/F1BloomPass.js';
 // import { AfterimagePass } from '../node_modules/three/examples/jsm/postprocessing/AfterimagePass.js';
 // import { SobelOperatorShader  } from '../node_modules/three/examples/jsm/shaders/SobelOperatorShader.js';
+// import {Text} from 'troika-three-text'
 
-
- import {Text} from 'troika-three-text'
-
- 
+import { F1Aws } from './f1Aws.js';
 import {F1Fonts} from './f1Fonts'
 import {PatternItems} from './f1patternItems'
 import {ProcessJSON} from './f1processJSON'
@@ -262,6 +252,7 @@ var interacting = false;
 // var layerTexture_2;
 // var fxStartTime = clock.getElapsedTime();
 
+// var f1Aws = new F1Aws();
 
 var patternItems = new PatternItems(!cookie_livery_value == "");
 var processJSON = new ProcessJSON(patternItems);
@@ -367,145 +358,118 @@ let textpts = new Array(7.29, 61.86,7.29, 58.52,7.29, 55.20,7.29, 51.87,7.29, 48
 //sfs
 //pattern colour picker
 
-// It's all sliders
-const forcedsizeofcolourpicker = window.innerWidth * 0.5;
-const forcedheightofcolourpicker = window.innerHeight * 0.08;
 
-//
-var colorPatternPicker = new iro.ColorPicker("#colourWheelPicker", {
-	// handleSvg: '#colourhandle',
-	width: forcedsizeofcolourpicker,
-	boxHeight: forcedheightofcolourpicker,
-	color: "rgb(255, 0, 0)",
-	borderWidth: 1,
-	borderColor: "#fff",
-	layout: [
-	  {
-		component: iro.ui.Box,
-	  },
-	  {
-		component: iro.ui.Slider,
-		options: {
-		  id: 'hue-slider',
-		  sliderType: 'hue'
-		}
-	  }
-	]
-  });
-
-//
-
-
-
-
-
-
-/*
-const colorPatternPicker = new iro.ColorPicker("#colourWheelPicker", {
-	handleRadius: '5',
-	width: forcedsizeofcolourpicker,
-	color: "rgb(50, 0, 80)", // to do, pick from livery or first default
-	borderWidth: 1,
-	borderColor: "#fff",
-	layout: [
-	  {
-		component: iro.ui.Slider,
-		options: {
-			height: 10,
-		  sliderType: 'hue'
-		}
-	  },
-	  {
-		component: iro.ui.Slider,
-		options: {
-			height: 10,
-		  sliderType: 'saturation'
-		}
-	  },
-	  {
-		component: iro.ui.Slider,
-		options: {
-			height: 10,
-		  sliderType: 'value'
-		}
-	  },
-	]
-});
-*/
-var colourpickersamplehidetimer = 0;
-colorPatternPicker.on('input:change', function(color) {
-
-	var tmpcol = new THREE.Color(color.hexString);
-	var tmpv4 = new THREE.Vector4(tmpcol.r,tmpcol.g,tmpcol.b,1.0);
-
-	f1Gui.setBackgroundColourByID('coloursample',color.hexString);
-	// position sample
-// 	const sampleshower = document.getElementById('sampleshower');
-// //	console.log()
-// 	// display colour picker sample
-// 	document.getElementById('coloursample').classList.remove('hidden');
-// 	clearTimeout(colourpickersamplehidetimer);
-// 	colourpickersamplehidetimer = setTimeout( function() {
-// 		document.getElementById('coloursample').classList.add('hidden');
-// 	}, 500);
-
-	var currentLayer = f1Gui.currentPage-1;
-	if(f1Gui.currentPage>1) currentLayer--;
-
-	if(selectedChan==0) {
-		f1Gui.setBackgroundColourByID('basepaintbutton',color.hexString);
-	}
-	else if(selectedChan==1) {
-		f1Gui.setBackgroundColourByID('primarypaintbutton',color.hexString);
-	}
-	else if(selectedChan==2) {
-		f1Gui.setBackgroundColourByID('secondarypaintbutton',color.hexString);
-	}
-	else if(selectedChan==3) { // tagstyle
-		f1Gui.setBackgroundColourByID('tagstylepaintbutton',color.hexString);
-	}
-	else if(selectedChan==4) { // tag
-		f1Gui.setBackgroundColourByID('tagpaintbutton',color.hexString);
-	}
-	else if(selectedChan==5) { // decal
-		f1Gui.setBackgroundColourByID('decalpaintbutton',color.hexString);
-	}
-
-
-	if(selectedChan<3) { // pattern colour
-		processJSON.liveryData['Layers'][currentLayer].Channels[selectedChan].tint = color.hexString;
-	}
-	else if(selectedChan<5) { // tag colour
-		processJSON.liveryData['Layers'][currentLayer].Channels[selectedChan-3].tint = color.hexString;
-	}
-	else if(selectedChan==5) { // decal colour
-		processJSON.liveryData['Layers'][currentLayer].Channels[0].tint = color.hexString;
-	}
-
-	switch(selectedChan) {
-		case 0:
-			f1Layers.mapUniforms.texture1TintChannel1.value = tmpv4;
-			break;
-		case 1:
-			f1Layers.mapUniforms.texture1TintChannel2.value = tmpv4;
-			break;
-		case 2:
-			f1Layers.mapUniforms.texture1TintChannel3.value = tmpv4;
-			break;
-		case 3: // tag style
-			f1Layers.mapUniforms.tagStyleTint.value = tmpv4;
-			break;
-		case 4: // tag
-			f1Layers.mapUniforms.tagTint.value = tmpv4;
-			break;
-		case 5: // decal
-			f1Layers.mapUniforms.decalTint.value = tmpv4;
-			break;
-		default:
-			alert("error in index of colour buttons in colorPatternPicker");
-	  }
-})	
 //==================================================
+var colorPatternPicker = 0;
+function createColourpicker() {
+	// It's all sliders
+	const forcedsizeofcolourpicker = window.innerWidth * 0.5;
+	const forcedheightofcolourpicker = window.innerHeight * 0.08;
+
+	if(colorPatternPicker!=0) { // remove old
+		document.getElementById('colourWheelPicker').children[0].remove();
+	}
+
+	//
+	colorPatternPicker = new iro.ColorPicker("#colourWheelPicker", {
+		// handleSvg: '#colourhandle',
+		width: forcedsizeofcolourpicker,
+		boxHeight: forcedheightofcolourpicker,
+		color: "rgb(255, 0, 0)",
+		borderWidth: 1,
+		borderColor: "#fff",
+		layout: [
+		{
+			component: iro.ui.Box,
+		},
+		{
+			component: iro.ui.Slider,
+			options: {
+			id: 'hue-slider',
+			sliderType: 'hue'
+			}
+		}
+		]
+	});
+
+	//
+
+
+	var colourpickersamplehidetimer = 0;
+	colorPatternPicker.on('input:change', function(color) {
+
+		var tmpcol = new THREE.Color(color.hexString);
+		var tmpv4 = new THREE.Vector4(tmpcol.r,tmpcol.g,tmpcol.b,1.0);
+
+		f1Gui.setBackgroundColourByID('coloursample',color.hexString);
+		// position sample
+	// 	const sampleshower = document.getElementById('sampleshower');
+	// //	console.log()
+	// 	// display colour picker sample
+	// 	document.getElementById('coloursample').classList.remove('hidden');
+	// 	clearTimeout(colourpickersamplehidetimer);
+	// 	colourpickersamplehidetimer = setTimeout( function() {
+	// 		document.getElementById('coloursample').classList.add('hidden');
+	// 	}, 500);
+
+		var currentLayer = f1Gui.currentPage-1;
+		if(f1Gui.currentPage>1) currentLayer--;
+
+		if(selectedChan==0) {
+			f1Gui.setBackgroundColourByID('basepaintbutton',color.hexString);
+		}
+		else if(selectedChan==1) {
+			f1Gui.setBackgroundColourByID('primarypaintbutton',color.hexString);
+		}
+		else if(selectedChan==2) {
+			f1Gui.setBackgroundColourByID('secondarypaintbutton',color.hexString);
+		}
+		else if(selectedChan==3) { // tagstyle
+			f1Gui.setBackgroundColourByID('tagstylepaintbutton',color.hexString);
+		}
+		else if(selectedChan==4) { // tag
+			f1Gui.setBackgroundColourByID('tagpaintbutton',color.hexString);
+		}
+		else if(selectedChan==5) { // decal
+			f1Gui.setBackgroundColourByID('decalpaintbutton',color.hexString);
+		}
+
+
+		if(selectedChan<3) { // pattern colour
+			processJSON.liveryData['Layers'][currentLayer].Channels[selectedChan].tint = color.hexString;
+		}
+		else if(selectedChan<5) { // tag colour
+			processJSON.liveryData['Layers'][currentLayer].Channels[selectedChan-3].tint = color.hexString;
+		}
+		else if(selectedChan==5) { // decal colour
+			processJSON.liveryData['Layers'][currentLayer].Channels[0].tint = color.hexString;
+		}
+
+		switch(selectedChan) {
+			case 0:
+				f1Layers.mapUniforms.texture1TintChannel1.value = tmpv4;
+				break;
+			case 1:
+				f1Layers.mapUniforms.texture1TintChannel2.value = tmpv4;
+				break;
+			case 2:
+				f1Layers.mapUniforms.texture1TintChannel3.value = tmpv4;
+				break;
+			case 3: // tag style
+				f1Layers.mapUniforms.tagStyleTint.value = tmpv4;
+				break;
+			case 4: // tag
+				f1Layers.mapUniforms.tagTint.value = tmpv4;
+				break;
+			case 5: // decal
+				f1Layers.mapUniforms.decalTint.value = tmpv4;
+				break;
+			default:
+				alert("error in index of colour buttons in colorPatternPicker");
+		}
+	})	
+}
+createColourpicker();
 
 //==================================================
 function onloaded()
@@ -515,7 +479,6 @@ function onloaded()
 		document.getElementById('versionid').classList.add('console_button');	
 	}
 	document.getElementById('progressblock').classList.remove('hidden');
-	
 
 	// inline ar
 	// createObserver();  // handles intersection observer behavior
@@ -1551,7 +1514,7 @@ function setSize(w,h) {
 
 	// set out gui
 	f1Gui.setSize(w,h,renderer,camera,colorPatternPicker);
-
+	createColourpicker();
 
 }
 

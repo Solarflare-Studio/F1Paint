@@ -20,12 +20,12 @@ class F1Materials {
     }
     init() {
 
-        this.ribbonMaterialold = new THREE.MeshBasicMaterial( {
-            specular: 0xffffff, shininess: 250,
-            side: THREE.DoubleSide,
-            transparent: true
-        } );
-
+        // this.ribbonMaterialold = new THREE.MeshBasicMaterial( {
+        //     specular: 0xffffff, shininess: 250,
+        //     side: THREE.DoubleSide,
+        //     transparent: true
+        // } );
+/*
         this.ribbonMateriala = new THREE.ShaderMaterial( {
               name: 'ribbonMaterial',
     
@@ -93,7 +93,7 @@ class F1Materials {
               side: THREE.DoubleSide,
               defines: {}
             } );
-
+*/
 
         /*
        this.envMap = 0;

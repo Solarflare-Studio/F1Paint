@@ -133,11 +133,11 @@
     ]
   },  
   {
-    "name": "TEST NEON",
+    "name": "BodyTest-NeonWass.jpg",
     "id": 1004,
     "layer": 0,
     "thumbnail": "car/test1thumb.jpg",
-    "image": "car/BodyTest-Neon.jpg",
+    "image": "car/BodyTest-NeonWass.jpg",
     "style": 0,
     "Channels": [
      {
