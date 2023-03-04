@@ -34,6 +34,9 @@ class F1Ribbons {
 
    
     constructor(f1Materials) {
+        this.carChangeDuration = 3000;
+        this.speedModDebug = 1.0;
+        this.dodebug = false;
 
         this.prevupdate = new Date().getTime();
         this.timer1 = this.prevupdate;
@@ -54,27 +57,40 @@ class F1Ribbons {
         this.root.visible=this.enabled;
         this.enableGlow = true;
         this.ribbonGeometry = new THREE.PlaneGeometry(200, 15, 64,2);
+        this.ribbonGeometry2 = new THREE.PlaneGeometry(300, 35, 64,4);
+        this.carChangeTween = 0;
+        this.carChangeDelta = 0.0;
+
         this.setupRibbonMaterials(f1Materials);
 
         // this.ribbonGeometry = new THREE.BoxGeometry(200, 15, 2, 64,2,2);
 
         document.getElementById('c_bendmodcon').onchange = function () {
+
+            // _self.carChangeAnimate();
+
             var modcon = this.value;
             // if(modcon == 0) modcon = ModConstant.LEFT;
             // else if(modcon == 1) modcon = ModConstant.RIGHT;
 //            else if(modcon == 2) modcon = ModConstant.C;
             const bendid =  document.getElementById('c_bend').value - 1;
 
-            _self.modifier.stack[bendid].constraint = modcon;
+            
+            _self.modifierChange.stack[bendid].constraint = modcon;
+            // _self.modifier.stack[bendid].constraint = modcon;
 
         }
 
         document.getElementById('c_bend').onchange = function () {
             const bendid = this.value - 1;
-            const force = _self.modifier.stack[bendid].force;
-            const pos =  _self.modifier.stack[bendid].offset;
-            const angle =  _self.modifier.stack[bendid].angle;
-            const modcon = _self.modifier.stack[bendid].constraint;
+            // const force = _self.modifier.stack[bendid].force;
+            // const pos =  _self.modifier.stack[bendid].offset;
+            // const angle =  _self.modifier.stack[bendid].angle;
+            // const modcon = _self.modifier.stack[bendid].constraint;
+            const force = _self.modifierChange.stack[bendid].force;
+            const pos =  _self.modifierChange.stack[bendid].offset;
+            const angle =  _self.modifierChange.stack[bendid].angle;
+            const modcon = _self.modifierChange.stack[bendid].constraint;
 
 
             document.getElementById('c_bendFSliderTxt').innerHTML = 'force: ' + force;
@@ -86,11 +102,14 @@ class F1Ribbons {
 
             document.getElementById('c_bendmodcon').value = modcon;
             
-
-            _self.modifier.stack[bendid].force = force;
-            _self.modifier.stack[bendid].offset = pos;
-            _self.modifier.stack[bendid].angle = angle;
-            _self.modifier.stack[bendid].constraint = modcon;
+            _self.modifierChange.stack[bendid].force = force;
+            _self.modifierChange.stack[bendid].offset = pos;
+            _self.modifierChange.stack[bendid].angle = angle;
+            _self.modifierChange.stack[bendid].constraint = modcon;
+            // _self.modifier.stack[bendid].force = force;
+            // _self.modifier.stack[bendid].offset = pos;
+            // _self.modifier.stack[bendid].angle = angle;
+            // _self.modifier.stack[bendid].constraint = modcon;
         }
 
         document.getElementById('c_bendFSlider').oninput = function () {
@@ -98,24 +117,94 @@ class F1Ribbons {
             const bendid = document.getElementById('c_bend').value - 1;
 
             document.getElementById('c_bendFSliderTxt').innerHTML = 'force: ' + amount;
-            _self.modifier.stack[bendid].force = amount;
+            // _self.modifier.stack[bendid].force = amount;
+            _self.modifierChange.stack[bendid].force = amount;
         }
         document.getElementById('c_bendPSlider').oninput = function () {
             const amount = this.value/100.0;
             const bendid = document.getElementById('c_bend').value - 1;
             document.getElementById('c_bendPSliderTxt').innerHTML = 'offset: ' + amount;
-            _self.modifier.stack[bendid].offset = amount;
+            // _self.modifier.stack[bendid].offset = amount;
+            _self.modifierChange.stack[bendid].offset = amount;
         }
         document.getElementById('c_bendASlider').oninput = function () {
             const amount = this.value * (Math.PI/180.0);
             const bendid = document.getElementById('c_bend').value - 1;
             document.getElementById('c_bendASliderTxt').innerHTML = 'angle: ' + amount;
-            _self.modifier.stack[bendid].angle = amount;
+            // _self.modifier.stack[bendid].angle = amount;
+            _self.modifierChange.stack[bendid].angle = amount;
         }
 
     }
     // ==============================================
     setupRibbonMaterials(f1Materials) {
+
+        /*
+        // == car change one
+        this.uniformsCarChange = {
+            texture1: { value: 0 },  // base pattern
+            fTime: { value: 0.0},
+            faderTime: { value: 0.0},
+          };
+  
+        this.ribbonMaterialCarChange = new THREE.ShaderMaterial({
+            name: 'ribbonMaterialCarChange',
+
+            uniforms: this.uniformsCarChange,
+            vertexShader: `
+            varying vec2 vUv;
+
+            void main() {
+                vUv = uv;
+                vec3 pos = position;
+
+                vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+                gl_Position = projectionMatrix * mvPosition;
+            }
+            `,
+            fragmentShader: `
+            uniform sampler2D texture1;
+
+            varying vec2 vUv;
+            uniform float fTime;
+//==================================================================          
+            void main() {
+
+                vec2 uv = vUv.yx;
+                // uv.y=1.0-uv.y; // start from the correct start point 
+
+
+                vec4 colour = texture2D(texture1, uv - vec2(0,fTime*2.0));
+
+                vec4 outcolour = colour;
+                float alf = outcolour.x;
+
+                outcolour.x = uv.y;
+                outcolour.y = fTime;
+
+                //                if((1.0-uv.y) < fTime*4.0) outcolour.xyz = vec3(0,0,0);
+                // if(uv.y < fTime*4.0) outcolour.xyz = vec3(0,0,0);
+                if(uv.y > fTime*3.0) outcolour.xyz = vec3(0,0,0);
+
+                gl_FragColor = vec4(outcolour.xyz,alf);
+            }
+            `,
+            side: THREE.DoubleSide,
+            transparent: true,
+            blending: THREE.CustomBlending,
+            blendEquation: THREE.AddEquation,
+            blendSrc: THREE.SrcAlphaFactor,
+            blendDst: THREE.OneMinusSrcAlphaFactor,
+            alphaTest: 0.1,
+            depthWrite: false, // disable writing to depth buffer
+            depthTest: true, // disable depth testing            
+        });        
+        */
+
+
+
+
+        //==================================
         this.uniforms = {
             texture1: { value: 0 },  // base pattern
             fTime: { value: 0.0},
@@ -287,7 +376,9 @@ class F1Ribbons {
           depthTest: true, // disable depth testing            
         });
         if(f1Materials.keepRibbon!=0) {
-           this.uniforms.texture1.value = f1Materials.keepRibbon;
+            this.uniforms.texture1.value = f1Materials.keepRibbon;
+            // this.uniformsCarChange.texture1.value = f1Materials.keepRibbon;
+            
         }
 
 
@@ -311,72 +402,78 @@ class F1Ribbons {
 
     }
     // ==============================================
-    createTwist(twistparams) { // 0=twistcount, 1=vec3 dir 2=tweentype, 3=target, 4=duration, 5=yoyo
+    // this.createTwist([1.3, new Vector3(1,0,0), TWEEN.Easing.Linear.None, 0.0, 20000*this.speedModDebug, 0]);// 1]);
+
+    createTwist(twistparams,themodifier) { // 0=twistcount, 1=vec3 dir 2=tweentype, 3=target, 4=duration, 5=yoyo
         const twist = new Twist(twistparams[0]);
         twist.vector = twistparams[1];
-        this.modifier.addModifier(twist);
-        if(twistparams[5]!=0) {
-            new TWEEN.Tween(twist)
-            .to({
-                    angle: twistparams[3],
-                },
-                twistparams[4]
-            )
+        themodifier.addModifier(twist);
 
-            .repeat(Infinity)
-            .yoyo(twistparams[5]==1?true : false)
-            .easing(twistparams[2])
-            .onUpdate(function (object) {
-                //obj.position.set( object.x,object.y,object.z);
-            })
-            .onComplete(function () {
-                // Call nextPosition only after the animation has completed
-            })        
-            .start()
+        // if(!this.dodebug) {
 
-        }
+            if(twistparams[5]!=0) {
+                new TWEEN.Tween(twist)
+                .to({
+                        angle: twistparams[3],
+                    },
+                    twistparams[4]
+                )
 
+                .repeat(Infinity)
+                .yoyo(twistparams[5]==1?true : false)
+                .easing(twistparams[2])
+                .onUpdate(function (object) {
+                    //obj.position.set( object.x,object.y,object.z);
+                })
+                .onComplete(function () {
+                    // Call nextPosition only after the animation has completed
+                })        
+                .start()
+
+            }
+        // }
     }
     // ==============================================
 
-    createBend(b,bendparam) {
+    createBend(b,bendparam,themodifier) {
         const speed = 1.0;
 
         const bend = new Bend(bendparam.force, bendparam.offset, bendparam.angle);
         //bend.constraint = modCons;
-        this.modifier.addModifier(bend);
+        themodifier.addModifier(bend);
+        // this.modifier.addModifier(bend);
 
-        if(bendparam.yoyo!=0) {
-            new TWEEN.Tween(bend)
-            .to({
-                    force: bendparam.tforce,
-                    offset: bendparam.toffset,
-                    angle: bendparam.tangle
+        if(!this.dodebug) {
+            if(bendparam.yoyo!=0) {
+                new TWEEN.Tween(bend)
+                .to({
+                        force: bendparam.tforce,
+                        offset: bendparam.toffset,
+                        angle: bendparam.tangle
 
-                },
-                bendparam.duration*speed
-            )
+                    },
+                    bendparam.duration*speed
+                )
 
-            .repeat(Infinity)
-            .yoyo(bendparam.yoyo==1?true : false)
-            .easing(bendparam.tweentype)
-            .onUpdate(function (object) {
-                //obj.position.set( object.x,object.y,object.z);
-            })
-            .onComplete(function () {
-                // Call nextPosition only after the animation has completed
-            })        
-            .start()
+                .repeat(Infinity)
+                .yoyo(bendparam.yoyo==1?true : false)
+                .easing(bendparam.tweentype)
+                .onUpdate(function (object) {
+                    //obj.position.set( object.x,object.y,object.z);
+                })
+                .onComplete(function () {
+                    // Call nextPosition only after the animation has completed
+                })        
+                .start()
+            }
         }
-
-
     }
     // ==============================================
     createBentMeshParams(bendarray) {
 
 //        var modcon = ModConstant.LEFT;
         for(var b=0;b<bendarray.length;b++) {
-            this.createBend(b,bendarray[b]);
+            this.createBend(b,bendarray[b],this.modifier);
             // this.createBend(b,bendarray[b],bendaniarray[b],modcon);
             // if(modcon==ModConstant.LEFT)
             //     modcon = ModConstant.RIGHT;
@@ -395,9 +492,12 @@ class F1Ribbons {
     }
     // ==============================================
     changeModifier(bendid,f,p,a) {
-        this.modifier.stack[bendid].force = f;
-        this.modifier.stack[bendid].force = p;
-        this.modifier.stack[bendid].angle = a;
+        // this.modifier.stack[bendid].force = f;
+        // this.modifier.stack[bendid].offset = p;
+        // this.modifier.stack[bendid].angle = a;
+        this.modifierChange.stack[bendid].force = f;
+        this.modifierChange.stack[bendid].offset = p;
+        this.modifierChange.stack[bendid].angle = a;
         
     }
     // ==============================================
@@ -422,12 +522,14 @@ class F1Ribbons {
         
 
 
-
-        bends.push(new ABend(2.0, 0.25, 0.0,   2.0, 0.75, 0.0,    30000, TWEEN.Easing.Cubic.InOut,1)); // static
-        bends.push(new ABend(-2.0, 0.5, 0.0,   -2.0, 0.5, 2.0 * Math.PI,    30000, TWEEN.Easing.Linear.None,2));
+        bends.push(new ABend(2.0, 0.25, 0.0,   2.0, 0.75, 0.0,    30000*this.speedModDebug, TWEEN.Easing.Cubic.InOut,1)); // static
+        bends.push(new ABend(-2.0, 0.5, 0.0,   -2.0, 0.5, 2.0 * Math.PI,    30000*this.speedModDebug, TWEEN.Easing.Linear.None,2));
+        // bends.push(new ABend(2.0, 0, 0.0,   2.0, 1, 0.0,    30000*this.speedModDebug, TWEEN.Easing.Cubic.InOut,1)); // static
+        // bends.push(new ABend(-2.0, 0, 0.0,   -2.0, 1, 0.0 * Math.PI,    30000*this.speedModDebug, TWEEN.Easing.Linear.None,1));
 
         this.createBentMeshParams(bends);
-        this.createTwist([1.3, new Vector3(1,0,0), TWEEN.Easing.Linear.None, 0.0, 20000, 0]);// 1]);
+        this.createTwist([1.3, new Vector3(1,0,0), TWEEN.Easing.Linear.None, 0.0, 20000*this.speedModDebug, 0],this.modifier);// 1]);
+        // this.createTwist([1.5, new Vector3(1,0,0), TWEEN.Easing.Linear.None, 0, 20000*this.speedModDebug, 0]);// 1]);
 
         // 0=twistcount, 1=vec3 dir 2=tweentype, 3=target, 4=duration, 5=yoyo
 
@@ -435,15 +537,95 @@ class F1Ribbons {
 
     }
     // ==============================================
+    /*
+    carChangeAnimate() {
+        var _self=this;
+        _self.modifierChange.stack[2].offset = 0.3;
+        _self.ribbonMeshChange.visible=true;
+        this.uniformsCarChange.fTime.value = 0.0;
+        
+        this.carChangeDelta = 0.0;
+
+        if(this.carChangeTween) {
+            TWEEN.remove(this.carChangeTween);
+        }
+        // return;
+        this.carChangeTween = new TWEEN.Tween(this.modifierChange.stack[2])
+            .to({
+                    offset: 0.8,
+                },
+                _self.carChangeDuration
+            )
+
+            // .repeat(Infinity)
+            // .yoyo(bendparam.yoyo==1?true : false)
+            .easing(TWEEN.Easing.Cubic.InOut)
+            .onUpdate(function (object) {
+                //obj.position.set( object.x,object.y,object.z);
+            })
+            .onComplete(function () {
+                // Call nextPosition only after the animation has completed
+                // hide and set back to position for next one
+                _self.ribbonMeshChange.visible=false;
+                _self.uniformsCarChange.fTime.value = -1.0;
+                this.carChangeDelta=0.0;
+                console.log(">> done animated car change ribbon")
+            })        
+            .start()
+    }
+    
+    // ==============================================
+    addCarChangeRibbon() {
+        // ribbon for when change occurs
+        // this.ribbonMeshChange = new THREE.Mesh( this.ribbonGeometry2,new THREE.MeshStandardMaterial( {
+        //     color: 0xffffff,
+        //     transparent: true,
+        //     opacity: 1,
+        //     side: THREE.DoubleSide,
+        //     name: 'ribbonMaterial'
+        // } ) );
+        this.ribbonMeshChange = new THREE.Mesh( this.ribbonGeometry2,this.ribbonMaterialCarChange );        
+        this.ribbonMeshChange.layers.set(3); // 1
+        this.modifierChange = new ModifierStack(this.ribbonMeshChange);
+        this.ribbonMeshChange.position.set(0,15,-20 );
+        this.ribbonMeshChange.rotateY((Math.PI / 180)*90);
+        this.ribbonMeshChange.rotateX((Math.PI / 180)*90);
+
+        // this.createBentMesh();
+        this.createBend(0,new ABend(2.0, 0.5, 0*(Math.PI/180.0),   2.0, 0.5, 2.0 * Math.PI,    30000*this.speedModDebug, TWEEN.Easing.Linear.None,0),this.modifierChange);
+        this.createBend(1,new ABend(-0.95, 0.5, 0*(Math.PI/180.0),   1.2, 0.5, 1.6 * Math.PI,    30000*this.speedModDebug, TWEEN.Easing.Linear.None,0),this.modifierChange);
+        this.createBend(2,new ABend( 2, 0.3, 0* (Math.PI/180.0),   2, 0.8, 0 * Math.PI,    30000*this.speedModDebug, TWEEN.Easing.Linear.None,0),this.modifierChange);
+        this.createTwist([-1.5, new Vector3(1,1,1), TWEEN.Easing.Linear.None, 1.5, 20000*this.speedModDebug, 1],this.modifierChange);// 1]);
+
+        this.modifierChange.stack[0].constraint = -1;
+        this.modifierChange.stack[1].constraint = 1;
+        this.modifierChange.stack[2].constraint = 1;
+
+
+        this.root.add(this.ribbonMeshChange);
+        //
+    }
+    */
+    // ==============================================
     getSceneObjects(f1Materials) {
 
+        // addCarChangeRibbon();
+        
         this.ribbonMesh = new THREE.Mesh( this.ribbonGeometry, this.ribbonMaterial );
+        // this.ribbonMesh = new THREE.Mesh( this.ribbonGeometry, new THREE.MeshStandardMaterial( {
+        //     color: 0xffffff,
+        //     transparent: true,
+        //     opacity: 1,
+        //     side: THREE.DoubleSide,
+        //     name: 'ribbonMaterial'
+        // } ) );
 
         this.ribbonMesh.layers.set(3); // 1
         this.modifier = new ModifierStack(this.ribbonMesh);
-        this.ribbonMesh.position.set(0,30,0 );
+        this.ribbonMesh.position.set(5,20,-105 );
 
         this.createBentMesh();
+        this.root.add(this.ribbonMesh);
 
      
         
@@ -463,47 +645,47 @@ class F1Ribbons {
 
         //
 
-        this.root.add(this.ribbonMesh);
         // this.root.add(this.boxroot);
         // this.nextPosition();
 
         // ok, another ribbon
         this.ribbonMesh2 = this.ribbonMesh.clone();
-        this.ribbonMesh2.position.set(-20,25,-80 );
+        this.ribbonMesh2.position.set(-20,25,-100 );
         this.ribbonMesh2.scale.set(2,3,1.5);
         this.ribbonMesh2.rotateZ((Math.PI / 180)*180);
 //        this.ribbonMesh2.rotateZ((Math.PI / 180)*-45);
 
         // also try moving them far and near
-        new TWEEN.Tween(this.ribbonMesh2.position)
-        .to({
-                x: -20,
-                y: -25,
-                z: -120
-            },
-            32000
-        )
-        .repeat(Infinity)
-        .yoyo(true)
-        .easing(TWEEN.Easing.Back.InOut)
-        .start()
-        new TWEEN.Tween(this.ribbonMesh.position)
-        .to({
-                x: 0,
-                y: 30,
-                z: -80
+        if(!this.dodebug) {
+            // new TWEEN.Tween(this.ribbonMesh2.position)
+            // .to({
+            //         x: -20,
+            //         y: -25,
+            //         z: -120
+            //     },
+            //     32000*this.speedModDebug
+            // )
+            // .repeat(Infinity)
+            // .yoyo(true)
+            // .easing(TWEEN.Easing.Back.InOut)
+            // .start()
+            // new TWEEN.Tween(this.ribbonMesh.position)
+            // .to({
+            //         x: 0,
+            //         y: 30,
+            //         z: -80
 
-            },
-            30000
-        )
-        .repeat(Infinity)
-        .yoyo(true)
-        .easing(TWEEN.Easing.Back.InOut)
-        .start()        
+            //     },
+            //     30000*this.speedModDebug
+            // )
+            // .repeat(Infinity)
+            // .yoyo(true)
+            // .easing(TWEEN.Easing.Back.InOut)
+            // .start()        
+        }
 
 
-
-        this.root.add(this.ribbonMesh2);
+        this.root.add(this.ribbonMesh2); // all good with this one
 
 
         // const planeCrop = new THREE.PlaneGeometry(300,300);
@@ -674,12 +856,21 @@ class F1Ribbons {
         // const sined = (Math.sin( modded * (3.14159265 * 2.0) ) + 1.0)*0.5;
         // this.uniforms.faderTime.value = (sined*0.5)+0.5;
 
+        // if( this.uniformsCarChange.fTime.value >= 0.0) {
+        //     this.carChangeDelta += elapsed;
+        //     if(this.carChangeDelta>=this.carChangeDuration) this.carChangeDelta = this.carChangeDuration;
+        //     // console.log(this.carChangeDelta / this.carChangeDuration);
+        //     this.uniformsCarChange.fTime.value = this.carChangeDelta / this.carChangeDuration;
+        //     // console.log(this.uniformsCarChange.fTime.value + " , " + (this.carChangeDelta / this.carChangeDuration));
+
+        // }
+            
 
         
         // let a = (currenttime*0.0005) % (2 * Math.PI);
         // const glow = this.mathPulse(a);
 
-        const glow = this.easedSineWave(modded*0.25);
+        const glow = this.easedSineWave(modded*0.45);
         // console.log(glow);
 
         this.uniforms.faderTime.value = glow;
@@ -701,6 +892,9 @@ class F1Ribbons {
         
         if(this.modifier) {
              this.modifier && this.modifier.apply();
+        }
+        if(this.modifierChange) {
+            this.modifierChange && this.modifierChange.apply();
         }
     }
 

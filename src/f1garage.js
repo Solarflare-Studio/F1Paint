@@ -18,7 +18,7 @@ class F1Garage {
 
         this.garageRoot = new THREE.Object3D();
         this.garageMaterial = f1materials.newGarageMat();
-        this.garageMaterial.color = new THREE.Color( 0x121212)
+        this.garageMaterial.color = new THREE.Color( 0x323232)
         // this.garageMaterial.color = new THREE.Color( 0x181818)
 
         this.backgroundImage = 0;

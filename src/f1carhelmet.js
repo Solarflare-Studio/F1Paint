@@ -75,8 +75,8 @@ class F1CarHelmet {
                 // metalness: 1.0,
                 // roughness: 1.0,
                 // color: new THREE.Color(0xffffff),
-                metalness: 0.8,
-                roughness: 0.8,
+                metalness: 1,
+                roughness: 1,
                 color: new THREE.Color(0xffffff),
                 emissiveIntensity: 1,
                 aoMapIntensity: 1.0,
@@ -194,9 +194,12 @@ class F1CarHelmet {
             const filetypelist = new Array();
             
             // filelist.push('./assets/garage/whitefloor.jpg'); // garage floor
-            filelist.push('./assets/garage/concretetilesSquare.jpg' ); // floor
+            
+            // filelist.push('./assets/garage/concretetilesSquare.jpg' ); // floor
+            filelist.push('./assets/garage/Background_Square.jpg' ); // floor
             filetypelist.push( 7 );
-            filelist.push('./assets/garage/concretetilesSquare.jpg' ); // floor roughmap
+            // filelist.push('./assets/garage/concretetilesSquare.jpg' ); // floor roughmap
+            filelist.push('./assets/garage/Background_Square_rm.jpg' ); // floor roughmetal
             filetypelist.push( 8 );
             // filelist.push('./assets/garage/walls.jpg' ); // garage walls
             // filetypelist.push( 9 );

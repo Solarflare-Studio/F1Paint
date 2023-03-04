@@ -17,6 +17,7 @@ class F1Aws {
           } = require("@aws-sdk/credential-provider-cognito-identity");
         const { S3Client,GetObjectCommand, PutObjectCommand, ListObjectsCommand, DeleteObjectCommand, DeleteObjectsCommand } = require("@aws-sdk/client-s3");
         this.getObjectCommand = GetObjectCommand;
+        this.ListObjectsCommand = ListObjectsCommand;
           // Set the AWS Region
         this.region = "eu-west-2"; //REGION
         this.bucketName = "f1-fanzone-paintshop"; //BUCKET_NAME        
@@ -102,7 +103,31 @@ class F1Aws {
     //     };
     //     xhr.send();
     // }
+    //======================
+    checkFilesAWS(folder,file) {
+        console.log(">> checking aws file exists : " + folder +"/" + file);
+        const filepathname = folder + "/" + file;
+        var _self = this;
+        const main = async () => {
 
+            try {
+                const response = await this.s3.send(
+                  new this.ListObjectsCommand({
+                    Bucket: this.bucketName,
+                    Prefix: filepathname,
+                    MaxKeys: 1,
+                  })
+                );
+                return response.Contents.length > 0;
+              } catch (error) {
+                console.log(`Error checking if file exists: ${error}`);
+                return false;
+              }
+
+
+        };
+        return main();
+    }
     //======================
     loadfromAWS(folder,file,type) {
         console.log(">> loading aws file type : " + type + " from " + folder +"/" + file);

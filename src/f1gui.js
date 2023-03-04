@@ -28,7 +28,7 @@ class F1Gui {
     }
 
     updateProgress(percent,msg) {
-        const maxprogress = 90;
+        const maxprogress = 85;
         const progress = document.getElementById("progress");
         this.currentProgress = this.currentProgress + percent;
         progress.style.width = ((this.currentProgress / maxprogress)*100) + "%";
@@ -418,52 +418,34 @@ class F1Gui {
 
             document.getElementById("progressbarPage").classList.remove("hidden");
 
-            this.currentProgress = 0;
+            // this.currentProgress = 0;
 
 //            this.updateProgress2(5);
 
-            var self=this;
-
-            var posy = new THREE.Vector3(0,0,0);
-            
-
-            new TWEEN.Tween(posy)
-            .to(
-                {
-                    x: 100,
-                    y: 0,
-                    z: 0,
-                },
-                1500
-            )
-            .onUpdate(function(d) {
-                self.updateProgress2(d.x);
-
-            })
-            .start()
+  
 
 
 
 
-            setTimeout(function() {
-                document.getElementById("progressbarPage").classList.add("hidden");
-
-
-                // document.getElementById("ARpage").classList.remove("hidden");
-                document.getElementById('nextbutton').classList.add('hidden');
-                document.getElementById('launchbutton').classList.remove('hidden');
-
-
-
-
-                // document.getElementById("launchbutton").classList.remove("hidden");
-                document.getElementById("launchARPage").classList.remove("hidden");
-                document.getElementById('backbutton').classList.remove('hidden');
-
-            }, 1500);
-
+    
 
         }
+        else if(_page==7) { // actual launch ar page
+            document.getElementById("progressbarPage").classList.add("hidden");
+
+
+            // document.getElementById("ARpage").classList.remove("hidden");
+            document.getElementById('nextbutton').classList.add('hidden');
+            document.getElementById('launchbutton').classList.remove('hidden');
+
+
+
+
+            // document.getElementById("launchbutton").classList.remove("hidden");
+            document.getElementById("launchARPage").classList.remove("hidden");
+            document.getElementById('backbutton').classList.remove('hidden');
+        }
+
     }
     //======================
     changedPage(topage) {

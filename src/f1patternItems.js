@@ -202,7 +202,7 @@ class PatternItems {
     //======
     changePattern(which,thefile,mapUniforms,
         thepatternelement,patternsData,liveryData,currentLayer,
-        f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Gui) {
+        f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Gui,f1Ribbons) {
         const patternId = thepatternelement.getAttribute("patternId");
 
         var debMsg = ">> Picked pattern = " + which + " id='"+ patternId +"'\n    " + "file = " + thefile;
@@ -324,6 +324,11 @@ class PatternItems {
                 clearTimeout(this.patternLoaderTimeout);
 
                 console.log(">>>> Texture image = LOADED > "+thefile);
+
+                // trigger any effect on car changing
+                // f1Ribbons.carChangeAnimate();
+
+
                 tex.premultiplyAlpha = true; // debug premultiply // or not!
                 tex.encoding = THREE.LinearEncoding;
 

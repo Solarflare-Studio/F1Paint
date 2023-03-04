@@ -215,7 +215,7 @@ var renderSize = 2048;//1024;
 // set files names
 var f1fnames = new F1AssetFileNames();
 
-
+var filessavedcount = 0;
 
 var scene;
 // var sceneFX;
@@ -240,6 +240,8 @@ const gltfLoader = new GLTFLoader();
 
 var mainLight;
 var mainLight2;
+var mainLight3;
+var mainLight4;
 var ambLight;
 var dirLight;
 var dirLight2;
@@ -614,8 +616,8 @@ function setupConsoleListeners() {
 	document.getElementById('c_lightIntensitySlider').oninput = function () {
 		const which = document.getElementById('c_whichlight').value;
 		const val = this.value / 100.0;
-		if(which=="spot1") mainLight.intensity = val;
-		else if(which=="spot2") mainLight2.intensity = val;
+		if(which=="spot1") { mainLight.intensity = val; mainLight3.intensity = val; }
+		else if(which=="spot2") { mainLight2.intensity = val; mainLight4.intensity = val;}
 		else if(which=="dir") dirLight.intensity = val;
 		else if(which=="dir2") dirLight2.intensity = val;
 		else if(which=="amb") ambLight.intensity = val;
@@ -1328,31 +1330,42 @@ function initScenes()
 	f1CarHelmet.init(f1Materials,f1Layers, isHelmet, f1fnames, f1MetalRough,f1Gui,f1SpecialFX, f1Garage,f1Ribbons);
 
 	// lights
-	mainLight = createSpotLight(f1Settings.mainLight1Intensity);
-	mainLight2 = createSpotLight(f1Settings.mainLight2Intensity);
-	mainLight.position.set( 110, 80, 70 );
-	mainLight2.position.set( -110, 80, 70 );
+	mainLight = createPointLight(f1Settings.mainLight1Intensity);
+	mainLight2 = createPointLight(f1Settings.mainLight2Intensity);
+	mainLight3 = createSpotLight(f1Settings.mainLight1Intensity);
+	mainLight4 = createSpotLight(f1Settings.mainLight2Intensity);
+	// const mainLight3 = createSpotLight(f1Settings.mainLight1Intensity);
+	// const mainLight4 = createSpotLight(f1Settings.mainLight2Intensity);
+	// mainLight = createSpotLight(f1Settings.mainLight1Intensity);
+	// mainLight2 = createSpotLight(f1Settings.mainLight2Intensity);
+	
+	mainLight.position.set( 80, 80, 60 );
+	mainLight2.position.set( -80, 80, 60 );
+
+	mainLight3.position.set( 80, 80, -60 );
+	mainLight4.position.set( -80, 80, -60 );
+
+
 
 	ambLight = new THREE.AmbientLight( 0xffffff, f1Settings.ambientLightIntensity ); 
 
-	const dirlightheight = 140;
-	const dirlightdist = 130;
-	dirLight = new THREE.DirectionalLight( 0xffffff, f1Settings.dirLight1Intensity);
-	// dirLight.position.set( 90, 80, -30);
-	dirLight.position.set( dirlightdist, dirlightheight, -40);
+	const dirlightheight = 190;
+	const dirlightx = 60;
+	const dirlightz =100; // -40
+	dirLight = createDirectionalLight(f1Settings.dirLight1Intensity);
+	dirLight2 = createDirectionalLight(f1Settings.dirLight2Intensity);
+
+
+	dirLight.position.set( dirlightx, dirlightheight, dirlightz);
 	dirLight.target = f1CarHelmet.theHelmet;
-	// dirLight.castShadow = true; // try
-
-
-	dirLight2 = new THREE.DirectionalLight( 0xffffff, f1Settings.dirLight2Intensity);
-	// dirLight2.position.set( -90, 80, -30);
-	dirLight2.position.set( -dirlightdist, dirlightheight, -40);
+	dirLight2.position.set( -dirlightx, dirlightheight, dirlightz);
 	dirLight2.target = f1CarHelmet.theHelmet;
-	// dirLight2.castShadow = true; // try
 
 
 	scene.add(mainLight);
 	scene.add(mainLight2);
+	scene.add(mainLight3);
+	scene.add(mainLight4);
 	scene.add( ambLight );
 	scene.add( dirLight );
 	scene.add( dirLight2 );
@@ -1471,14 +1484,44 @@ function initScenes()
     setSize(window.innerWidth,window.innerHeight );
 
 }
+//==================================================
+function createDirectionalLight(intensity) {
+
+	const light = new THREE.DirectionalLight( 0xffffff, intensity);
+
+	light.castShadow = true;
+	light.shadow.mapSize.width = 1024;
+	light.shadow.mapSize.height = 1024;
+	light.shadow.camera.near = 0.5;
+	light.shadow.camera.far = 500;
+	light.shadow.camera.left = -100;
+	light.shadow.camera.right = 100;
+	light.shadow.camera.top = 100;
+	light.shadow.camera.bottom = -100;
+	return light;
+}
+//==================================================
+function createPointLight(intensity) {
+
+	var light = new THREE.PointLight(0xffffff, intensity);
+
+	light.castShadow = true;
+	light.shadow.radius = 8;
+	light.shadow.bias = - 0.000222;// - 0.000222;
+	return light;
+
+}
 
 //==================================================
 function createSpotLight(intensity) {
 
-	var light = new THREE.PointLight(0xffffff, intensity);
-	// var light = new THREE.SpotLight(0xffffff, intensity);
+	// var light = new THREE.PointLight(0xffffff, intensity);
+	var light = new THREE.SpotLight(0xffffff, intensity);
 	
-
+	light.shadow.camera.near = 0.5;
+	light.shadow.camera.far = 500;
+	light.shadow.mapSize.width = 1024;
+	light.shadow.mapSize.height = 1024;
 
 //	var light = new THREE.SpotLight( 0xffffff, 0.60);// 0.6 );
 
@@ -1547,7 +1590,7 @@ function choosePattern(which, theLayer,thefile,thepatternelement) {
 	patternItems.changePattern(which,thefile,
 		f1Layers.mapUniforms,thepatternelement,
 		processJSON.patternsData,processJSON.liveryData,theLayer,
-		f1MetalRough.mapUniforms,f1Text,f1SpecialFX,f1Gui);
+		f1MetalRough.mapUniforms,f1Text,f1SpecialFX,f1Gui,f1Ribbons);
 
 
 
@@ -2226,6 +2269,7 @@ function postRenderProcess() {
 
 		const datetime = getDateTimeStampString();
 		processJSON.liveryData['timestamp'] = datetime;
+		filessavedcount = 0;
 		doSavePaintShop(pixelBuffer, "_" + datetime +  "_map.png");
 		doSavePaintShop(pixelBufferRoughMetal, "_" + datetime +  "_roughmetal.png");
 
@@ -2291,11 +2335,48 @@ function postRenderProcess() {
 
 
 
+
+		// check files exist on aws before allowing AR
+		console.log(">> checking files")
+		const checkfile = userID + "_" + datetime +  "_map.png";
+		f1Gui.currentProgress = 0;
 		f1Gui.showPage(6);
 
-
+		checkFilesHaveSaved();
 
 	}
+}
+//==================================
+function checkFilesHaveSaved() {
+
+	f1Gui.updateProgress2(25 + (filessavedcount * 25));
+
+	console.log(filessavedcount);
+	if(filessavedcount<3) {
+
+		setTimeout(function() {
+			checkFilesHaveSaved();
+		}, 200);
+	}
+	else {
+		f1Gui.updateProgress2(100);
+		setTimeout(function() {
+			f1Gui.showPage(7);
+		},500);
+		
+	}
+
+
+	// const mapexistsnow = f1Aws.checkFilesAWS('userimages', checkfile);
+	// console.log("==" +	mapexistsnow );
+	// if(!mapexistsnow) {
+	// 	setTimeout(function() {
+	// 		checkFilesHaveSaved();
+	// 	}, 500);
+	// }
+	// else 
+	// 	f1Gui.showPage(6);
+
 }
 //==================================
 // function onLaunchAR() {
@@ -2723,6 +2804,7 @@ const s3upload = async (datablob,filename) => {
 	  try {
 		await s3.send(new PutObjectCommand(uploadParams));
 		console.log(">> Successfully uploaded images to aws server.");
+		filessavedcount++;
 	  } catch (err) {
 		return 	console.log(">> There was an error uploading images to aws server: " + err.message);
 			// alert("There was an error uploading your photo: ", err.message);

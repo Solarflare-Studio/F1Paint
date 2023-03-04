@@ -301,7 +301,7 @@ class F1Materials {
                 fog: false,
                 metalness: 0.5,
                 envMapIntensity: 1.0,
-                roughness: 0.6,
+                roughness: 0.8,
                 emissiveIntensity: 1,
                 aoMapIntensity: 1.0,
 
@@ -451,6 +451,8 @@ class F1Materials {
                 // tex.premultiplyAlpha = false;
                 tex.premultiplyAlpha = true;
                 f1Ribbons.uniforms.texture1.value = tex; // method with shader to distort and texture frag
+                // f1Ribbons.uniformsCarChange.texture1.value = tex;
+
                 this.keepRibbon = tex;
 
                 // this.ribbonMaterial.uniforms.baseTexture.value = tex; // method with shader to distort and texture frag
