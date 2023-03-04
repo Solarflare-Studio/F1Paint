@@ -208,6 +208,12 @@
 
 }
 
+#launchbuttonlink {
+	color: white;
+    cursor: pointer;
+    text-decoration: auto;
+}
+
 /* #ARpage {
     position: absolute;
     width: 100%;	

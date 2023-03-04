@@ -60,6 +60,8 @@ class F1Ribbons {
         this.ribbonGeometry2 = new THREE.PlaneGeometry(300, 35, 64,4);
         this.carChangeTween = 0;
         this.carChangeDelta = 0.0;
+        this.countbetweenribbons = 0;
+        this.randomgap = 0;
 
         this.setupRibbonMaterials(f1Materials);
 
@@ -339,13 +341,12 @@ class F1Ribbons {
                 // }
 
                 float amnt =1.0;
-                if( viewerDistance <= 150.0) {
-                    amnt = (viewerDistance ) / 150.0;
-                    if(amnt>1.0) amnt=1.0;
-                    // amnt = 1.0 - amnt;
-                    outcolour *= amnt * amnt;
-
-                }
+                // if( viewerDistance <= 150.0) {
+                //     amnt = (viewerDistance ) / 150.0;
+                //     if(amnt>1.0) amnt=1.0;
+                //     // amnt = 1.0 - amnt;
+                //     outcolour *= amnt * amnt;
+                // }
                 // else if( viewerDistance >= 200.0) {
                 //     float amnt = (viewerDistance - 200.0) / 300.0;
                 //     if(amnt>1.0) amnt=1.0;
@@ -870,11 +871,15 @@ class F1Ribbons {
         // let a = (currenttime*0.0005) % (2 * Math.PI);
         // const glow = this.mathPulse(a);
 
-        const glow = this.easedSineWave(modded*0.45);
-        // console.log(glow);
+        // const glow = this.easedSineWave(modded*0.45);
+        var glow = Math.sin(modded);
+        if(glow <= 0.0) {
+            glow = -(glow*0.5);
+        }
+        // console.log(modded + " = " + glow);
+
 
         this.uniforms.faderTime.value = glow;
-
 
 
 

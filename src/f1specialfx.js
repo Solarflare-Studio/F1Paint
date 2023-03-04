@@ -675,7 +675,7 @@ class F1SpecialFX {
       this.fxComposer.addPass( f1BloomPass );
       //
       const renderRibbonScene = new RenderPass( scene, camera );
-      this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 512, 512 ), 4.25, 0.70, 0.000015);
+      this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 512, 512 ), 5.25, 1.0, 0.000015);
 //      this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 512, 512 ), 5.25, 0.70, 0.000015);
 //      const f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 1024, 1024 ), 0.01, 0.01, 0.5);
 

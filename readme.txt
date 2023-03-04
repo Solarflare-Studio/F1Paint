@@ -9,3 +9,5 @@ dev and build commands
 npm run build
 npm run dev
 
+can view on local server if you click the F1PaintShop.html in the dist/ list in Code, and then click 'Go Live'
+
