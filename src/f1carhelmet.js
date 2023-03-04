@@ -57,7 +57,8 @@ class F1CarHelmet {
             roughnessMap: f1MetalRough.bufferMapSceneTarget.texture,
         //    emissiveMap: f1SpecialFX.bufferMapSceneTarget.texture, // check todo
             color: new THREE.Color(0xffffff),
-            shadowSide: THREE.FrontSide,// THREE.DoubleSide,
+            // shadowSide: THREE.FrontSide,// THREE.DoubleSide,
+            shadowSide: THREE.DoubleSide,
             emissive: new THREE.Color(0,0,0),
             normalScale: new THREE.Vector2(-0.5, 0.5),
             // envMap: this.envMap
@@ -71,13 +72,16 @@ class F1CarHelmet {
             this.theBaseMaterial = new THREE.MeshStandardMaterial({ // pbr
                 name: 'theHelmetBaseMaterial',
                 fog: false,
-                metalness: 1.0,
-                // envMapIntensity: _self.envamount, //3.4,// 3.4,//5.0,
-                roughness: 1.0,
+                // metalness: 1.0,
+                // roughness: 1.0,
+                // color: new THREE.Color(0xffffff),
+                metalness: 0.8,
+                roughness: 0.8,
+                color: new THREE.Color(0xffffff),
                 emissiveIntensity: 1,
                 aoMapIntensity: 1.0,
-                color: new THREE.Color(0xffffff),
-                shadowSide: THREE.FrontSide,// THREE.DoubleSide,
+                // shadowSide: THREE.FrontSide,// THREE.DoubleSide,
+                shadowSide: THREE.DoubleSide,
                 
                 emissive: new THREE.Color(0,0,0),
                 normalScale: new THREE.Vector2(-0.5, 0.5),
@@ -85,7 +89,6 @@ class F1CarHelmet {
                 // envMap: this.envMap
             })
             // this.theBaseMaterial.color = new THREE.Color(0xffffff)
-            // this.theBaseMaterial.shadowSide = THREE.DoubleSide
         }
 
         var helmet3D;
@@ -104,15 +107,16 @@ class F1CarHelmet {
             _self.theHelmet.add(theModelScene);
             console.log(">> attempting to traverse mesh "+theModelScene.children.length);
 
-            theModelScene.traverse( function ( child ) {
-                if ( child.isMesh ) {
-                    console.log(">> model child name =" + child.name);
-                    child.castShadow = true;
-                    child.receiveShadow = false;
+            // theModelScene.traverse( function ( child ) {
+            //     if ( child.isMesh ) {
+            //         console.log(">> model child name =" + child.name);
+            //         child.castShadow = true;
+            //         // child.receiveShadow = false;
+            //         child.receiveShadow = true;
     
-                    child.material = _self.theHelmetMaterial;
-                }
-            });
+            //         child.material = _self.theHelmetMaterial;
+            //     }
+            // });
 
 
             if(!_self.isHelmet) {
@@ -122,14 +126,19 @@ class F1CarHelmet {
                 modelMesh.material = _self.theHelmetMaterial;
                 _self.specialFXMesh = modelMesh;
                 modelMesh.castShadow = true;
-                modelMesh.receiveShadow = false;
+                // modelMesh.receiveShadow = false;
+                modelMesh.receiveShadow = true;
                 let staticMesh = theModelScene.getObjectByName('F1PS_F1_Car_Static')
                 staticMesh.layers.set(2); // make base black for glow...
                 staticMesh.material = _self.theBaseMaterial;
                 whichmat=1;
-                _self.baseFXMesh = staticMesh;
                 staticMesh.castShadow = true;
-                staticMesh.receiveShadow = false;
+                // staticMesh.receiveShadow = false;
+                staticMesh.receiveShadow = true; // maybe! todo
+                _self.baseFXMesh = staticMesh;
+                // staticMesh.receiveShadow = false;
+
+
             }
             else {
                 let modelMesh = theModelScene.getObjectByName('Helmet_main_low')

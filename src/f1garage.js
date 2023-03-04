@@ -118,7 +118,7 @@ class F1Garage {
         
         // and shadow layer
         const shadowmaterial = new THREE.ShadowMaterial();
-        shadowmaterial.opacity = 0.34;
+        shadowmaterial.opacity = 0.4;// 0.34;
         shadowmaterial.side = THREE.DoubleSide;
         shadowmaterial.transparent = true;
         shadowmaterial.needsUpdate=true;

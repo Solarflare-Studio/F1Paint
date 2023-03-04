@@ -574,7 +574,7 @@ function setupConsoleListeners() {
 		}
 		else if(this.value=="carstatic") {
 			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrBase;
-			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theBaseMaterial.envMapIntensity * 1.0; // static gets 100x
+			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theBaseMaterial.envMapIntensity * 100.0; // static gets 100x
 		}
 		else { // garage
 			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrGar;
@@ -1335,13 +1335,20 @@ function initScenes()
 
 	ambLight = new THREE.AmbientLight( 0xffffff, f1Settings.ambientLightIntensity ); 
 
+	const dirlightheight = 140;
+	const dirlightdist = 130;
 	dirLight = new THREE.DirectionalLight( 0xffffff, f1Settings.dirLight1Intensity);
-	dirLight.position.set( 90, 80, -30);
+	// dirLight.position.set( 90, 80, -30);
+	dirLight.position.set( dirlightdist, dirlightheight, -40);
 	dirLight.target = f1CarHelmet.theHelmet;
+	// dirLight.castShadow = true; // try
+
 
 	dirLight2 = new THREE.DirectionalLight( 0xffffff, f1Settings.dirLight2Intensity);
-	dirLight2.position.set( -90, 80, -30);
+	// dirLight2.position.set( -90, 80, -30);
+	dirLight2.position.set( -dirlightdist, dirlightheight, -40);
 	dirLight2.target = f1CarHelmet.theHelmet;
+	// dirLight2.castShadow = true; // try
 
 
 	scene.add(mainLight);
@@ -1369,7 +1376,16 @@ function initScenes()
 	scene.add( f1Ribbons.getSceneObjects(f1Materials) );
 //
 	
-
+	// debug obj for casting shadow test
+	// const cubegeom = new THREE.BoxGeometry(5, 50, 10);
+	// const cubematerial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+	// cubematerial.shadowSide= THREE.DoubleSide;
+	// cubematerial.side= THREE.DoubleSide	;
+	// const cubemesh = new THREE.Mesh(cubegeom, cubematerial);
+	// cubemesh.position.set(20,30,0);
+	// cubemesh.layers.set(1);
+	// rootScene.add(cubemesh);
+	//
 	
 	rootScene.add( f1CarHelmet.theHelmet );
 	rootScene.add(f1Garage.garageRoot);
@@ -1460,6 +1476,10 @@ function initScenes()
 function createSpotLight(intensity) {
 
 	var light = new THREE.PointLight(0xffffff, intensity);
+	// var light = new THREE.SpotLight(0xffffff, intensity);
+	
+
+
 //	var light = new THREE.SpotLight( 0xffffff, 0.60);// 0.6 );
 
 	light.castShadow = true;
@@ -2494,6 +2514,8 @@ function parseCookieLivery() {
 var nowallloaded=false;
 function animate() 
 {
+
+
 	// if not loaded json yet
 	if(processJSON.loadedLiveryJSON==0) {
 		requestAnimationFrame( animate );
@@ -2557,6 +2579,8 @@ function animate()
 	// }
 
 	
+	// f1CarHelmet.theBaseMaterial.needsUpdate=true;
+
 
 
 
