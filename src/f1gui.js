@@ -724,7 +724,7 @@ class F1Gui {
     //======================
     setSize(w,h,renderer,camera, colorPatternPicker ) {
         const rootElement = document.querySelector(':root');
-        const toolsElement = document.getElementById('palette_tools')
+        const toolsElement = document.getElementById('palette_toolsBlock')
 
         const lerp = (a, b, t) => (b-a)*t+a;
         const unlerp = (a, b, t) => (t-a)/(b-a);
@@ -818,7 +818,7 @@ class F1Gui {
         var clientHeight = this.tabHeight;// document.getElementById('guitabs').clientHeight;
 
         // set height of bottom panel to always reach bottom
-        var mainHeight = document.getElementById('container').offsetHeight ;
+        var mainHeight = document.getElementById('maincontainerblock').offsetHeight ;
         //        document.getElementById('toolscontainer').style.height = (mainHeight - toolsPosY) + 'px';
         //        toolsElement.style.height = (mainHeight - toolsPosY) + 'px';
         document.getElementById('toolscontainer').style.height = (mainHeight - toolsPosY - clientHeight) + 'px';

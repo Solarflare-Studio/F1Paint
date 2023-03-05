@@ -496,7 +496,7 @@ function onloaded()
 	var timeDiff = loadedtime - loadtime; //in ms
 
 	// fade out loading splash
-	document.getElementById('splashblock').classList.add('fadedout');
+	document.getElementById('loadingblock').classList.add('fadedout');
 	
 	// fade in intro page
 	if(timeDiff >= 2500) { // already taken enough time loading...
@@ -838,11 +838,11 @@ function introNextPage(nextPage) {
 		// after 0.7s fade in the tutoral page 1
 		setTimeout( function() {
 			document.getElementById('tut1block').classList.remove('fadedout');
-			document.getElementById('container').style.display ="block";
+			document.getElementById('maincontainerblock').style.display ="block";
 			
 			// then fade in the 3D after 0.7
 			setTimeout( function() {
-				document.getElementById('container').classList.remove('fadedout');
+				document.getElementById('maincontainerblock').classList.remove('fadedout');
 			}, 700);
 		}, 700);
 	}
@@ -867,7 +867,7 @@ function introNextPage(nextPage) {
 		onPatternsTab();
 
 
-		document.getElementById('palette_tools').classList.remove('disabledUserEvents');
+		document.getElementById('palette_toolsBlock').classList.remove('disabledUserEvents');
 	}
 
 }

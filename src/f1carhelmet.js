@@ -206,7 +206,8 @@ class F1CarHelmet {
             filelist.push('./assets/sfx/scenebackground.jpg' ); // garage walls
             filetypelist.push( 13 );
 
-            filelist.push('./assets/garage/ribbon2.png'); // ribbon textures..
+            // filelist.push('./assets/sfx/ribbon2.png'); // ribbon textures..
+            filelist.push('./assets/sfx/ribbon4.png'); // ribbon textures..
             // filelist.push('./assets/sfx/ribbon3.png'); // ribbon textures..
             filetypelist.push( 11 );
             filelist.push('./assets/sfx/floorglow.jpg'); // flow glow texture
