@@ -657,8 +657,8 @@ function initScenes()
 	camera = new THREE.PerspectiveCamera( 45, renderSize / renderSize, 0.1, 900 );
 	camera.position.set(44,36, 90);
 
-	camera.layers.enable(2);
-	camera.layers.disable(3);
+	camera.layers.enable(2); // car/helmet model
+	camera.layers.disable(3); // ribbon
 
 	scene.add(camera);
 
@@ -1373,7 +1373,7 @@ function renderpipeline() {
 	
 	camera.layers.enableAll();
 	if(!f1Ribbons.enabled)
-		camera.layers.disable(3);
+		camera.layers.disable(3); // ribbon
 
 	// render the rough / metal map to offscreen
 	renderer.setRenderTarget(f1MetalRough.bufferMapSceneTarget);
@@ -1394,7 +1394,7 @@ function renderpipeline() {
 //==================================
 function specialrenderpipeline() {
 	camera.layers.enableAll();
-	camera.layers.disable(3);
+	camera.layers.disable(3); // ribbon
 
 	// render the rough / metal map to offscreen
 	renderer.setRenderTarget(f1MetalRough.bufferMapSceneTarget);
@@ -1410,7 +1410,6 @@ function specialrenderpipeline() {
 
 	//
 	if(f1CarHelmet.specialFXMesh) {
-		// f1SpecialFX.mapUniforms.texture1Base.value = patternItems.patternTexture;
 
 		f1SpecialFX.mapUniforms.layer.value = f1Gui.currentPage;
 		var layer = 0;
@@ -1447,7 +1446,7 @@ function specialrenderpipeline() {
 
 	// camera.layers.set(2);
 	// camera.layers.toggle( 2 );
-	camera.layers.disable(1);
+	camera.layers.disable(1); // garage
 	f1SpecialFX.fxComposer.render();
 
 	//
@@ -1458,14 +1457,14 @@ function specialrenderpipeline() {
 
 	}
 	if(f1Ribbons.enabled) {
-		camera.layers.enable(3);
+		camera.layers.enable(3); // ribbon
 		f1SpecialFX.fxRibbonComposer.render();
 		camera.layers.disable(3);
 	}
 
 
 	//
-	camera.layers.enable(1);
+	camera.layers.enable(1);// garage
 
 
 	
@@ -1482,7 +1481,7 @@ function specialrenderpipeline() {
 	}
 
 	camera.layers.enableAll();
-	camera.layers.disable(3);
+	camera.layers.disable(3);// ribbon
 
 
 
@@ -1608,7 +1607,6 @@ function animate()
 
 		if(f1SpecialFX.finalPass.uniforms.amountBloom.value>0.0) {
 			f1SpecialFX.timePassing();
-
 		}
 		renderpipeline();
 	} );
