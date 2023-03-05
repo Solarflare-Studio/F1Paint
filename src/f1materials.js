@@ -216,8 +216,8 @@ class F1Materials {
         }
         else if(which==0){
             this.envmapStrength = strength;
-            f1CarHelmet.theHelmetMaterial.envMapIntensity = this.envmapStrength;
-            f1CarHelmet.theHelmetMaterial.needsUpdate=true;
+            f1CarHelmet.theModelMaterial.envMapIntensity = this.envmapStrength;
+            f1CarHelmet.theModelMaterial.needsUpdate=true;
         }
         else {
             this.envstrBase = strength;
@@ -229,18 +229,17 @@ class F1Materials {
     //======================
     quickSetMaps(result,f1CarHelmet,f1Garage) {
 
-    //    if(f1CarHelmet && f1CarHelmet.theHelmetMaterial && f1CarHelmet.theBaseMaterial && f1Garage.garageMaterial && f1Garage.garageWall.material) {
-        if(f1CarHelmet && f1CarHelmet.theHelmetMaterial && f1Garage.garageMaterial && f1Garage.garageWall.material) {
+        if(f1CarHelmet && f1CarHelmet.theModelMaterial && f1Garage.garageMaterial && f1Garage.garageWall.material) {
             console.log(">> Materials all ready - envmap applying..")
             // f1CarHelmet.envMap = result;
-            f1CarHelmet.theHelmetMaterial.envMap = result;
+            f1CarHelmet.theModelMaterial.envMap = result;
             f1Garage.garageMaterial.envMap = result;
             f1Garage.garageWall.material.envMap = result;
     
             // lees envmapintensity settings 280223
             f1Garage.garageWall.material.envMapIntensity = this.envstrGar;// this.envmapStrength;// * 0.0125;
             f1Garage.garageMaterial.envMapIntensity = this.envstrGar;//this.envmapStrength;// * 0.125;
-            f1CarHelmet.theHelmetMaterial.envMapIntensity = this.envmapStrength;//this.envmapStrength;
+            f1CarHelmet.theModelMaterial.envMapIntensity = this.envmapStrength;//this.envmapStrength;
 
             if(f1CarHelmet.theBaseMaterial!=null) {
                 f1CarHelmet.theBaseMaterial.envMap = result;
@@ -249,7 +248,7 @@ class F1Materials {
             }
             
     
-            f1CarHelmet.theHelmetMaterial.needsUpdate=true;
+            f1CarHelmet.theModelMaterial.needsUpdate=true;
             f1Garage.garageMaterial.needsUpdate=true;
             f1Garage.garageWall.material.needsUpdate=true;   
         }
@@ -265,35 +264,7 @@ class F1Materials {
     }
 
     //======================
-    /*
-    setupMaterial(material) {
-
-        material.emissive.r = 0.0;
-        material.emissive.g = 0.0;
-        material.emissive.b = 0.0;
-        material.color = new THREE.Color(0xffffff)
-        material.normalScale = new THREE.Vector2(-0.5, 0.5)
-        //_self.theHelmetMaterial.normalScale = new THREE.Vector2(0.0, 2.0);
-        material.shadowSide = THREE.DoubleSide  // THREE.BackSide // THREE.FrontSide
-        material.roughness = 0.7;// 1.0;
-        material.metalness = 1.0;
-        // material.envMap = this.envMap;
-        material.needsUpdate = true;
-
-
-        // material.emissive.r = 0.0;
-        // material.emissive.g = 0.0;
-        // material.emissive.b = 0.0;
-        // material.color = new THREE.Color(0xffffff)
-        // material.normalScale = new THREE.Vector2(-0.5, 0.5)
-        // //_self.theHelmetMaterial.normalScale = new THREE.Vector2(0.0, 2.0);
-        // material.shadowSide = THREE.DoubleSide  // THREE.BackSide // THREE.FrontSide
-        // material.roughness = 0.5
-        // material.metalness = 0.5
-        // material.envMap = this.envMap;
-        // material.needsUpdate = true;
-    }
-    */
+    
     newGarageMat() {
         return new THREE.MeshStandardMaterial(
             {

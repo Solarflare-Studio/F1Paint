@@ -352,7 +352,7 @@ function setupConsoleListeners() {
 		console.log(this.value);
 		if(this.value=="car") {
 			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envmapStrength;
-			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theHelmetMaterial.envMapIntensity * 100.0;
+			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theModelMaterial.envMapIntensity * 100.0;
 		}
 		else if(this.value=="carstatic") {
 			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrBase;
@@ -700,9 +700,9 @@ function initScenes()
 
 
 	dirLight.position.set( dirlightx, dirlightheight, dirlightz);
-	dirLight.target = f1CarHelmet.theHelmet;
+	dirLight.target = f1CarHelmet.theModel;
 	dirLight2.position.set( -dirlightx, dirlightheight, dirlightz);
-	dirLight2.target = f1CarHelmet.theHelmet;
+	dirLight2.target = f1CarHelmet.theModel;
 
 
 	scene.add(mainLight);
@@ -727,7 +727,7 @@ function initScenes()
 	scene.add( f1Ribbons.getSceneObjects(f1Materials) );
 //
 	
-	rootScene.add( f1CarHelmet.theHelmet );
+	rootScene.add( f1CarHelmet.theModel );
 	rootScene.add(f1Garage.garageRoot);
 	scene.add(rootScene);
 
@@ -1384,8 +1384,8 @@ function renderpipeline() {
 	renderer.render( f1Layers.bufferMapScene, f1Layers.bufferMapCamera );
 
 	// apply composited layers buffer as model map
-	f1CarHelmet.theHelmetMaterial.map = f1Layers.bufferMapSceneTarget.texture;
-	f1CarHelmet.theHelmetMaterial.needsUpdate = true;
+	f1CarHelmet.theModelMaterial.map = f1Layers.bufferMapSceneTarget.texture;
+	f1CarHelmet.theModelMaterial.needsUpdate = true;
 
 	renderer.setRenderTarget(null);
 	renderer.render(scene,camera);
@@ -1405,8 +1405,8 @@ function specialrenderpipeline() {
 	renderer.render( f1Layers.bufferMapScene, f1Layers.bufferMapCamera );
 
 	// apply composited layers buffer as model map
-	f1CarHelmet.theHelmetMaterial.map = f1Layers.bufferMapSceneTarget.texture;
-	f1CarHelmet.theHelmetMaterial.needsUpdate = true;
+	f1CarHelmet.theModelMaterial.map = f1Layers.bufferMapSceneTarget.texture;
+	f1CarHelmet.theModelMaterial.needsUpdate = true;
 
 	//
 	if(f1CarHelmet.specialFXMesh) {
@@ -1437,7 +1437,7 @@ function specialrenderpipeline() {
 		f1SpecialFX.plainMat.map = f1SpecialFX.bufferMapSceneTarget.texture;
 		f1CarHelmet.specialFXMesh.material = f1SpecialFX.plainMat;
 
-		if(!f1Cookies.isHelmet)
+		// if(!f1Cookies.isHelmet)
 			f1CarHelmet.baseFXMesh.material = f1SpecialFX.blackMat;
 
 
@@ -1452,7 +1452,7 @@ function specialrenderpipeline() {
 
 	//
 	if(f1CarHelmet.specialFXMesh) {
-		if(!f1Cookies.isHelmet)
+		// if(!f1Cookies.isHelmet)
 			f1CarHelmet.baseFXMesh.material = f1SpecialFX.blackMat;
 		f1CarHelmet.specialFXMesh.material = f1SpecialFX.blackMat;
 
@@ -1476,9 +1476,9 @@ function specialrenderpipeline() {
 
 //
 	if(f1CarHelmet.specialFXMesh) {
-		if(!f1Cookies.isHelmet)
+		// if(!f1Cookies.isHelmet)
 			f1CarHelmet.baseFXMesh.material = f1CarHelmet.theBaseMaterial;
-		f1CarHelmet.specialFXMesh.material = f1CarHelmet.theHelmetMaterial;
+		f1CarHelmet.specialFXMesh.material = f1CarHelmet.theModelMaterial;
 	}
 
 	camera.layers.enableAll();

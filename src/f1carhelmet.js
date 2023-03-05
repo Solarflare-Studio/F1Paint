@@ -10,41 +10,27 @@ class F1CarHelmet {
 
         this.isHelmet = isHelmet;
 
-
-
-
         this.gltfLoader = new GLTFLoader();
 
-        if (this.theHelmet) {
-        //     // If theHelmet already exists, remove it and its children
-            while (this.theHelmet.children.length > 0) {
-              this.theHelmet.remove(this.theHelmet.children[0]);
+        if (this.theModel) {
+            // If theModel already exists, remove it and its children
+            while (this.theModel.children.length > 0) {
+              this.theModel.remove(this.theModel.children[0]);
             }
-        //     // Remove theHelmet from its parent, if it has one
-        //     if (this.theHelmet.parent) {
-        //       this.theHelmet.parent.remove(this.theHelmet);
-        //     }
         }
 
-        this.theHelmet = new THREE.Object3D();
+        this.theModel = new THREE.Object3D();
         this.f1materials = f1materials;
-        // this.f1Layers = f1Layers;
-        // this.f1MetalRough = f1MetalRough;
-        // this.instancedMesh = new THREE.Object3D(); 
+
         this.f1Gui = f1Gui;
         this.specialFXMesh = 0;
         this.baseFXMesh = 0;
 
         var _self = this;
 
-        // this.envamount = 0.10;
-        // this.envMap = f1materials.envMap;
-
-
-
-        // main customisable material
-        this.theHelmetMaterial = new THREE.MeshStandardMaterial({ // pbr
-            name: 'theHelmetMaterial',
+         // main customisable material
+        this.theModelMaterial = new THREE.MeshStandardMaterial({ // pbr
+            name: 'theModelMaterial',
             map: f1Layers.bufferMapSceneTarget.texture,
             fog: false,
             metalness: 1.0,
@@ -67,10 +53,10 @@ class F1CarHelmet {
           })
         
         // car model has two meshes
-        if(!this.isHelmet) {
+        // if(!this.isHelmet) {
             // base texture doesnt change
             this.theBaseMaterial = new THREE.MeshStandardMaterial({ // pbr
-                name: 'theHelmetBaseMaterial',
+                name: 'theModelBaseMaterial',
                 fog: false,
                 // metalness: 1.0,
                 // roughness: 1.0,
@@ -89,7 +75,7 @@ class F1CarHelmet {
                 // envMap: this.envMap
             })
             // this.theBaseMaterial.color = new THREE.Color(0xffffff)
-        }
+        // }
 
         var helmet3D;
         if(this.isHelmet)
@@ -104,26 +90,15 @@ class F1CarHelmet {
         console.log(">> attempting to load 3d mesh="+helmet3D);
         this.gltfLoader.load( helmet3D, function ( gltf ) {
             let theModelScene = gltf.scene;
-            _self.theHelmet.add(theModelScene);
+            _self.theModel.add(theModelScene);
             console.log(">> attempting to traverse mesh "+theModelScene.children.length);
-
-            // theModelScene.traverse( function ( child ) {
-            //     if ( child.isMesh ) {
-            //         console.log(">> model child name =" + child.name);
-            //         child.castShadow = true;
-            //         // child.receiveShadow = false;
-            //         child.receiveShadow = true;
-    
-            //         child.material = _self.theHelmetMaterial;
-            //     }
-            // });
 
 
             if(!_self.isHelmet) {
                 var whichmat = 0;
                 let modelMesh = theModelScene.getObjectByName('F1PS_F1_Car_Customizable')
                 modelMesh.layers.set(2);
-                modelMesh.material = _self.theHelmetMaterial;
+                modelMesh.material = _self.theModelMaterial;
                 _self.specialFXMesh = modelMesh;
                 modelMesh.castShadow = true;
                 // modelMesh.receiveShadow = false;
@@ -141,54 +116,28 @@ class F1CarHelmet {
 
             }
             else {
+                var whichmat = 0;
                 let modelMesh = theModelScene.getObjectByName('Helmet_main_low')
                 modelMesh.layers.set(2);
-                modelMesh.material = _self.theHelmetMaterial;
+                modelMesh.material = _self.theModelMaterial;
                 _self.specialFXMesh = modelMesh;
                 modelMesh.castShadow = true;
                 modelMesh.receiveShadow = false;
+
+                let staticMesh = theModelScene.getObjectByName('Visor_low')
+                staticMesh.layers.set(2); // make base black for glow...
+                staticMesh.material = _self.theBaseMaterial;
+                whichmat=1;
+                staticMesh.castShadow = true;
+                // staticMesh.receiveShadow = false;
+                staticMesh.receiveShadow = true; // maybe! todo
+                _self.baseFXMesh = staticMesh;
+                // staticMesh.receiveShadow = false;
+
                 whichmat=1;
 
             }
-            /*
-            theModelScene.traverse( function ( child ) {
-    
-                if ( child.isMesh ) {
-                    console.log(">>car model materials=" + child.material.name);
-                    // if(child.material.name == 'F1PS_F1_Car_Customizable') {
-                    // if(whichmat==1) {
-                    if(child.name=='F1PS_F1_Car_Customizable') {
-                        child.layers.set(2);
-                        child.material = _self.theHelmetMaterial;
-                        _self.specialFXMesh = child;
-                        // duplicate this layer !
-                        // _self.specialFXMesh = new THREE.InstancedMesh( child, _self.fxMaterial, 1 );
-                        // _self.specialFXMesh = child.clone();
-                        // _self.specialFXMesh.parent = child.parent;
-                        // _self.specialFXMesh.layers.set(2);
-                        // _self.theHelmet.add(_self.specialFXMesh);
-
-                    }
-                    else if(child.name=='F1PS_F1_Car_Static') {
-                        // child.layers.set(1);
-                        child.layers.set(2); // make base black for glow...
-                        child.material = _self.theBaseMaterial;
-                        whichmat=1;
-                        _self.baseFXMesh = child;
-                    }
-                    else {
-                        console.log(">> ** error unexpected child mesh : " + child.name);
-                    }
-                    
-                    child.castShadow = true;
-                    child.receiveShadow = false;
-
-                    child.geometry.computeBoundingBox();
-                    child.geometry.boundingBox.getCenter(_self.helmetCentre);
-                }
-    
-            } );
-            */
+            
             _self.f1Gui.updateProgress(10,'mesh');
             const filelist = new Array();
             const filetypelist = new Array();
@@ -221,15 +170,11 @@ class F1CarHelmet {
                 filetypelist.push( 6 );
                 filelist.push('./assets/helmet/Helmet Triangulated_AO.png' ); // ao
 
-                // _self.f1materials.loadMaps(_self.theHelmetMaterial, 
-                //     null,//'./assets/helmet/Helmet_BaseColor.png',
-                //     null,
-                //     './assets/helmet/Helmet Triangulated_Normal.png',
-                //     './assets/helmet/Helmet Triangulated_AO.png',
-                //     null,//'./assets/helmet/Helmet Triangulated_Metal.png',
-                //     null,//'./assets/helmet/Helmet Triangulated_Roughness.png',
-                //     null,_self.f1Gui);
-                // _self.theHelmetMaterial.needsUpdate=true;
+                // todo need helmet base texture for visor!
+                _self.theBaseMaterial.emissive.r = 0.0;
+                _self.theBaseMaterial.emissive.g = 0.0;
+                _self.theBaseMaterial.emissive.b = 0.0;
+
             }
             else {  // is the car
 
@@ -268,63 +213,23 @@ class F1CarHelmet {
             filetypelist.push( 10 );
 
 
-            _self.theHelmetMaterial.emissive.r = 0.0;
-            _self.theHelmetMaterial.emissive.g = 0.0;
-            _self.theHelmetMaterial.emissive.b = 0.0;
+            _self.theModelMaterial.emissive.r = 0.0;
+            _self.theModelMaterial.emissive.g = 0.0;
+            _self.theModelMaterial.emissive.b = 0.0;
 
-            _self.f1materials.sequentialLoadMaps( filelist, filetypelist,_self.theBaseMaterial,_self.theHelmetMaterial,_self.f1Gui,f1Garage, _self,f1Ribbons);
+            _self.f1materials.sequentialLoadMaps( filelist, filetypelist,_self.theBaseMaterial,_self.theModelMaterial,_self.f1Gui,f1Garage, _self,f1Ribbons);
 
                 
 
 
-                // _self.f1materials.loadMaps(_self.theBaseMaterial, 
-                //     f1fnames.car_files[6],//'./assets/car/static/F1PS_F1_V03_NewUV_BaseColor.png',// base always stays the same
-                //     null,
-                //     f1fnames.car_files[7],//'./assets/car/static/F1PS_F1_V03_NewUV_Normal.png',
-                //     f1fnames.car_files[8],//'./assets/car/static/F1PS_F1_V03_NewUV_AO.png',
-                //     f1fnames.car_files[9],//'./assets/car/static/F1PS_F1_V03_NewUV_Metal.png',
-                //     f1fnames.car_files[10],//'./assets/car/static/F1PS_F1_V03_NewUV_Roughness.png',
-                //     null,_self.f1Gui);                
-
-
-                // _self.f1materials.loadMaps(_self.theHelmetMaterial, 
-                //     null,//'./assets/helmet/Helmet_BaseColor.png',
-                //     null,
-                //     f1fnames.car_files[2],//'./assets/car/F1PS_F1_V03_NewUV_Normal.png',
-                //     f1fnames.car_files[3],//'./assets/car/F1PS_F1_V03_NewUV_AO.png',
-                //     // use same map for both rough and map split green blue
-                //     null,//f1fnames.car_files[4],//'./assets/car/F1PS_F1_V03_NewUV_Metal.png',
-                //     null,//f1fnames.car_files[5],//'./assets/car/F1PS_F1_V03_NewUV_Roughness.png',
-                //     null,_self.f1Gui);
-                // _self.theHelmetMaterial.needsUpdate=true;
-
-
-                // _self.theBaseMaterial.needsUpdate=true;
-
-                    // _self.f1materials.setupMaterial(_self.theBaseMaterial);
-
-            // }
-
-    
-
-            // _self.theHelmetMaterial.map = f1Layers.bufferMapSceneTarget.texture;
-            // _self.theHelmetMaterial.metalnessMap = f1MetalRough.bufferMapSceneTarget.texture,
-            // _self.theHelmetMaterial.roughnessMap = f1MetalRough.bufferMapSceneTarget.texture,
-            
-            // _self.f1materials.setupMaterial(_self.theHelmetMaterial);
-
-
-
-
             // position 3D
             if(_self.isHelmet) {  
-                _self.theHelmet.scale.set(22,22,22);
-                _self.theHelmet.position.set(0,10,0); // helmet
+                _self.theModel.scale.set(22,22,22);
+                _self.theModel.position.set(0,10,0); // helmet
             }
             else {
-//                _self.theHelmet.scale.set(0.5,0.5,0.5); // orig model
-                _self.theHelmet.scale.set(18,18,18); // split
-                _self.theHelmet.position.set(0,20,-20); // 
+                _self.theModel.scale.set(18,18,18); // split
+                _self.theModel.position.set(0,20,-20); // 
 
             }
         }, undefined, function ( error ) {
