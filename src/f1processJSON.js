@@ -22,12 +22,13 @@ class ProcessJSON {
     // }
     //======================
 
-    loadPatterns(isHelmet,userID,userName,userEmail,cookie_livery_value) {
+    loadPatterns(f1Cookies) {
+//        isHelmet,userID,userName,userEmail,cookie_livery_value) {
         console.log(">> load patterns json");
-        if(isHelmet)
-            this.readJSON('./patterns/patterns_helmet.json','PATTERNS',userID,userName,userEmail,isHelmet,cookie_livery_value);
+        if(f1Cookies.isHelmet)
+            this.readJSON('./patterns/patterns_helmet.json','PATTERNS',f1Cookies.userID,f1Cookies.userName,f1Cookies.userEmail,f1Cookies.isHelmet,f1Cookies.cookie_livery_value);
         else
-            this.readJSON('./patterns/patterns_car.json','PATTERNS',userID,userName,userEmail,isHelmet,cookie_livery_value);
+            this.readJSON('./patterns/patterns_car.json','PATTERNS',f1Cookies.userID,f1Cookies.userName,f1Cookies.userEmail,f1Cookies.isHelmet,f1Cookies.cookie_livery_value);
     }
     //======================
     haveloadedStartupJSON() {

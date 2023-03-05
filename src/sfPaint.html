@@ -156,10 +156,10 @@
                     <div id="guitabs" class="f1patterns">
                         <div class="f1colourrow guiBGcolour">
                             <div class="guitabpadder"></div>
-                            <div id="f1patterntab" class="f1tabs f1tabTone1 f1tabActive" onclick="onPatternsTab()">PATTERN</div>
-                            <div id="f1colourtab" class="f1tabs f1tabTone2" onclick="onColoursTab()">PAINT</div>
-                            <div id="f1tagtab" class="f1tabs f1tabTone3" onclick="onTagTab()">TAG</div>
-                            <div id="f1decalstab" class="f1tabs f1tabTone4" onclick="onDecalTab()">SPONSOR</div>
+                            <div id="f1patterntab" class="f1tabs f1tabTone1 f1tabActive" onclick="changeTab(1)">PATTERN</div>
+                            <div id="f1colourtab" class="f1tabs f1tabTone2" onclick="changeTab(2)">PAINT</div>
+                            <div id="f1tagtab" class="f1tabs f1tabTone3" onclick="changeTab(3)">TAG</div>
+                            <div id="f1decalstab" class="f1tabs f1tabTone4" onclick="changeTab(4)">SPONSOR</div>
                             <div class="guitabpadder"></div>
                         </div>
                     </div> 
@@ -186,7 +186,7 @@
                                 <div id="presetandrandomblock" class="flexpair heightx3">
                                     <div class="preset">
                                         <div>PRESET PAINT</div>
-                                        <div class="randomandpreset" onclick="onPreselectedPage();">
+                                        <div class="randomandpreset" onclick="onDefaultPaint();">
                                             <img width='auto' height='100%' src="./assets/inapp/preselectedpaint.png"/>
                                         </div>
                                     </div>
@@ -361,7 +361,7 @@
             <div class="rotatemsg">Please rotate your device to Portrait.</div>
         </div>
     </div>
-    <div id="versionid" onclick="onConsole(0)">v0.1.9.4</div>
+    <div id="versionid" onclick="onConsole(0)">v0.1.9.4</div><br><div id="fpsindicator" style="position: absolute;"></div>
         <div id="console" class="hidden">
             <div class="console">
                 <div class="console_button expandbutton" onclick="expandDropdown('toneexpander');">Tone</div>

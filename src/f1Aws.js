@@ -18,10 +18,12 @@ class F1Aws {
         const { S3Client,GetObjectCommand, PutObjectCommand, ListObjectsCommand, DeleteObjectCommand, DeleteObjectsCommand } = require("@aws-sdk/client-s3");
         this.getObjectCommand = GetObjectCommand;
         this.ListObjectsCommand = ListObjectsCommand;
+        this.PutObjectCommand = PutObjectCommand;
           // Set the AWS Region
         this.region = "eu-west-2"; //REGION
         this.bucketName = "f1-fanzone-paintshop"; //BUCKET_NAME        
         this.IdentityPoolId = "eu-west-2:cbf69f68-9773-42df-90ba-9f93aa42132b";
+        this.filessavedcount = 0;
 
           // Initialize the Amazon Cognito credentials provider for writing images
         this.s3 = new S3Client({
@@ -87,22 +89,40 @@ class F1Aws {
 
     }
     //======================
+    async s3upload(datablob,filename) {
+        try {
+            const folderKey = encodeURIComponent('userimages') + "/";
+    
+            await this.s3.send(
+                new this.ListObjectsCommand({
+                Prefix: folderKey,
+                Bucket: this.bucketName
+                })
+            );
+            const file = datablob;// files[0];
+            const fileName = filename;// file.name;
+            const photoKey = folderKey + fileName;
+            const uploadParams = {
+                Bucket: this.bucketName,
+                Key: photoKey,
+                Body: file
+            };
+            try {
+                await this.s3.send(new this.PutObjectCommand(uploadParams));
+                console.log(">> Successfully uploaded images to aws server.");
+                this.filessavedcount++;
+            } catch (err) {
+                return 	console.log(">> There was an error uploading images to aws server: " + err.message);
+                    // alert("There was an error uploading your photo: ", err.message);
+                }
+            } catch (err) {
+                // if (!files.length) {
+                return console.log(">> aws no files to upload?");
+                //alert("Choose a file to upload first.");
+                // }
+        }
+    }
 
-
-    // loadFile(url, callback) {
-    //     var xhr = new XMLHttpRequest();
-    //     xhr.open('GET', url, true);
-    //     xhr.responseType = 'json';
-    //     xhr.onload = function() {
-    //       var status = xhr.status;
-    //       if (status === 200) {
-    //         callback(null, xhr.response);
-    //       } else {
-    //         callback(status, xhr.response);
-    //       }
-    //     };
-    //     xhr.send();
-    // }
     //======================
     checkFilesAWS(folder,file) {
         console.log(">> checking aws file exists : " + folder +"/" + file);
@@ -157,57 +177,9 @@ class F1Aws {
         main();
     }
     //======================
-    /*
-    loadfromAWS(folder,file,type) {
-        console.log(">> loading aws file type : " + type + " from " + folder +"/" + file);
-
-
-        AWS.config.region = this.REGION; // Region
-        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-          IdentityPoolId: this.IdentityPoolId,
-        });
-
-        // Create a new service object
-        const s3 = new AWS.S3({
-          apiVersion: '2006-03-01',
-          params: {Bucket: this.albumBucketName}
-        });
-
-        var albumPhotosKey = encodeURIComponent(folder) + '/';
-        s3.listObjects({Prefix: albumPhotosKey}, function(err, data) {
-          if (err) {
-            return alert('There was an error viewing your folder: ' + err.message);
-          }
-          const href = this.request.httpRequest.endpoint.href;
-          const bucketUrl = href + this.albumBucketName + '/' + folder + '/';
-
-          const thefile = bucketUrl + file;
-          
-          setTimeout( function() {
-            if(type==0) // language root file
-                loadFile(thefile,
-                    function(err, data) {
-                        if (err !== null) {
-                            console.log(">> ERROR loading language choice json");
-                        } else {
-                            haveLoadedLanguageChoice(data); 
-                        }
-                      }
-                    );
-          } , 100)
-          
-
-
-       });
-    }
-    */
+    
     //======================
 
-
-
-    readLanguage() {
-
-    }
 
 
 

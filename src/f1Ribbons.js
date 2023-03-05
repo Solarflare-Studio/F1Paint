@@ -39,7 +39,8 @@ class F1Ribbons {
         this.dodebug = false;
 
         this.prevupdate = new Date().getTime();
-        this.timer1 = this.prevupdate;
+        // this.timer1 = this.prevupdate;
+        this.deviceTime = 0;
         
 
         this.init(f1Materials);
@@ -845,10 +846,12 @@ class F1Ribbons {
       */
 
 
-    update() {
+    update(userConsole) {
 
         const currenttime = new Date().getTime();
         const elapsed = currenttime - this.prevupdate;
+        if(userConsole)
+            document.getElementById('fpsindicator').innerHTML = Math.floor( 1000 / elapsed);
 
         const uvflow = (currenttime*0.25) % 5000;
 
@@ -884,19 +887,13 @@ class F1Ribbons {
 
 
 
-        // console.log('a=' + sined);
-
-//        const t = (this.uniforms.faderTime.value % 360) * (3.14159265 * 2.0);
-//        const sinefade = (Math.sin(t)+1.0)*0.5;
-
-//        console.log('this.uniforms.faderTime.value = '+ this.uniforms.faderTime.value);
-        // console.log('this.uniforms.fTime.value= '+this.uniforms.fTime.value);
-        if(elapsed < 10)
-            return;
-
         this.prevupdate = currenttime;
+        this.deviceTime+=elapsed;
         
-        if(this.modifier) {
+
+        
+        if(this.modifier && glow>=0.3) {
+            this.deviceTime =0;
              this.modifier && this.modifier.apply();
         }
         // if(this.modifierChange) {

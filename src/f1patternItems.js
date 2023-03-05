@@ -17,7 +17,7 @@ class PatternItems {
 
 
         this.layerNoneElements = new Array();
-        this.timer1 = 0;
+        // this.timer1 = 0;
         this.patternLoaderTimeout = 0;
         this.patternTexture = 0;
 
