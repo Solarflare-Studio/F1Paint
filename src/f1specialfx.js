@@ -20,6 +20,7 @@ class F1SpecialFX {
 
       this.effectStarttime = 0;
       this.duration = 0;
+
       this.init(isHelmet, renderSize,f1fnames,liveryData);
 
     }

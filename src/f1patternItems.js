@@ -342,6 +342,7 @@ class PatternItems {
                 console.log(">> wait for it! " + forceddelay);
                 setTimeout(() => {
                     this.patternTexture = tex;
+                    f1SpecialFX.mapUniforms.texture1Base.value = tex;
 
                     f1SpecialFX.mapUniforms.leadin.value = 0.0;
 

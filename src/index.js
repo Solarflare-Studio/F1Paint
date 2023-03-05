@@ -209,8 +209,8 @@ if(userCarOrHelmet=='h')
 	isHelmet = true;
 
 // var isHelmet = true;
-var renderSize = 2048;//1024;
-// var renderSize = 1024;
+// var renderSize = 2048;//1024;
+var renderSize = 1024;
 
 // set files names
 var f1fnames = new F1AssetFileNames();
@@ -2456,7 +2456,7 @@ function specialrenderpipeline() {
 
 	//
 	if(f1CarHelmet.specialFXMesh) {
-		f1SpecialFX.mapUniforms.texture1Base.value = patternItems.patternTexture;
+		// f1SpecialFX.mapUniforms.texture1Base.value = patternItems.patternTexture;
 
 		f1SpecialFX.mapUniforms.layer.value = f1Gui.currentPage;
 		var layer = 0;
@@ -2474,10 +2474,8 @@ function specialrenderpipeline() {
 		f1SpecialFX.mapUniforms.chan2Colour.value = new THREE.Vector3(	tint2.r /= 255.0,tint2.g /= 255.0,tint2.b /= 255.0	);
 		f1SpecialFX.mapUniforms.chan3Colour.value = new THREE.Vector3(	tint3.r /= 255.0,tint3.g /= 255.0,tint3.b /= 255.0	);
 
-		// console.log("***************** page===" + f1Gui.currentPage);
 
 		f1SpecialFX.mapUniforms.fTime.value = f1SpecialFX.finalPass.uniforms.amountBloom.value;
-
 
 		renderer.setRenderTarget(f1SpecialFX.bufferMapSceneTarget);
 		renderer.render( f1SpecialFX.bufferMapScene, f1SpecialFX.bufferMapCamera );
@@ -2490,7 +2488,6 @@ function specialrenderpipeline() {
 
 
 		f1CarHelmet.specialFXMesh.material.map = f1SpecialFX.bufferMapSceneTarget.texture;
-
 	}
 	scene.background =  new THREE.Color( 0x000000 );
 
@@ -2504,12 +2501,15 @@ function specialrenderpipeline() {
 		if(!isHelmet)
 			f1CarHelmet.baseFXMesh.material = f1SpecialFX.blackMat;
 		f1CarHelmet.specialFXMesh.material = f1SpecialFX.blackMat;
-		if(f1Ribbons.enabled)
-			camera.layers.enable(3);
-		f1SpecialFX.fxRibbonComposer.render();
-		camera.layers.disable(3);
 
 	}
+	if(f1Ribbons.enabled) {
+		camera.layers.enable(3);
+		f1SpecialFX.fxRibbonComposer.render();
+		camera.layers.disable(3);
+	}
+
+
 	//
 	camera.layers.enable(1);
 
@@ -2533,9 +2533,6 @@ function specialrenderpipeline() {
 
 
 	f1SpecialFX.finalComposer.render();
-
-
-
 
 }
 //==================================================

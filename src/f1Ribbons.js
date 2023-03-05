@@ -788,6 +788,7 @@ class F1Ribbons {
     }
     */
     //======================
+    /*
     mathPulse(a) {
 
         const tweak = 1.0;
@@ -841,7 +842,7 @@ class F1Ribbons {
             return 0.5 * (1 + Math.sin(Math.PI * (t - endTime) / duration - Math.PI / 2));
         }
     }
-      
+      */
 
 
     update() {
@@ -898,9 +899,9 @@ class F1Ribbons {
         if(this.modifier) {
              this.modifier && this.modifier.apply();
         }
-        if(this.modifierChange) {
-            this.modifierChange && this.modifierChange.apply();
-        }
+        // if(this.modifierChange) {
+        //     this.modifierChange && this.modifierChange.apply();
+        // }
     }
 
     //======================
