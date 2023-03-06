@@ -115,7 +115,7 @@ f1Aws.loadfromAWS('languages','languages.json',0);
 
 var patternItems = new PatternItems(!f1Cookies.cookie_livery_value == "");
 var processJSON = new ProcessJSON(patternItems);
-processJSON.loadPatterns(f1Cookies);
+processJSON.loadPatterns(f1Cookies,f1Aws);
 var f1Fonts = new F1Fonts();
 
 var f1Gui = new F1Gui(processJSON);
@@ -538,7 +538,7 @@ function onMinMax() {
 function switchModel(_isHelmet) {
 	if(f1Cookies.isHelmet == _isHelmet) return;
 	f1Cookies.isHelmet = _isHelmet;
-	processJSON.loadPatterns(f1Cookies);
+	processJSON.loadPatterns(f1Cookies,f1Aws);
 }
 //==================================================
 function seekPatternThumb(patternblock,layer) {
@@ -832,7 +832,7 @@ function choosePattern(which, theLayer,thefile,thepatternelement) {
 	patternItems.changePattern(which,thefile,
 		f1Layers.mapUniforms,thepatternelement,
 		processJSON.patternsData,processJSON.liveryData,theLayer,
-		f1MetalRough.mapUniforms,f1Text,f1SpecialFX,f1Gui,f1Ribbons);
+		f1MetalRough.mapUniforms,f1Text,f1SpecialFX,f1Gui,f1Ribbons,f1Aws);
 }
 
 //=========================================================

@@ -37,6 +37,11 @@ class F1Aws {
 
     }
     //======================
+    haveLoadedPatternsJSON(data) {
+
+    }
+
+    //======================
     haveLoadedLanguageFile(data) {
         this.languageText = JSON.parse(data);
         const dialogues = this.languageText['dialogues'];
@@ -149,7 +154,7 @@ class F1Aws {
         return main();
     }
     //======================
-    loadfromAWS(folder,file,type) {
+    loadfromAWS(folder,file,type,callback,self,thumb) {
         console.log(">> loading aws file type : " + type + " from " + folder +"/" + file);
         const filepathname = folder + "/" + file;
         var _self = this;
@@ -163,11 +168,36 @@ class F1Aws {
             try {
                 const response = await this.s3.send(command);
                 // The Body object also has 'transformToByteArray' and 'transformToWebStream' methods.
-                const str = await response.Body.transformToString();
-                if(type==0) // language choices and settings
+                
+                if(type==0) { // language choices and settings
+                    const str = await response.Body.transformToString();
                     _self.haveLoadedLanguageChoice(str);
+                }
                 else if(type==1) { // actual language file
+                    const str = await response.Body.transformToString();
                     _self.haveLoadedLanguageFile(str);
+                }
+                else if(type==2) { // patterns json file
+                    const str = await response.Body.transformToString();
+                    callback(str,self,this); // pass back aws!
+//                    _self.haveLoadedPatternsJSON(str);
+                }
+                else if(type==3) { // image files png
+                    // const str = await response.Body.transformToString();
+                    const blob = new Blob([await response.Body.transformToByteArray()], { type: "image/png" });
+                    const url = URL.createObjectURL(blob);
+                    callback(url,self);
+                }
+                else if(type==4) { // image files jpg
+                    // const str = await response.Body.transformToString();
+                    const blob = new Blob([await response.Body.transformToByteArray()], { type: "image/jpg" });
+                    const url = URL.createObjectURL(blob);
+                    callback(url,self);
+                }
+                else if(type==5) { // thumbs
+                    const blob = new Blob([await response.Body.transformToByteArray()], { type: "image/jpg" });
+                    const url = URL.createObjectURL(blob);
+                    callback(url,self,thumb);
                 }
                 
             } catch (err) {

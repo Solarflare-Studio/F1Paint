@@ -327,7 +327,157 @@ class F1Materials {
     //     );        
     // }
     // ===============================================
-    sequentialLoadMaps(_filenames, _types, _material1, _material2,f1Gui,f1Garage, f1CarHelmet,f1Ribbons) {
+    sequentialLoadMaps(_filenames,_filecomplete, _types, _material1, _material2,f1Gui,f1Garage, f1CarHelmet,f1Ribbons) {
+
+        this.totalTexturesAttempted++;
+        const self = this;
+
+
+        var filelistindex=-1;
+        for(var i=0;i<_filenames.length;i++) {
+            if(!_filecomplete[i]) {
+                filelistindex=i;
+                break;
+            }
+        }
+        if(filelistindex==-1) { // all done
+            return;
+        }
+
+        const filename = _filenames[i];
+        const filetype = _types[i];
+
+        console.log(">> " + this.totalTexturesLoaded + '/'+ this.totalTexturesAttempted + "== attempting loadmaps sequential = " + filename);
+
+
+        // const newfilenames = _filenames.slice(1);
+        // const newfiletypes = _types.slice(1);
+        // const newfilecomplete = _filecomplete.slice(1);
+        const _self = this;
+        if(filetype==10) {  // force env map loading
+            setTimeout(function() {
+                clearTimeout(this.filetimeout);
+
+                _self.loadEnvMap(f1CarHelmet,f1Garage,f1Gui);
+            },1000);
+            
+            return;
+        }
+
+        clearTimeout(this.filetimeout);
+
+        this.filetimeout = setTimeout( function() {
+            console.log(">> .......checking file texture load timeout : " + self.totalTexturesAttempted +", "+ self.totalTexturesLoaded);
+            if(self.totalTexturesAttempted != self.totalTexturesLoaded) {
+    
+                console.log("*************** FILE FAILED *******************");
+                self.totalTexturesAttempted--;
+                self.sequentialLoadMaps(_filenames, _filecomplete,_types, _material1, _material2,f1Gui,f1Garage, f1CarHelmet,f1Ribbons);
+            }
+        }, 5000);
+
+        const maptexture = new THREE.TextureLoader().load(filename, (tex) => {
+            clearTimeout(this.filetimeout);
+            if(_filecomplete[filelistindex]) { //already done!
+                
+            }
+            else {
+                _filecomplete[filelistindex] = true;
+
+                this.totalTexturesLoaded++;
+
+                tex.encoding = THREE.LinearEncoding
+                // tex.encoding = THREE.sRGBEncoding;
+    
+                tex.flipY = false;
+                tex.premultiplyAlpha = true;
+                tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+                console.log(">> " + this.totalTexturesLoaded + '/'+ this.totalTexturesAttempted + "== sequential LOADED  = " + filename);
+                f1Gui.updateProgress(5,'');
+
+                if(filetype==0) { //base
+                    _material1.map = tex;
+                    _material1.needsUpdate = true;
+                }
+                else if(filetype==1) { //metal
+                    _material1.metalnessMap = tex;
+                    _material1.needsUpdate = true;
+                }
+                else if(filetype==2) { //rough
+                    _material1.roughnessMap = tex;
+                    _material1.needsUpdate = true;
+                }
+                else if(filetype==3) { //ao
+                    _material1.aoMap = tex;
+                    _material1.needsUpdate = true;
+                }
+                else if(filetype==4) { //normal
+                    _material1.normalMap = tex;
+                    _material1.needsUpdate = true;
+                }
+                //
+                else if(filetype==5) { //normal
+                    _material2.normalMap = tex;
+                    _material2.needsUpdate = true;
+                }
+                else if(filetype==6) { //ao
+                    _material2.aoMap = tex;
+                    _material2.needsUpdate = true;
+                }
+                else if(filetype==7) {  // garage floor
+                    f1Garage.garageMaterial.map = tex;
+                    f1Garage.garageMaterial.needsUpdate=true;
+                }
+                else if(filetype==8) {  // garage floor rough
+                    f1Garage.garageMaterial.roughnessMap = tex;
+                    // f1Garage.garageMaterial.envMapIntensity = 0.10;
+                    
+                    f1Garage.garageMaterial.needsUpdate=true;
+
+                }
+                else if(filetype==9) {  // garage wall
+                    f1Garage.garageWall.material.map = tex;
+                    // f1Garage.garageWall.material.envMapIntensity = 0.10;
+                    f1Garage.garageWall.material.needsUpdate=true;
+                }
+                else if(filetype==11) {  // ribbon
+                    // tex.premultiplyAlpha = false;
+                    tex.premultiplyAlpha = true;
+                    f1Ribbons.uniforms.texture1.value = tex; // method with shader to distort and texture frag
+                    // f1Ribbons.uniformsCarChange.texture1.value = tex;
+
+                    this.keepRibbon = tex;
+
+                    // this.ribbonMaterial.uniforms.baseTexture.value = tex; // method with shader to distort and texture frag
+                    // f1Ribbons.ribbonMaterial.map = tex; // method with normal mat and buffergeom...todo
+                    // f1Ribbons.ribbonMaterial.needsUpdate=true;
+                }
+                else if(filetype==12) {  // glow floor
+                    tex.premultiplyAlpha = false;
+                    f1Ribbons.floorGlowMat.map = tex; // 
+                    f1Ribbons.floorGlowMat.needsUpdate=true;
+                }
+                else if(filetype==13) {  // scene bg
+                    tex.premultiplyAlpha = false;
+                    f1Garage.backgroundImage = tex;
+
+                    // f1Garage.backgroundMat.map = tex;
+    //                f1Garage.backgroundMat.needsUpdate=true;
+                }
+            }
+          
+
+            this.sequentialLoadMaps(_filenames, _filecomplete,_types, _material1, _material2,f1Gui,f1Garage,f1CarHelmet,f1Ribbons);
+
+        })
+    }
+    // ===============================================
+
+
+
+
+
+    sequentialLoadMapsOLD(_filenames,_filecomplete, _types, _material1, _material2,f1Gui,f1Garage, f1CarHelmet,f1Ribbons) {
 
         this.totalTexturesAttempted++;
         const self = this;
@@ -337,6 +487,7 @@ class F1Materials {
         const filetype = _types[0];
         const newfilenames = _filenames.slice(1);
         const newfiletypes = _types.slice(1);
+        const newfilecomplete = _filecomplete.slice(1);
         const _self = this;
         if(filetype==10) {  // force env map loading
             setTimeout(function() {
@@ -355,7 +506,7 @@ class F1Materials {
             if(self.totalTexturesAttempted != self.totalTexturesLoaded) {
                 console.log("*************** FILE FAILED *******************");
                 self.totalTexturesAttempted--;
-                self.sequentialLoadMaps(_filenames, _types, _material1, _material2,f1Gui,f1Garage, f1CarHelmet,f1Ribbons);
+                self.sequentialLoadMaps(_filenames, _filecomplete,_types, _material1, _material2,f1Gui,f1Garage, f1CarHelmet,f1Ribbons);
             }
         }, 5000);
 
@@ -445,7 +596,7 @@ class F1Materials {
           
 
             if(newfilenames.length!=0)
-                this.sequentialLoadMaps(newfilenames, newfiletypes, _material1, _material2,f1Gui,f1Garage,f1CarHelmet,f1Ribbons);
+                this.sequentialLoadMaps(newfilenames, newfilecomplete,newfiletypes, _material1, _material2,f1Gui,f1Garage,f1CarHelmet,f1Ribbons);
 
 
         })

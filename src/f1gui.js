@@ -9,6 +9,8 @@ class F1Gui {
         // this.colourbackgroundSolidColour = '#FFD933';
         // this.colourbackgroundBottomColour = '#ffff00';
         // this.colourbackgroundTopColour = '#ff0000';
+        this.totalfilestoloadperc = 85;
+
         this.scaleDevice = 1.0;
         this.currentPage = 1;
         this.inPresets = false;
@@ -28,7 +30,7 @@ class F1Gui {
     }
 
     updateProgress(percent,msg) {
-        const maxprogress = 85;
+        const maxprogress = this.totalfilestoloadperc;
         const progress = document.getElementById("progress");
         this.currentProgress = this.currentProgress + percent;
         progress.style.width = ((this.currentProgress / maxprogress)*100) + "%";

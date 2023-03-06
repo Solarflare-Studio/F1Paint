@@ -141,33 +141,34 @@ class F1CarHelmet {
             _self.f1Gui.updateProgress(10,'mesh');
             const filelist = new Array();
             const filetypelist = new Array();
+            const filecomplete = new Array();
             
             // filelist.push('./assets/garage/whitefloor.jpg'); // garage floor
             
             // filelist.push('./assets/garage/concretetilesSquare.jpg' ); // floor
             filelist.push('./assets/garage/Background_Square.jpg' ); // floor
-            filetypelist.push( 7 );
+            filetypelist.push( 7 ); filecomplete.push(false);
             // filelist.push('./assets/garage/concretetilesSquare.jpg' ); // floor roughmap
             filelist.push('./assets/garage/Background_Square_rm.jpg' ); // floor roughmetal
-            filetypelist.push( 8 );
+            filetypelist.push( 8 ); filecomplete.push(false);
             // filelist.push('./assets/garage/walls.jpg' ); // garage walls
             // filetypelist.push( 9 );
             filelist.push('./assets/sfx/scenebackground.jpg' ); // garage walls
-            filetypelist.push( 13 );
+            filetypelist.push( 13 ); filecomplete.push(false);
 
             // filelist.push('./assets/sfx/ribbon2.png'); // ribbon textures..
             filelist.push('./assets/sfx/ribbon4.png'); // ribbon textures..
             // filelist.push('./assets/sfx/ribbon3.png'); // ribbon textures..
-            filetypelist.push( 11 );
+            filetypelist.push( 11 ); filecomplete.push(false);
             filelist.push('./assets/sfx/floorglow.jpg'); // flow glow texture
-            filetypelist.push( 12 );            
+            filetypelist.push( 12 );             filecomplete.push(false);
 
 
             if(_self.isHelmet) { // really is helmet
 
-                filetypelist.push( 5 );
+                filetypelist.push( 5 ); filecomplete.push(false);
                 filelist.push('./assets/helmet/Helmet Triangulated_Normal.png' ); // normal
-                filetypelist.push( 6 );
+                filetypelist.push( 6 ); filecomplete.push(false);
                 filelist.push('./assets/helmet/Helmet Triangulated_AO.png' ); // ao
 
                 // todo need helmet base texture for visor!
@@ -185,20 +186,20 @@ class F1CarHelmet {
 
 
                 filelist.push(f1fnames.car_files[6] ); // base
-                filetypelist.push( 0 );
+                filetypelist.push( 0 ); filecomplete.push(false);
                 filelist.push(f1fnames.car_files[9] ); // metal
-                filetypelist.push( 1 );
+                filetypelist.push( 1 ); filecomplete.push(false);
                 filelist.push(f1fnames.car_files[10] ); // rough
-                filetypelist.push( 2 );
+                filetypelist.push( 2 ); filecomplete.push(false);
                 filelist.push(f1fnames.car_files[8] ); // ao
-                filetypelist.push( 3 );
+                filetypelist.push( 3 ); filecomplete.push(false);
                 filelist.push(f1fnames.car_files[7] ); // normal
-                filetypelist.push( 4 );
+                filetypelist.push( 4 ); filecomplete.push(false);
 
                 filelist.push(f1fnames.car_files[2] ); // normal
-                filetypelist.push( 5 );
+                filetypelist.push( 5 ); filecomplete.push(false);
                 filelist.push(f1fnames.car_files[3] ); // ao
-                filetypelist.push( 6 );
+                filetypelist.push( 6 ); filecomplete.push(false);
 
                 _self.theBaseMaterial.emissive.r = 0.0;
                 _self.theBaseMaterial.emissive.g = 0.0;
@@ -210,14 +211,14 @@ class F1CarHelmet {
 
 
             filelist.push('envmap'); // force load of envmap now then
-            filetypelist.push( 10 );
+            filetypelist.push( 10 ); filecomplete.push(false);
 
 
             _self.theModelMaterial.emissive.r = 0.0;
             _self.theModelMaterial.emissive.g = 0.0;
             _self.theModelMaterial.emissive.b = 0.0;
 
-            _self.f1materials.sequentialLoadMaps( filelist, filetypelist,_self.theBaseMaterial,_self.theModelMaterial,_self.f1Gui,f1Garage, _self,f1Ribbons);
+            _self.f1materials.sequentialLoadMaps( filelist,filecomplete, filetypelist,_self.theBaseMaterial,_self.theModelMaterial,_self.f1Gui,f1Garage, _self,f1Ribbons);
 
                 
 

@@ -148,6 +148,12 @@ class F1Text {
 
         // _self.composite();
 
+        inputField.addEventListener("click", function() {
+            inputField.placeholder = inputField.value;
+            inputField.value = "";
+            
+        });
+
 
         inputField.addEventListener('input', function() {
         //   let inputValue = inputField.value;

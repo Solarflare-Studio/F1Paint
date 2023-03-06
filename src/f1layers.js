@@ -19,8 +19,6 @@ class F1Layers {
         this.tagLayer = new THREE.TextureLoader().load('./patterns/smallblackimage.jpg', (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
-
-
         this.decalLayer = new THREE.TextureLoader().load('./patterns/smallblackimage.jpg', (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
