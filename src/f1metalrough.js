@@ -19,10 +19,10 @@ class F1MetalRough {
         this.baseLayer = new THREE.TextureLoader().load(f1fnames.car_files[4], (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
-        this.tagLayer = new THREE.TextureLoader().load('./patterns/smallblackimage.jpg', (tex) => {
+        this.tagLayer = new THREE.TextureLoader().load('./assets/textures/smallblackimage.jpg', (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
-        this.decalLayer = new THREE.TextureLoader().load('./patterns/smallblackimage.jpg', (tex) => {
+        this.decalLayer = new THREE.TextureLoader().load('./assets/textures/smallblackimage.jpg', (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
 

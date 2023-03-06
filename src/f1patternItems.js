@@ -254,7 +254,10 @@ class PatternItems {
                 self.liveryData['Layers'][self.currentLayer].patternId = self.patternId;// which; // todo, make this the pattern id
                 self.liveryData['Layers'][self.currentLayer].filename = self.thefile;
 
+
                 if(!self.f1Gui.isAuto) {
+                    console.log(">> lead out sfx");
+
                     self.f1SpecialFX.startFX(1000); // sfx lead out
                 }
                 else 
@@ -462,10 +465,10 @@ class PatternItems {
         f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Gui,f1Ribbons,f1Aws) {
         const patternId = thepatternelement.getAttribute("patternId");
 
+        //
         var debMsg = ">> Picked pattern = " + which + " id='"+ patternId +"'\n    " + "file = " + thefile;
         if(thefile!='smallredimage.png')
-            debMsg = debMsg + patternsData['Patterns'][which].name+ "\n   " + patternsData['Patterns'][which].image;
-
+            debMsg = debMsg + " name= " + patternsData['Patterns'][which].name+ "\n   " + patternsData['Patterns'][which].image;
         console.log(debMsg);
 
 
@@ -588,10 +591,10 @@ class PatternItems {
             this.thepatternelement = thepatternelement;
 
             if(thefile == 'smallredimage.png') {
-                this.nowloadtexture('./patterns/' + thefile,this);
+                this.nowloadtexture('./assets/textures/' + thefile,this);
             }
             else if(thefile == 'smallblankimage.png') {
-                this.nowloadtexture('./patterns/' + thefile,this);
+                this.nowloadtexture('./assets/textures/' + thefile,this);
             }
             else {
                 if(currentLayer==0)

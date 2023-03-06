@@ -855,7 +855,6 @@ function onPatternPicked(which,thefile,thepatternelement)
 	else if(currentLayer==2)
 		document.getElementById('layer3decals_ins').classList.add('disabledButton');
 
-	choosePattern(which, currentLayer,thefile,thepatternelement);
 
 	if(f1Gui.isAuto)
 ;//		f1Gui.isAuto = false;
@@ -865,6 +864,9 @@ function onPatternPicked(which,thefile,thepatternelement)
 
 		f1SpecialFX.startFX(350); // sfx lead in
 	}
+
+	choosePattern(which, currentLayer,thefile,thepatternelement);
+
 
 	selectedChan = -1;
 }

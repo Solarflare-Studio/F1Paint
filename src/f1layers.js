@@ -13,13 +13,13 @@ class F1Layers {
 
         var _self = this;
 
-        this.baseLayer = new THREE.TextureLoader().load('./patterns/smallredimage.png', (tex) => {
+        this.baseLayer = new THREE.TextureLoader().load('./assets/textures/smallredimage.png', (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
-        this.tagLayer = new THREE.TextureLoader().load('./patterns/smallblackimage.jpg', (tex) => {
+        this.tagLayer = new THREE.TextureLoader().load('./assets/textures/smallblackimage.jpg', (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
-        this.decalLayer = new THREE.TextureLoader().load('./patterns/smallblackimage.jpg', (tex) => {
+        this.decalLayer = new THREE.TextureLoader().load('./assets/textures/smallblackimage.jpg', (tex) => {
           tex.encoding = THREE.LinearEncoding;
         })
 

@@ -202,6 +202,7 @@ class F1Aws {
                 
             } catch (err) {
               console.error(err);
+              alert("AWS error "+ err);
             }
         };
         main();
