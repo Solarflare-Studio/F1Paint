@@ -1,4 +1,5 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
+import {DEBUG_MODE} from './adminuser'
 
 class F1Text {
 
@@ -66,8 +67,8 @@ class F1Text {
             document.getElementById('c_tagScaleSliderTxt').value = "scale= " + _self.locos[0][2];
             document.getElementById('c_tagRotSliderTxt').value = "rot= " + _self.locos[0][3];
     
-
-            console.log("chosen loco");
+            if(DEBUG_MODE)
+                console.log("chosen loco");
         }
 
 
@@ -101,7 +102,8 @@ class F1Text {
 
 
     init(processJSON) {
-        console.log(">> init F1 Text pipeline");
+        if(DEBUG_MODE)
+            console.log(">> init F1 Text pipeline");
         var _self = this;
         this.processJSON = processJSON;
 
@@ -174,7 +176,8 @@ class F1Text {
     fixText() {
         let inputField = document.getElementById('taginput');
         let inputValue = inputField.value;
-        console.log(inputValue);
+        if(DEBUG_MODE)
+            console.log(inputValue);
         const styletype = this.processJSON.liveryData['Layers'].tagfontstyle; // tag layer
         this.textTexture = this.createText(inputValue,styletype);
         this.processJSON.liveryData.tagtext = inputValue;

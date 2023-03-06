@@ -1,5 +1,6 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { TWEEN } from '../node_modules/three/examples/jsm/libs/tween.module.min'
+import {DEBUG_MODE} from './adminuser'
 
 
 class F1Gui {
@@ -34,7 +35,8 @@ class F1Gui {
         const progress = document.getElementById("progress");
         this.currentProgress = this.currentProgress + percent;
         progress.style.width = ((this.currentProgress / maxprogress)*100) + "%";
-        console.log(">> percent loaded = " + this.currentProgress + " - " + msg);
+        if(DEBUG_MODE)
+            console.log(">> percent loaded = " + this.currentProgress + " - " + msg);
     }
     //===================================
     updateProgress2(percent) {
@@ -475,7 +477,8 @@ class F1Gui {
                 const id= patternblock.children[i].children[0].getAttribute('patternId');
                 if(this.processJSON.liveryData['Layers'][0].patternId == id){
                     // matched!
-                    console.log("matched");
+                    if(DEBUG_MODE)
+                        console.log("matched");
                     hasfound=true;
                     patternThumbElement = patternblock.children[i].children[0];
                     break;
@@ -483,7 +486,8 @@ class F1Gui {
             }
 
             if(!hasfound) {
-                console.log(">> **** error finding matching pattern");
+                if(DEBUG_MODE)
+                    console.log(">> **** error finding matching pattern");
             }
 
 
@@ -516,7 +520,8 @@ class F1Gui {
                 const id= patternblock.children[i].children[0].getAttribute('patternId');
                 if(this.processJSON.liveryData['Layers'][1].patternId == id){
                     // matched!
-                    console.log("matched");
+                    if(DEBUG_MODE)
+                        console.log("matched");
                     hasfound=true;
                     patternThumbElement = patternblock.children[i].children[0];
                     break;
@@ -524,7 +529,8 @@ class F1Gui {
             }
 
             if(!hasfound) {
-                console.log(">> **** error finding matching pattern");
+                if(DEBUG_MODE)
+                    console.log(">> **** error finding matching pattern");
             }
 
 
@@ -557,7 +563,8 @@ class F1Gui {
                     const id= patternblock.children[i].children[0].getAttribute('patternId');
                     if(this.processJSON.liveryData['Layers'][2].patternId == id){
                         // matched!
-                        console.log("matched");
+                        if(DEBUG_MODE)
+                            console.log("matched");
                         hasfound=true;
                         patternThumbElement = patternblock.children[i].children[0];
                         break;
@@ -565,7 +572,8 @@ class F1Gui {
                 }
 
                 if(!hasfound) {
-                    console.log(">> **** error finding matching pattern");
+                    if(DEBUG_MODE)
+                        console.log(">> **** error finding matching pattern");
                 }
 
 
@@ -740,10 +748,12 @@ class F1Gui {
 
         fontsizepix = map(290,800,12,18,w);
         fontsizepix += map(1.5,3.0,-2,2,aspectratio);
-        console.log(">> ** fontsizepix="+fontsizepix);
+        if(DEBUG_MODE)
+            console.log(">> ** fontsizepix="+fontsizepix);
         gapHeightBase = map(10,20,0.5,20,fontsizepix);
 
-        console.log(fontsizepix + ",aspectratio = " + fontsizepix + ", " + aspectratio );
+        if(DEBUG_MODE)
+            console.log(fontsizepix + ",aspectratio = " + fontsizepix + ", " + aspectratio );
         // fontsizepix = (fontsizepix*aspectratio*0.8);
 
         // if(w<290)

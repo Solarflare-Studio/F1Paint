@@ -3,6 +3,7 @@ import { EffectComposer } from '../node_modules/three/examples/jsm/postprocessin
 import { RenderPass } from '../node_modules/three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from '../node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { ShaderPass } from '../node_modules/three/examples/jsm/postprocessing/ShaderPass.js';
+import {DEBUG_MODE} from './adminuser'
 
 
 
@@ -75,7 +76,8 @@ class F1SpecialFX {
     //======================
 
     init(isHelmet, renderSize, f1fnames) {
-        console.log(">> init F1 Special FX Render pipeline");
+        if(DEBUG_MODE)
+          console.log(">> init F1 Special FX Render pipeline");
         this.offscreenSize = 512;// renderSize;
 
         this.plainMat = new THREE.MeshBasicMaterial({ // todo, replace with shader to offset mesh for specialfx

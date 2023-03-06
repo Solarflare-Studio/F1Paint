@@ -1,4 +1,5 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
+import {DEBUG_MODE} from './adminuser'
 
 
 
@@ -180,7 +181,8 @@ class F1Materials {
     loadEnvMap(f1CarHelmet,f1Garage,f1Gui) {
 
         // const px = new THREE.TextureLoader('./assets/cubemap-static/px.png');
-        console.log("ENVMAP >> *** Environment map trying to load cube map env");
+        if(DEBUG_MODE)
+            console.log("ENVMAP >> *** Environment map trying to load cube map env");
 
         var self = this;
 
@@ -189,8 +191,10 @@ class F1Materials {
 	        	.load( [ 'px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png' ], function(result) {
                     // Code to execute when the environment map has finished loading
                     self.totalTexturesLoaded = self.totalTexturesAttempted;
-                    console.log(">> " + self.totalTexturesLoaded + '/'+ self.totalTexturesAttempted + "== sequential LOADED  = ENVMAP");
-                    console.log('ENVMAP >> TEXTURES ALL DONE!');
+                    if(DEBUG_MODE) {
+                        console.log(">> " + self.totalTexturesLoaded + '/'+ self.totalTexturesAttempted + "== sequential LOADED  = ENVMAP");
+                        console.log('ENVMAP >> TEXTURES ALL DONE!');
+                    }
 
                     clearTimeout(self.filetimeout);
 
@@ -230,7 +234,8 @@ class F1Materials {
     quickSetMaps(result,f1CarHelmet,f1Garage) {
 
         if(f1CarHelmet && f1CarHelmet.theModelMaterial && f1Garage.garageMaterial && f1Garage.garageWall.material) {
-            console.log(">> Materials all ready - envmap applying..")
+            if(DEBUG_MODE)
+                console.log(">> Materials all ready - envmap applying..")
             // f1CarHelmet.envMap = result;
             f1CarHelmet.theModelMaterial.envMap = result;
             f1Garage.garageMaterial.envMap = result;
@@ -253,7 +258,8 @@ class F1Materials {
             f1Garage.garageWall.material.needsUpdate=true;   
         }
         else {
-            console.log(">> error materials not all present yet - envmap waiting..")
+            if(DEBUG_MODE)
+                console.log(">> error materials not all present yet - envmap waiting..")
             var self = this;
             setTimeout(function() {
                 self.quickSetMaps(result,f1CarHelmet,f1Garage);
@@ -347,7 +353,8 @@ class F1Materials {
         const filename = _filenames[i];
         const filetype = _types[i];
 
-        console.log(">> " + this.totalTexturesLoaded + '/'+ this.totalTexturesAttempted + "== attempting loadmaps sequential = " + filename);
+        if(DEBUG_MODE)
+            console.log(">> " + this.totalTexturesLoaded + '/'+ this.totalTexturesAttempted + "== attempting loadmaps sequential = " + filename);
 
 
         // const newfilenames = _filenames.slice(1);
@@ -367,10 +374,12 @@ class F1Materials {
         clearTimeout(this.filetimeout);
 
         this.filetimeout = setTimeout( function() {
-            console.log(">> .......checking file texture load timeout : " + self.totalTexturesAttempted +", "+ self.totalTexturesLoaded);
+            if(DEBUG_MODE)
+                console.log(">> .......checking file texture load timeout : " + self.totalTexturesAttempted +", "+ self.totalTexturesLoaded);
             if(self.totalTexturesAttempted != self.totalTexturesLoaded) {
     
-                console.log("*************** FILE FAILED *******************");
+                if(DEBUG_MODE)
+                    console.log("*************** FILE FAILED *******************");
                 self.totalTexturesAttempted--;
                 self.sequentialLoadMaps(_filenames, _filecomplete,_types, _material1, _material2,f1Gui,f1Garage, f1CarHelmet,f1Ribbons);
             }
@@ -392,7 +401,8 @@ class F1Materials {
                 tex.flipY = false;
                 tex.premultiplyAlpha = true;
                 tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-                console.log(">> " + this.totalTexturesLoaded + '/'+ this.totalTexturesAttempted + "== sequential LOADED  = " + filename);
+                if(DEBUG_MODE)
+                    console.log(">> " + this.totalTexturesLoaded + '/'+ this.totalTexturesAttempted + "== sequential LOADED  = " + filename);
                 f1Gui.updateProgress(5,'');
 
                 if(filetype==0) { //base
@@ -481,8 +491,8 @@ class F1Materials {
 
         this.totalTexturesAttempted++;
         const self = this;
-
-        console.log(">> " + this.totalTexturesLoaded + '/'+ this.totalTexturesAttempted + "== attempting loadmaps sequential = " + _filenames[0]);
+        if(DEBUG_MODE)
+            console.log(">> " + this.totalTexturesLoaded + '/'+ this.totalTexturesAttempted + "== attempting loadmaps sequential = " + _filenames[0]);
         const filename = _filenames[0];
         const filetype = _types[0];
         const newfilenames = _filenames.slice(1);
@@ -502,9 +512,11 @@ class F1Materials {
         clearTimeout(this.filetimeout);
 
         this.filetimeout = setTimeout( function() {
-            console.log(">> .......checking file texture load timeout : " + self.totalTexturesAttempted +", "+ self.totalTexturesLoaded);
+            if(DEBUG_MODE)
+                console.log(">> .......checking file texture load timeout : " + self.totalTexturesAttempted +", "+ self.totalTexturesLoaded);
             if(self.totalTexturesAttempted != self.totalTexturesLoaded) {
-                console.log("*************** FILE FAILED *******************");
+                if(DEBUG_MODE)
+                    console.log("*************** FILE FAILED *******************");
                 self.totalTexturesAttempted--;
                 self.sequentialLoadMaps(_filenames, _filecomplete,_types, _material1, _material2,f1Gui,f1Garage, f1CarHelmet,f1Ribbons);
             }
@@ -521,7 +533,8 @@ class F1Materials {
             tex.flipY = false;
             tex.premultiplyAlpha = true;
             tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-            console.log(">> " + this.totalTexturesLoaded + '/'+ this.totalTexturesAttempted + "== sequential LOADED  = " + filename);
+            if(DEBUG_MODE)
+                console.log(">> " + this.totalTexturesLoaded + '/'+ this.totalTexturesAttempted + "== sequential LOADED  = " + filename);
             f1Gui.updateProgress(5,'');
 
             if(filetype==0) { //base

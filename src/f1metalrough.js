@@ -1,4 +1,5 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
+import {DEBUG_MODE} from './adminuser'
 
 class F1MetalRough {
 
@@ -11,7 +12,8 @@ class F1MetalRough {
     }
 
     init(isHelmet, renderSize, f1fnames) {
-        console.log(">> init F1 Metal Rough");
+        if(DEBUG_MODE)
+          console.log(">> init F1 Metal Rough");
         var offscreenSize = renderSize;
 
         var _self = this;

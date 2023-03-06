@@ -1,5 +1,6 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { GLTFLoader } from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js'
+import {DEBUG_MODE} from './adminuser'
 
 class F1CarHelmet {
 
@@ -87,11 +88,13 @@ class F1CarHelmet {
 
 
         this.helmetCentre = new THREE.Vector3();
-        console.log(">> attempting to load 3d mesh="+helmet3D);
+        if(DEBUG_MODE)
+            console.log(">> attempting to load 3d mesh="+helmet3D);
         this.gltfLoader.load( helmet3D, function ( gltf ) {
             let theModelScene = gltf.scene;
             _self.theModel.add(theModelScene);
-            console.log(">> attempting to traverse mesh "+theModelScene.children.length);
+            if(DEBUG_MODE)
+                console.log(">> attempting to traverse mesh "+theModelScene.children.length);
 
 
             if(!_self.isHelmet) {
@@ -235,7 +238,8 @@ class F1CarHelmet {
             }
         }, undefined, function ( error ) {
         
-            console.error( error );
+            if(DEBUG_MODE)
+                console.error( error );
         
         } );
     }

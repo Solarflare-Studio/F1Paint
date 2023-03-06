@@ -1,3 +1,4 @@
+import {DEBUG_MODE} from './adminuser'
 
 
 class F1Cookies {
@@ -15,7 +16,7 @@ class F1Cookies {
 
 
         var _self = this;
-        console.log(">> init cookies");
+        console.log("\nStarting F1PaintShop\nSolarFlareStudios\n2023\n");
 
         const params = new URLSearchParams(document.location.search)
         if(!params.get('m') && !this.forcecar) {
@@ -34,7 +35,8 @@ class F1Cookies {
         this.userEmail = (params.get('e') ? params.get('e') : "no email"); // user email
         this.userCarOrHelmet = (params.get('m') ? params.get('m') : "c"); // car or helmet
         this.userConsole = (params.get('c') ? params.get('c') : 0); // console
-        
+        DEBUG_MODE=this.userConsole;
+
         
         
         if(this.forcecar && this.userCarOrHelmet!='h') this.userCarOrHelmet='c';
@@ -48,8 +50,9 @@ class F1Cookies {
         this.userName = (this.userName.replace(/['"]+/g, ''));
         this.userEmail = (this.userEmail.replace(/['"]+/g, ''));
         this.userCarOrHelmet = (this.userCarOrHelmet.replace(/['"]+/g, ''));
-        
-        console.log(">> ** name:" + this.userName + ", id:" + this.userID + ", email:"+ this.userEmail + ", model:"+ this.userCarOrHelmet);
+
+        if(DEBUG_MODE)
+            console.log(">> ** name:" + this.userName + ", id:" + this.userID + ", email:"+ this.userEmail + ", model:"+ this.userCarOrHelmet);
         
         // var cookie_uniqueID_value = document.cookie.replace(/(?:(?:^|.*;\s*)userID\s*\=\s*([^;]*).*$)|^.*$/, "$1");
         // var cookie_name_value = document.cookie.replace(/(?:(?:^|.*;\s*)userName\s*\=\s*([^;]*).*$)|^.*$/, "$1");
@@ -72,11 +75,13 @@ class F1Cookies {
 
         // cookie_uniqueID_value="";
         if(cookie_uniqueID_value=="" || cookie_uniqueID_value=="noID") {
-            console.log(">> *** cookie = NONE PRESENT\n ** creating");
+            if(DEBUG_MODE)
+                console.log(">> *** cookie = NONE PRESENT\n ** creating");
             this.writeCookies();
         }
         // else {
-        console.log(">> *** cookie:\nuserID:" + cookie_uniqueID_value +"\nuserName:" + cookie_name_value +"\nuserEmail:" + cookie_email_value +"\n");
+        if(DEBUG_MODE)
+            console.log(">> *** cookie:\nuserID:" + cookie_uniqueID_value +"\nuserName:" + cookie_name_value +"\nuserEmail:" + cookie_email_value +"\n");
         // if we've no url params, use cookie data
         if(this.userID=="noID") {
             this.userID = cookie_uniqueID_value;// (userID.replace(/['"]+/g, ''));
@@ -97,7 +102,8 @@ class F1Cookies {
             this.userID="noID";
 
         if(this.userID=="noID") {
-            console.log(">> *** No user id");	
+            if(DEBUG_MODE)
+                console.log(">> *** No user id");	
         }
 
 

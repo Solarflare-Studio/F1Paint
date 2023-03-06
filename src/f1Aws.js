@@ -1,3 +1,4 @@
+import {DEBUG_MODE} from './adminuser'
 
 
 class F1Aws {
@@ -9,7 +10,8 @@ class F1Aws {
     }
     init() {
         var _self = this;
-        console.log(">> connecting to AWS");
+        if(DEBUG_MODE)
+            console.log(">> connecting to AWS");
         const { CognitoIdentityClient } = require("@aws-sdk/client-cognito-identity");
 
         const {
@@ -52,7 +54,8 @@ class F1Aws {
     //======================
     haveLoadedLanguageChoice(data) {
         var _self = this;
-        console.log(">> have loaded language choice json file from aws.");
+        if(DEBUG_MODE)
+            console.log(">> have loaded language choice json file from aws.");
         this.languageSettings = JSON.parse(data);
 
         const e = document.getElementById('languagechoices');
@@ -66,7 +69,8 @@ class F1Aws {
             const lingofile = langs[i].file;
             lingos.push( [ alingo, lingofile]);
         }
-        console.log(">> languages available : " + lingos);
+        if(DEBUG_MODE)
+            console.log(">> languages available : " + lingos);
 
         if(lingos.length>0) {
             var toadd = "";
@@ -114,7 +118,8 @@ class F1Aws {
             };
             try {
                 await this.s3.send(new this.PutObjectCommand(uploadParams));
-                console.log(">> Successfully uploaded images to aws server.");
+                if(DEBUG_MODE)
+                    console.log(">> Successfully uploaded images to aws server.");
                 this.filessavedcount++;
             } catch (err) {
                 return 	console.log(">> There was an error uploading images to aws server: " + err.message);
@@ -122,7 +127,7 @@ class F1Aws {
                 }
             } catch (err) {
                 // if (!files.length) {
-                return console.log(">> aws no files to upload?");
+                return console.log(">> aws no files to upload");
                 //alert("Choose a file to upload first.");
                 // }
         }
@@ -130,7 +135,8 @@ class F1Aws {
 
     //======================
     checkFilesAWS(folder,file) {
-        console.log(">> checking aws file exists : " + folder +"/" + file);
+        if(DEBUG_MODE)
+            console.log(">> checking aws file exists : " + folder +"/" + file);
         const filepathname = folder + "/" + file;
         var _self = this;
         const main = async () => {
@@ -145,7 +151,8 @@ class F1Aws {
                 );
                 return response.Contents.length > 0;
               } catch (error) {
-                console.log(`Error checking if file exists: ${error}`);
+                if(DEBUG_MODE)
+                    console.log(`Error checking if file exists: ${error}`);
                 return false;
               }
 
@@ -155,7 +162,8 @@ class F1Aws {
     }
     //======================
     loadfromAWS(folder,file,type,callback,self,thumb) {
-        console.log(">> loading aws file type : " + type + " from " + folder +"/" + file);
+        if(DEBUG_MODE)
+            console.log(">> loading aws file type : " + type + " from " + folder +"/" + file);
         const filepathname = folder + "/" + file;
         var _self = this;
 
@@ -201,8 +209,9 @@ class F1Aws {
                 }
                 
             } catch (err) {
-              console.error(err);
-              alert("AWS error "+ err);
+                if(DEBUG_MODE)
+                    console.error(err);
+                alert("AWS error "+ err);
             }
         };
         main();

@@ -1,6 +1,7 @@
 //import * as THREE from '../node_modules/three/build/three.module.js';
 
 import * as THREE from '../node_modules/three/build/three.module.js';
+import {DEBUG_MODE} from './adminuser'
 
 
 class PatternItems {
@@ -54,7 +55,8 @@ class PatternItems {
     }
     // ===============================================
     buildGUI(patternsData,f1Aws) { // ,layerPatternThumbElements) {
-        console.log('>> adding thumbs');
+        if(DEBUG_MODE)
+            console.log('>> adding thumbs');
         var layer1PatternDiv = document.getElementById('layer1patterns_ins');
         var layer2TagsDiv = document.getElementById('layer2tags_ins');
         var layer3DecalsDiv = document.getElementById('layer3decals_ins');
@@ -228,7 +230,8 @@ class PatternItems {
         const texture = new THREE.TextureLoader().load(url, (tex) => {
             clearTimeout(self.patternLoaderTimeout);
 
-            console.log(">>>> Texture image = LOADED > "+self.thefile);
+            if(DEBUG_MODE)
+                console.log(">>>> Texture image = LOADED > "+self.thefile);
 
             // trigger any effect on car changing
             // f1Ribbons.carChangeAnimate();
@@ -244,7 +247,8 @@ class PatternItems {
             //     f1SpecialFX.startFX();
             if(self.f1SpecialFX.effectStarttime==0) self.f1SpecialFX.effectStarttime = new Date().getTime();
             const forceddelay = (self.f1SpecialFX.duration + self.f1SpecialFX.effectStarttime) - new Date().getTime();
-            console.log(">> wait for it! " + forceddelay);
+            if(DEBUG_MODE)
+                console.log(">> wait for it! " + forceddelay);
             setTimeout(() => {
                 self.patternTexture = tex;
                 self.f1SpecialFX.mapUniforms.texture1Base.value = tex;
@@ -256,7 +260,8 @@ class PatternItems {
 
 
                 if(!self.f1Gui.isAuto) {
-                    console.log(">> lead out sfx");
+                    if(DEBUG_MODE)
+                        console.log(">> lead out sfx");
 
                     self.f1SpecialFX.startFX(1000); // sfx lead out
                 }
@@ -469,7 +474,9 @@ class PatternItems {
         var debMsg = ">> Picked pattern = " + which + " id='"+ patternId +"'\n    " + "file = " + thefile;
         if(thefile!='smallredimage.png')
             debMsg = debMsg + " name= " + patternsData['Patterns'][which].name+ "\n   " + patternsData['Patterns'][which].image;
-        console.log(debMsg);
+        
+        if(DEBUG_MODE)
+            console.log(debMsg);
 
 
     
@@ -560,12 +567,14 @@ class PatternItems {
 
 
             var self = this;
-            console.log(">>>> Texture image = attempt load > " + thefile);
+            if(DEBUG_MODE)
+                console.log(">>>> Texture image = attempt load > " + thefile);
 
 //          
             clearTimeout(this.patternLoaderTimeout);
             this.patternLoaderTimeout = setTimeout(function() {
-                console.log(">>>> ********* TIMED OUT - RETRY > "+thefile);
+                if(DEBUG_MODE)
+                    console.log(">>>> ********* TIMED OUT - RETRY > "+thefile);
 
                 self.patternTexture=0; // todo try this to remove chance of texure now loading twice...
                 self.changePattern(which,thefile,mapUniforms,

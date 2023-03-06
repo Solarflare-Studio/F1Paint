@@ -1,3 +1,5 @@
+import {DEBUG_MODE} from './adminuser'
+
 class ProcessJSON {
 
 
@@ -24,7 +26,8 @@ class ProcessJSON {
 
     loadPatterns(f1Cookies,f1Aws) {
 //        isHelmet,userID,userName,userEmail,cookie_livery_value) {
-        console.log(">> load patterns json");
+        if(DEBUG_MODE)
+            console.log(">> load patterns json");
         if(f1Cookies.isHelmet)
             this.readJSON('patterns','patterns_helmet.json','PATTERNS',f1Cookies.userID,f1Cookies.userName,f1Cookies.userEmail,f1Cookies.isHelmet,f1Cookies.cookie_livery_value,f1Aws);
         else
@@ -36,9 +39,11 @@ class ProcessJSON {
     }
     //======================
     haveReadPatternJSON(data,self,f1Aws) {
-        console.log(">> have read patterns json from aws");
+        if(DEBUG_MODE)
+            console.log(">> have read patterns json from aws");
         if(self.type=='PATTERNS') {
-            console.log(">> have completed loading patterns json");
+            if(DEBUG_MODE)
+                console.log(">> have completed loading patterns json");
 
             self.processStrung(JSON.parse(data));
             self.patternItems.buildGUI(self.patternsData,f1Aws);//, this.layerPatternThumbElements);
@@ -50,7 +55,8 @@ class ProcessJSON {
             }
             self.totLayers=self.totLayers+1;// cos tot is not 0 index based
 
-            console.log(">> loaded " + self.patternsData['Patterns'].length + " with " + self.totLayers + " layers");
+            if(DEBUG_MODE)
+                console.log(">> loaded " + self.patternsData['Patterns'].length + " with " + self.totLayers + " layers");
 
             // this.layerPatternThumbElements=[];
             // for(var e=0;e<this.totLayers;e++) {
@@ -107,7 +113,8 @@ class ProcessJSON {
 
             
 
-            console.log(">> set new livery json. " + self.liveryData);
+            if(DEBUG_MODE)
+                console.log(">> set new livery json. " + self.liveryData);
 
             // ready to start!
             self.haveloadedStartupJSON();
@@ -139,7 +146,8 @@ class ProcessJSON {
             xhr.responseType = 'json';
             xhr.onload = () => {
                 if(type=='PATTERNS') {
-                    console.log(">> have completed loading patterns json");
+                    if(DEBUG_MODE)
+                        console.log(">> have completed loading patterns json");
 
                     this.processStrung(xhr.response);
                     this.patternItems.buildGUI(this.patternsData,f1Aws);//, this.layerPatternThumbElements);
@@ -151,7 +159,8 @@ class ProcessJSON {
                     }
                     this.totLayers=this.totLayers+1;// cos tot is not 0 index based
 
-                    console.log(">> loaded " + this.patternsData['Patterns'].length + " with " + this.totLayers + " layers");
+                    if(DEBUG_MODE)
+                        console.log(">> loaded " + this.patternsData['Patterns'].length + " with " + this.totLayers + " layers");
 
                     // this.layerPatternThumbElements=[];
                     // for(var e=0;e<this.totLayers;e++) {
@@ -208,7 +217,8 @@ class ProcessJSON {
 
                     
 
-                    console.log(">> set new livery json. " + this.liveryData);
+                    if(DEBUG_MODE)
+                        console.log(">> set new livery json. " + this.liveryData);
 
                     // ready to start!
                     this.haveloadedStartupJSON();
@@ -237,7 +247,8 @@ class ProcessJSON {
     //======================
     processStrung(strung) {
         this.patternsData=strung;
-        console.log(this.patternsData);
+        if(DEBUG_MODE)
+            console.log(this.patternsData);
 //        this.patternsData = JSON.parse(strung);
     }
     //===========

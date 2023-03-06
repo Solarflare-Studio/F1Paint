@@ -1,4 +1,5 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
+import {DEBUG_MODE} from './adminuser'
 
 class F1Layers {
 
@@ -8,7 +9,8 @@ class F1Layers {
     }
 
     init(isHelmet, renderSize, f1fnames) {
-        console.log(">> init F1 LayerShader");
+        if(DEBUG_MODE)
+          console.log(">> init F1 LayerShader");
         var offscreenSize = renderSize;
 
         var _self = this;

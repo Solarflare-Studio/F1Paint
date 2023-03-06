@@ -1,6 +1,7 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { RectAreaLightHelper } from '../node_modules/three/examples/jsm/helpers/RectAreaLightHelper.js';
 import { TWEEN } from '../node_modules/three/examples/jsm/libs/tween.module.min'
+import {DEBUG_MODE} from './adminuser'
 
 import {
     ModifierStack,
@@ -49,7 +50,8 @@ class F1Ribbons {
 
 
     init(f1Materials) {
-        console.log(">> init F1 Ribbons and fx");
+        if(DEBUG_MODE)
+            console.log(">> init F1 Ribbons and fx");
         this.enabled=true;
 
         var _self = this;
@@ -488,7 +490,8 @@ class F1Ribbons {
         const angle = 0.0;
 
         var bvals = new THREE.Vector3(Math.random()* 2.0,Math.random()* 1.0,angle);
-        console.log('bvals='+bvals.x+","+bvals.y+","+bvals.z);
+        if(DEBUG_MODE)
+            console.log('bvals='+bvals.x+","+bvals.y+","+bvals.z);
 
         return bvals;
     }
@@ -504,7 +507,8 @@ class F1Ribbons {
     }
     // ==============================================
     createBentMesh() {
-        console.log("--")
+        if(DEBUG_MODE)
+            console.log("--")
         var bends = new Array();
 //TWEEN.Easing.Cubic.InOut
 //TWEEN.Easing.Linear.None

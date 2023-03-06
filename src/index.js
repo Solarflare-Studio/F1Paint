@@ -33,6 +33,8 @@ import {F1Text} from'./f1Text'
 import {F1Ribbons} from'./f1Ribbons'
 import {F1Settings} from './F1Settings'
 import {F1Cookies} from './F1Cookies'
+import {DEBUG_MODE} from './adminuser'
+
 //import { setQuaternionFromProperEuler } from 'three/src/math/mathutils.js';
 
 
@@ -287,13 +289,15 @@ function onloaded()
 	
 	// fade in intro page
 	if(timeDiff >= 2500) { // already taken enough time loading...
-		console.log(">> load time took = " + (timeDiff/1000) + " - so don't delay!");
+		if(DEBUG_MODE)
+			console.log(">> load time took = " + (timeDiff/1000) + " - so don't delay!");
 
 		document.getElementById('welcomeblock').classList.remove('fadedout');
 	}
 	else {
 		setTimeout( function() {
-			console.log(">> load time took = " + (timeDiff/1000) + " - rather quick!");
+			if(DEBUG_MODE)
+				console.log(">> load time took = " + (timeDiff/1000) + " - rather quick!");
 			document.getElementById('welcomeblock').classList.remove('fadedout');
 		}, 2500 - timeDiff); // ensure at least 2500 ms of load show
 	}
@@ -318,7 +322,8 @@ function setupConsoleListeners() {
 		renderer.toneMappingExposure = self.amount;
 	}
 	document.getElementById('c_tonemap').onchange = function () {
-		console.log(this.value);
+		if(DEBUG_MODE)
+			console.log(this.value);
 		if(this.value=="linear") {
 			renderer.toneMapping = THREE.LinearToneMapping;
 		}
@@ -349,7 +354,8 @@ function setupConsoleListeners() {
 			f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,2);
 	}
 	document.getElementById('c_envstrength').onchange = function () {
-		console.log(this.value);
+		if(DEBUG_MODE)
+			console.log(this.value);
 		if(this.value=="car") {
 			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envmapStrength;
 			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theModelMaterial.envMapIntensity * 100.0;
@@ -366,7 +372,8 @@ function setupConsoleListeners() {
 	}	
 	// lights
 	document.getElementById('c_whichlight').onchange = function () {
-		console.log(this.value);
+		if(DEBUG_MODE)
+			console.log(this.value);
 		const c_lightIntensitySlider = document.getElementById('c_lightIntensitySlider');
 		const c_lightIntensitySliderTxt = document.getElementById('c_lightIntensitySliderTxt');
 		if(this.value=="spot1") {
@@ -414,7 +421,8 @@ function setupConsoleListeners() {
 	// ribbon
 	document.getElementById('c_sfxRibbonSlider').onchange = function () {
 		self.amount = this.value/10.0;
-		console.log(this.value);
+		if(DEBUG_MODE)
+			console.log(this.value);
 		document.getElementById('c_sfxRibbonSliderTxt').innerHTML = 'ribbon bloom: ' + self.amount;
 		f1SpecialFX.f1BloomRibbonPass.strength = self.amount;
 	}
@@ -491,7 +499,8 @@ function onMinMax() {
 	if(haveminimized) {
 		var posy = new THREE.Vector3(window.innerHeight - f1Gui.tabHeight,0,0);
 		var top = f1Gui.bestToolPosY;
-		console.log(">> top = " + top);
+		if(DEBUG_MODE)
+			console.log(">> top = " + top);
 		document.getElementById('minmax').classList.remove('gg-chevron-rotated');
 
 		new TWEEN.Tween(posy)
@@ -512,7 +521,8 @@ function onMinMax() {
 	else if(!haveminimized) {
 		var posy = new THREE.Vector3(f1Gui.bestToolPosY,0,0);
 		var top = window.innerHeight - f1Gui.tabHeight;
-		console.log(">> top = " + top);
+		if(DEBUG_MODE)
+			console.log(">> top = " + top);
 		document.getElementById('minmax').classList.add('gg-chevron-rotated');
 
 		new TWEEN.Tween(posy)
@@ -548,7 +558,8 @@ function seekPatternThumb(patternblock,layer) {
 		const id= patternblock.children[i].children[0].getAttribute('patternId');
 		if(processJSON.liveryData['Layers'][layer].patternId == id){
 			// matched!
-			console.log("matched");
+			if(DEBUG_MODE)
+				console.log("matched");
 			hasfound=true;
 			// patternThumbElement = patternblock.children[i].children[0];
 			element = patternblock.children[i].children[0];
@@ -557,7 +568,8 @@ function seekPatternThumb(patternblock,layer) {
 	}
 
 	if(!hasfound) {
-		console.log(">> **** error finding matching pattern");
+		if(DEBUG_MODE)
+			console.log(">> **** error finding matching pattern");
 	}
 	return element;
 }
@@ -838,7 +850,8 @@ function choosePattern(which, theLayer,thefile,thepatternelement) {
 //=========================================================
 function onPatternPicked(which,thefile,thepatternelement)
 {
-	console.log(">> pattern picked == current " + (selectedIndex == which));
+	if(DEBUG_MODE)
+		console.log(">> pattern picked == current " + (selectedIndex == which));
 	if(selectedIndex == which) {
 		if(f1Gui.isAuto)
 			f1Gui.isAuto = false;
@@ -860,7 +873,8 @@ function onPatternPicked(which,thefile,thepatternelement)
 ;//		f1Gui.isAuto = false;
 	else	{
 		f1SpecialFX.mapUniforms.leadin.value = 1.0;
-		console.log(">> lead in sfx");
+		if(DEBUG_MODE)
+			console.log(">> lead in sfx");
 
 		f1SpecialFX.startFX(350); // sfx lead in
 	}
@@ -873,7 +887,8 @@ function onPatternPicked(which,thefile,thepatternelement)
 //==================================================
 function backNextPage(backornext) {
 
-	console.log('>>> BACK from page ' + f1Gui.currentPage + ' to page ' + (f1Gui.currentPage-1));
+	if(DEBUG_MODE)
+		console.log('>>> BACK from page ' + f1Gui.currentPage + ' to page ' + (f1Gui.currentPage-1));
 
 	if(backornext == -1) { // back button
 		f1Gui.changedPage(f1Gui.currentPage-1);
@@ -961,8 +976,10 @@ function onDefaultPaint() {
 	if(f1Gui.currentPage>1) currentLayer--;
 
 	var totChans = 1;	
-	if(which==-1)
-		console.log("no pattern so choose a colour for base");
+	if(which==-1) {
+		if(DEBUG_MODE)
+			console.log("no pattern so choose a colour for base");
+	}
 	else
 		totChans = processJSON.patternsData['Patterns'][which]['Channels'].length;
 
@@ -1014,8 +1031,10 @@ function onRandomPaint() {
 
 
 	var totChans = 1;	
-	if(which==-1)
-		console.log("no pattern so choose a colour for base");
+	if(which==-1) {
+		if(DEBUG_MODE)
+			console.log("no pattern so choose a colour for base");
+	}
 	else
 		totChans = processJSON.patternsData['Patterns'][which]['Channels'].length;
 
@@ -1155,7 +1174,8 @@ function doSavePaintShop(_pixelBuffer,_dateTimeTypePrefix) {
 	var dataURL = canvas.toDataURL();
 	const filename = f1Cookies.userID + _dateTimeTypePrefix;
 	
-	console.log('>> file saving "' + filename + '"');
+	if(DEBUG_MODE)
+		console.log('>> file saving "' + filename + '"');
 
 	f1Aws.s3upload(dataURLtoBlob(dataURL),filename);
 	canvas.remove();	// do we do this?
@@ -1163,7 +1183,8 @@ function doSavePaintShop(_pixelBuffer,_dateTimeTypePrefix) {
 }
 //==================================================
 function onMaterialbutton(glosstype) {
-	console.log(">> selectedChan = " + selectedChan);
+	if(DEBUG_MODE)
+		console.log(">> selectedChan = " + selectedChan);
 	var currentLayer = f1Gui.currentPage-1;
 	if(f1Gui.currentPage>1) currentLayer--;
 	var chan = selectedChan;
@@ -1318,7 +1339,8 @@ function postRenderProcess() {
 		const thearlink = 'https://solarflarestudio.8thwall.app/f1-fanzone-ar-v2/?u=' + f1Cookies.userID + '&d='+ datetime;// +'&m=c&t='+(new Date());
 		
 
-		console.log(">> AR url('" + thearlink + "')")
+		if(DEBUG_MODE)
+			console.log(">> AR url('" + thearlink + "')")
 		
 
 		document.getElementById('launchbuttonlink').href = new URL(thearlink);
@@ -1332,7 +1354,8 @@ function postRenderProcess() {
 
 
 		// check files exist on aws before allowing AR
-		console.log(">> checking files")
+		if(DEBUG_MODE)
+			console.log(">> checking files")
 		f1Gui.currentProgress = 0;
 		f1Gui.showPage(6);
 
@@ -1345,7 +1368,8 @@ function checkFilesHaveSaved() {
 
 	f1Gui.updateProgress2(25 + (f1Aws.filessavedcount * 25));
 
-	console.log(f1Aws.filessavedcount);
+	if(DEBUG_MODE)
+		console.log(f1Aws.filessavedcount);
 	if(f1Aws.filessavedcount<3) {
 
 		setTimeout(function() {
