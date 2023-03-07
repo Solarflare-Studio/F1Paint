@@ -850,11 +850,11 @@ class F1Ribbons {
       */
 
 
-    update(userConsole) {
+    update() {
 
         const currenttime = new Date().getTime();
         const elapsed = currenttime - this.prevupdate;
-        if(userConsole)
+        if(DEBUG_MODE)
             document.getElementById('fpsindicator').innerHTML = Math.floor( 1000 / elapsed);
 
         const uvflow = (currenttime*0.25) % 5000;

@@ -1,0 +1,19 @@
+{
+    "settings": [  
+      {
+        "ARmarkerL_x": 0.0,
+        "ARmarkerL_y": 0.0,
+        "ARmarkerL_z": 0.0,
+        "ARmarkerL_s": 1.0,
+        "ARmarkerL_r": 0.0,
+        "ARmarkerR_x": 0.0,
+        "ARmarkerR_y": 0.0,
+        "ARmarkerR_z": 0.0,
+        "ARmarkerR_s": 1.0,
+        "ARmarkerR_r": 0.0,
+        "ARlight_i": 7.0,
+        "ARenv_i": 4.0
+      }
+    ]
+}
+    

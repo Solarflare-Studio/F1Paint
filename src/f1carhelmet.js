@@ -105,7 +105,7 @@ class F1CarHelmet {
                 _self.specialFXMesh = modelMesh;
                 modelMesh.castShadow = true;
                 // modelMesh.receiveShadow = false;
-                modelMesh.receiveShadow = true;
+                modelMesh.receiveShadow = false;
                 let staticMesh = theModelScene.getObjectByName('F1PS_F1_Car_Static')
                 staticMesh.layers.set(2); // make base black for glow...
                 staticMesh.material = _self.theBaseMaterial;

@@ -102,12 +102,12 @@ class F1Aws {
         try {
             const folderKey = encodeURIComponent('userimages') + "/";
     
-            await this.s3.send(
-                new this.ListObjectsCommand({
-                Prefix: folderKey,
-                Bucket: this.bucketName
-                })
-            );
+            // await this.s3.send(
+            //     new this.ListObjectsCommand({
+            //     Prefix: folderKey,
+            //     Bucket: this.bucketName
+            //     })
+            // );
             const file = datablob;// files[0];
             const fileName = filename;// file.name;
             const photoKey = folderKey + fileName;
@@ -211,7 +211,7 @@ class F1Aws {
             } catch (err) {
                 if(DEBUG_MODE)
                     console.error(err);
-                alert("AWS error "+ err);
+                // alert("AWS error "+ err);
             }
         };
         main();

@@ -275,7 +275,7 @@ createColourpicker();
 //==================================================
 function onloaded()
 {
-	if(f1Cookies.userConsole==1) {
+	if(DEBUG_MODE) {
 		document.getElementById('versionid').classList.add('console');
 		document.getElementById('versionid').classList.add('console_button');	
 	}
@@ -431,7 +431,7 @@ function setupConsoleListeners() {
 //=======================================================================
 // admin
 function onConsole(_switch) {
-	if(f1Cookies.userConsole==0)
+	if(!DEBUG_MODE)
 		return;
 
 	const console = document.getElementById('console');
@@ -755,7 +755,7 @@ function initScenes()
 	controls.enableDamping=false;
 
 	// limit mouse zoom
-	if(!f1Cookies.userConsole) {
+	if(!DEBUG_MODE) {
 		// controls.minDistance = 70;
 		controls.minDistance = 30;
 		controls.maxDistance = 200;
@@ -1576,7 +1576,6 @@ function animate()
 
 
 		f1Text.init(processJSON);
-		f1Text.isDebug = f1Cookies.userConsole;
 
 		initScenes();
 
@@ -1612,7 +1611,7 @@ function animate()
 	renderer.setAnimationLoop( () => {
 
 
-		if(!f1Cookies.userConsole) {
+		if(!DEBUG_MODE) {
 			// re-centres camera
 			controls.target = controls.target.lerpVectors ( controls.target, centredControlsTarget, 0.01 );
 			// zooms out to minimum if breached
@@ -1627,7 +1626,7 @@ function animate()
 		}
 
 		if(f1Ribbons.enabled)
-			f1Ribbons.update(f1Cookies.userConsole);
+			f1Ribbons.update();
 		controls.update();
 		TWEEN.update();
 

@@ -14,7 +14,6 @@ class F1Text {
         this.sizecanvas = 1024;
 
         this.isActive = false;
-        this.isDebug = false;
 
         this.textTexture = 0;
         this.tagPattern = 0;
@@ -59,44 +58,69 @@ class F1Text {
             const loco = this.value;
             document.getElementById('c_tagXSlider').value = _self.locos[loco][0] * 1000.0;
             document.getElementById('c_tagYSlider').value = _self.locos[loco][1] * 1000.0;
-            document.getElementById('c_tagScaleSlider').value = _self.locos[0][2] * 1000.0;
-            document.getElementById('c_tagRotSlider').value = _self.locos[0][3] * 1000.0;            
+            document.getElementById('c_tagScaleSlider').value = _self.locos[loco][2] * 1000.0;
+            document.getElementById('c_tagRotSlider').value = _self.locos[loco][3] * 1000.0;            
 
             document.getElementById('c_tagXSliderTxt').innerHTML = "x= " + _self.locos[loco][0];
             document.getElementById('c_tagYSliderTxt').innerHTML = "y= " + _self.locos[loco][1];
-            document.getElementById('c_tagScaleSliderTxt').value = "scale= " + _self.locos[0][2];
-            document.getElementById('c_tagRotSliderTxt').value = "rot= " + _self.locos[0][3];
+            document.getElementById('c_tagScaleSliderTxt').value = "scale= " + _self.locos[loco][2];
+            document.getElementById('c_tagRotSliderTxt').value = "rot= " + _self.locos[loco][3];
     
             if(DEBUG_MODE)
                 console.log("chosen loco");
         }
 
-
-        document.getElementById('c_tagXSlider').onchange = function () {
+        document.getElementById('c_tagXSlider').addEventListener('input', function() {
             const loco = document.getElementById('c_whichtag').value;
             _self.locos[loco][0] = this.value / 1000.0;
             document.getElementById('c_tagXSliderTxt').innerHTML = "x= " + _self.locos[loco][0];
             _self.composite();
-        }
-        document.getElementById('c_tagYSlider').onchange = function () {
+        });
+        document.getElementById('c_tagYSlider').addEventListener('input', function() {
             const loco = document.getElementById('c_whichtag').value;
             _self.locos[loco][1] = this.value / 1000.0;
             document.getElementById('c_tagYSliderTxt').innerHTML = "y= " + _self.locos[loco][1];
             _self.composite();
-        }
-        document.getElementById('c_tagScaleSlider').onchange = function () {
+        });
+        document.getElementById('c_tagScaleSlider').addEventListener('input', function() {
             const loco = document.getElementById('c_whichtag').value;
             _self.locos[loco][2] = this.value / 1000.0;
             document.getElementById('c_tagScaleSliderTxt').innerHTML = "scale= " + _self.locos[loco][2];
             _self.composite();
-        }
-
-        document.getElementById('c_tagRotSlider').onchange = function () {
+        });
+        document.getElementById('c_tagRotSlider').addEventListener('input', function() {
             const loco = document.getElementById('c_whichtag').value;
             _self.locos[loco][3] = this.value / 1000.0;
             document.getElementById('c_tagRotSliderTxt').innerHTML = "rot= " + _self.locos[loco][3];
             _self.composite();
-        }
+        });
+//
+
+        // document.getElementById('c_tagXSlider').onchange = function () {
+        //     const loco = document.getElementById('c_whichtag').value;
+        //     _self.locos[loco][0] = this.value / 1000.0;
+        //     document.getElementById('c_tagXSliderTxt').innerHTML = "x= " + _self.locos[loco][0];
+        //     _self.composite();
+        // }
+        // document.getElementById('c_tagYSlider').onchange = function () {
+        //     const loco = document.getElementById('c_whichtag').value;
+        //     _self.locos[loco][1] = this.value / 1000.0;
+        //     document.getElementById('c_tagYSliderTxt').innerHTML = "y= " + _self.locos[loco][1];
+        //     _self.composite();
+        // }
+        // document.getElementById('c_tagScaleSlider').onchange = function () {
+        //     const loco = document.getElementById('c_whichtag').value;
+        //     _self.locos[loco][2] = this.value / 1000.0;
+        //     document.getElementById('c_tagScaleSliderTxt').innerHTML = "scale= " + _self.locos[loco][2];
+        //     _self.composite();
+        // }
+
+        // document.getElementById('c_tagRotSlider').onchange = function () {
+        //     const loco = document.getElementById('c_whichtag').value;
+        //     _self.locos[loco][3] = this.value / 1000.0;
+        //     document.getElementById('c_tagRotSliderTxt').innerHTML = "rot= " + _self.locos[loco][3];
+        //     _self.composite();
+        // }
     }
     // =======================
 
@@ -107,38 +131,7 @@ class F1Text {
         var _self = this;
         this.processJSON = processJSON;
 
-        //
-    //     document.addEventListener("keydown", onDocumentKeyDown, false);
-    //     function onDocumentKeyDown(event) {
-    //         if(_self.isActive ) {
-    //             var keyCode = event.which;
-    //             const step = 0.001;
-    //             console.log(">> key pressed = " + keyCode);
-    //             if (keyCode == 87) { // w
-    //                 _self.posY += step; 
-    //             } else if (keyCode == 83) { // s
-    //                 _self.posY -= step;
-    //             } else if (keyCode == 65) { // a
-    //                 _self.posX -= step;
-    //             } else if (keyCode == 68) { //d
-    //                 _self.posX += step;
-    //             } else if (keyCode == 81) { // q
-    //                 _self.size -= 0.01;
-    //             } else if (keyCode == 69) { // e
-    //                 _self.size += 0.01;
-    //             } else if (keyCode == 82) { // r
-    //                 _self.rot +=5;
-    // //                if(_self.rot==4) _self.rot = 0;
-    //             } else if (keyCode == 84) { // t
-    //                 _self.rot -=5;
-    //             } else if (keyCode == 223) { // `
-    //                 _self.isDebug=!_self.isDebug;
-    //             }                    
-    //             console.log("x,y,s,r = " + _self.posX + ", " + _self.posY + ", " + _self.size + ", " + _self.rot);
-    //             _self.composite();
-    //         }
-    //     };        
-
+      
 
 
 
@@ -161,6 +154,7 @@ class F1Text {
         //   let inputValue = inputField.value;
         //   console.log(inputValue);
         //   _self.textTexture = _self.createText(inputValue);
+            this.value = this.value.toUpperCase()
             _self.fixText();
             _self.composite();
         //   _self.f1Layers_mapUniforms.texture2Tag.value = _self.tagComposite;

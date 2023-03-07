@@ -71,7 +71,7 @@
     "id": 1001,
     "layer": 0,
     "thumbnail": "car/base/thumbnails/F1_Customizable_ColorMask_Design_18_thumb.jpg",
-    "image": "car/base/F1_Customizable_ColorMask_Design_18_JPEG.jpg",
+    "image": "car/base/F1PS_Car_Customizable_Design 18_V06.jpg",
     "style": 0,
     "Channels": [
      {
@@ -93,7 +93,7 @@
     "id": 1002,
     "layer": 0,
     "thumbnail": "car/base/thumbnails/F1PS_F1_Car_Customizable_ColorMask_thumb.jpg",
-    "image": "car/base/F1PS_F1_Car_Customizable_ColorMask_JPEG.jpg",
+    "image": "car/base/F1PS_Car_Customizable_Design 20_V06.jpg",
     "style": 0,
     "Channels": [
      {
