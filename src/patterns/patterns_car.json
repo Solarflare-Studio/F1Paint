@@ -67,11 +67,11 @@
     ]
   },
   {
-    "name": "SUPER 18",
+    "name": "Gelato",
     "id": 1001,
     "layer": 0,
     "thumbnail": "car/base/thumbnails/F1_Customizable_ColorMask_Design_18_thumb.jpg",
-    "image": "car/base/F1PS_Car_Customizable_Design 18_V06.jpg",
+    "image": "car/base/01_Gelato/V01/F1PS_Car_Gelato_V01_JPEG.jpg",
     "style": 0,
     "Channels": [
      {

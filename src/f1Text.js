@@ -38,10 +38,10 @@ class F1Text {
         this.locos.push([-0.589, 0.693, 0.133,-90]); // right side
         this.locos.push([-0.909, -0.441, 0.105,  -180]); // front nose
         //
-        document.getElementById('c_tagXSlider').value = _self.locos[0][0] * 1000.0;
-        document.getElementById('c_tagYSlider').value = _self.locos[0][1] * 1000.0;
-        document.getElementById('c_tagScaleSlider').value = _self.locos[0][2] * 1000.0;
-        document.getElementById('c_tagRotSlider').value = _self.locos[0][3] * 1000.0;
+        document.getElementById('c_tagXSlider').value = _self.locos[0][0] * 100.0;
+        document.getElementById('c_tagYSlider').value = _self.locos[0][1] * 100.0;
+        document.getElementById('c_tagScaleSlider').value = _self.locos[0][2] * 100.0;
+        document.getElementById('c_tagRotSlider').value = _self.locos[0][3] * 100.0;
 
         document.getElementById('c_tagXSliderTxt').value = "x= " + _self.locos[0][0];
         document.getElementById('c_tagYSliderTxt').value = "y= " + _self.locos[0][1];
@@ -56,10 +56,10 @@ class F1Text {
         // console sliders
         document.getElementById('c_whichtag').onchange = function (){
             const loco = this.value;
-            document.getElementById('c_tagXSlider').value = _self.locos[loco][0] * 1000.0;
-            document.getElementById('c_tagYSlider').value = _self.locos[loco][1] * 1000.0;
-            document.getElementById('c_tagScaleSlider').value = _self.locos[loco][2] * 1000.0;
-            document.getElementById('c_tagRotSlider').value = _self.locos[loco][3] * 1000.0;            
+            document.getElementById('c_tagXSlider').value = _self.locos[loco][0] * 100.0;
+            document.getElementById('c_tagYSlider').value = _self.locos[loco][1] * 100.0;
+            document.getElementById('c_tagScaleSlider').value = _self.locos[loco][2] * 100.0;
+            document.getElementById('c_tagRotSlider').value = _self.locos[loco][3] * 100.0;            
 
             document.getElementById('c_tagXSliderTxt').innerHTML = "x= " + _self.locos[loco][0];
             document.getElementById('c_tagYSliderTxt').innerHTML = "y= " + _self.locos[loco][1];
@@ -72,25 +72,25 @@ class F1Text {
 
         document.getElementById('c_tagXSlider').addEventListener('input', function() {
             const loco = document.getElementById('c_whichtag').value;
-            _self.locos[loco][0] = this.value / 1000.0;
+            _self.locos[loco][0] = this.value / 100.0;
             document.getElementById('c_tagXSliderTxt').innerHTML = "x= " + _self.locos[loco][0];
             _self.composite();
         });
         document.getElementById('c_tagYSlider').addEventListener('input', function() {
             const loco = document.getElementById('c_whichtag').value;
-            _self.locos[loco][1] = this.value / 1000.0;
+            _self.locos[loco][1] = this.value / 100.0;
             document.getElementById('c_tagYSliderTxt').innerHTML = "y= " + _self.locos[loco][1];
             _self.composite();
         });
         document.getElementById('c_tagScaleSlider').addEventListener('input', function() {
             const loco = document.getElementById('c_whichtag').value;
-            _self.locos[loco][2] = this.value / 1000.0;
+            _self.locos[loco][2] = this.value / 100.0;
             document.getElementById('c_tagScaleSliderTxt').innerHTML = "scale= " + _self.locos[loco][2];
             _self.composite();
         });
         document.getElementById('c_tagRotSlider').addEventListener('input', function() {
             const loco = document.getElementById('c_whichtag').value;
-            _self.locos[loco][3] = this.value / 1000.0;
+            _self.locos[loco][3] = this.value / 100.0;
             document.getElementById('c_tagRotSliderTxt').innerHTML = "rot= " + _self.locos[loco][3];
             _self.composite();
         });
@@ -184,22 +184,50 @@ class F1Text {
     //======================
     drawTextAt(loco,context) {
         context.save();
-        const x =  this.locos[loco][0];
-        const y =  this.locos[loco][1];
-        const size =  this.locos[loco][2];
+        const x = this.locos[loco][0];
+        const y = this.locos[loco][1];
+        const size = this.locos[loco][2];
         const rot = this.locos[loco][3];
-
-        // context.translate(x*this.sizecanvas, y*this.sizecanvas);
-
-
-        context.rotate(( rot) * Math.PI / 180);
-
-        context.drawImage(this.textTexture.image, 0, 0,this.textTexture.image.width, this.textTexture.image.height, 
-            x*this.sizecanvas, y*this.sizecanvas, this.sizecanvas*size, this.sizecanvas*size);
-        // context.drawImage(this.textTexture.image, -this.textTexture.image.width/2, -this.textTexture.image.height/2,this.textTexture.image.width, this.textTexture.image.height, 
-        //     x*this.sizecanvas, y*this.sizecanvas, this.sizecanvas*size, this.sizecanvas*size);
-    
+        
+        // Translate the context to the center of the object.
+        context.translate((x + 0.5) * this.sizecanvas, (y + 0.5) * this.sizecanvas);
+        
+        // Rotate the context.
+        context.rotate(rot * Math.PI / 180);
+        
+        // Draw the object at the new position, which is now its center.
+        context.drawImage(
+            this.textTexture.image, 
+            -0.5 * this.sizecanvas * size, 
+            -0.5 * this.sizecanvas * size, 
+            this.sizecanvas * size, 
+            this.sizecanvas * size
+        );
+        
+        // Translate the context back to the original position.
+        context.translate(-(x + 0.5) * this.sizecanvas, -(y + 0.5) * this.sizecanvas);
+        
         context.restore();
+        
+
+
+        // context.save();
+        // const x =  this.locos[loco][0];
+        // const y =  this.locos[loco][1];
+        // const size =  this.locos[loco][2];
+        // const rot = this.locos[loco][3];
+
+        // // context.translate(x*this.sizecanvas, y*this.sizecanvas);
+
+
+        // context.rotate(( rot) * Math.PI / 180);
+
+        // context.drawImage(this.textTexture.image, 0, 0,this.textTexture.image.width, this.textTexture.image.height, 
+        //     x*this.sizecanvas, y*this.sizecanvas, this.sizecanvas*size, this.sizecanvas*size);
+        // // context.drawImage(this.textTexture.image, -this.textTexture.image.width/2, -this.textTexture.image.height/2,this.textTexture.image.width, this.textTexture.image.height, 
+        // //     x*this.sizecanvas, y*this.sizecanvas, this.sizecanvas*size, this.sizecanvas*size);
+    
+        // context.restore();
     }
 
 

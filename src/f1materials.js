@@ -8,8 +8,8 @@ class F1Materials {
     constructor(f1Settings) {
         this.toloadlist = new Array();
 
-        this.envmapStrength = f1Settings.envcarintensity;// 7.0;// lees car setting
-        this.envstrBase = f1Settings.envcarbaseintensity;// 3.5 * 100;
+        this.envstrCustom = f1Settings.envcarintensity;// 7.0;// lees car setting
+        this.envstrStatic = f1Settings.envcarbaseintensity;// 3.5 * 100;
         this.envstrGar = f1Settings.envgarageintensity;// 1.5;
         
         this.totalTexturesLoaded = 0;
@@ -215,17 +215,17 @@ class F1Materials {
 
             f1Garage.garageMaterial.envMapIntensity = this.envstrGar;
             f1Garage.garageMaterial.needsUpdate=true;
-            f1Garage.garageWall.material.envMapIntensity = this.envmapStrength;
+            f1Garage.garageWall.material.envMapIntensity = this.envstrCustom;
             f1Garage.garageWall.material.needsUpdate=true;   
         }
         else if(which==0){
-            this.envmapStrength = strength;
-            f1CarHelmet.theModelMaterial.envMapIntensity = this.envmapStrength;
+            this.envstrCustom = strength;
+            f1CarHelmet.theModelMaterial.envMapIntensity = this.envstrCustom;
             f1CarHelmet.theModelMaterial.needsUpdate=true;
         }
         else {
-            this.envstrBase = strength;
-            f1CarHelmet.theBaseMaterial.envMapIntensity = this.envstrBase;
+            this.envstrStatic = strength;
+            f1CarHelmet.theBaseMaterial.envMapIntensity = this.envstrStatic;
             f1CarHelmet.theBaseMaterial.needsUpdate=true;
         }
 
@@ -244,11 +244,11 @@ class F1Materials {
             // lees envmapintensity settings 280223
             f1Garage.garageWall.material.envMapIntensity = this.envstrGar;// this.envmapStrength;// * 0.0125;
             f1Garage.garageMaterial.envMapIntensity = this.envstrGar;//this.envmapStrength;// * 0.125;
-            f1CarHelmet.theModelMaterial.envMapIntensity = this.envmapStrength;//this.envmapStrength;
+            f1CarHelmet.theModelMaterial.envMapIntensity = this.envstrCustom;//this.envmapStrength;
 
             if(f1CarHelmet.theBaseMaterial!=null) {
                 f1CarHelmet.theBaseMaterial.envMap = result;
-                f1CarHelmet.theBaseMaterial.envMapIntensity = this.envstrBase;//this.envmapStrength;
+                f1CarHelmet.theBaseMaterial.envMapIntensity = this.envstrStatic;//this.envmapStrength;
                 f1CarHelmet.theBaseMaterial.needsUpdate=true;
             }
             

@@ -96,7 +96,6 @@ class F1CarHelmet {
             if(DEBUG_MODE)
                 console.log(">> attempting to traverse mesh "+theModelScene.children.length);
 
-
             if(!_self.isHelmet) {
                 var whichmat = 0;
                 let modelMesh = theModelScene.getObjectByName('F1PS_F1_Car_Customizable')
@@ -104,8 +103,8 @@ class F1CarHelmet {
                 modelMesh.material = _self.theModelMaterial;
                 _self.specialFXMesh = modelMesh;
                 modelMesh.castShadow = true;
-                // modelMesh.receiveShadow = false;
                 modelMesh.receiveShadow = false;
+
                 let staticMesh = theModelScene.getObjectByName('F1PS_F1_Car_Static')
                 staticMesh.layers.set(2); // make base black for glow...
                 staticMesh.material = _self.theBaseMaterial;
@@ -114,9 +113,6 @@ class F1CarHelmet {
                 // staticMesh.receiveShadow = false;
                 staticMesh.receiveShadow = true; // maybe! todo
                 _self.baseFXMesh = staticMesh;
-                // staticMesh.receiveShadow = false;
-
-
             }
             else {
                 var whichmat = 0;

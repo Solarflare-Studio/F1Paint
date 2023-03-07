@@ -16,6 +16,7 @@ class F1Gui {
         this.currentPage = 1;
         this.inPresets = false;
         this.currentProgress = 0;
+        this.pickingColour = false;
 
         this.processJSON = processJSON;
         this.isAuto = true; // to indicate whether user has actually clicked on thumb or part of auto procedure setting up
@@ -156,7 +157,7 @@ class F1Gui {
     //======================
 	pickedChannelPaint(_index) {
 //    pickedChannelPaint(_index) {
-
+        this.pickingColour = true;
 
         var layerMsg = "BASE COLOUR";
         if(_index==1)

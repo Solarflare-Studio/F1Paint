@@ -3,8 +3,9 @@ import { EffectComposer } from '../node_modules/three/examples/jsm/postprocessin
 import { RenderPass } from '../node_modules/three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from '../node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { ShaderPass } from '../node_modules/three/examples/jsm/postprocessing/ShaderPass.js';
-import {DEBUG_MODE} from './adminuser'
+import { FXAAShader } from '../node_modules/three/examples/jsm/shaders/FXAAShader.js';
 
+import {DEBUG_MODE} from './adminuser'
 
 
 class F1SpecialFX {
@@ -18,6 +19,7 @@ class F1SpecialFX {
       this.fxComposer = 0;
       this.fxRibbonComposer = 0;
       this.finalPass = 0;
+      this.fxaaPass = 0;
 
       this.effectStarttime = 0;
       this.duration = 0;
@@ -78,7 +80,9 @@ class F1SpecialFX {
     init(isHelmet, renderSize, f1fnames) {
         if(DEBUG_MODE)
           console.log(">> init F1 Special FX Render pipeline");
-        this.offscreenSize = 512;// renderSize;
+        // this.offscreenSize = 512;// renderSize;
+        this.offscreenSize = 1024;// renderSize;
+        // this.offscreenSize = renderSize;
 
         this.plainMat = new THREE.MeshBasicMaterial({ // todo, replace with shader to offset mesh for specialfx
           name: 'plainMaterial',
@@ -385,7 +389,12 @@ class F1SpecialFX {
       this.fxRibbonComposer.addPass( renderRibbonScene );
       this.fxRibbonComposer.addPass( this.f1BloomRibbonPass ); // todo render bloom
 
+      // anti-aliasing test
+      this.fxaaPass = new ShaderPass( FXAAShader );
+      const pixelRatio = renderer.getPixelRatio();
 
+      this.fxaaPass.material.uniforms[ 'resolution' ].value.x = 1 / ( this.offscreenSize * pixelRatio );
+      this.fxaaPass.material.uniforms[ 'resolution' ].value.y = 1 / ( this.offscreenSize * pixelRatio );
     
       this.finalPass = new ShaderPass(
         new THREE.ShaderMaterial( {
@@ -452,6 +461,9 @@ class F1SpecialFX {
 
 
       this.finalComposer.addPass( this.finalPass );
+      // this.finalComposer.addPass( this.fxaaPass );
+      //
+
     
       this.finalComposer.setSize(this.offscreenSize,this.offscreenSize);
       this.fxComposer.setSize(this.offscreenSize,this.offscreenSize);

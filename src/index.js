@@ -71,7 +71,8 @@ window.onConsole = onConsole;
 const f1Settings = new F1Settings();
 const f1Cookies = new F1Cookies();
 
-var renderSize = 1024;
+// var renderSize = 1024;
+var renderSize = 2048;
 
 // set files names
 var f1fnames = new F1AssetFileNames();
@@ -346,9 +347,9 @@ function setupConsoleListeners() {
 			f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,0);
 		else
 		if(document.getElementById('c_envstrength').value=="carstatic") {
-			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + self.amount * 100;
+			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + self.amount;
 	
-			f1Materials.setEnvStrength(self.amount * 100.0,f1CarHelmet,f1Garage,1);
+			f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,1);
 		}
 		else
 			f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,2);
@@ -357,11 +358,11 @@ function setupConsoleListeners() {
 		if(DEBUG_MODE)
 			console.log(this.value);
 		if(this.value=="car") {
-			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envmapStrength;
+			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrCustom;
 			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theModelMaterial.envMapIntensity * 100.0;
 		}
 		else if(this.value=="carstatic") {
-			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrBase;
+			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrStatic;
 			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theBaseMaterial.envMapIntensity * 100.0; // static gets 100x
 		}
 		else { // garage
@@ -446,9 +447,9 @@ function onConsole(_switch) {
 			document.getElementById('c_tonemap').value = tmtype;
 
 			if(document.getElementById('c_envstrength').value=="car")
-				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envmapStrength;
+				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrCustom;
 				else if(document.getElementById('c_envstrength').value=="carstatic")
-				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrBase;
+				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrStatic;
 			else 
 				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrGar;
 
@@ -907,6 +908,15 @@ function backNextPage(backornext) {
 //==================================================
 // gui tabs
 function changeTab(which) {
+	if(f1Gui.pickingColour) {
+		// same as confirm
+		if(selectedChan<=2)
+			patternItems.useCustom = true; // now no longer reading defaults when changing patterns, will use custom
+		else if(selectedChan<=4)
+			patternItems.useCustomTag = true;
+		else if(selectedChan<=5)
+			patternItems.useCustomDecal = true;
+	}
 	f1Gui.changedPage(which);
 
 }
@@ -1109,6 +1119,7 @@ function onConfirm() {
 	// }
 	// else 
 	// {
+		f1Gui.pickingColour = false;
 		if(f1Gui.currentPage==5) { // final page so create map and launch AR
 			doBuildBasemap=true; // generate and save the images
 		}
