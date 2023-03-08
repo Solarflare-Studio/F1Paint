@@ -228,55 +228,37 @@ function createColourpicker() {
 		f1Gui.setBackgroundColourByID('coloursample',color.hexString);
 
 		var currentLayer = f1Gui.currentPage-1;
-		if(f1Gui.currentPage>1) currentLayer--;
-
-		if(selectedChan==0) {
-			f1Gui.setBackgroundColourByID('basepaintbutton',color.hexString);
-		}
-		else if(selectedChan==1) {
-			f1Gui.setBackgroundColourByID('primarypaintbutton',color.hexString);
-		}
-		else if(selectedChan==2) {
-			f1Gui.setBackgroundColourByID('secondarypaintbutton',color.hexString);
-		}
-		else if(selectedChan==3) { // tagstyle
-			f1Gui.setBackgroundColourByID('tagstylepaintbutton',color.hexString);
-		}
-		else if(selectedChan==4) { // tag
-			f1Gui.setBackgroundColourByID('tagpaintbutton',color.hexString);
-		}
-		else if(selectedChan==6) { // sponsor
-			f1Gui.setBackgroundColourByID('decalpaintbutton',color.hexString);
-		}
-
-
-		if(selectedChan<3) { // pattern colour
-			processJSON.liveryData['Layers'][currentLayer].Channels[selectedChan].tint = color.hexString;
-		}
-		else if(selectedChan<5) { // tag colour
-			processJSON.liveryData['Layers'][currentLayer].Channels[selectedChan-3].tint = color.hexString;
-		}
-		else if(selectedChan==6) { // sponsor colour
-			processJSON.liveryData['Layers'][currentLayer].Channels[1].tint = color.hexString;
-		}
+		if(f1Gui.currentPage>1) currentLayer--; // skip paint page to get layer
 
 		switch(selectedChan) {
 			case 0:
+				f1Gui.setBackgroundColourByID('basepaintbutton',color.hexString);
+				processJSON.liveryData['Layers'][currentLayer].Channels[0].tint = color.hexString;
 				f1Layers.mapUniforms.texture1TintChannel1.value = tmpv4;
 				break;
 			case 1:
+				f1Gui.setBackgroundColourByID('primarypaintbutton',color.hexString);
+				processJSON.liveryData['Layers'][currentLayer].Channels[1].tint = color.hexString;
 				f1Layers.mapUniforms.texture1TintChannel2.value = tmpv4;
 				break;
 			case 2:
+				f1Gui.setBackgroundColourByID('secondarypaintbutton',color.hexString);
+				processJSON.liveryData['Layers'][currentLayer].Channels[2].tint = color.hexString;
 				f1Layers.mapUniforms.texture1TintChannel3.value = tmpv4;
 				break;
 			case 3: // tag style
+				f1Gui.setBackgroundColourByID('tagstylepaintbutton',color.hexString);
+				processJSON.liveryData['Layers'][currentLayer].Channels[0].tint = color.hexString;
 				f1Layers.mapUniforms.tagStyleTint.value = tmpv4;
 				break;
 			case 4: // tag
+				f1Gui.setBackgroundColourByID('tagpaintbutton',color.hexString);
+				processJSON.liveryData['Layers'][currentLayer].Channels[1].tint = color.hexString;
 				f1Layers.mapUniforms.tagTint.value = tmpv4;
 				break;
 			case 6: // decal
+				f1Gui.setBackgroundColourByID('decalpaintbutton',color.hexString);
+				processJSON.liveryData['Layers'][currentLayer].Channels[1].tint = color.hexString;
 				f1Layers.mapUniforms.decal2Tint.value = tmpv4;
 				break;
 			default:
@@ -338,18 +320,19 @@ function setupConsoleListeners() {
 	document.getElementById('c_tonemap').onchange = function () {
 		if(DEBUG_MODE)
 			console.log(this.value);
-		if(this.value=="linear") {
-			renderer.toneMapping = THREE.LinearToneMapping;
-		}
-		else if(this.value=="cineon") {
-			renderer.toneMapping = THREE.CineonToneMapping;//ACESFilmicToneMapping;// THREE.LinearToneMapping;
-	
-		}
-		else if(this.value=="aces") {
-			renderer.toneMapping = THREE.ACESFilmicToneMapping;// THREE.LinearToneMapping;
-		}
-		else if(this.value=="reinhard") {
-			renderer.toneMapping = THREE.ReinhardToneMapping;// THREE.LinearToneMapping;
+		switch(this.value) {
+			case "linear":
+				renderer.toneMapping = THREE.LinearToneMapping;
+				break;
+			case "cineon":
+				renderer.toneMapping = THREE.CineonToneMapping;//ACESFilmicToneMapping;// THREE.LinearToneMapping;
+				break;
+			case "aces":
+				renderer.toneMapping = THREE.ACESFilmicToneMapping;// THREE.LinearToneMapping;
+				break;
+			case "reinhard":
+				renderer.toneMapping = THREE.ReinhardToneMapping;// THREE.LinearToneMapping;
+				break;
 		}
 	}	
 	// env strength
@@ -390,28 +373,25 @@ function setupConsoleListeners() {
 			console.log(this.value);
 		const c_lightIntensitySlider = document.getElementById('c_lightIntensitySlider');
 		const c_lightIntensitySliderTxt = document.getElementById('c_lightIntensitySliderTxt');
-		if(this.value=="spot1") {
-			c_lightIntensitySliderTxt.innerHTML = "intensity= " + mainLight.intensity;
-			c_lightIntensitySlider.value = mainLight.intensity * 100.0;
-		}
-		else if(this.value=="spot2") {
-			c_lightIntensitySliderTxt.innerHTML = "intensity= " + mainLight2.intensity;
-			c_lightIntensitySlider.value = mainLight2.intensity * 100.0;
-
-		}
-		else if(this.value=="dir") {
-			c_lightIntensitySliderTxt.innerHTML = "intensity= " + dirLight.intensity;
-			c_lightIntensitySlider.value = dirLight.intensity * 100.0;
-
-		}
-		else if(this.value=="dir2") {
-			c_lightIntensitySliderTxt.innerHTML = "intensity= " + dirLight2.intensity;
-			c_lightIntensitySlider.value = dirLight2.intensity * 100.0;
-
-		}
-		else if(this.value=="amb") {
-			c_lightIntensitySliderTxt.innerHTML = "intensity= " + ambLight.intensity;
-			c_lightIntensitySlider.value = ambLight.intensity * 100.0;
+		switch(this.value) {
+			case "spot1":
+				c_lightIntensitySliderTxt.innerHTML = "intensity= " + mainLight.intensity;
+				c_lightIntensitySlider.value = mainLight.intensity * 100.0;
+				break;
+			case "spot2":
+				c_lightIntensitySliderTxt.innerHTML = "intensity= " + mainLight2.intensity;
+				c_lightIntensitySlider.value = mainLight2.intensity * 100.0;
+				break;
+			case "dir":
+				c_lightIntensitySliderTxt.innerHTML = "intensity= " + dirLight.intensity;
+				c_lightIntensitySlider.value = dirLight.intensity * 100.0;
+				break;
+			case "dir2":
+				c_lightIntensitySliderTxt.innerHTML = "intensity= " + dirLight2.intensity;
+				c_lightIntensitySlider.value = dirLight2.intensity * 100.0;
+				break;
+			case "amb":
+				break;
 		}
 	}
 	document.getElementById('c_lightIntensitySlider').oninput = function () {
@@ -858,7 +838,7 @@ function choosePattern(which, theLayer,thefile,thepatternelement) {
 	patternItems.changePattern(which,thefile,
 		f1Layers.mapUniforms,thepatternelement,
 		processJSON.patternsData,processJSON.liveryData,theLayer,
-		f1MetalRough.mapUniforms,f1Text,f1SpecialFX,f1Ribbons,f1Aws);
+		f1MetalRough.mapUniforms,f1Text,f1SpecialFX,f1Aws);
 }
 
 //=========================================================
@@ -871,7 +851,7 @@ function onPatternPicked(which,thefile,thepatternelement)
 			setAutoSelectingPattern(false);
 		return;
 	}
-	selectedIndex = which;//-1;
+	selectedIndex = which;
 	var currentLayer = f1Gui.currentPage-1;
 	if(f1Gui.currentPage>1) currentLayer--;
 
@@ -883,9 +863,7 @@ function onPatternPicked(which,thefile,thepatternelement)
 		document.getElementById('layer3decals_ins').classList.add('disabledButton');
 
 
-	if(getAutoSelectingPattern())
-;//		f1Gui.isAuto = false;
-	else	{
+	if(!getAutoSelectingPattern())	{
 		f1SpecialFX.mapUniforms.leadin.value = 1.0;
 		if(DEBUG_MODE)
 			console.log(">> lead in sfx");
@@ -933,22 +911,6 @@ function changeTab(which) {
 	f1Gui.changedPage(which);
 
 }
-//==================================================
-// function onPatternsTab() {
-// 	f1Gui.changedPage(1);
-// }
-//==================================================
-// function onColoursTab() {
-// 	f1Gui.changedPage(2);
-// }
-//==================================================
-// function onTagTab() {
-// 	f1Gui.changedPage(3);
-// }
-//==================================================
-// function onDecalTab() {
-// 	f1Gui.changedPage(4);
-// }
 
 //==================================================
 function onChangePaint(index) {
@@ -978,12 +940,6 @@ function onChangePaint(index) {
 
 	f1Gui.pickedChannelPaint(index);
 }
-//==================================================
-// function onPreselectedPage() {
-
-// 	onDefaultPaint();
-
-// }
 
 //==================================================
 function onDefaultPaint() {
@@ -1002,15 +958,6 @@ function onDefaultPaint() {
 	patternItems.useCustomBaseColours = false; // now no longer reading defaults when changing patterns, will use custom
 	patternItems.useCustomTagColours = false;
 	patternItems.useCustomSponsorColours = false;
-
-
-	// if(currentLayer==0) // base pattern defaults
-	// 	patternItems.useCustomBaseColours = false; // now no longer reading defaults when changing patterns, will use custom
-	// else if(currentLayer==2)
-	// 	patternItems.useCustomTag = false;
-	// else if(currentLayer==3)
-	// 	patternItems.useCustomDecal = false;
-
 
 	var totChans = 1;	
 	if(which==-1) {
@@ -1062,10 +1009,8 @@ function onRandomPaint() {
 	if(f1Gui.currentPage>1) currentLayer--;
 
 	patternItems.useCustom = true; // now no longer reading defaults when changing patterns, will use custom
-	// f1SpecialFX.finalPass.uniforms.amountBloom.value = 1.0;
 	f1SpecialFX.mapUniforms.leadin.value = 2.0;
 	f1SpecialFX.startFX(500);
-
 
 	var totChans = 1;	
 	if(which==-1) {
@@ -1083,19 +1028,20 @@ function onRandomPaint() {
 		var c1 = r + "," + g + "," + b;
 
 		var glosstype = float2int(Math.random() * 3);
+		if(DEBUG_MODE) console.log("> random glosstype= " + glosstype);
 		var metal = 0;
 		var rough = 0;
-		if(glosstype==1) {
+		if(glosstype==1) {	// matt
 			metal=0;
 			rough=1;
 		}
-		else if(glosstype==2) {
+		else if(glosstype==2) { // metallic
 			metal=1;
 			rough=0;
 		}
 		else {
-			metal=1;
-			rough=1;
+			metal = 0.0;	// gloss
+			rough = 0.0;
 		}
 
 
@@ -1141,35 +1087,29 @@ function onRandomPaint() {
 //==================================================
 function onConfirm() {
 
-	// if(f1Gui.inPresets) {
-	// 	f1Gui.showPresetPage(false);
-	// }
-	// else 
-	// {
-		f1Gui.pickingColour = false;
-		if(f1Gui.currentPage==5) { // final page so create map and launch AR
-			doBuildBasemap=true; // generate and save the images
-		}
-		else {
+	f1Gui.pickingColour = false;
+	if(f1Gui.currentPage==5) { // final page so create map and launch AR
+		doBuildBasemap=true; // generate and save the images
+	}
+	else {
 
-			if(selectedChan<=2)
-				patternItems.useCustom = true; // now no longer reading defaults when changing patterns, will use custom
-			else if(selectedChan<=4)
-				patternItems.useCustomTagColours = true;
-			else if(selectedChan<=6)
-				patternItems.useCustomSponsorColours = true;
-				
+		if(selectedChan<=2)
+			patternItems.useCustom = true; // now no longer reading defaults when changing patterns, will use custom
+		else if(selectedChan<=4)
+			patternItems.useCustomTagColours = true;
+		else if(selectedChan<=6)
+			patternItems.useCustomSponsorColours = true;
+			
 
-			f1Gui.confirm(selectedChan);
-		}
-	// }
+		f1Gui.confirm(selectedChan);
+	}
 }
 //==================================================
 function getDateTimeStampString() {
 	
 	const currentDate = new Date();
 	const dateYear = currentDate.getFullYear();
-	const dateMonth = currentDate.getMonth() + 1;
+	const dateMonth = currentDate.getMonth() + 1;	// weird date month 0 index lol
 	const dateDay = currentDate.getDate();
 	const dateHour = currentDate.getHours();
 	const dateMins = currentDate.getMinutes();

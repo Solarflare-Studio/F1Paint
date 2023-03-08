@@ -226,37 +226,7 @@ class F1Gui {
     //======================
     confirm(selectedChan) {
         document.getElementById('confirmbutton').classList.add('hidden');
-
-        // changedPage(topage,liveryData,layerPatternThumbElements) {
-        this.changedPage(this.currentPage);
-
-        return;
-
-        if(selectedChan<3) {
-
-            document.getElementById('paintachannelblock').classList.add('hidden');
-            document.getElementById('patternColours').classList.remove('hidden');
-        }
-        else if(selectedChan<5){ // tags
-
-            document.getElementById('paintatagblock').classList.add('hidden');
-            document.getElementById('tagblock').classList.remove('hidden');
-            document.getElementById('layer2tags_ins').classList.remove('hidden');
-
-            document.getElementById('paintachannelblock').classList.add('hidden');
-
-        }
-        else { // decal
-            document.getElementById('paintdecalblock').classList.add('hidden');
-            document.getElementById('decalblock').classList.remove('hidden');
-            document.getElementById('layer3decals_ins').classList.remove('hidden');
-
-            document.getElementById('paintachannelblock').classList.add('hidden');
-
-        }
-
-        document.getElementById('backbutton').classList.remove('hidden');
-        document.getElementById('nextbutton').classList.remove('hidden');
+        this.changedPage(this.currentPage); //refresh current page
     }
 
     //======================
@@ -272,7 +242,7 @@ class F1Gui {
             elementID = 'tagstylepaintbutton';
         else if(_index==4) // tag colours
             elementID = 'tagpaintbutton';
-        else if(_index==6) // decal colours
+        else if(_index==6) // decal colours (5 is untouchable)
             elementID = 'decalpaintbutton';
 
         return window.getComputedStyle(  document.getElementById(elementID) ,null).getPropertyValue('background-color');
@@ -300,17 +270,9 @@ class F1Gui {
         document.getElementById("launchARPage").classList.add("hidden");
         document.getElementById("progressbarPage").classList.add("hidden");
 
-        // document.getElementById("ARpage").classList.add("hidden");
-        // document.getElementById('paintpresetsblock').classList.add('hidden');
-
-        
-
         if(this.currentPage<=1) { // disable back
             document.getElementById('backbutton').classList.add('disabledButton');
             document.getElementById('nextbutton').classList.remove('disabledButton');
-
-
-
         }
         else {
             document.getElementById('backbutton').classList.remove('disabledButton');

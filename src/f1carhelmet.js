@@ -100,7 +100,6 @@ class F1CarHelmet {
                 console.log(">> attempting to traverse mesh "+theModelScene.children.length);
 
             if(!_self.isHelmet) {
-                var whichmat = 0;
                 let modelMesh = theModelScene.getObjectByName('F1PS_F1_Car_Customizable')
                 modelMesh.layers.set(2);
                 modelMesh.material = _self.theModelMaterial;
@@ -111,14 +110,12 @@ class F1CarHelmet {
                 let staticMesh = theModelScene.getObjectByName('F1PS_F1_Car_Static')
                 staticMesh.layers.set(2); // make base black for glow...
                 staticMesh.material = _self.theBaseMaterial;
-                whichmat=1;
                 staticMesh.castShadow = true;
                 // staticMesh.receiveShadow = false;
                 staticMesh.receiveShadow = true; // maybe! todo
                 _self.baseFXMesh = staticMesh;
             }
             else {
-                var whichmat = 0;
                 let modelMesh = theModelScene.getObjectByName('Helmet_main_low')
                 modelMesh.layers.set(2);
                 modelMesh.material = _self.theModelMaterial;
@@ -129,14 +126,10 @@ class F1CarHelmet {
                 let staticMesh = theModelScene.getObjectByName('Visor_low')
                 staticMesh.layers.set(2); // make base black for glow...
                 staticMesh.material = _self.theBaseMaterial;
-                whichmat=1;
                 staticMesh.castShadow = true;
-                // staticMesh.receiveShadow = false;
                 staticMesh.receiveShadow = true; // maybe! todo
                 _self.baseFXMesh = staticMesh;
                 // staticMesh.receiveShadow = false;
-
-                whichmat=1;
 
             }
             
@@ -172,21 +165,10 @@ class F1CarHelmet {
                 filelist.push('./assets/helmet/Helmet Triangulated_Normal.png' ); // normal
                 filetypelist.push( 6 ); filecomplete.push(false);
                 filelist.push('./assets/helmet/Helmet Triangulated_AO.png' ); // ao
-
-                // todo need helmet base texture for visor!
-                _self.theBaseMaterial.emissive.r = 0.0;
-                _self.theBaseMaterial.emissive.g = 0.0;
-                _self.theBaseMaterial.emissive.b = 0.0;
-
             }
             else {  // is the car
 
                 // now do car base mat              
-
-
-                
-
-
                 filelist.push(f1fnames.car_files[6] ); // base
                 filetypelist.push( 0 ); filecomplete.push(false);
                 filelist.push(f1fnames.car_files[9] ); // metal
@@ -205,20 +187,11 @@ class F1CarHelmet {
 
             }
 
-            // filelist.push('./assets/inapp/ribbon1.jpg'); // ribbon textures..
-            //filelist.push('./assets/garage/ribbon2.jpg'); // ribbon textures..
-
-
             // keep the env map as last file to load
             filelist.push('envmap'); // force load of envmap now then
             filetypelist.push( 10 ); filecomplete.push(false);
 
-
-
-
             _self.f1materials.sequentialLoadMaps( filelist,filecomplete, filetypelist,_self.theBaseMaterial,_self.theModelMaterial,f1Garage, _self,f1Ribbons);
-
-                
 
 
             // position 3D

@@ -117,9 +117,6 @@ class PatternItems {
             if(DEBUG_MODE)
                 console.log(">>>> Texture image = LOADED > "+self.thefile);
 
-            // trigger any effect on car changing
-            // f1Ribbons.carChangeAnimate();
-
             tex.premultiplyAlpha = true; // debug premultiply // or not!
             tex.encoding = THREE.LinearEncoding;
 
@@ -192,33 +189,33 @@ class PatternItems {
                     // set colour for the pattern
                     var totChans = self.patternsData['Patterns'][self.which]['Channels'].length;
                     for(var t=0;t<3;t++) {
-                        var c1;
-                        var defaultCol;
-                        var tmpcol;
+                        var tintcolour;
+                        var colourconversion;
+                        var newcol;
                         if(!self.useCustomBaseColours) {
-                            c1 = self.patternsData['Patterns'][self.which]['Channels'][t].defaultColour;
-                            defaultCol = new THREE.Color("rgb("+c1+")");
-                            tmpcol = self.rgbToHex(defaultCol.r*255.0,defaultCol.g*255.0,defaultCol.b*255.0);
-                            self.liveryData['Layers'][self.currentLayer].Channels[t].tint = tmpcol;
+                            tintcolour = self.patternsData['Patterns'][self.which]['Channels'][t].defaultColour;
+                            colourconversion = new THREE.Color("rgb("+tintcolour+")");
+                            newcol = self.rgbToHex(colourconversion.r*255.0,colourconversion.g*255.0,colourconversion.b*255.0);
+                            self.liveryData['Layers'][self.currentLayer].Channels[t].tint = newcol;
                         }
                         else {
-                            c1 = self.liveryData['Layers'][self.currentLayer].Channels[t].tint;
-                            defaultCol = new THREE.Color(c1);
+                            tintcolour = self.liveryData['Layers'][self.currentLayer].Channels[t].tint;
+                            colourconversion = new THREE.Color(tintcolour);
         
-                            tmpcol = self.rgbToHex(defaultCol.r*255.0,defaultCol.g*255.0,defaultCol.b*255.0);
+                            newcol = self.rgbToHex(colourconversion.r*255.0,colourconversion.g*255.0,colourconversion.b*255.0);
                             // liveryData[0][0]['Layers'][currentLayer].Channels[t];
         
                         }
         
         
                         if(t==0) // base paint
-                            document.getElementById('basepaintbutton').style.backgroundColor = tmpcol;//"rgb(255,0,0)";
+                            document.getElementById('basepaintbutton').style.backgroundColor = newcol;//"rgb(255,0,0)";
                         else if(t==1) // primary paint
-                            document.getElementById('primarypaintbutton').style.backgroundColor = tmpcol;//"rgb(255,0,0)";
+                            document.getElementById('primarypaintbutton').style.backgroundColor = newcol;//"rgb(255,0,0)";
                         else if(t==2) // secondary paint
-                            document.getElementById('secondarypaintbutton').style.backgroundColor = tmpcol;//"rgb(255,0,0)";
+                            document.getElementById('secondarypaintbutton').style.backgroundColor = newcol;//"rgb(255,0,0)";
         
-                        var tmpv4 = new THREE.Vector4(defaultCol.r,defaultCol.g,defaultCol.b,1.0);
+                        var tmpv4 = new THREE.Vector4(colourconversion.r,colourconversion.g,colourconversion.b,1.0);
                         if(t==0)
                             self.mapUniforms.texture1TintChannel1.value = tmpv4;
                         else if(t==1)
@@ -229,31 +226,30 @@ class PatternItems {
                 }
                 else if(self.currentLayer==1) { // tags..
                     for(var t=0;t<2;t++) { // 2 colour options
-                        var c1;
-                        var defaultCol;
-                        var tmpcol;
+                        var tintcolour;
+                        var colourconversion;
+                        var newcol;
                         if(!self.useCustomTagColours) {
-                            c1 = self.patternsData['Patterns'][self.which]['Channels'][t].defaultColour;
-                            defaultCol = new THREE.Color("rgb("+c1+")");
-                            var tmpcol = self.rgbToHex(defaultCol.r*255.0,defaultCol.g*255.0,defaultCol.b*255.0);
-                            self.liveryData['Layers'][self.currentLayer].Channels[t].tint = tmpcol;
+                            tintcolour = self.patternsData['Patterns'][self.which]['Channels'][t].defaultColour;
+                            colourconversion = new THREE.Color("rgb("+tintcolour+")");
+                            var newcol = self.rgbToHex(colourconversion.r*255.0,colourconversion.g*255.0,colourconversion.b*255.0);
+                            self.liveryData['Layers'][self.currentLayer].Channels[t].tint = newcol;
                         }
                         else {
-                            c1 = self.liveryData['Layers'][self.currentLayer].Channels[t].tint;
-                            defaultCol = new THREE.Color(c1);
+                            tintcolour = self.liveryData['Layers'][self.currentLayer].Channels[t].tint;
+                            colourconversion = new THREE.Color(tintcolour);
         
-                            tmpcol = self.rgbToHex(defaultCol.r*255.0,defaultCol.g*255.0,defaultCol.b*255.0);
+                            newcol = self.rgbToHex(colourconversion.r*255.0,colourconversion.g*255.0,colourconversion.b*255.0);
                             // liveryData[0][0]['Layers'][currentLayer].Channels[t].tint;
         
                         }
-        
-        
+
                         if(t==0) // base paint
-                            document.getElementById('tagstylepaintbutton').style.backgroundColor = tmpcol;//"rgb(255,0,0)";
+                            document.getElementById('tagstylepaintbutton').style.backgroundColor = newcol;//"rgb(255,0,0)";
                         else if(t==1) // primary paint
-                            document.getElementById('tagpaintbutton').style.backgroundColor = tmpcol;//"rgb(255,0,0)";
+                            document.getElementById('tagpaintbutton').style.backgroundColor = newcol;//"rgb(255,0,0)";
         
-                        var tmpv4 = new THREE.Vector4(defaultCol.r,defaultCol.g,defaultCol.b,1.0);
+                        var tmpv4 = new THREE.Vector4(colourconversion.r,colourconversion.g,colourconversion.b,1.0);
                         if(t==0)
                             self.mapUniforms.tagStyleTint.value = tmpv4;
                         else if(t==1)
@@ -263,36 +259,34 @@ class PatternItems {
                 else if(self.currentLayer==2) { // sponsors
         
                     for(var t=0;t<2;t++) { // 2 colour option (1st or 2nd? is fixed unchangable though)
-                        var c1;
-                        var defaultCol;
-                        var tmpcol;
+                        var tintcolour;
+                        var colourconversion;
+                        var newcol;
                         if(!self.useCustomSponsorColours || t==1) {
-                            c1 = self.patternsData['Patterns'][self.which]['Channels'][t].defaultColour;
-                            defaultCol = new THREE.Color("rgb("+c1+")");
-                            tmpcol = self.rgbToHex(defaultCol.r*255.0,defaultCol.g*255.0,defaultCol.b*255.0);
-                            self.liveryData['Layers'][self.currentLayer].Channels[t].tint = tmpcol;
+                            tintcolour = self.patternsData['Patterns'][self.which]['Channels'][t].defaultColour;
+                            colourconversion = new THREE.Color("rgb("+tintcolour+")");
+                            newcol = self.rgbToHex(colourconversion.r*255.0,colourconversion.g*255.0,colourconversion.b*255.0);
+                            self.liveryData['Layers'][self.currentLayer].Channels[t].tint = newcol;
                         }
                         else {
-                            c1 = self.liveryData['Layers'][self.currentLayer].Channels[t].tint;
-                            defaultCol = new THREE.Color(c1);
+                            tintcolour = self.liveryData['Layers'][self.currentLayer].Channels[t].tint;
+                            colourconversion = new THREE.Color(tintcolour);
         
-                            tmpcol = self.rgbToHex(defaultCol.r*255.0,defaultCol.g*255.0,defaultCol.b*255.0);
+                            newcol = self.rgbToHex(colourconversion.r*255.0,colourconversion.g*255.0,colourconversion.b*255.0);
                             // liveryData[0][0]['Layers'][currentLayer].Channels[t].tint;
         
                         }
-        
-        
+
                         if(t==1) // 
-                            document.getElementById('decalpaintbutton').style.backgroundColor = tmpcol;//"rgb(255,0,0)";
+                            document.getElementById('decalpaintbutton').style.backgroundColor = newcol;//"rgb(255,0,0)";
         
-                        var tmpv4 = new THREE.Vector4(defaultCol.r,defaultCol.g,defaultCol.b,1.0);
+                        var tmpv4 = new THREE.Vector4(colourconversion.r,colourconversion.g,colourconversion.b,1.0);
                         if(t==0)
                             self.mapUniforms.decalTint.value = tmpv4;
                         else if(t==1)
                             self.mapUniforms.decal2Tint.value = tmpv4;
                     }
                 }
-        //        this.useCustom = false;
                 self.thepatternelement.classList.add('patternSelected');
                 self.currentPatternElement = self.thepatternelement;
                 // Show description name
@@ -307,7 +301,8 @@ class PatternItems {
 
     changePattern(which,thefile,mapUniforms,
         thepatternelement,patternsData,liveryData,currentLayer,
-        f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Ribbons,f1Aws) {
+        f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Aws) {
+
         const patternId = thepatternelement.getAttribute("patternId");
 
         //
@@ -381,12 +376,12 @@ class PatternItems {
             self.patternTexture=0; // todo try this to remove chance of texure now loading twice...
             self.changePattern(which,thefile,mapUniforms,
                 thepatternelement,patternsData,liveryData,currentLayer,
-                f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Ribbons,f1Aws);
+                f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Aws);
 
         }, 4000); 
 
 
-//
+// todo refactor this requirement to keep hold of these vals as the nowloadtexture lose them elsewise
         this.thefile = thefile;
         this.f1SpecialFX = f1SpecialFX;
         this.liveryData = liveryData;

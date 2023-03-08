@@ -176,38 +176,26 @@ class F1Aws {
             try {
                 const response = await this.s3.send(command);
                 // The Body object also has 'transformToByteArray' and 'transformToWebStream' methods.
-                
-                if(type==0) { // language choices and settings
-                    const str = await response.Body.transformToString();
-                    _self.haveLoadedLanguageChoice(str);
+                switch(type) {
+                    case 0:
+                        _self.haveLoadedLanguageChoice(await response.Body.transformToString());
+                        break;
+                    case 1:
+                        _self.haveLoadedLanguageFile(await response.Body.transformToString());
+                        break;
+                    case 2:
+                        callback(await response.Body.transformToString(),self,this); // pass back aws!
+                        break;
+                    case 3:
+                        callback(URL.createObjectURL(new Blob([await response.Body.transformToByteArray()], { type: "image/png" })),self);
+                        break;
+                    case 4:
+                        callback(URL.createObjectURL(new Blob([await response.Body.transformToByteArray()], { type: "image/jpg" })),self);
+                        break;
+                    case 5:
+                        callback(URL.createObjectURL(new Blob([await response.Body.transformToByteArray()], { type: "image/jpg" })),self,thumb);
+                        break;
                 }
-                else if(type==1) { // actual language file
-                    const str = await response.Body.transformToString();
-                    _self.haveLoadedLanguageFile(str);
-                }
-                else if(type==2) { // patterns json file
-                    const str = await response.Body.transformToString();
-                    callback(str,self,this); // pass back aws!
-//                    _self.haveLoadedPatternsJSON(str);
-                }
-                else if(type==3) { // image files png
-                    // const str = await response.Body.transformToString();
-                    const blob = new Blob([await response.Body.transformToByteArray()], { type: "image/png" });
-                    const url = URL.createObjectURL(blob);
-                    callback(url,self);
-                }
-                else if(type==4) { // image files jpg
-                    // const str = await response.Body.transformToString();
-                    const blob = new Blob([await response.Body.transformToByteArray()], { type: "image/jpg" });
-                    const url = URL.createObjectURL(blob);
-                    callback(url,self);
-                }
-                else if(type==5) { // thumbs
-                    const blob = new Blob([await response.Body.transformToByteArray()], { type: "image/jpg" });
-                    const url = URL.createObjectURL(blob);
-                    callback(url,self,thumb);
-                }
-                
             } catch (err) {
                 if(DEBUG_MODE)
                     console.error(err);

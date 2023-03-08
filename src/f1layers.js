@@ -28,18 +28,11 @@ class F1Layers {
         // this.planeGeometry = new THREE.PlaneGeometry(renderSize, renderSize);
         this.customMapPlaneGeometry = new THREE.PlaneGeometry(customMapSize, customMapSize);
 
-
         this.customMapBufferMapScene = new THREE.Scene();
         
         this.customMapBufferMapCamera = new THREE.OrthographicCamera( 
                         -customMapSize*0.5,customMapSize*0.5,
                          -customMapSize*0.5, customMapSize*0.5, 1, 10 );
-
-        // this.bufferMapCamera = new THREE.OrthographicCamera( 
-        // -offscreenSize*0.5,offscreenSize*0.5,
-        //   -offscreenSize*0.5, offscreenSize*0.5, 1, 10 );
-  
-
 
         this.customMapBufferMapCamera.position.set(0,0,1);
         this.customMapBufferMapScene.add(this.customMapBufferMapCamera);
@@ -144,57 +137,13 @@ class F1Layers {
 
                   outcol = vec4(mix(c1,c2,color3.g),1.0);
                 }
-
-
-
-
                 gl_FragColor = outcol;
-                return;
-
-
-
-                if(mixMode==0) // straight through
-                {
-//                  gl_FragColor = color1;
-
-                  if(renderMode==1)
-                    gl_FragColor = color1;
-                  else {
-                    gl_FragColor = vec4(1,0,0,1);
-                  }
-
-
-                }
-                else
-                {
-                  // for alpha
-                  vec3 c1 = mix(color1,tint1 * color2.r, color2.a).xyz;
-                  vec3 c2 = mix(color1,tint2 * color2.g, color2.a).xyz;
-                  vec3 c3 = mix(color1,tint3 * color2.b, color2.a).xyz;
-
-                  vec4 outcol = vec4(mix(c1,c2,color2.g),1.0);
-                  outcol = vec4(mix(outcol.xyz,c3,color2.b),1.0);
-
-
-
-                  if(renderMode==1)
-                    gl_FragColor = outcol;
-                  else {
-                    float tone = (color2.r + color2.g + color2.b) / 3.0;
-                    gl_FragColor = vec4(tone,tone,tone,color2.a * tone);
-                    gl_FragColor = vec4(tone,tone,tone,0.5);
-                  }
-                }
-
               }
             `,
             side: THREE.DoubleSide,
 
-
-
           });
     
-          // const bufferMapMesh = new THREE.Mesh( _self.planeGeometry, _self.bufferMapMaterial );
         const bufferCustomMapMesh = new THREE.Mesh( _self.customMapPlaneGeometry, _self.customMapBufferMapMaterial );
     
         _self.customMapBufferMapScene.add(bufferCustomMapMesh);

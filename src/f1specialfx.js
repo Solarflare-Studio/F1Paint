@@ -145,16 +145,8 @@ class F1SpecialFX {
                 magFilter: THREE.NearestFilter,
                 antialias: true, 
                 premultipliedAlpha: true,//false,
-    
                 blending: THREE.AdditiveBlending,
-                
-                // ... testing
                 format: THREE.RGBAFormat,
-                // stencilBufer: false,
-
-                // autoClear: true,
-
-
         });
 
         this.mapUniforms = {
