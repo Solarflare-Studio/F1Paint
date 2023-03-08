@@ -48,6 +48,7 @@ class F1CarHelmet {
             shadowSide: THREE.DoubleSide,
             emissive: new THREE.Color(0,0,0),
             normalScale: new THREE.Vector2(-0.5, 0.5),
+            // normalScale: new THREE.Vector2(1, -1),
             // envMap: this.envMap
             side: THREE.DoubleSide
 
@@ -62,8 +63,8 @@ class F1CarHelmet {
                 // metalness: 1.0,
                 // roughness: 1.0,
                 // color: new THREE.Color(0xffffff),
-                metalness: 1,
-                roughness: 1,
+                metalness: 1,// 0.4,// 1,
+                roughness: 1,//0.27, //1,
                 color: new THREE.Color(0xffffff),
                 emissiveIntensity: 1,
                 aoMapIntensity: 1.0,
@@ -71,7 +72,8 @@ class F1CarHelmet {
                 shadowSide: THREE.DoubleSide,
                 
                 emissive: new THREE.Color(0,0,0),
-                normalScale: new THREE.Vector2(-0.5, 0.5),
+                // normalScale: new THREE.Vector2(-0.5, 0.5),
+                normalScale: new THREE.Vector2(1, -1),
                 side: THREE.DoubleSide
                 // envMap: this.envMap
             })
@@ -200,9 +202,6 @@ class F1CarHelmet {
                 filelist.push(f1fnames.car_files[3] ); // ao
                 filetypelist.push( 6 ); filecomplete.push(false);
 
-                _self.theBaseMaterial.emissive.r = 0.0;
-                _self.theBaseMaterial.emissive.g = 0.0;
-                _self.theBaseMaterial.emissive.b = 0.0;
             }
 
             // filelist.push('./assets/inapp/ribbon1.jpg'); // ribbon textures..
@@ -213,9 +212,7 @@ class F1CarHelmet {
             filetypelist.push( 10 ); filecomplete.push(false);
 
 
-            _self.theModelMaterial.emissive.r = 0.0;
-            _self.theModelMaterial.emissive.g = 0.0;
-            _self.theModelMaterial.emissive.b = 0.0;
+
 
             _self.f1materials.sequentialLoadMaps( filelist,filecomplete, filetypelist,_self.theBaseMaterial,_self.theModelMaterial,_self.f1Gui,f1Garage, _self,f1Ribbons);
 
