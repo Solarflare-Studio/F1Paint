@@ -11,7 +11,7 @@ class F1Layers {
     init(isHelmet, renderSize, f1fnames) {
         if(DEBUG_MODE)
           console.log(">> init F1 LayerShader");
-        var offscreenSize = renderSize;
+        var customMapSize = renderSize;
 
         var _self = this;
 
@@ -25,17 +25,25 @@ class F1Layers {
           tex.encoding = THREE.LinearEncoding;
         })
 
-        this.planeGeometry = new THREE.PlaneGeometry(renderSize, renderSize);
+        // this.planeGeometry = new THREE.PlaneGeometry(renderSize, renderSize);
+        this.customMapPlaneGeometry = new THREE.PlaneGeometry(customMapSize, customMapSize);
 
 
-        this.bufferMapScene = new THREE.Scene();
-        this.bufferMapCamera = new THREE.OrthographicCamera( 
-                        -offscreenSize*0.5,offscreenSize*0.5,
-                         -offscreenSize*0.5, offscreenSize*0.5, 1, 10 );
+        this.customMapBufferMapScene = new THREE.Scene();
+        
+        this.customMapBufferMapCamera = new THREE.OrthographicCamera( 
+                        -customMapSize*0.5,customMapSize*0.5,
+                         -customMapSize*0.5, customMapSize*0.5, 1, 10 );
 
-        this.bufferMapCamera.position.set(0,0,1);
-        this.bufferMapScene.add(this.bufferMapCamera);
-        this.bufferMapSceneTarget = new THREE.WebGLRenderTarget( offscreenSize, offscreenSize, { 
+        // this.bufferMapCamera = new THREE.OrthographicCamera( 
+        // -offscreenSize*0.5,offscreenSize*0.5,
+        //   -offscreenSize*0.5, offscreenSize*0.5, 1, 10 );
+  
+
+
+        this.customMapBufferMapCamera.position.set(0,0,1);
+        this.customMapBufferMapScene.add(this.customMapBufferMapCamera);
+        this.customMapBufferMapSceneTarget = new THREE.WebGLRenderTarget( customMapSize, customMapSize, { 
                 alpha: true, 
                 minFilter: THREE.LinearFilter, 
                 magFilter: THREE.NearestFilter,
@@ -67,7 +75,7 @@ class F1Layers {
 
         };
 
-        _self.bufferMapMaterial = new THREE.ShaderMaterial({
+        _self.customMapBufferMapMaterial = new THREE.ShaderMaterial({
             name: 'layersbufferMapMaterial',
             uniforms: _self.mapUniforms,
             vertexShader: `
@@ -186,10 +194,11 @@ class F1Layers {
 
           });
     
-        const bufferMapMesh = new THREE.Mesh( _self.planeGeometry, _self.bufferMapMaterial );
+          // const bufferMapMesh = new THREE.Mesh( _self.planeGeometry, _self.bufferMapMaterial );
+        const bufferCustomMapMesh = new THREE.Mesh( _self.customMapPlaneGeometry, _self.customMapBufferMapMaterial );
     
-        _self.bufferMapScene.add(bufferMapMesh);
-        _self.bufferMapMaterial.needsUpdate = true;
+        _self.customMapBufferMapScene.add(bufferCustomMapMesh);
+        _self.customMapBufferMapMaterial.needsUpdate = true;
     
     }
 

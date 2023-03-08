@@ -11,7 +11,7 @@ import {DEBUG_MODE} from './adminuser'
 class F1SpecialFX {
 
    
-    constructor(isHelmet, renderSize,f1fnames,liveryData) {
+    constructor(isHelmet, renderSize,f1fnames,liveryData,glowRenderSize) {
 
       this.f1BloomRibbonPass = 0;
 
@@ -24,7 +24,7 @@ class F1SpecialFX {
       this.effectStarttime = 0;
       this.duration = 0;
 
-      this.init(isHelmet, renderSize,f1fnames,liveryData);
+      this.init(isHelmet, renderSize,f1fnames,liveryData,glowRenderSize);
 
     }
     //======================
@@ -77,11 +77,13 @@ class F1SpecialFX {
     }
     //======================
 
-    init(isHelmet, renderSize, f1fnames) {
+    init(isHelmet, renderSize, f1fnames,glowRenderSize) {
         if(DEBUG_MODE)
           console.log(">> init F1 Special FX Render pipeline");
+
+        this.sfxBloomRenderSize = glowRenderSize;
         // this.offscreenSize = 512;// renderSize;
-        this.offscreenSize = 1024;// renderSize;
+        // this.offscreenSize = 1024;// renderSize;
         // this.offscreenSize = renderSize;
 
         this.plainMat = new THREE.MeshBasicMaterial({ // todo, replace with shader to offset mesh for specialfx
@@ -126,17 +128,18 @@ class F1SpecialFX {
           tex.encoding = THREE.LinearEncoding;
         })
 
-        this.planeGeometry = new THREE.PlaneGeometry(this.offscreenSize, this.offscreenSize);
+        this.glowPlaneGeometry = new THREE.PlaneGeometry(this.sfxBloomRenderSize, this.sfxBloomRenderSize);
+        // this.staticPlaneGeometry = new THREE.PlaneGeometry(renderSize, renderSize);
 
 
-        this.bufferMapScene = new THREE.Scene();
-        this.bufferMapCamera = new THREE.OrthographicCamera( 
-                        -this.offscreenSize*0.5,this.offscreenSize*0.5,
-                         -this.offscreenSize*0.5, this.offscreenSize*0.5, 1, 10 );
+        this.glowBufferMapScene = new THREE.Scene();
+        this.glowBufferMapCamera = new THREE.OrthographicCamera( 
+                        -this.sfxBloomRenderSize*0.5,this.sfxBloomRenderSize*0.5,
+                         -this.sfxBloomRenderSize*0.5, this.sfxBloomRenderSize*0.5, 1, 10 );
 
-        this.bufferMapCamera.position.set(0,0,1);
-        this.bufferMapScene.add(this.bufferMapCamera);
-        this.bufferMapSceneTarget = new THREE.WebGLRenderTarget( this.offscreenSize, this.offscreenSize, { 
+        this.glowBufferMapCamera.position.set(0,0,1);
+        this.glowBufferMapScene.add(this.glowBufferMapCamera);
+        this.glowBufferMapSceneTarget = new THREE.WebGLRenderTarget( this.sfxBloomRenderSize, this.sfxBloomRenderSize, { 
                 alpha: true, 
                 minFilter: THREE.LinearFilter, 
                 magFilter: THREE.NearestFilter,
@@ -166,7 +169,7 @@ class F1SpecialFX {
           useDecal: { value: 0.0 }
         };
 
-        _self.bufferMapMaterial = new THREE.ShaderMaterial({
+        _self.glowBufferMapMaterial = new THREE.ShaderMaterial({
             name: 'specialFXbufferMapMaterial',
 
             uniforms: _self.mapUniforms,
@@ -347,43 +350,40 @@ class F1SpecialFX {
 
           });
     
-        const bufferMapMesh = new THREE.Mesh( _self.planeGeometry, _self.bufferMapMaterial );
-    
-        _self.bufferMapScene.add(bufferMapMesh);
-        _self.bufferMapMaterial.needsUpdate = true;
+        const glowBufferMapMesh = new THREE.Mesh( _self.glowPlaneGeometry, _self.glowBufferMapMaterial );
+            _self.glowBufferMapScene.add(glowBufferMapMesh);
+        _self.glowBufferMapMaterial.needsUpdate = true;
     
     }
 
     //======================
     setupBloom(scene, camera,renderer,renderSize,f1Garage) {
 
+      const ribbonbloomRenderSize = 512;
 
       // setup static scene
-      const staticscene = new THREE.Scene();
-      staticscene.add( new THREE.Mesh( this.planeGeometry, f1Garage.backgroundMat ) );
-      const renderSceneBackground = new RenderPass( staticscene, camera );
+      // const staticscene = new THREE.Scene();
+      // staticscene.add( new THREE.Mesh( this.staticPlaneGeometry, f1Garage.backgroundMat ) );
+      // const renderSceneBackground = new RenderPass( staticscene, camera );
 
     
 
 
-
+      // render pass of the normal scene but has model materials swapped at render
       const renderScene = new RenderPass( scene, camera );
-      const f1BloomPass = new UnrealBloomPass(new THREE.Vector2( this.offscreenSize, this.offscreenSize ), 3.0, 0.75, 0.00015);
-      // const f1BloomPass = new UnrealBloomPass(new THREE.Vector2( 1024, 1024 ), 1.25, 0.75, 0.015);
-      // const f1BloomPass = new UnrealBloomPass(new THREE.Vector2( 1024, 1024 ), 1.0, 0.15, 0.01);
-      // const f1BloomPass = new UnrealBloomPass(new THREE.Vector2( 1024, 1024 ), 1,1, 0.5);
-      // const f1BloomPass = new UnrealBloomPass(new THREE.Vector2( 1024, 1024 ), 5.0, 0.15, 0.018);
-    
+      // bloom for glow layer
+      const f1BloomPass = new UnrealBloomPass(new THREE.Vector2( this.sfxBloomRenderSize, this.sfxBloomRenderSize ), 3.0, 0.75, 0.00015);
+
+      // composer for glow bloom layer
       this.fxComposer = new EffectComposer(renderer);
       this.fxComposer.renderToScreen = false;
       this.fxComposer.addPass( renderScene );
       this.fxComposer.addPass( f1BloomPass );
       //
       const renderRibbonScene = new RenderPass( scene, camera );
-      this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( this.offscreenSize, this.offscreenSize ), 8.5, 1.0, 0.000015);
-//      this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 512, 512 ), 5.25, 0.70, 0.000015);
-//      const f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( 1024, 1024 ), 0.01, 0.01, 0.5);
+      this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( ribbonbloomRenderSize, ribbonbloomRenderSize ), 8.5, 1.0, 0.000015);
 
+      //
       this.fxRibbonComposer = new EffectComposer(renderer);
       this.fxRibbonComposer.renderToScreen = false;
       this.fxRibbonComposer.addPass( renderRibbonScene );
@@ -393,8 +393,8 @@ class F1SpecialFX {
       this.fxaaPass = new ShaderPass( FXAAShader );
       const pixelRatio = renderer.getPixelRatio();
 
-      this.fxaaPass.material.uniforms[ 'resolution' ].value.x = 1 / ( this.offscreenSize * pixelRatio );
-      this.fxaaPass.material.uniforms[ 'resolution' ].value.y = 1 / ( this.offscreenSize * pixelRatio );
+      this.fxaaPass.material.uniforms[ 'resolution' ].value.x = 1 / ( renderSize * pixelRatio );
+      this.fxaaPass.material.uniforms[ 'resolution' ].value.y = 1 / ( renderSize * pixelRatio );
     
       this.finalPass = new ShaderPass(
         new THREE.ShaderMaterial( {
@@ -450,32 +450,25 @@ class F1SpecialFX {
           defines: {}
         } ), 'baseTexture'
       );
-      this.finalPass.needsSwap = true;
+      // this.finalPass.needsSwap = true; // todo confirm dont require
     
       this.finalComposer = new EffectComposer( renderer );
 
-      
-      // this.finalComposer.addPass( renderSceneBackground );
-
       this.finalComposer.addPass( renderScene );
-
 
       this.finalComposer.addPass( this.finalPass );
       // this.finalComposer.addPass( this.fxaaPass );
-      //
-
     
-      this.finalComposer.setSize(this.offscreenSize,this.offscreenSize);
-      this.fxComposer.setSize(this.offscreenSize,this.offscreenSize);
-
-      const ribbonrenderersize = 512;
-      this.fxRibbonComposer.setSize(ribbonrenderersize,ribbonrenderersize);
+      this.finalComposer.setSize(renderSize,renderSize);
+      this.fxComposer.setSize(this.sfxBloomRenderSize,this.sfxBloomRenderSize);
+      this.fxRibbonComposer.setSize(ribbonbloomRenderSize,ribbonbloomRenderSize);
       
     
     }
+    //======================
+    resize(_w,_h) { // when resizing canvas
 
-
-
+    }
     //======================
 
 }

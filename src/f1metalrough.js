@@ -14,7 +14,7 @@ class F1MetalRough {
     init(isHelmet, renderSize, f1fnames) {
         if(DEBUG_MODE)
           console.log(">> init F1 Metal Rough");
-        var offscreenSize = renderSize;
+        var metaloffscreenSize = renderSize;
 
         var _self = this;
 
@@ -28,17 +28,17 @@ class F1MetalRough {
           tex.encoding = THREE.LinearEncoding;
         })
 
-        this.planeGeometry = new THREE.PlaneGeometry(renderSize, renderSize);
+        this.metalPlaneGeometry = new THREE.PlaneGeometry(metaloffscreenSize, metaloffscreenSize);
 
 
-        this.bufferMapScene = new THREE.Scene();
-        this.bufferMapCamera = new THREE.OrthographicCamera( 
-                        -offscreenSize*0.5,offscreenSize*0.5,
-                         -offscreenSize*0.5, offscreenSize*0.5, 1, 10 );
+        this.metalBufferMapScene = new THREE.Scene();
+        this.metalBufferMapCamera = new THREE.OrthographicCamera( 
+                        -metaloffscreenSize*0.5,metaloffscreenSize*0.5,
+                         -metaloffscreenSize*0.5, metaloffscreenSize*0.5, 1, 10 );
 
-        this.bufferMapCamera.position.set(0,0,1);
-        this.bufferMapScene.add(this.bufferMapCamera);
-        this.bufferMapSceneTarget = new THREE.WebGLRenderTarget( offscreenSize, offscreenSize, { 
+        this.metalBufferMapCamera.position.set(0,0,1);
+        this.metalBufferMapScene.add(this.metalBufferMapCamera);
+        this.metalBufferMapSceneTarget = new THREE.WebGLRenderTarget( metaloffscreenSize, metaloffscreenSize, { 
                 alpha: true, 
                 minFilter: THREE.LinearFilter, 
                 magFilter: THREE.NearestFilter,
@@ -78,7 +78,7 @@ class F1MetalRough {
 
         };
 
-        _self.bufferMapMaterial = new THREE.ShaderMaterial({
+        _self.metalBufferMapMaterial = new THREE.ShaderMaterial({
             name: 'metalroughbufferMapMaterial',
 
             uniforms: _self.mapUniforms,
@@ -201,10 +201,10 @@ class F1MetalRough {
 
           });
     
-        const bufferMapMesh = new THREE.Mesh( _self.planeGeometry, _self.bufferMapMaterial );
+        const metalBufferMapMesh = new THREE.Mesh( _self.metalPlaneGeometry, _self.metalBufferMapMaterial );
     
-        _self.bufferMapScene.add(bufferMapMesh);
-        _self.bufferMapMaterial.needsUpdate = true;
+        _self.metalBufferMapScene.add(metalBufferMapMesh);
+        _self.metalBufferMapMaterial.needsUpdate = true;
     
     }
 

@@ -215,8 +215,8 @@ class F1Materials {
 
             f1Garage.garageMaterial.envMapIntensity = this.envstrGar;
             f1Garage.garageMaterial.needsUpdate=true;
-            f1Garage.garageWall.material.envMapIntensity = this.envstrCustom;
-            f1Garage.garageWall.material.needsUpdate=true;   
+            // f1Garage.garageWall.material.envMapIntensity = this.envstrCustom;
+            // f1Garage.garageWall.material.needsUpdate=true;   
         }
         else if(which==0){
             this.envstrCustom = strength;
@@ -233,16 +233,14 @@ class F1Materials {
     //======================
     quickSetMaps(result,f1CarHelmet,f1Garage) {
 
-        if(f1CarHelmet && f1CarHelmet.theModelMaterial && f1Garage.garageMaterial && f1Garage.garageWall.material) {
+        if(f1CarHelmet && f1CarHelmet.theModelMaterial && f1Garage.garageMaterial) {
             if(DEBUG_MODE)
                 console.log(">> Materials all ready - envmap applying..")
             // f1CarHelmet.envMap = result;
             f1CarHelmet.theModelMaterial.envMap = result;
             f1Garage.garageMaterial.envMap = result;
-            f1Garage.garageWall.material.envMap = result;
     
             // lees envmapintensity settings 280223
-            f1Garage.garageWall.material.envMapIntensity = this.envstrGar;// this.envmapStrength;// * 0.0125;
             f1Garage.garageMaterial.envMapIntensity = this.envstrGar;//this.envmapStrength;// * 0.125;
             f1CarHelmet.theModelMaterial.envMapIntensity = this.envstrCustom;//this.envmapStrength;
 
@@ -255,7 +253,6 @@ class F1Materials {
     
             f1CarHelmet.theModelMaterial.needsUpdate=true;
             f1Garage.garageMaterial.needsUpdate=true;
-            f1Garage.garageWall.material.needsUpdate=true;   
         }
         else {
             if(DEBUG_MODE)
@@ -446,9 +443,9 @@ class F1Materials {
 
                 }
                 else if(filetype==9) {  // garage wall
-                    f1Garage.garageWall.material.map = tex;
-                    // f1Garage.garageWall.material.envMapIntensity = 0.10;
-                    f1Garage.garageWall.material.needsUpdate=true;
+                    // f1Garage.garageWall.material.map = tex;
+                    // // f1Garage.garageWall.material.envMapIntensity = 0.10;
+                    // f1Garage.garageWall.material.needsUpdate=true;
                 }
                 else if(filetype==11) {  // ribbon
                     // tex.premultiplyAlpha = false;
@@ -484,7 +481,7 @@ class F1Materials {
     // ===============================================
 
 
-
+/*
 
 
     sequentialLoadMapsOLD(_filenames,_filecomplete, _types, _material1, _material2,f1Gui,f1Garage, f1CarHelmet,f1Ribbons) {
@@ -578,9 +575,9 @@ class F1Materials {
 
             }
             else if(filetype==9) {  // garage wall
-                f1Garage.garageWall.material.map = tex;
-                // f1Garage.garageWall.material.envMapIntensity = 0.10;
-                f1Garage.garageWall.material.needsUpdate=true;
+                // f1Garage.garageWall.material.map = tex;
+                // // f1Garage.garageWall.material.envMapIntensity = 0.10;
+                // f1Garage.garageWall.material.needsUpdate=true;
             }
             else if(filetype==11) {  // ribbon
                 // tex.premultiplyAlpha = false;
@@ -615,7 +612,7 @@ class F1Materials {
         })
     }
     // ===============================================
-
+*/
     // loadMaps(material, basemap, emissivemap, normalmap, aomap, metalmap, roughnessmap, alphamap, f1Gui) {
     //     if (basemap) {
 

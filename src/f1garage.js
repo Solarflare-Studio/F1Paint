@@ -14,7 +14,7 @@ class F1Garage {
         this.f1materials = f1materials;
         this.f1Gui = f1Gui;
         var _self = this;
-        this.garageWall = 0;
+        // this.garageWall = 0;
 
         this.garageRoot = new THREE.Object3D();
         this.garageMaterial = f1materials.newGarageMat();
@@ -59,7 +59,7 @@ class F1Garage {
   */  
 
         // walls
-        this.garageWall = new THREE.Mesh( this.planeGeometry, f1materials.newGarageMat() );
+        // this.garageWall = new THREE.Mesh( this.planeGeometry, f1materials.newGarageMat() );
         // _self.f1materials.loadMaps(this.garageWall.material, 
         //     './assets/garage/walls.jpg',
         //     null, //'./assets/garage/wall_lights.jpg',
@@ -69,32 +69,32 @@ class F1Garage {
         //     null,
         //     null,_self.f1Gui);
 
-        this.garageWall.layers.set(1);
+        // this.garageWall.layers.set(1);
 //        garageWall.rotateX((Math.PI / 180)*90);
-        this.garageWall.rotateZ((Math.PI / 180)*180);
-        this.garageWall.scale.set(0.5,0.5,0.5);
+        // this.garageWall.rotateZ((Math.PI / 180)*180);
+        // this.garageWall.scale.set(0.5,0.5,0.5);
 
         // garageWall.position.x = -10;
         // garageWall.position.y = -10;
-        this.garageWall.receiveShadow = false;
+        // this.garageWall.receiveShadow = false;
 
-        const morewalls = this.garageWall.clone();
-        morewalls.rotateY((Math.PI / 180)*90);
-        morewalls.position.x = -250;
+        // const morewalls = this.garageWall.clone();
+        // morewalls.rotateY((Math.PI / 180)*90);
+        // morewalls.position.x = -250;
         // this.garageRoot.add(morewalls);
 
-        const morewallsR = this.garageWall.clone();
-        morewallsR.rotateY((Math.PI / 180)*90);
-        morewallsR.position.x = 250;
+        // const morewallsR = this.garageWall.clone();
+        // morewallsR.rotateY((Math.PI / 180)*90);
+        // morewallsR.position.x = 250;
         // this.garageRoot.add(morewallsR);
 
-        const morewallsF = this.garageWall.clone();
-        morewallsF.position.z = 250;
+        // const morewallsF = this.garageWall.clone();
+        // morewallsF.position.z = 250;
         // this.garageRoot.add(morewallsF);
 
 
 
-        this.garageWall.position.z = -250;
+        // this.garageWall.position.z = -250;
 
 
 

@@ -71,8 +71,13 @@ window.onConsole = onConsole;
 const f1Settings = new F1Settings();
 const f1Cookies = new F1Cookies();
 
-// var renderSize = 1024;
-var renderSize = 2048;
+var renderSize = 1024;
+// var renderSize = 2048;
+
+var customMapRenderSize = 2048;
+var customRoughMapRenderSize = 1024;
+var sfxBloomRenderSize = 512;
+
 
 // set files names
 var f1fnames = new F1AssetFileNames();
@@ -125,10 +130,10 @@ var f1Gui = new F1Gui(processJSON);
 f1Gui.updateProgress(5,'patterns');
 
 var f1Materials  = new F1Materials(f1Settings);
-var f1Layers = new F1Layers(f1Cookies.isHelmet, renderSize,f1fnames);
-var f1MetalRough = new F1MetalRough(f1Cookies.isHelmet, renderSize,f1fnames);
+var f1Layers = new F1Layers(f1Cookies.isHelmet, customMapRenderSize,f1fnames);
+var f1MetalRough = new F1MetalRough(f1Cookies.isHelmet, customRoughMapRenderSize,f1fnames);
 // var f1PostRender = new F1PostRender(f1Cookies.isHelmet, renderSize,f1fnames);
-var f1SpecialFX =  new F1SpecialFX(f1Cookies.isHelmet, renderSize,f1fnames);
+var f1SpecialFX =  new F1SpecialFX(f1Cookies.isHelmet, renderSize,f1fnames, sfxBloomRenderSize);
 var f1Text = new F1Text(f1Layers.mapUniforms, f1MetalRough.mapUniforms);
 var f1Ribbons = new F1Ribbons(f1Materials);
 
@@ -148,8 +153,9 @@ var rootScene = new THREE.Object3D();
 
 var doBuildBasemap = false;
 
-const pixelBuffer = new Uint8Array( 4*renderSize*renderSize );
-const pixelBufferRoughMetal = new Uint8Array( 4*renderSize*renderSize );
+const pixelBuffer = new Uint8Array( 4*customMapRenderSize*customMapRenderSize );
+const pixelBufferRoughMetal = new Uint8Array( 4*customRoughMapRenderSize*customRoughMapRenderSize );
+
 
 
 const canvas = document.getElementById('canvas-container');
@@ -1171,13 +1177,13 @@ function dataURLtoBlob(dataurl) {
 }
 //==================================================
 
-function doSavePaintShop(_pixelBuffer,_dateTimeTypePrefix) {
+function doSavePaintShop(_pixelBuffer,_dateTimeTypePrefix, _renderSize) {
 
 	var canvas = document.createElement('canvas');
-	canvas.width = renderSize;
-	canvas.height = renderSize;
+	canvas.width = _renderSize;
+	canvas.height = _renderSize;
 	var context = canvas.getContext('2d');
-	var imageData = context.createImageData(renderSize, renderSize);
+	var imageData = context.createImageData(_renderSize, _renderSize);
 	imageData.data.set(_pixelBuffer);
 	context.putImageData(imageData, 0, 0);
 
@@ -1275,8 +1281,8 @@ function setMaterial(glosstype,theChan) {
 
 //==================================================
 function readMetalRoughBufferMapSceneTarget() {
-	renderer.readRenderTargetPixels(f1MetalRough.bufferMapSceneTarget,0,0, renderSize,renderSize, pixelBufferRoughMetal);
-	const tmptexture = new THREE.DataTexture( pixelBufferRoughMetal, renderSize, renderSize );
+	renderer.readRenderTargetPixels(f1MetalRough.metalBufferMapSceneTarget,0,0, customRoughMapRenderSize,customRoughMapRenderSize, pixelBufferRoughMetal);
+	const tmptexture = new THREE.DataTexture( pixelBufferRoughMetal, customRoughMapRenderSize, customRoughMapRenderSize );
 	tmptexture.flipY=true;
 	tmptexture.needsUpdate = true;
 	tmptexture.encoding = THREE.LinearEncoding;
@@ -1284,9 +1290,9 @@ function readMetalRoughBufferMapSceneTarget() {
 }
 
 //==================================================
-function readBufferMapSceneTarget() {
-	renderer.readRenderTargetPixels(f1Layers.bufferMapSceneTarget,0,0, renderSize,renderSize, pixelBuffer);
-	const tmptexture = new THREE.DataTexture( pixelBuffer, renderSize, renderSize );
+function readCustomMapBufferMapSceneTarget() {
+	renderer.readRenderTargetPixels(f1Layers.customMapBufferMapSceneTarget,0,0, customMapRenderSize,customMapRenderSize, pixelBuffer);
+	const tmptexture = new THREE.DataTexture( pixelBuffer, customMapRenderSize, customMapRenderSize );
 	tmptexture.flipY=true;
 	tmptexture.needsUpdate = true;
 	tmptexture.encoding = THREE.LinearEncoding;
@@ -1300,7 +1306,7 @@ function postRenderProcess() {
 	if(doBuildBasemap) { 
 		// build for ar
 
-		var tmp = readBufferMapSceneTarget();
+		var tmp = readCustomMapBufferMapSceneTarget();
 		var roughmetal = readMetalRoughBufferMapSceneTarget();
 
 		doBuildBasemap = false;
@@ -1308,8 +1314,8 @@ function postRenderProcess() {
 		const datetime = getDateTimeStampString();
 		processJSON.liveryData['timestamp'] = datetime;
 		f1Aws.filessavedcount = 0;
-		doSavePaintShop(pixelBuffer, "_" + datetime +  "_map.png");
-		doSavePaintShop(pixelBufferRoughMetal, "_" + datetime +  "_roughmetal.png");
+		doSavePaintShop(pixelBuffer, "_" + datetime +  "_map.png", customMapRenderSize);
+		doSavePaintShop(pixelBufferRoughMetal, "_" + datetime +  "_roughmetal.png", customRoughMapRenderSize);
 
 		// save json record too
 		var jsonfilename = f1Cookies.userID + "_" + datetime +  "_livery.json";
@@ -1413,15 +1419,15 @@ function renderpipeline() {
 		camera.layers.disable(3); // ribbon
 
 	// render the rough / metal map to offscreen
-	renderer.setRenderTarget(f1MetalRough.bufferMapSceneTarget);
-	renderer.render( f1MetalRough.bufferMapScene, f1MetalRough.bufferMapCamera );
+	renderer.setRenderTarget(f1MetalRough.metalBufferMapSceneTarget);
+	renderer.render( f1MetalRough.metalBufferMapScene, f1MetalRough.metalBufferMapCamera );
 
 	// render the main map layers to offscreen
-	renderer.setRenderTarget(f1Layers.bufferMapSceneTarget);
-	renderer.render( f1Layers.bufferMapScene, f1Layers.bufferMapCamera );
+	renderer.setRenderTarget(f1Layers.customMapBufferMapSceneTarget);
+	renderer.render( f1Layers.customMapBufferMapScene, f1Layers.customMapBufferMapCamera );
 
 	// apply composited layers buffer as model map
-	f1CarHelmet.theModelMaterial.map = f1Layers.bufferMapSceneTarget.texture;
+	f1CarHelmet.theModelMaterial.map = f1Layers.customMapBufferMapSceneTarget.texture;
 	f1CarHelmet.theModelMaterial.needsUpdate = true;
 
 	renderer.setRenderTarget(null);
@@ -1434,20 +1440,21 @@ function specialrenderpipeline() {
 	camera.layers.disable(3); // ribbon
 
 	// render the rough / metal map to offscreen
-	renderer.setRenderTarget(f1MetalRough.bufferMapSceneTarget);
-	renderer.render( f1MetalRough.bufferMapScene, f1MetalRough.bufferMapCamera );
+	renderer.setRenderTarget(f1MetalRough.metalBufferMapSceneTarget);
+	renderer.render( f1MetalRough.metalBufferMapScene, f1MetalRough.metalBufferMapCamera );
 
 	// render the main map layers to offscreen
-	renderer.setRenderTarget(f1Layers.bufferMapSceneTarget);
-	renderer.render( f1Layers.bufferMapScene, f1Layers.bufferMapCamera );
+	renderer.setRenderTarget(f1Layers.customMapBufferMapSceneTarget);
+	renderer.render( f1Layers.customMapBufferMapScene, f1Layers.customMapBufferMapCamera );
 
 	// apply composited layers buffer as model map
-	f1CarHelmet.theModelMaterial.map = f1Layers.bufferMapSceneTarget.texture;
+	f1CarHelmet.theModelMaterial.map = f1Layers.customMapBufferMapSceneTarget.texture;
 	f1CarHelmet.theModelMaterial.needsUpdate = true;
 
-	//
+	// prevent attempt before loaded
 	if(f1CarHelmet.specialFXMesh) {
 
+		// get tint values from appropriate layer = base/tag/sponsor colouring
 		f1SpecialFX.mapUniforms.layer.value = f1Gui.currentPage;
 		var layer = 0;
 		if(f1Gui.currentPage==3) {
@@ -1456,7 +1463,6 @@ function specialrenderpipeline() {
 		else if(f1Gui.currentPage==4) {
 			layer = 2;
 		}
-
 		const tint1 = f1Gui.hexToRgb(processJSON.liveryData['Layers'][layer].Channels[0].tint);
 		const tint2 = f1Gui.hexToRgb(processJSON.liveryData['Layers'][layer].Channels[1].tint);
 		const tint3 = f1Gui.hexToRgb(processJSON.liveryData['Layers'][layer].Channels[2].tint);
@@ -1464,20 +1470,23 @@ function specialrenderpipeline() {
 		f1SpecialFX.mapUniforms.chan2Colour.value = new THREE.Vector3(	tint2.r /= 255.0,tint2.g /= 255.0,tint2.b /= 255.0	);
 		f1SpecialFX.mapUniforms.chan3Colour.value = new THREE.Vector3(	tint3.r /= 255.0,tint3.g /= 255.0,tint3.b /= 255.0	);
 
-
+		// 
 		f1SpecialFX.mapUniforms.fTime.value = f1SpecialFX.finalPass.uniforms.amountBloom.value;
 
-		renderer.setRenderTarget(f1SpecialFX.bufferMapSceneTarget);
-		renderer.render( f1SpecialFX.bufferMapScene, f1SpecialFX.bufferMapCamera );
+		// render glow bloom offscreen
+		renderer.setRenderTarget(f1SpecialFX.glowBufferMapSceneTarget);
+		renderer.render( f1SpecialFX.glowBufferMapScene, f1SpecialFX.glowBufferMapCamera );
 
-		f1SpecialFX.plainMat.map = f1SpecialFX.bufferMapSceneTarget.texture;
+		// apply to car custom layer mesh copy
+		f1SpecialFX.plainMat.map = f1SpecialFX.glowBufferMapSceneTarget.texture;
 		f1CarHelmet.specialFXMesh.material = f1SpecialFX.plainMat;
 
+		// black out static mesh
 		// if(!f1Cookies.isHelmet)
 			f1CarHelmet.baseFXMesh.material = f1SpecialFX.blackMat;
 
 
-		f1CarHelmet.specialFXMesh.material.map = f1SpecialFX.bufferMapSceneTarget.texture;
+//		f1CarHelmet.specialFXMesh.material.map = f1SpecialFX.glowBufferMapSceneTarget.texture;
 	}
 	scene.background =  new THREE.Color( 0x000000 );
 

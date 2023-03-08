@@ -32,7 +32,7 @@ class F1CarHelmet {
          // main customisable material
         this.theModelMaterial = new THREE.MeshStandardMaterial({ // pbr
             name: 'theModelMaterial',
-            map: f1Layers.bufferMapSceneTarget.texture,
+            map: f1Layers.customMapBufferMapSceneTarget.texture,
             fog: false,
             metalness: 1.0,
             // envMapIntensity: _self.envamount, //3.4,// 3.4,//5.0,
@@ -40,8 +40,8 @@ class F1CarHelmet {
             emissiveIntensity:1,
             aoMapIntensity: 1.0,
 
-            metalnessMap: f1MetalRough.bufferMapSceneTarget.texture,
-            roughnessMap: f1MetalRough.bufferMapSceneTarget.texture,
+            metalnessMap: f1MetalRough.metalBufferMapSceneTarget.texture,
+            roughnessMap: f1MetalRough.metalBufferMapSceneTarget.texture,
         //    emissiveMap: f1SpecialFX.bufferMapSceneTarget.texture, // check todo
             color: new THREE.Color(0xffffff),
             // shadowSide: THREE.FrontSide,// THREE.DoubleSide,
