@@ -74,8 +74,8 @@ const f1Cookies = new F1Cookies();
 var renderSize = 1024;
 // var renderSize = 2048;
 
-var customMapRenderSize = 2048;
-var customRoughMapRenderSize = 1024;
+var customMapRenderSize = 1024;
+var customRoughMapRenderSize = 512;
 var sfxBloomRenderSize = 512;
 
 

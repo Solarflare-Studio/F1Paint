@@ -457,7 +457,7 @@ class F1SpecialFX {
       this.finalComposer.addPass( renderScene );
 
       this.finalComposer.addPass( this.finalPass );
-      // this.finalComposer.addPass( this.fxaaPass );
+      this.finalComposer.addPass( this.fxaaPass );
     
       this.finalComposer.setSize(renderSize,renderSize);
       this.fxComposer.setSize(this.sfxBloomRenderSize,this.sfxBloomRenderSize);
