@@ -391,17 +391,33 @@ function setupConsoleListeners() {
 				c_lightIntensitySlider.value = dirLight2.intensity * 100.0;
 				break;
 			case "amb":
+				c_lightIntensitySliderTxt.innerHTML = "intensity= " + ambLight.intensity;
+				c_lightIntensitySlider.value = ambLight.intensity * 100.0;
 				break;
 		}
 	}
 	document.getElementById('c_lightIntensitySlider').oninput = function () {
-		const which = document.getElementById('c_whichlight').value;
 		const val = this.value / 100.0;
-		if(which=="spot1") { mainLight.intensity = val; mainLight3.intensity = val; }
-		else if(which=="spot2") { mainLight2.intensity = val; mainLight4.intensity = val;}
-		else if(which=="dir") dirLight.intensity = val;
-		else if(which=="dir2") dirLight2.intensity = val;
-		else if(which=="amb") ambLight.intensity = val;
+		switch(document.getElementById('c_whichlight').value) {
+			case "spot1":
+				mainLight.intensity = val; 
+				mainLight3.intensity = val;
+				break;
+			case "spot2":
+				mainLight2.intensity = val; 
+				mainLight4.intensity = val;
+				break;
+			case "dir":
+				dirLight.intensity = val;
+				break;
+			case "dir2":
+				dirLight2.intensity = val;
+				break;
+			case "amb":
+				ambLight.intensity = val;
+				break;
+		}
+
 		document.getElementById('c_lightIntensitySliderTxt').innerHTML = "intensity= " + val;
 	}
 
@@ -445,8 +461,6 @@ function onConsole(_switch) {
 				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrStatic;
 			else 
 				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrGar;
-
-			
 			
 			console.classList.remove('hidden');
 		}
@@ -577,7 +591,6 @@ function introNextPage(nextPage) {
 		document.getElementById('intro2block').classList.add('fadedout');
 
 		seekPatternThumb(document.getElementById('layer1patterns_ins'),0).click();
-		// patternItems.layerNoneElements[0].click(); // force first empty pattern
 		setAutoSelectingPattern(false);
 
 		// after 0.7s fade in the tutoral page 1
@@ -603,14 +616,11 @@ function introNextPage(nextPage) {
 	else if(nextPage==3) { // let's go!
 
 		seekPatternThumb(document.getElementById('layer1patterns_ins'),0).click();
-		// patternItems.layerNoneElements[0].click(); // force first empty pattern
-
 		document.getElementById('tut2block').classList.add('fadedout');
 
 		// enable tools
 		updateProgress(5,'activating');
 		changeTab(1);
-		// onPatternsTab();
 
 
 		document.getElementById('palette_toolsBlock').classList.remove('disabledUserEvents');
@@ -634,10 +644,6 @@ function initit()
 	// shadow test
 	renderer.shadowMap.enabled = true;
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-	// lees settings
-	// renderer.toneMapping = THREE.LinearToneMapping;
-	// renderer.toneMappingExposure = 0.9;
 
 	// reinhard
 	renderer.toneMapping = f1Settings.tonemappingtype ;// THREE.ReinhardToneMapping;
