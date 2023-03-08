@@ -2,6 +2,30 @@ import * as THREE from '../node_modules/three/build/three.module.js';
 import { TWEEN } from '../node_modules/three/examples/jsm/libs/tween.module.min'
 import {DEBUG_MODE} from './adminuser'
 
+const totalfilestoloadperc = 85;
+var currentProgress = 0;
+var isAutoSelectingPattern = true; // to indicate whether user has actually clicked on thumb or part of auto procedure setting up
+
+export function setAutoSelectingPattern(_val) {
+    isAutoSelectingPattern = _val;
+}
+export function getAutoSelectingPattern() {
+    return isAutoSelectingPattern;
+}
+
+
+export function updateProgress(percent,msg) {
+    if(percent==-99) { // reset to 0
+        currentProgress=0;
+    }
+    else {
+        const progress = document.getElementById("progress");
+        currentProgress = currentProgress + percent;
+        progress.style.width = ((currentProgress / totalfilestoloadperc)*100) + "%";
+        if(DEBUG_MODE)
+            console.log(">> percent loaded = " + currentProgress + " - " + msg);
+    }
+}
 
 class F1Gui {
 
@@ -10,16 +34,15 @@ class F1Gui {
         // this.colourbackgroundSolidColour = '#FFD933';
         // this.colourbackgroundBottomColour = '#ffff00';
         // this.colourbackgroundTopColour = '#ff0000';
-        this.totalfilestoloadperc = 85;
+        // this.totalfilestoloadperc = 85;
 
         this.scaleDevice = 1.0;
         this.currentPage = 1;
         this.inPresets = false;
-        this.currentProgress = 0;
+        // this.currentProgress = 0;
         this.pickingColour = false;
 
         this.processJSON = processJSON;
-        this.isAuto = true; // to indicate whether user has actually clicked on thumb or part of auto procedure setting up
 
         this.bestToolPosY = 0;
         this.tabHeight = 0;
@@ -31,14 +54,14 @@ class F1Gui {
 
     }
 
-    updateProgress(percent,msg) {
-        const maxprogress = this.totalfilestoloadperc;
-        const progress = document.getElementById("progress");
-        this.currentProgress = this.currentProgress + percent;
-        progress.style.width = ((this.currentProgress / maxprogress)*100) + "%";
-        if(DEBUG_MODE)
-            console.log(">> percent loaded = " + this.currentProgress + " - " + msg);
-    }
+    // updateProgress(percent,msg) {
+    //     const maxprogress = this.totalfilestoloadperc;
+    //     const progress = document.getElementById("progress");
+    //     this.currentProgress = this.currentProgress + percent;
+    //     progress.style.width = ((this.currentProgress / maxprogress)*100) + "%";
+    //     if(DEBUG_MODE)
+    //         console.log(">> percent loaded = " + this.currentProgress + " - " + msg);
+    // }
     //===================================
     updateProgress2(percent) {
         // const maxprogress = 100;
@@ -178,7 +201,7 @@ class F1Gui {
             else if(_index==4)
                 layerMsg = "STYLE COLOUR";
         }
-        else if(_index==5) { // sponsor
+        else if(_index==6) { // sponsor
             document.getElementById('paintdecalblock').classList.remove('hidden');
             document.getElementById('decalblock').classList.add('hidden');
             document.getElementById('layer3decals_ins').classList.add('hidden');
@@ -249,7 +272,7 @@ class F1Gui {
             elementID = 'tagstylepaintbutton';
         else if(_index==4) // tag colours
             elementID = 'tagpaintbutton';
-        else if(_index==5) // decal colours
+        else if(_index==6) // decal colours
             elementID = 'decalpaintbutton';
 
         return window.getComputedStyle(  document.getElementById(elementID) ,null).getPropertyValue('background-color');
@@ -340,7 +363,7 @@ class F1Gui {
             document.getElementById('decalblock').classList.add('hidden');
             document.getElementById('layer3decals_ins').classList.add('hidden');
 
-
+            // need to make sure the base pattern is loaded into glow sfx
 
             if(this.processJSON.liveryData['Layers'][0].patternId == -1) {  // a none pattern
                 // no 1st pattern selected, so hide second and third paint choices
@@ -388,7 +411,7 @@ class F1Gui {
             document.getElementById("decalblock").classList.remove("hidden");
 
             // set decal colour button
-            var decalcolour = this.processJSON.liveryData['Layers'][2].Channels[0].tint;
+            var decalcolour = this.processJSON.liveryData['Layers'][2].Channels[1].tint;
             document.getElementById('decalpaintbutton').style.backgroundColor = decalcolour;
 
             document.getElementById('paintdecalblock').classList.add('hidden');
@@ -462,89 +485,63 @@ class F1Gui {
             // hide primary and second colour pickers...
         }
 
+        var patternThumbElement = 0;
+        var hasfound = false;
+        var layerindex = 0;
+        if(topage==1 || topage==2) { // base pattern or base paint
+            layerindex = 0;
+        }
+        else if(topage==3) { // tag
+            layerindex = 1;
+        }
+        else if(topage==4) { // sponsor
+            layerindex = 2;
+        }
+
+        // seek out thumb element from its pattern id attribute
+        const patternblock = document.getElementById('layer1patterns_ins');
+        for(var i=0;i<patternblock.children.length;i++) {
+            const id= patternblock.children[i].children[0].getAttribute('patternId');
+            if(this.processJSON.liveryData['Layers'][layerindex].patternId == id){
+                // matched!
+                if(DEBUG_MODE)
+                    console.log("matched");
+                hasfound=true;
+                patternThumbElement = patternblock.children[i].children[0];
+                break;
+            }
+        }
+        if(!hasfound && DEBUG_MODE)
+            console.log(">> **** error finding matching pattern");
+
         if(topage == 1) { // first page of patterns
 
             this.showPage( 1, false);
 
-            // try setting the pattern here for this layer
-//            if(	liveryData[0][0]['Layers'][0].patternId != -1) {
-                // var patternThumbElement = this.processJSON.layerPatternThumbElements[0];
-            var patternThumbElement = 0;
-
-            // seek out thumb element from its pattern id attribute
-            const patternblock = document.getElementById('layer1patterns_ins');
-            var hasfound = false;
-            for(var i=0;i<patternblock.children.length;i++) {
-                const id= patternblock.children[i].children[0].getAttribute('patternId');
-                if(this.processJSON.liveryData['Layers'][0].patternId == id){
-                    // matched!
-                    if(DEBUG_MODE)
-                        console.log("matched");
-                    hasfound=true;
-                    patternThumbElement = patternblock.children[i].children[0];
-                    break;
-                }
-            }
-
-            if(!hasfound) {
-                if(DEBUG_MODE)
-                    console.log(">> **** error finding matching pattern");
-            }
-
-
             if(patternThumbElement!=0) {
                 //
-                this.isAuto = true;  // try without !! todo fix
+                setAutoSelectingPattern(true);  // try without !! todo fix
                 patternThumbElement.click();
             }
-//            }
-
         }
         else if(topage == 2) { // paint
 
             this.showPage( 2, false);
-
-
-
+            if(patternThumbElement!=0) {
+                //
+                setAutoSelectingPattern( true);  // try without !! todo fix
+                patternThumbElement.click();
+            }
         }
         else if(topage == 3) { // tags
 
             this.showPage( 3, false);
-            // var patternThumbElement = this.processJSON.layerPatternThumbElements[1];
-            var patternThumbElement = 0;
 
-
-            // seek out thumb element from its pattern id attribute
-            const patternblock = document.getElementById('layer2tags_ins');
-            var hasfound = false;
-            for(var i=0;i<patternblock.children.length;i++) {
-                const id= patternblock.children[i].children[0].getAttribute('patternId');
-                if(this.processJSON.liveryData['Layers'][1].patternId == id){
-                    // matched!
-                    if(DEBUG_MODE)
-                        console.log("matched");
-                    hasfound=true;
-                    patternThumbElement = patternblock.children[i].children[0];
-                    break;
-                }
+            if(patternThumbElement!=0) {
+                //
+                setAutoSelectingPattern(true);
+                patternThumbElement.click();
             }
-
-            if(!hasfound) {
-                if(DEBUG_MODE)
-                    console.log(">> **** error finding matching pattern");
-            }
-
-
-            // try setting the pattern here for this layer
-//            if(	liveryData[0][0]['Layers'][1].patternId != -1) {
-                if(patternThumbElement!=0) {
-                    //
-                    this.isAuto = true;
-                    patternThumbElement.click();
-                }
-//            }
-
-
         }
         else if(topage == 4) { // decals
 
@@ -580,7 +577,7 @@ class F1Gui {
 
                 if(patternThumbElement!=0) {
                     //
-                    this.isAuto = true;
+                    isAutoSelectingPattern = true;
                     patternThumbElement.click();
                 }
 //            }
@@ -1217,6 +1214,7 @@ class F1Gui {
 
 }
 
+// export { F1Gui };
 export { F1Gui };
 
 

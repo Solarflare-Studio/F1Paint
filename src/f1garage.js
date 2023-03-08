@@ -5,14 +5,13 @@ import * as THREE from '../node_modules/three/build/three.module.js';
 class F1Garage {
 
 
-    constructor(f1materials,f1Gui) {
-        this.init(f1materials,f1Gui);
+    constructor(f1materials) {
+        this.init(f1materials);
     }
-    init(f1materials,f1Gui) {
+    init(f1materials) {
         this.planeGeometry = new THREE.PlaneGeometry(1024,1024);
 
         this.f1materials = f1materials;
-        this.f1Gui = f1Gui;
         var _self = this;
         // this.garageWall = 0;
 

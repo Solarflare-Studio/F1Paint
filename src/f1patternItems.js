@@ -2,7 +2,7 @@
 
 import * as THREE from '../node_modules/three/build/three.module.js';
 import {DEBUG_MODE} from './adminuser'
-
+import { setAutoSelectingPattern,getAutoSelectingPattern } from './f1gui.js';
 
 class PatternItems {
 
@@ -259,14 +259,14 @@ class PatternItems {
                 self.liveryData['Layers'][self.currentLayer].filename = self.thefile;
 
 
-                if(!self.f1Gui.isAuto) {
+                if(!getAutoSelectingPattern()) {
                     if(DEBUG_MODE)
                         console.log(">> lead out sfx");
 
                     self.f1SpecialFX.startFX(1000); // sfx lead out
                 }
                 else 
-                    self.f1Gui.isAuto = false;
+                    setAutoSelectingPattern(false);
 
 
                 if(self.currentLayer==0)

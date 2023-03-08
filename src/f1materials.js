@@ -1,6 +1,7 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
 import {DEBUG_MODE} from './adminuser'
 
+import { updateProgress } from './f1gui.js';
 
 
 class F1Materials {
@@ -178,7 +179,7 @@ class F1Materials {
         //         );
     }
     //======================
-    loadEnvMap(f1CarHelmet,f1Garage,f1Gui) {
+    loadEnvMap(f1CarHelmet,f1Garage) {
 
         // const px = new THREE.TextureLoader('./assets/cubemap-static/px.png');
         if(DEBUG_MODE)
@@ -200,7 +201,7 @@ class F1Materials {
 
                     self.quickSetMaps(result,f1CarHelmet,f1Garage);
 
-                    f1Gui.updateProgress(5,'envmap');
+                    updateProgress(5,'envmap');
                     self.alltexturesloaded = true;
 
                     
@@ -330,7 +331,7 @@ class F1Materials {
     //     );        
     // }
     // ===============================================
-    sequentialLoadMaps(_filenames,_filecomplete, _types, _material1, _material2,f1Gui,f1Garage, f1CarHelmet,f1Ribbons) {
+    sequentialLoadMaps(_filenames,_filecomplete, _types, _material1, _material2,f1Garage, f1CarHelmet,f1Ribbons) {
 
         this.totalTexturesAttempted++;
         const self = this;
@@ -362,7 +363,7 @@ class F1Materials {
             setTimeout(function() {
                 clearTimeout(this.filetimeout);
 
-                _self.loadEnvMap(f1CarHelmet,f1Garage,f1Gui);
+                _self.loadEnvMap(f1CarHelmet,f1Garage);
             },1000);
             
             return;
@@ -378,7 +379,7 @@ class F1Materials {
                 if(DEBUG_MODE)
                     console.log("*************** FILE FAILED *******************");
                 self.totalTexturesAttempted--;
-                self.sequentialLoadMaps(_filenames, _filecomplete,_types, _material1, _material2,f1Gui,f1Garage, f1CarHelmet,f1Ribbons);
+                self.sequentialLoadMaps(_filenames, _filecomplete,_types, _material1, _material2,f1Garage, f1CarHelmet,f1Ribbons);
             }
         }, 5000);
 
@@ -400,7 +401,7 @@ class F1Materials {
                 tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
                 if(DEBUG_MODE)
                     console.log(">> " + this.totalTexturesLoaded + '/'+ this.totalTexturesAttempted + "== sequential LOADED  = " + filename);
-                f1Gui.updateProgress(5,'');
+                updateProgress(5,'');
 
                 if(filetype==0) { //base
                     _material1.map = tex;
@@ -474,7 +475,7 @@ class F1Materials {
             }
           
 
-            this.sequentialLoadMaps(_filenames, _filecomplete,_types, _material1, _material2,f1Gui,f1Garage,f1CarHelmet,f1Ribbons);
+            this.sequentialLoadMaps(_filenames, _filecomplete,_types, _material1, _material2,f1Garage,f1CarHelmet,f1Ribbons);
 
         })
     }

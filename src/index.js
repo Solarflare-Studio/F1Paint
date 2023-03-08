@@ -35,6 +35,9 @@ import {F1Settings} from './F1Settings'
 import {F1Cookies} from './F1Cookies'
 import {DEBUG_MODE} from './adminuser'
 
+import { updateProgress } from './f1gui';
+import { getAutoSelectingPattern,setAutoSelectingPattern } from './f1gui.js';
+
 //import { setQuaternionFromProperEuler } from 'three/src/math/mathutils.js';
 
 
@@ -127,7 +130,7 @@ processJSON.loadPatterns(f1Cookies,f1Aws);
 var f1Fonts = new F1Fonts();
 
 var f1Gui = new F1Gui(processJSON);
-f1Gui.updateProgress(5,'patterns');
+updateProgress(5,'patterns');
 
 var f1Materials  = new F1Materials(f1Settings);
 var f1Layers = new F1Layers(f1Cookies.isHelmet, customMapRenderSize,f1fnames);
@@ -138,8 +141,8 @@ var f1Text = new F1Text(f1Layers.mapUniforms, f1MetalRough.mapUniforms);
 var f1Ribbons = new F1Ribbons(f1Materials);
 
 
-f1Gui.updateProgress(5,'pipelines');
-var f1Garage = new F1Garage(f1Materials,f1Gui);
+updateProgress(5,'pipelines');
+var f1Garage = new F1Garage(f1Materials);
 
 
 var f1CarHelmet = new F1CarHelmet();
@@ -218,6 +221,10 @@ function createColourpicker() {
 		var tmpcol = new THREE.Color(color.hexString);
 		var tmpv4 = new THREE.Vector4(tmpcol.r,tmpcol.g,tmpcol.b,1.0);
 
+		if(DEBUG_MODE)
+			console.log(">> colour = " + tmpv4.x + ", " + tmpv4.y + ", " + tmpv4.z);
+
+
 		f1Gui.setBackgroundColourByID('coloursample',color.hexString);
 
 		var currentLayer = f1Gui.currentPage-1;
@@ -238,7 +245,7 @@ function createColourpicker() {
 		else if(selectedChan==4) { // tag
 			f1Gui.setBackgroundColourByID('tagpaintbutton',color.hexString);
 		}
-		else if(selectedChan==5) { // decal
+		else if(selectedChan==6) { // decal
 			f1Gui.setBackgroundColourByID('decalpaintbutton',color.hexString);
 		}
 
@@ -249,8 +256,8 @@ function createColourpicker() {
 		else if(selectedChan<5) { // tag colour
 			processJSON.liveryData['Layers'][currentLayer].Channels[selectedChan-3].tint = color.hexString;
 		}
-		else if(selectedChan==5) { // decal colour
-			processJSON.liveryData['Layers'][currentLayer].Channels[0].tint = color.hexString;
+		else if(selectedChan==6) { // decal colour
+			processJSON.liveryData['Layers'][currentLayer].Channels[1].tint = color.hexString;
 		}
 
 		switch(selectedChan) {
@@ -269,7 +276,7 @@ function createColourpicker() {
 			case 4: // tag
 				f1Layers.mapUniforms.tagTint.value = tmpv4;
 				break;
-			case 5: // decal
+			case 6: // decal
 				f1Layers.mapUniforms.decalTint.value = tmpv4;
 				break;
 			default:
@@ -591,7 +598,7 @@ function introNextPage(nextPage) {
 
 		seekPatternThumb(document.getElementById('layer1patterns_ins'),0).click();
 		// patternItems.layerNoneElements[0].click(); // force first empty pattern
-		f1Gui.isAuto=false;
+		setAutoSelectingPattern(false);
 
 		// after 0.7s fade in the tutoral page 1
 		setTimeout( function() {
@@ -621,7 +628,7 @@ function introNextPage(nextPage) {
 		document.getElementById('tut2block').classList.add('fadedout');
 
 		// enable tools
-		f1Gui.updateProgress(5,'activating');
+		updateProgress(5,'activating');
 		changeTab(1);
 		// onPatternsTab();
 
@@ -691,7 +698,7 @@ function initScenes()
     // POST RENDER EFFECTS
 	f1SpecialFX.setupBloom(scene, camera,renderer,renderSize,f1Garage);
 
-	f1CarHelmet.init(f1Materials,f1Layers, f1Cookies.isHelmet, f1fnames, f1MetalRough,f1Gui,f1SpecialFX, f1Garage,f1Ribbons);
+	f1CarHelmet.init(f1Materials,f1Layers, f1Cookies.isHelmet, f1fnames, f1MetalRough,f1SpecialFX, f1Garage,f1Ribbons);
 
 	// lights
 	mainLight = createPointLight(f1Settings.mainLight1Intensity);
@@ -860,8 +867,8 @@ function onPatternPicked(which,thefile,thepatternelement)
 	if(DEBUG_MODE)
 		console.log(">> pattern picked == current " + (selectedIndex == which));
 	if(selectedIndex == which) {
-		if(f1Gui.isAuto)
-			f1Gui.isAuto = false;
+		if(getAutoSelectingPattern())
+			setAutoSelectingPattern(false);
 		return;
 	}
 	selectedIndex = which;//-1;
@@ -876,7 +883,7 @@ function onPatternPicked(which,thefile,thepatternelement)
 		document.getElementById('layer3decals_ins').classList.add('disabledButton');
 
 
-	if(f1Gui.isAuto)
+	if(getAutoSelectingPattern())
 ;//		f1Gui.isAuto = false;
 	else	{
 		f1SpecialFX.mapUniforms.leadin.value = 1.0;
@@ -920,7 +927,7 @@ function changeTab(which) {
 			patternItems.useCustom = true; // now no longer reading defaults when changing patterns, will use custom
 		else if(selectedChan<=4)
 			patternItems.useCustomTag = true;
-		else if(selectedChan<=5)
+		else if(selectedChan<=6)
 			patternItems.useCustomDecal = true;
 	}
 	f1Gui.changedPage(which);
@@ -990,6 +997,15 @@ function onDefaultPaint() {
 	var which = selectedBasePatternIndex;
 	var currentLayer = f1Gui.currentPage-1;
 	if(f1Gui.currentPage>1) currentLayer--;
+
+	// actually only got preset on base patterns
+	if(currentLayer==0) // base pattern defaults
+		patternItems.useCustom = false; // now no longer reading defaults when changing patterns, will use custom
+	// else if(currentLayer==2)
+	// 	patternItems.useCustomTag = false;
+	// else if(currentLayer==3)
+	// 	patternItems.useCustomDecal = false;
+
 
 	var totChans = 1;	
 	if(which==-1) {
@@ -1135,7 +1151,7 @@ function onConfirm() {
 				patternItems.useCustom = true; // now no longer reading defaults when changing patterns, will use custom
 			else if(selectedChan<=4)
 				patternItems.useCustomTag = true;
-			else if(selectedChan<=5)
+			else if(selectedChan<=6)
 				patternItems.useCustomDecal = true;
 				
 
@@ -1255,7 +1271,7 @@ function setMaterial(glosstype,theChan) {
 		f1MetalRough.mapUniforms.tagChannel2Rough.value = rough;
 	}
 	// decal
-	else if(theChan==5) { // decal
+	else if(theChan==6) { // decal
 		f1MetalRough.mapUniforms.decalChannel1Metal.value = metal;
 		f1MetalRough.mapUniforms.decalChannel1Rough.value = rough;
 	}
@@ -1372,8 +1388,8 @@ function postRenderProcess() {
 
 		// check files exist on aws before allowing AR
 		if(DEBUG_MODE)
-			console.log(">> checking files")
-		f1Gui.currentProgress = 0;
+			console.log(">> checking files");
+		updateProgress(-99,"reset");
 		f1Gui.showPage(6);
 
 		checkFilesHaveSaved();

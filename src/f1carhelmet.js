@@ -2,12 +2,14 @@ import * as THREE from '../node_modules/three/build/three.module.js';
 import { GLTFLoader } from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js'
 import {DEBUG_MODE} from './adminuser'
 
+import { updateProgress } from './f1gui.js';
+
 class F1CarHelmet {
 
     constructor() {
     }
 
-    init(f1materials,f1Layers,isHelmet, f1fnames, f1MetalRough,f1Gui,f1SpecialFX, f1Garage, f1Ribbons) {
+    init(f1materials,f1Layers,isHelmet, f1fnames, f1MetalRough,f1SpecialFX, f1Garage, f1Ribbons) {
 
         this.isHelmet = isHelmet;
 
@@ -23,7 +25,6 @@ class F1CarHelmet {
         this.theModel = new THREE.Object3D();
         this.f1materials = f1materials;
 
-        this.f1Gui = f1Gui;
         this.specialFXMesh = 0;
         this.baseFXMesh = 0;
 
@@ -139,7 +140,7 @@ class F1CarHelmet {
 
             }
             
-            _self.f1Gui.updateProgress(10,'mesh');
+            updateProgress(10,'mesh');
             const filelist = new Array();
             const filetypelist = new Array();
             const filecomplete = new Array();
@@ -208,13 +209,14 @@ class F1CarHelmet {
             //filelist.push('./assets/garage/ribbon2.jpg'); // ribbon textures..
 
 
+            // keep the env map as last file to load
             filelist.push('envmap'); // force load of envmap now then
             filetypelist.push( 10 ); filecomplete.push(false);
 
 
 
 
-            _self.f1materials.sequentialLoadMaps( filelist,filecomplete, filetypelist,_self.theBaseMaterial,_self.theModelMaterial,_self.f1Gui,f1Garage, _self,f1Ribbons);
+            _self.f1materials.sequentialLoadMaps( filelist,filecomplete, filetypelist,_self.theBaseMaterial,_self.theModelMaterial,f1Garage, _self,f1Ribbons);
 
                 
 
