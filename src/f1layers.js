@@ -139,10 +139,10 @@ class F1Layers {
                   // outcol = vec4(mix(outcol.xyz,color2.xyz, color2.a),1.0);
                 }
                 if(useDecal==1) {
-                  c1 = mix(outcol,decalTint * color3.g, color3.a).xyz;
-                  c2 = mix(outcol,decal2Tint * color3.r, color3.a).xyz;
+                  c1 = mix(outcol,decalTint * color3.r, color3.a).xyz;
+                  c2 = mix(outcol,decal2Tint * color3.g, color3.a).xyz;
 
-                  outcol = vec4(mix(c1,c2,color3.r),1.0);
+                  outcol = vec4(mix(c1,c2,color3.g),1.0);
                 }
 
 

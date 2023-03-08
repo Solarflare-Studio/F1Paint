@@ -245,7 +245,7 @@ function createColourpicker() {
 		else if(selectedChan==4) { // tag
 			f1Gui.setBackgroundColourByID('tagpaintbutton',color.hexString);
 		}
-		else if(selectedChan==6) { // decal
+		else if(selectedChan==6) { // sponsor
 			f1Gui.setBackgroundColourByID('decalpaintbutton',color.hexString);
 		}
 
@@ -256,7 +256,7 @@ function createColourpicker() {
 		else if(selectedChan<5) { // tag colour
 			processJSON.liveryData['Layers'][currentLayer].Channels[selectedChan-3].tint = color.hexString;
 		}
-		else if(selectedChan==6) { // decal colour
+		else if(selectedChan==6) { // sponsor colour
 			processJSON.liveryData['Layers'][currentLayer].Channels[1].tint = color.hexString;
 		}
 
@@ -277,7 +277,7 @@ function createColourpicker() {
 				f1Layers.mapUniforms.tagTint.value = tmpv4;
 				break;
 			case 6: // decal
-				f1Layers.mapUniforms.decalTint.value = tmpv4;
+				f1Layers.mapUniforms.decal2Tint.value = tmpv4;
 				break;
 			default:
 				alert("error in index of colour buttons in colorPatternPicker");
@@ -858,7 +858,7 @@ function choosePattern(which, theLayer,thefile,thepatternelement) {
 	patternItems.changePattern(which,thefile,
 		f1Layers.mapUniforms,thepatternelement,
 		processJSON.patternsData,processJSON.liveryData,theLayer,
-		f1MetalRough.mapUniforms,f1Text,f1SpecialFX,f1Gui,f1Ribbons,f1Aws);
+		f1MetalRough.mapUniforms,f1Text,f1SpecialFX,f1Ribbons,f1Aws);
 }
 
 //=========================================================
@@ -924,11 +924,11 @@ function changeTab(which) {
 	if(f1Gui.pickingColour) {
 		// same as confirm
 		if(selectedChan<=2)
-			patternItems.useCustom = true; // now no longer reading defaults when changing patterns, will use custom
+			patternItems.useCustomBaseColours = true; // now no longer reading defaults when changing patterns, will use custom
 		else if(selectedChan<=4)
-			patternItems.useCustomTag = true;
+			patternItems.useCustomTagColours = true;
 		else if(selectedChan<=6)
-			patternItems.useCustomDecal = true;
+			patternItems.useCustomSponsorColours = true;
 	}
 	f1Gui.changedPage(which);
 
@@ -999,8 +999,13 @@ function onDefaultPaint() {
 	if(f1Gui.currentPage>1) currentLayer--;
 
 	// actually only got preset on base patterns
-	if(currentLayer==0) // base pattern defaults
-		patternItems.useCustom = false; // now no longer reading defaults when changing patterns, will use custom
+	patternItems.useCustomBaseColours = false; // now no longer reading defaults when changing patterns, will use custom
+	patternItems.useCustomTagColours = false;
+	patternItems.useCustomSponsorColours = false;
+
+
+	// if(currentLayer==0) // base pattern defaults
+	// 	patternItems.useCustomBaseColours = false; // now no longer reading defaults when changing patterns, will use custom
 	// else if(currentLayer==2)
 	// 	patternItems.useCustomTag = false;
 	// else if(currentLayer==3)
@@ -1150,9 +1155,9 @@ function onConfirm() {
 			if(selectedChan<=2)
 				patternItems.useCustom = true; // now no longer reading defaults when changing patterns, will use custom
 			else if(selectedChan<=4)
-				patternItems.useCustomTag = true;
+				patternItems.useCustomTagColours = true;
 			else if(selectedChan<=6)
-				patternItems.useCustomDecal = true;
+				patternItems.useCustomSponsorColours = true;
 				
 
 			f1Gui.confirm(selectedChan);
@@ -1224,7 +1229,7 @@ function onMaterialbutton(glosstype) {
 
 	if(currentLayer==1) // tag
 		chan-=3;
-	else if(currentLayer==2) // decal
+	else if(currentLayer==2) // sponsor
 		chan-=5;
 
 	processJSON.liveryData['Layers'][currentLayer].Channels[chan].metalroughtype = glosstype;
