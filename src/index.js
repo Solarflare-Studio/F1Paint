@@ -313,9 +313,8 @@ function setupConsoleListeners() {
 
 	// tone mapping
 	document.getElementById('c_tonemappingSlider').oninput = function () {
-		self.amount = this.value/10.0;// ((this.value / 100.0)*6.0) + 0.5;
+		self.amount = this.value/10.0;
 		document.getElementById('c_tonemappingSliderTxt').innerHTML = 'toneMapping : ' + self.amount;
-		// renderer.toneMapping = THREE.ACESFilmicToneMapping;// THREE.LinearToneMapping;
 		renderer.toneMappingExposure = self.amount;
 	}
 	document.getElementById('c_tonemap').onchange = function () {
@@ -375,15 +374,23 @@ function setupConsoleListeners() {
 		const c_lightIntensitySlider = document.getElementById('c_lightIntensitySlider');
 		const c_lightIntensitySliderTxt = document.getElementById('c_lightIntensitySliderTxt');
 		switch(this.value) {
-			case "spot1":
+			case "point1":
 				c_lightIntensitySliderTxt.innerHTML = "intensity= " + mainLight.intensity;
 				c_lightIntensitySlider.value = mainLight.intensity * 100.0;
 				break;
-			case "spot2":
+			case "point2":
 				c_lightIntensitySliderTxt.innerHTML = "intensity= " + mainLight2.intensity;
 				c_lightIntensitySlider.value = mainLight2.intensity * 100.0;
 				break;
-			case "dir":
+			case "spot1":
+				c_lightIntensitySliderTxt.innerHTML = "intensity= " + mainLight3.intensity;
+				c_lightIntensitySlider.value = mainLight.intensity * 100.0;
+				break;
+			case "spot2":
+				c_lightIntensitySliderTxt.innerHTML = "intensity= " + mainLight4.intensity;
+				c_lightIntensitySlider.value = mainLight2.intensity * 100.0;
+				break;
+				case "dir":
 				c_lightIntensitySliderTxt.innerHTML = "intensity= " + dirLight.intensity;
 				c_lightIntensitySlider.value = dirLight.intensity * 100.0;
 				break;
@@ -400,12 +407,16 @@ function setupConsoleListeners() {
 	document.getElementById('c_lightIntensitySlider').oninput = function () {
 		const val = this.value / 100.0;
 		switch(document.getElementById('c_whichlight').value) {
-			case "spot1":
+			case "point1":
 				mainLight.intensity = val; 
+				break;
+			case "point2":
+				mainLight2.intensity = val; 
+				break;			
+			case "spot1":
 				mainLight3.intensity = val;
 				break;
 			case "spot2":
-				mainLight2.intensity = val; 
 				mainLight4.intensity = val;
 				break;
 			case "dir":
@@ -421,6 +432,108 @@ function setupConsoleListeners() {
 
 		document.getElementById('c_lightIntensitySliderTxt').innerHTML = "intensity= " + val;
 	}
+	// lights xyz
+	document.getElementById('c_lightXSlider').addEventListener('input', function() {
+		const val = this.value;
+		document.getElementById('c_lightXSliderTxt').innerHTML = "x= " + val;
+		switch(document.getElementById('c_whichlight').value) {
+			case "point1":
+				mainLight.position.set( val, mainLight.position.y, mainLight.position.z );
+				spot1helper.update();
+				break;
+			case "point2":
+				mainLight2.position.set( val, mainLight2.position.y, mainLight2.position.z );
+				spot2helper.update();
+				break;
+			case "spot1":
+				mainLight3.position.set( val, mainLight3.position.y, mainLight3.position.z );
+				spot3helper.update();
+				break;
+			case "spot2":
+				mainLight4.position.set( val, mainLight4.position.y, mainLight4.position.z );
+				spot4helper.update();
+				break;
+			case "dir":
+				dirLight.position.set( val, dirLight.position.y, dirLight.position.z );
+				dirhelper.update();
+				break;
+			case "dir2":
+				dirLight2.position.set( val, dirLight2.position.y, dirLight2.position.z );
+				dirhelper2.update();
+				break;
+			case "amb":
+				ambLight.position.set( val, ambLight.position.y, ambLight.position.z );
+				break;
+		}
+	});
+	document.getElementById('c_lightYSlider').addEventListener('input', function() {
+		const val = this.value;
+		document.getElementById('c_lightYSliderTxt').innerHTML = "y= " + val;
+		switch(document.getElementById('c_whichlight').value) {
+			case "point1":
+				mainLight.position.set( mainLight.position.x,val, mainLight.position.z );
+				spot1helper.update();
+				break;
+			case "point2":
+				mainLight2.position.set( mainLight2.position.x,val, mainLight2.position.z );
+				spot2helper.update();
+				break;
+			case "spot1":
+				mainLight3.position.set( mainLight3.position.x,val, mainLight3.position.z );
+				spot3helper.update();
+				break;
+			case "spot2":
+				mainLight4.position.set( mainLight4.position.x,val, mainLight4.position.z );
+				spot4helper.update();
+				break;
+			case "dir":
+				dirLight.position.set( dirLight.position.x, val,dirLight.position.z );
+				dirhelper.update();
+				break;
+			case "dir2":
+				dirLight2.position.set(dirLight2.position.x,val, dirLight2.position.z );
+				dirhelper2.update();
+				break;
+			case "amb":
+				ambLight.position.set( ambLight.position.x,val, ambLight.position.z );
+				break;
+		}
+	});
+	document.getElementById('c_lightZSlider').addEventListener('input', function() {
+		const val = this.value;
+		document.getElementById('c_lightZSliderTxt').innerHTML = "z= " + val;
+		switch(document.getElementById('c_whichlight').value) {
+			case "point1":
+				mainLight.position.set( mainLight.position.x, mainLight.position.y,val );
+				spot1helper.update();
+				break;
+			case "point2":
+				mainLight2.position.set( mainLight2.position.x, mainLight2.position.y,val );
+				spot2helper.update();
+				break;
+			case "spot1":
+				mainLight3.position.set( mainLight3.position.x, mainLight3.position.y,val );
+				spot3helper.update();
+				break;
+			case "spot2":
+				mainLight4.position.set( mainLight4.position.x, mainLight4.position.y,val );
+				spot4helper.update();
+				break;
+			case "dir":
+				dirLight.position.set( dirLight.position.x, dirLight.position.y,val );
+				dirhelper.update();
+				break;
+			case "dir2":
+				dirLight2.position.set( dirLight2.position.x, dirLight2.position.y,val );
+				dirhelper2.update();
+				break;
+			case "amb":
+				ambLight.position.set( ambLight.position.x, ambLight.position.y,val );
+				break;
+		}
+	});
+
+
 
 	// sfx
 	document.getElementById('c_sfxSlider').oninput = function () {
@@ -696,11 +809,11 @@ function initScenes()
 	// mainLight = createSpotLight(f1Settings.mainLight1Intensity);
 	// mainLight2 = createSpotLight(f1Settings.mainLight2Intensity);
 	
-	mainLight.position.set( 80, 80, 60 );
-	mainLight2.position.set( -80, 80, 60 );
+	mainLight.position.set( 80, 80, -10 );
+	mainLight2.position.set( -80, 80, -10 );
 
-	mainLight3.position.set( 80, 80, -60 );
-	mainLight4.position.set( -80, 80, -60 );
+	mainLight3.position.set( 80, 80, 50 );
+	mainLight4.position.set( -80, 80, 50 );
 
 	ambLight = new THREE.AmbientLight( 0xffffff, f1Settings.ambientLightIntensity ); 
 
@@ -712,9 +825,9 @@ function initScenes()
 
 
 	dirLight.position.set( dirlightx, dirlightheight, dirlightz);
-	dirLight.target = f1CarHelmet.theModel;
+	// dirLight.target = f1CarHelmet.theModel;
 	dirLight2.position.set( -dirlightx, dirlightheight, dirlightz);
-	dirLight2.target = f1CarHelmet.theModel;
+	// dirLight2.target = f1CarHelmet.theModel;
 
 
 	scene.add(mainLight);
@@ -726,15 +839,20 @@ function initScenes()
 	scene.add( dirLight2 );
 
 
-
-	// const dirhelper = new THREE.DirectionalLightHelper( dirLight, 5 );
-	// scene.add( dirhelper );
-	// const dirhelper2 = new THREE.DirectionalLightHelper( dirLight2, 5 );
-	// scene.add( dirhelper2 );
-	// const spot1helper = new THREE.PointLightHelper( mainLight );
-	// scene.add( spot1helper );
-	// const spot2helper = new THREE.PointLightHelper( mainLight2 );
-	// scene.add( spot2helper );
+	// if(DEBUG_MODE) {
+		const dirhelper = new THREE.DirectionalLightHelper( dirLight, 5 );
+		scene.add( dirhelper );
+		const dirhelper2 = new THREE.DirectionalLightHelper( dirLight2, 5 );
+		scene.add( dirhelper2 );
+		const spot1helper = new THREE.PointLightHelper( mainLight );
+		scene.add( spot1helper );
+		const spot2helper = new THREE.PointLightHelper( mainLight2 );
+		scene.add( spot2helper );
+		const spot3helper = new THREE.SpotLightHelper( mainLight3 );
+		scene.add( spot3helper );
+		const spot4helper = new THREE.SpotLightHelper( mainLight4 );
+		scene.add( spot4helper );
+	// }
 
 	scene.add( f1Ribbons.getSceneObjects() );
 //
@@ -795,6 +913,8 @@ function createDirectionalLight(intensity) {
 	light.shadow.camera.right = 100;
 	light.shadow.camera.top = 100;
 	light.shadow.camera.bottom = -100;
+	light.target.position.set( new THREE.Vector3(0,0,0));//f1CarHelmet.theModel.position;
+
 	return light;
 }
 //==================================================
@@ -817,6 +937,14 @@ function createSpotLight(intensity) {
 	light.castShadow = true;
 	light.shadow.radius = 8;
 	light.shadow.bias = - 0.000222;// - 0.000222;
+
+	if(!f1CarHelmet.theModel)
+		if(DEBUG_MODE)
+			console.log("not readu***********************");
+
+	// light.target.position = new THREE.Vector3(0,0,0);// f1CarHelmet.theModel.position;
+	light.target.position.set( new THREE.Vector3(0,0,0));//f1CarHelmet.theModel.position;
+
 	return light;
 
 }

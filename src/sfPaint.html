@@ -389,6 +389,8 @@
                 <div class="console_button expandbutton" onclick="expandDropdown('lightexpander');">Lights</div>
                 <div class="console_button shrunk expander" id="lightexpander">
                     <select id="c_whichlight" name="whichlight">
+                        <option value="point1">Point 1</option>
+                        <option value="point2">Point 2</option>
                         <option value="spot1">Spot 1</option>
                         <option value="spot2">Spot 2</option>
                         <option value="dir">Directional</option>
@@ -398,17 +400,15 @@
                     <div id="c_lightIntensitySliderTxt" class="slidertxt">intensity</div>
                     <input type="range" min="0" max="1000" value="500" class="slider" id="c_lightIntensitySlider">
 
-
                     <div class="console_button expandbutton" onclick="expandDropdown('lightdetailexpander');">More lights</div>
                     <div class="console_button shrunk expander" id="lightdetailexpander">
-                        <div id="c_lightsSliderTxt" class="slidertxt">spots</div>
-                        <input type="range" min="0" max="35" value="10" class="slider" id="c_lightsSlider">
-                        <div id="c_lightsASliderTxt" class="slidertxt">ambient</div>
-                        <input type="range" min="0" max="40" value="10" class="slider" id="c_lightsASlider">
-                        <div id="c_lightsDSliderTxt" class="slidertxt">directional</div>
-                        <input type="range" min="0" max="45" value="10" class="slider" id="c_lightsDSlider">
+                        <div id="c_lightXSliderTxt" class="slidertxt">x</div>
+                        <input type="range" min="-200" max="200" value="80" class="slider" id="c_lightXSlider">
+                        <div id="c_lightYSliderTxt" class="slidertxt">y</div>
+                        <input type="range" min="-200" max="200" value="80" class="slider" id="c_lightYSlider">
+                        <div id="c_lightZSliderTxt" class="slidertxt">z</div>
+                        <input type="range" min="-200" max="200" value="80" class="slider" id="c_lightZSlider">
                     </div>
-    
                 </div>
                 <div class="console_button expandbutton" onclick="expandDropdown('tagsexpander');">Tags</div>
                 <div class="console_button shrunk expander" id="tagsexpander">
