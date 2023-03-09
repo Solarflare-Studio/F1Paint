@@ -338,7 +338,7 @@ class F1SpecialFX {
             blendSrc: THREE.SrcAlphaFactor,
             blendDst: THREE.OneMinusSrcAlphaFactor,
 
-
+            encoding: THREE.sRGBEncoding, // specify sRGB encoding
 
           });
     

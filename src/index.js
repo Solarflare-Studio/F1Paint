@@ -31,7 +31,9 @@ import {F1AssetFileNames} from './f1AssetFileNames'
 import {F1SpecialFX} from'./f1specialfx'
 import {F1Text} from'./f1Text'
 import {F1Ribbons} from'./f1Ribbons'
-import {F1Settings} from './F1Settings'
+// import {F1Settings} from './F1Settings'
+import { f1Settings } from './F1Settings.js';
+
 import {F1Cookies} from './F1Cookies'
 import {DEBUG_MODE} from './adminuser'
 
@@ -71,7 +73,6 @@ window.onMinMax = onMinMax;
 window.onConsole = onConsole;
 
 //===================================
-const f1Settings = new F1Settings();
 const f1Cookies = new F1Cookies();
 
 var renderSize = 1024;
@@ -354,15 +355,15 @@ function setupConsoleListeners() {
 		if(DEBUG_MODE)
 			console.log(this.value);
 		if(this.value=="car") {
-			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrCustom;
+			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrenghtCustom;
 			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theModelMaterial.envMapIntensity * 100.0;
 		}
 		else if(this.value=="carstatic") {
-			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrStatic;
+			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrengthStatic;
 			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theBaseMaterial.envMapIntensity * 100.0; // static gets 100x
 		}
 		else { // garage
-			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrGar;
+			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrengthGarage;
 			document.getElementById('c_envStrengthSlider').value = f1Garage.garageMaterial.envMapIntensity * 100.0;
 		}
 	
@@ -456,11 +457,11 @@ function onConsole(_switch) {
 			document.getElementById('c_tonemap').value = tmtype;
 
 			if(document.getElementById('c_envstrength').value=="car")
-				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrCustom;
+				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrenghtCustom;
 				else if(document.getElementById('c_envstrength').value=="carstatic")
-				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrStatic;
+				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrengthStatic;
 			else 
-				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Materials.envstrGar;
+				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrengthGarage;
 			
 			console.classList.remove('hidden');
 		}
@@ -636,8 +637,7 @@ function initit()
 			preserveDrawingBuffer: true,
 			// premultipliedAlpha: false,
 			premultipliedAlpha: true,
-
-//			physicallyCorrectLights: true,
+			physicallyCorrectLights: true,
 	});
 	renderer.sortObjects = false;
 
@@ -736,7 +736,7 @@ function initScenes()
 	// const spot2helper = new THREE.PointLightHelper( mainLight2 );
 	// scene.add( spot2helper );
 
-	scene.add( f1Ribbons.getSceneObjects(f1Materials) );
+	scene.add( f1Ribbons.getSceneObjects() );
 //
 	
 	rootScene.add( f1CarHelmet.theModel );

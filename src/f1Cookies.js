@@ -35,6 +35,7 @@ class F1Cookies {
         this.userEmail = (params.get('e') ? params.get('e') : "no email"); // user email
         this.userCarOrHelmet = (params.get('m') ? params.get('m') : "c"); // car or helmet
         this.userConsole = (params.get('c') ? params.get('c') : 0); // console
+        
         DEBUG_MODE=this.userConsole;
 
         

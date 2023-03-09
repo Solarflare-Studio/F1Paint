@@ -48,8 +48,8 @@ class F1CarHelmet {
             // shadowSide: THREE.FrontSide,// THREE.DoubleSide,
             shadowSide: THREE.DoubleSide,
             emissive: new THREE.Color(0,0,0),
-            normalScale: new THREE.Vector2(-0.5, 0.5),
-            // normalScale: new THREE.Vector2(1, -1),
+            // normalScale: new THREE.Vector2(-0.5, 0.5),
+            normalScale: new THREE.Vector2(1, -1),
             // envMap: this.envMap
             side: THREE.DoubleSide
 

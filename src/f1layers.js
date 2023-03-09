@@ -141,7 +141,7 @@ class F1Layers {
               }
             `,
             side: THREE.DoubleSide,
-
+            // encoding: THREE.sRGBEncoding, // specify sRGB encoding
           });
     
         const bufferCustomMapMesh = new THREE.Mesh( _self.customMapPlaneGeometry, _self.customMapBufferMapMaterial );

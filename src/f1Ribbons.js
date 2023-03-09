@@ -222,9 +222,7 @@ class F1Ribbons {
           depthWrite: false, // disable writing to depth buffer
           depthTest: true, // disable depth testing            
         });
-        if(f1Materials.keepRibbon!=0) {
-            this.uniforms.texture1.value = f1Materials.keepRibbon;
-        }
+        this.failsafeLoadRibbon(this,f1Materials);
 
         this.ribbonMaterialsimple = new THREE.MeshStandardMaterial( {
             color: 0xffffff,
@@ -244,6 +242,18 @@ class F1Ribbons {
         } );
 
 
+    }
+    // ==============================================
+    failsafeLoadRibbon(self,f1Materials) {
+
+        if(f1Materials.keepRibbon!=0) {
+            self.uniforms.texture1.value = f1Materials.keepRibbon;
+        }
+        else {
+            setTimeout( function() {
+                self.failsafeLoadRibbon(self,f1Materials);
+            },250);
+        }
     }
     // ==============================================
     createTwist(twistparams,themodifier) { // 0=twistcount, 1=vec3 dir 2=tweentype, 3=target, 4=duration, 5=yoyo
@@ -342,7 +352,7 @@ class F1Ribbons {
     }
    
     // ==============================================
-    getSceneObjects(f1Materials) {
+    getSceneObjects() {
 
         this.ribbonMesh = new THREE.Mesh( this.ribbonGeometry, this.ribbonMaterial );
 

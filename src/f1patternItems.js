@@ -118,7 +118,10 @@ class PatternItems {
                 console.log(">>>> Texture image = LOADED > "+self.thefile);
 
             tex.premultiplyAlpha = true; // debug premultiply // or not!
-            tex.encoding = THREE.LinearEncoding;
+
+            // tex.encoding = THREE.LinearEncoding;
+            tex.encoding = THREE.sRGBEncoding;
+
 
             if(self.f1SpecialFX.effectStarttime==0) self.f1SpecialFX.effectStarttime = new Date().getTime();
             const forceddelay = (self.f1SpecialFX.duration + self.f1SpecialFX.effectStarttime) - new Date().getTime();
