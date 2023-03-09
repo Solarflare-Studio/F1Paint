@@ -32,14 +32,13 @@ import {F1SpecialFX} from'./f1specialfx'
 import {F1Text} from'./f1Text'
 import {F1Ribbons} from'./f1Ribbons'
 // import {F1Settings} from './F1Settings'
-import { f1Settings } from './F1Settings.js';
+import { f1Settings } from './f1Settings.js';
 
 import {F1Cookies} from './F1Cookies'
-import {DEBUG_MODE} from './adminuser'
+import {DEBUG_MODE, createLightHelper} from './adminuser'
 
 import { updateProgress } from './f1gui';
 import { getAutoSelectingPattern,setAutoSelectingPattern } from './f1gui.js';
-
 //import { setQuaternionFromProperEuler } from 'three/src/math/mathutils.js';
 
 
@@ -305,6 +304,8 @@ var deb_specialPipelineToggle = true;
 var deb_ribbonToggle = f1Ribbons.enabled;
 
 //=======================================================================
+
+/* all this will be stripped out once lighting is configured */
 function setupConsoleListeners() {
 
 	// fill the values
@@ -377,26 +378,33 @@ function setupConsoleListeners() {
 			case "point1":
 				c_lightIntensitySliderTxt.innerHTML = "intensity= " + mainLight.intensity;
 				c_lightIntensitySlider.value = mainLight.intensity * 100.0;
+
+				scene.add(createLightHelper(mainLight, 1, scene));
 				break;
 			case "point2":
 				c_lightIntensitySliderTxt.innerHTML = "intensity= " + mainLight2.intensity;
 				c_lightIntensitySlider.value = mainLight2.intensity * 100.0;
+				scene.add(createLightHelper(mainLight2, 1, scene));
 				break;
 			case "spot1":
 				c_lightIntensitySliderTxt.innerHTML = "intensity= " + mainLight3.intensity;
 				c_lightIntensitySlider.value = mainLight.intensity * 100.0;
+				scene.add(createLightHelper(mainLight3, 2, scene));
 				break;
 			case "spot2":
 				c_lightIntensitySliderTxt.innerHTML = "intensity= " + mainLight4.intensity;
 				c_lightIntensitySlider.value = mainLight2.intensity * 100.0;
+				scene.add(createLightHelper(mainLight4, 2, scene));
 				break;
-				case "dir":
+			case "dir":
 				c_lightIntensitySliderTxt.innerHTML = "intensity= " + dirLight.intensity;
 				c_lightIntensitySlider.value = dirLight.intensity * 100.0;
+				scene.add(createLightHelper(dirLight, 0, scene));
 				break;
 			case "dir2":
 				c_lightIntensitySliderTxt.innerHTML = "intensity= " + dirLight2.intensity;
 				c_lightIntensitySlider.value = dirLight2.intensity * 100.0;
+				scene.add(createLightHelper(dirLight2, 0, scene));
 				break;
 			case "amb":
 				c_lightIntensitySliderTxt.innerHTML = "intensity= " + ambLight.intensity;
@@ -439,32 +447,28 @@ function setupConsoleListeners() {
 		switch(document.getElementById('c_whichlight').value) {
 			case "point1":
 				mainLight.position.set( val, mainLight.position.y, mainLight.position.z );
-				spot1helper.update();
 				break;
 			case "point2":
 				mainLight2.position.set( val, mainLight2.position.y, mainLight2.position.z );
-				spot2helper.update();
 				break;
 			case "spot1":
 				mainLight3.position.set( val, mainLight3.position.y, mainLight3.position.z );
-				spot3helper.update();
 				break;
 			case "spot2":
 				mainLight4.position.set( val, mainLight4.position.y, mainLight4.position.z );
-				spot4helper.update();
 				break;
 			case "dir":
 				dirLight.position.set( val, dirLight.position.y, dirLight.position.z );
-				dirhelper.update();
 				break;
 			case "dir2":
 				dirLight2.position.set( val, dirLight2.position.y, dirLight2.position.z );
-				dirhelper2.update();
 				break;
 			case "amb":
 				ambLight.position.set( val, ambLight.position.y, ambLight.position.z );
 				break;
 		}
+		document.getElementById('c_whichlight').dispatchEvent(new Event('change'));
+
 	});
 	document.getElementById('c_lightYSlider').addEventListener('input', function() {
 		const val = this.value;
@@ -472,32 +476,28 @@ function setupConsoleListeners() {
 		switch(document.getElementById('c_whichlight').value) {
 			case "point1":
 				mainLight.position.set( mainLight.position.x,val, mainLight.position.z );
-				spot1helper.update();
 				break;
 			case "point2":
 				mainLight2.position.set( mainLight2.position.x,val, mainLight2.position.z );
-				spot2helper.update();
 				break;
 			case "spot1":
 				mainLight3.position.set( mainLight3.position.x,val, mainLight3.position.z );
-				spot3helper.update();
 				break;
 			case "spot2":
 				mainLight4.position.set( mainLight4.position.x,val, mainLight4.position.z );
-				spot4helper.update();
 				break;
 			case "dir":
 				dirLight.position.set( dirLight.position.x, val,dirLight.position.z );
-				dirhelper.update();
 				break;
 			case "dir2":
 				dirLight2.position.set(dirLight2.position.x,val, dirLight2.position.z );
-				dirhelper2.update();
 				break;
 			case "amb":
 				ambLight.position.set( ambLight.position.x,val, ambLight.position.z );
 				break;
 		}
+		document.getElementById('c_whichlight').dispatchEvent(new Event('change'));
+
 	});
 	document.getElementById('c_lightZSlider').addEventListener('input', function() {
 		const val = this.value;
@@ -505,32 +505,28 @@ function setupConsoleListeners() {
 		switch(document.getElementById('c_whichlight').value) {
 			case "point1":
 				mainLight.position.set( mainLight.position.x, mainLight.position.y,val );
-				spot1helper.update();
 				break;
 			case "point2":
 				mainLight2.position.set( mainLight2.position.x, mainLight2.position.y,val );
-				spot2helper.update();
 				break;
 			case "spot1":
 				mainLight3.position.set( mainLight3.position.x, mainLight3.position.y,val );
-				spot3helper.update();
 				break;
 			case "spot2":
 				mainLight4.position.set( mainLight4.position.x, mainLight4.position.y,val );
-				spot4helper.update();
 				break;
 			case "dir":
 				dirLight.position.set( dirLight.position.x, dirLight.position.y,val );
-				dirhelper.update();
 				break;
 			case "dir2":
 				dirLight2.position.set( dirLight2.position.x, dirLight2.position.y,val );
-				dirhelper2.update();
 				break;
 			case "amb":
 				ambLight.position.set( ambLight.position.x, ambLight.position.y,val );
 				break;
 		}
+		document.getElementById('c_whichlight').dispatchEvent(new Event('change'));
+
 	});
 
 
@@ -838,21 +834,6 @@ function initScenes()
 	scene.add( dirLight );
 	scene.add( dirLight2 );
 
-
-	// if(DEBUG_MODE) {
-		const dirhelper = new THREE.DirectionalLightHelper( dirLight, 5 );
-		scene.add( dirhelper );
-		const dirhelper2 = new THREE.DirectionalLightHelper( dirLight2, 5 );
-		scene.add( dirhelper2 );
-		const spot1helper = new THREE.PointLightHelper( mainLight );
-		scene.add( spot1helper );
-		const spot2helper = new THREE.PointLightHelper( mainLight2 );
-		scene.add( spot2helper );
-		const spot3helper = new THREE.SpotLightHelper( mainLight3 );
-		scene.add( spot3helper );
-		const spot4helper = new THREE.SpotLightHelper( mainLight4 );
-		scene.add( spot4helper );
-	// }
 
 	scene.add( f1Ribbons.getSceneObjects() );
 //
