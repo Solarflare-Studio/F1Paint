@@ -5,7 +5,7 @@ class F1Aws {
 
 
     constructor() {
-        this.languageSettings = 0;
+        this.languageSettingsJson = 0;
         this.init();
     }
     init() {
@@ -48,7 +48,9 @@ class F1Aws {
         this.languageText = JSON.parse(data);
         const dialogues = this.languageText['dialogues'];
         for(var i=0;i<dialogues.length;i++) {
-            document.getElementById(dialogues[i].name).innerHTML = dialogues[i].text;
+            const textElement = document.getElementById(dialogues[i].name);
+            if(textElement)
+                textElement.innerHTML = dialogues[i].text;
         }
     }
     //======================
@@ -56,26 +58,48 @@ class F1Aws {
         var _self = this;
         if(DEBUG_MODE)
             console.log(">> have loaded language choice json file from aws.");
-        this.languageSettings = JSON.parse(data);
+        this.languageSettingsJson = JSON.parse(data);
 
-        const e = document.getElementById('languagechoices');
+        const languageChoiceDropdown = document.getElementById('languageChoices');
 
         // now interpret and put language choices in UI
         var lingos = new Array();
-        const langs = this.languageSettings['languages'];
+        const langs = this.languageSettingsJson['languages'];
         
         for(var i = 0;i<langs.length;i++) {
             const alingo = langs[i].description;
             const lingofile = langs[i].file;
-            lingos.push( [ alingo, lingofile]);
+            const lingoISO =  langs[i].code;
+            lingos.push( [ alingo, lingofile, lingoISO]);
         }
         if(DEBUG_MODE)
             console.log(">> languages available : " + lingos);
 
+        let choicesHtml = "";
+        for(var i = 0;i<lingos.length;i++) {
+            if(i!=0)
+                choicesHtml = choicesHtml + '<hr class="border-netural border-t-2">';
+            
+            choicesHtml = choicesHtml + '<li class="language-option" onclick="handlelanguageChange(';
+            choicesHtml = choicesHtml + "'" + lingos[i] + "'" + ')">' + lingos[i][0] + '</li>';
+
+        }
+        languageChoiceDropdown.innerHTML = choicesHtml;
+
+
+
+/*
+
+
+
         if(lingos.length>0) {
             var toadd = "";
             for(var i = 0;i<lingos.length;i++) {
-                toadd = toadd + '<option value=' + lingos[i][1] + '>' + lingos[i][0] + '</option>';
+                // toadd = toadd + '<option value=' + lingos[i][1] + '>' + lingos[i][0] + '</option>';
+
+
+                
+                toadd = toadd + '<option value=' + lingos[i] + '>' + lingos[i][0] + '</option>';
             }
             document.getElementById('s_languagechoices').innerHTML = toadd;
 
@@ -84,19 +108,69 @@ class F1Aws {
         else if(lingos.length==1) {
             // set language to this!
         }
-        document.getElementById('firstbuttonpanel').classList.remove('hidden');
 
+        // listener if user changes language
         document.getElementById('s_languagechoices').onchange = function (){
-            const langchoice =  this.value;
-            const lfile = langchoice;
-            _self.loadfromAWS('languages',lfile,1);
-            
-
+            var languageArr = this.value.split(',');
+            const langfile =  languageArr[1]; // filename for language
+            _self.loadfromAWS('languages',langfile,1);
         }
 
-        
+        // allow user to progress
+        document.getElementById('firstbuttonpanel').classList.remove('hidden'); 
 
+        */
     }
+    //======================   
+    /* 
+    haveLoadedLanguageChoice(data) {
+        var _self = this;
+        if(DEBUG_MODE)
+            console.log(">> have loaded language choice json file from aws.");
+        this.languageSettingsJson = JSON.parse(data);
+
+        const e = document.getElementById('languagechoices');
+
+        // now interpret and put language choices in UI
+        var lingos = new Array();
+        const langs = this.languageSettingsJson['languages'];
+        
+        for(var i = 0;i<langs.length;i++) {
+            const alingo = langs[i].description;
+            const lingofile = langs[i].file;
+            const lingoISO =  langs[i].code;
+            lingos.push( [ alingo, lingofile, lingoISO]);
+        }
+        if(DEBUG_MODE)
+            console.log(">> languages available : " + lingos);
+
+        if(lingos.length>0) {
+            var toadd = "";
+            for(var i = 0;i<lingos.length;i++) {
+                // toadd = toadd + '<option value=' + lingos[i][1] + '>' + lingos[i][0] + '</option>';
+
+
+                
+                toadd = toadd + '<option value=' + lingos[i] + '>' + lingos[i][0] + '</option>';
+            }
+            document.getElementById('s_languagechoices').innerHTML = toadd;
+
+            e.classList.remove('hidden');    
+        }
+        else if(lingos.length==1) {
+            // set language to this!
+        }
+
+        // listener if user changes language
+        document.getElementById('s_languagechoices').onchange = function (){
+            var languageArr = this.value.split(',');
+            const langfile =  languageArr[1]; // filename for language
+            _self.loadfromAWS('languages',langfile,1);
+        }
+
+        // allow user to progress
+        document.getElementById('firstbuttonpanel').classList.remove('hidden'); 
+    }*/
     //======================
     async s3upload(datablob,filename) {
         try {

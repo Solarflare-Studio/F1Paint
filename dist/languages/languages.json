@@ -1,0 +1,20 @@
+{
+"languages": [  
+  {
+    "name": "ENGLISH",
+    "code": "ENG",
+    "description": "English",
+    "iconimage": "english.jpg",
+    "file": "english.json",
+    "fontfile": ""
+  },
+  {
+    "name": "FRENCH",
+    "code": "FRA",
+    "description": "Français",
+    "iconimage": "french.jpg",
+    "file": "french.json",
+    "fontfile": ""
+  }
+]
+}

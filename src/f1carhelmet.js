@@ -27,6 +27,7 @@ class F1CarHelmet {
 
         this.specialFXMesh = 0;
         this.baseFXMesh = 0;
+        this.visorFXMesh = 0;
 
         var _self = this;
 
@@ -80,7 +81,27 @@ class F1CarHelmet {
             })
             // this.theBaseMaterial.color = new THREE.Color(0xffffff)
         // }
+        // visor
+        if(this.isHelmet) {
+            this.theVisorMaterial = new THREE.MeshStandardMaterial({ // pbr
+                name: 'theVisorMaterial',
+                fog: false,
+                metalness: 0.6,
+                roughness: 0.2,
+                emissiveIntensity:1,
+                aoMapIntensity: 1.0,
 
+                color: new THREE.Color(0xffdf00),
+                // shadowSide: THREE.FrontSide,// THREE.DoubleSide,
+                shadowSide: THREE.DoubleSide,
+                emissive: new THREE.Color(0,0,0),
+                // normalScale: new THREE.Vector2(-0.5, 0.5),
+                normalScale: new THREE.Vector2(1, -1),
+                // envMap: this.envMap
+                side: THREE.DoubleSide
+            })
+        }
+        //
         var helmet3D;
         if(this.isHelmet)
             helmet3D = f1fnames.helmet_files[0];//'./assets/helmet/F1PS_Helmet.glb';
@@ -116,19 +137,26 @@ class F1CarHelmet {
                 _self.baseFXMesh = staticMesh;
             }
             else {
-                let modelMesh = theModelScene.getObjectByName('Helmet_main_low')
+                let modelMesh = theModelScene.getObjectByName('Helmet_main_1')
                 modelMesh.layers.set(2);
                 modelMesh.material = _self.theModelMaterial;
                 _self.specialFXMesh = modelMesh;
                 modelMesh.castShadow = true;
                 modelMesh.receiveShadow = false;
 
-                let staticMesh = theModelScene.getObjectByName('Visor_low')
+                let staticMesh = theModelScene.getObjectByName('Helmet_main_2')
                 staticMesh.layers.set(2); // make base black for glow...
                 staticMesh.material = _self.theBaseMaterial;
                 staticMesh.castShadow = true;
                 staticMesh.receiveShadow = true; // maybe! todo
                 _self.baseFXMesh = staticMesh;
+
+                let visorMesh = theModelScene.getObjectByName('Helmet_main_visor')
+                visorMesh.layers.set(2); // make base black for glow...
+                visorMesh.material = _self.theVisorMaterial;
+                visorMesh.castShadow = true;
+                visorMesh.receiveShadow = true; // maybe! todo
+                _self.visorFXMesh = visorMesh;
                 // staticMesh.receiveShadow = false;
 
             }

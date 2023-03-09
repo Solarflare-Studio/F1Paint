@@ -5,6 +5,38 @@ import {DEBUG_MODE} from './adminuser'
 const totalfilestoloadperc = 85;
 var currentProgress = 0;
 var isAutoSelectingPattern = true; // to indicate whether user has actually clicked on thumb or part of auto procedure setting up
+let selectedLanguage = document.querySelector("#selectedLanguage");
+selectedLanguage.innerHTML = "English";
+// new html
+
+const dropdownArrow = document.querySelector("#dropdownArrow");
+export function uihandlelanguageSelect() {
+    dropdownArrow.classList.toggle("rotate-180");
+}
+
+export function uihandlelanguageChange(e,f1Aws) {
+  var languageArr = e.split(',');
+  const langfile = languageArr[2] +"/" + languageArr[1]; // filename for language
+  selectedLanguage.innerHTML = languageArr[0];
+  console.log('>>>>>>      lingo = ' + languageArr[0]);
+
+  f1Aws.loadfromAWS('languages',langfile,1);  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export function setAutoSelectingPattern(_val) {
     isAutoSelectingPattern = _val;
@@ -19,9 +51,9 @@ export function updateProgress(percent,msg) {
         currentProgress=0;
     }
     else {
-        const progress = document.getElementById("progress");
+        // const progress = document.getElementById("progress");
         currentProgress = currentProgress + percent;
-        progress.style.width = ((currentProgress / totalfilestoloadperc)*100) + "%";
+        // progress.style.width = ((currentProgress / totalfilestoloadperc)*100) + "%";
         if(DEBUG_MODE)
             console.log(">> percent loaded = " + currentProgress + " - " + msg);
     }
@@ -64,12 +96,14 @@ class F1Gui {
     // }
     //===================================
     updateProgress2(percent) {
-        // const maxprogress = 100;
+        const maxprogress = 100;
         // const progress = document.getElementById("progress2");
-        // this.currentProgress = this.currentProgress + percent;
+        this.currentProgress = this.currentProgress + percent;
         // progress.style.width = ((this.currentProgress / maxprogress)*100) + "%";
-        // console.log(">> percent loaded = " + this.currentProgress);
-        // console.log('>>>> ' + percent + "%");
+        console.log(">> percent loaded = " + this.currentProgress);
+        console.log('>>>> ' + percent + "%");
+
+
         document.getElementById("progress2").style.width = percent + "%";
 
     }
@@ -781,8 +815,9 @@ class F1Gui {
 
 
         // also set intro page divider
-        document.getElementById('tut2block').style.height = toolsPosY + "px";
-        document.getElementById('tut1block').style.height = (h-toolsPosY) + "px";
+        // new html todo
+        // document.getElementById('tut2block').style.height = toolsPosY + "px";
+        // document.getElementById('tut1block').style.height = (h-toolsPosY) + "px";
 
 
 
@@ -790,7 +825,10 @@ class F1Gui {
         var clientHeight = this.tabHeight;// document.getElementById('guitabs').clientHeight;
 
         // set height of bottom panel to always reach bottom
-        var mainHeight = document.getElementById('maincontainerblock').offsetHeight ;
+
+        // TODO NEW HTML
+
+        var mainHeight = document.getElementById('oldmaincontainerblock').offsetHeight ;
         //        document.getElementById('toolscontainer').style.height = (mainHeight - toolsPosY) + 'px';
         //        toolsElement.style.height = (mainHeight - toolsPosY) + 'px';
         document.getElementById('toolscontainer').style.height = (mainHeight - toolsPosY - clientHeight) + 'px';

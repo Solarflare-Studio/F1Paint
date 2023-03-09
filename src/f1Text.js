@@ -38,6 +38,8 @@ class F1Text {
         this.locos.push([-0.589, 0.693, 0.133,-90]); // right side
         this.locos.push([-0.909, -0.441, 0.105,  -180]); // front nose
         //
+
+
         document.getElementById('c_tagXSlider').value = _self.locos[0][0] * 100.0;
         document.getElementById('c_tagYSlider').value = _self.locos[0][1] * 100.0;
         document.getElementById('c_tagScaleSlider').value = _self.locos[0][2] * 100.0;
@@ -47,7 +49,6 @@ class F1Text {
         document.getElementById('c_tagYSliderTxt').value = "y= " + _self.locos[0][1];
         document.getElementById('c_tagScaleSliderTxt').value = "scale= " + _self.locos[0][2];
         document.getElementById('c_tagRotSliderTxt').value = "rot= " + _self.locos[0][3];
-
         // this.posX = -0.9;
         // this.posY = -0.43;
         // this.size = 0.125;
@@ -121,6 +122,8 @@ class F1Text {
         //     document.getElementById('c_tagRotSliderTxt').innerHTML = "rot= " + _self.locos[loco][3];
         //     _self.composite();
         // }
+
+
     }
     // =======================
 

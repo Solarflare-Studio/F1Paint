@@ -60,6 +60,13 @@ class F1Materials {
             f1CarHelmet.theModelMaterial.envMapIntensity = f1Settings.envStrenghtCustom;
             f1CarHelmet.theModelMaterial.needsUpdate=true;
         }
+        else if(which==3){
+            f1Settings.envStrengthVisor = strength;
+            if(f1CarHelmet.theVisorMaterial) {
+                f1CarHelmet.theVisorMaterial.envMapIntensity = f1Settings.envStrengthVisor;
+                f1CarHelmet.theVisorMaterial.needsUpdate=true;
+            }
+        }        
         else {
             f1Settings.envStrengthStatic = strength;
             f1CarHelmet.theBaseMaterial.envMapIntensity = f1Settings.envStrengthStatic;
@@ -86,6 +93,12 @@ class F1Materials {
                 f1CarHelmet.theBaseMaterial.envMap = result;
                 f1CarHelmet.theBaseMaterial.envMapIntensity = f1Settings.envStrengthStatic;//this.envmapStrength;
                 f1CarHelmet.theBaseMaterial.needsUpdate=true;
+
+                if(f1CarHelmet.theVisorMaterial) {
+                    f1CarHelmet.theVisorMaterial.envMap = result;
+                    f1CarHelmet.theVisorMaterial.envMapIntensity = f1Settings.envStrengthVisor;
+                    f1CarHelmet.theVisorMaterial.needsUpdate=true;
+                }
             }
             
     

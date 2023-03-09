@@ -29,9 +29,9 @@ class ProcessJSON {
         if(DEBUG_MODE)
             console.log(">> load patterns json");
         if(f1Cookies.isHelmet)
-            this.readJSON('patterns','patterns_helmet.json','PATTERNS',f1Cookies.userID,f1Cookies.userName,f1Cookies.userEmail,f1Cookies.isHelmet,f1Cookies.cookie_livery_value,f1Aws);
+            this.readPatternsJSON('patterns','patterns_helmet.json','PATTERNS',f1Cookies.userID,f1Cookies.userName,f1Cookies.userEmail,f1Cookies.isHelmet,f1Cookies.cookie_livery_value,f1Aws);
         else
-            this.readJSON('patterns','patterns_car.json','PATTERNS',f1Cookies.userID,f1Cookies.userName,f1Cookies.userEmail,f1Cookies.isHelmet,f1Cookies.cookie_livery_value,f1Aws);
+            this.readPatternsJSON('patterns','patterns_car.json','PATTERNS',f1Cookies.userID,f1Cookies.userName,f1Cookies.userEmail,f1Cookies.isHelmet,f1Cookies.cookie_livery_value,f1Aws);
     }
     //======================
     haveloadedStartupJSON() {
@@ -112,7 +112,7 @@ class ProcessJSON {
         }
     }
     //======================
-    readJSON(folder, filename,type,userID,userName,userEmail,isHelmet,cookie_livery_value,f1Aws) {
+    readPatternsJSON(folder, filename,type,userID,userName,userEmail,isHelmet,cookie_livery_value,f1Aws) {
 
         this.type = type;
         this.userID = userID;

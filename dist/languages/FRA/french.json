@@ -1,0 +1,87 @@
+{
+"dialogues": [  
+  {
+    "name": "LK_welcomeContent_01",
+    "text": "Salut!"
+  },
+  {
+    "name": "LK_welcomeContent_02",
+    "text": "Il est temps de personnaliser votre propre voiture F1. Préparez-vous à décorer votre propre livrée et à la rendre unique à votre style."
+  },
+  {
+    "name": "l_text_3",
+    "text": "SUIVANTE"
+  },
+  {
+    "name": "l_text_4",
+    "text": "CAR"
+  },
+  {
+    "name": "l_text_5",
+    "text": "HELMET"
+  },
+  {
+    "name": "l_text_6",
+    "text": "Voici une autre introduction"
+  },
+  {
+    "name": "l_text_7",
+    "text": "[TEXTE / IMAGES OBLIGATOIRES]"
+  },
+  {
+    "name": "l_text_8",
+    "text": "Nous sommes juste en train de ranger le garage pour vous....."
+  },
+  {
+    "name": "l_text_9",
+    "text": "D'ACCORD"
+  },
+  {
+    "name": "l_text_10",
+    "text": "[TEXTE / IMAGES REQUIS] Ci-dessus se trouve la zone 3D qui montre votre voiture directement des ingénieurs"
+  },
+  {
+    "name": "l_text_11",
+    "text": "Vous pouvez toucher et faire glisser le panneau 3D pour regarder autour de la voiture."
+  },
+  {
+    "name": "l_ar_text_1",
+    "text": "Bienvenue dans l'expérience F1 Augment Reality."
+  },
+  {
+    "name": "l_ar_text_2",
+    "text": "Vous devrez trouver l'image ci-dessous dans la vue de l'appareil photo de votre téléphone."
+  },
+  {
+    "name": "LK_pattern",
+    "text": "MODÈLE"
+  },
+  {
+    "name": "LK_paint",
+    "text": "PEINDRE"
+  },
+  {
+    "name": "LK_tag",
+    "text": "ÉTIQUETER"
+  },
+  {
+    "name": "LK_sponsor",
+    "text": "PARRAINER"
+  },
+  {
+    "name": "LK_language",
+    "text": "LANGUE"
+  },
+  {
+    "name": "LK_security",
+    "text": "SÉCURITÉ"
+  },
+  {
+    "name": "LK_otherlinks",
+    "text": "AUTRES LIENS"
+  }
+  
+
+]
+}
+

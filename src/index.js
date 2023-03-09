@@ -39,6 +39,9 @@ import {DEBUG_MODE, createLightHelper} from './adminuser'
 
 import { updateProgress } from './f1gui';
 import { getAutoSelectingPattern,setAutoSelectingPattern } from './f1gui.js';
+
+// new html
+import {uihandlelanguageSelect,uihandlelanguageChange} from './f1gui'
 //import { setQuaternionFromProperEuler } from 'three/src/math/mathutils.js';
 
 
@@ -77,8 +80,8 @@ const f1Cookies = new F1Cookies();
 var renderSize = 1024;
 // var renderSize = 2048;
 
-var customMapRenderSize = 1024;
-var customRoughMapRenderSize = 512;
+var customMapRenderSize = 2048;
+var customRoughMapRenderSize = 1024;
 var sfxBloomRenderSize = 512;
 
 
@@ -271,6 +274,8 @@ createColourpicker();
 //==================================================
 function onloaded()
 {
+	// TODO NEW HTML
+	return;
 	if(DEBUG_MODE) {
 		document.getElementById('versionid').classList.add('console');
 		document.getElementById('versionid').classList.add('console_button');	
@@ -281,20 +286,25 @@ function onloaded()
 	var timeDiff = loadedtime - loadtime; //in ms
 
 	// fade out loading splash
-	document.getElementById('loadingblock').classList.add('fadedout');
+
+	// TODO NEW HTML = wait for more html to decide on this loading reveal method
+	// document.getElementById('loadingblock').classList.add('fadedout');
 	
 	// fade in intro page
 	if(timeDiff >= 2500) { // already taken enough time loading...
 		if(DEBUG_MODE)
 			console.log(">> load time took = " + (timeDiff/1000) + " - so don't delay!");
 
-		document.getElementById('welcomeblock').classList.remove('fadedout');
+		// TODO NEW HTML = ready to go
+		// document.getElementById('welcomeblock').classList.remove('fadedout');
 	}
 	else {
 		setTimeout( function() {
 			if(DEBUG_MODE)
 				console.log(">> load time took = " + (timeDiff/1000) + " - rather quick!");
-			document.getElementById('welcomeblock').classList.remove('fadedout');
+
+			// TODO NEW HTML = ready to go
+			// document.getElementById('welcomeblock').classList.remove('fadedout');
 		}, 2500 - timeDiff); // ensure at least 2500 ms of load show
 	}
 	// waits for intro page ok button click....
@@ -349,6 +359,12 @@ function setupConsoleListeners() {
 			f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,1);
 		}
 		else
+		if(document.getElementById('c_envstrength').value=="visor") {
+			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + self.amount;
+	
+			f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,3);
+		}
+		else
 			f1Materials.setEnvStrength(self.amount,f1CarHelmet,f1Garage,2);
 	}
 	document.getElementById('c_envstrength').onchange = function () {
@@ -361,6 +377,10 @@ function setupConsoleListeners() {
 		else if(this.value=="carstatic") {
 			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrengthStatic;
 			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theBaseMaterial.envMapIntensity * 100.0; // static gets 100x
+		}
+		else if(this.value=="visor") {
+			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrengthVisor;
+			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theVisorMaterial.envMapIntensity * 100.0; // static gets 100x
 		}
 		else { // garage
 			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrengthGarage;
@@ -567,8 +587,10 @@ function onConsole(_switch) {
 
 			if(document.getElementById('c_envstrength').value=="car")
 				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrenghtCustom;
-				else if(document.getElementById('c_envstrength').value=="carstatic")
+			else if(document.getElementById('c_envstrength').value=="carstatic")
 				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrengthStatic;
+			else if(document.getElementById('c_envstrength').value=="visor")
+				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrengthVisor;
 			else 
 				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrengthGarage;
 			
@@ -694,46 +716,62 @@ function seekPatternThumb(patternblock,layer) {
 //==================================================
 function introNextPage(nextPage) {
 	if(nextPage==0) { // first page Okeyed
-		document.getElementById('welcomeblock').classList.add('fadedout');
-		document.getElementById('intro2block').classList.remove('hidden');
+		// TODO NEW HTML
+		document.getElementById('welcomeContent').classList.add('hidden');
+
+		document.getElementById('canvas-positioner').style.display='block';
+		document.getElementById('oldmaincontainerblock').style.display ="block";
+
+
+		setSize(window.innerWidth,window.innerHeight );
+		changeTab(1);
+
+
+		// document.getElementById('welcomeblock').classList.add('fadedout');
+		// document.getElementById('intro2block').classList.remove('hidden');
+
+
+
 	}
+	// TODO NEW HTML
 	else if(nextPage==1) { // have clicked on second intro page Ok button ==> fade in tutorial page 1
-		document.getElementById('intro2block').classList.add('fadedout');
+		// document.getElementById('intro2block').classList.add('fadedout');
 
 		seekPatternThumb(document.getElementById('layer1patterns_ins'),0).click();
 		setAutoSelectingPattern(false);
 
 		// after 0.7s fade in the tutoral page 1
 		setTimeout( function() {
-			document.getElementById('tut1block').classList.remove('fadedout');
-			document.getElementById('maincontainerblock').style.display ="block";
+			// document.getElementById('tut1block').classList.remove('fadedout');
+			document.getElementById('oldmaincontainerblock').style.display ="block";
 			
 			// then fade in the 3D after 0.7
 			setTimeout( function() {
-				document.getElementById('maincontainerblock').classList.remove('fadedout');
+				// document.getElementById('maincontainerblock').classList.remove('fadedout');
 			}, 700);
 		}, 700);
 	}
 	else if(nextPage==2) { // have clicked on first tutorial page Next button ==> show tutorial page 2
 		
-		document.getElementById('tut1interior').classList.add('fadedout');
-		document.getElementById('tut2block').classList.remove('fadedout');
+		// document.getElementById('tut1interior').classList.add('fadedout');
+		// document.getElementById('tut2block').classList.remove('fadedout');
 
 		setTimeout( function() {
-			document.getElementById('tut1block').classList.add('fadedout');
+			// document.getElementById('tut1block').classList.add('fadedout');
 		}, 700);
 	}
 	else if(nextPage==3) { // let's go!
 
 		seekPatternThumb(document.getElementById('layer1patterns_ins'),0).click();
-		document.getElementById('tut2block').classList.add('fadedout');
+		// document.getElementById('tut2block').classList.add('fadedout');
 
 		// enable tools
 		updateProgress(5,'activating');
 		changeTab(1);
 
 
-		document.getElementById('palette_toolsBlock').classList.remove('disabledUserEvents');
+		// todo new html
+		// document.getElementById('palette_toolsBlock').classList.remove('disabledUserEvents');
 	}
 }
 //==================================================
@@ -1255,23 +1293,23 @@ function dataURLtoBlob(dataurl) {
 
 function doSavePaintShop(_pixelBuffer,_dateTimeTypePrefix, _renderSize) {
 
-	var canvas = document.createElement('canvas');
-	canvas.width = _renderSize;
-	canvas.height = _renderSize;
-	var context = canvas.getContext('2d');
+	var tmpcanvas = document.createElement('canvas');
+	tmpcanvas.width = _renderSize;
+	tmpcanvas.height = _renderSize;
+	var context = tmpcanvas.getContext('2d');
 	var imageData = context.createImageData(_renderSize, _renderSize);
 	imageData.data.set(_pixelBuffer);
 	context.putImageData(imageData, 0, 0);
 
 
-	var dataURL = canvas.toDataURL();
+	var dataURL = tmpcanvas.toDataURL();
 	const filename = f1Cookies.userID + _dateTimeTypePrefix;
 	
 	if(DEBUG_MODE)
 		console.log('>> file saving "' + filename + '"');
 
 	f1Aws.s3upload(dataURLtoBlob(dataURL),filename);
-	canvas.remove();	// do we do this?
+	tmpcanvas.remove();	// do we do this?
 
 }
 //==================================================
@@ -1428,8 +1466,13 @@ function postRenderProcess() {
 		// this is the one the client is using...
 		// const thearlink = 'https://solarflarestudio.8thwall.app/f1testmarkerv6/?u=' + userID + '&d='+ datetime;// +'&m=c&t='+(new Date());
 
+
+
+		// include user id, datetime, helmet or car and language
+		const params = '?u=' + f1Cookies.userID + '&d='+ datetime + '&m=' + (f1Cookies.isHelmet ? 'h' : 'c') + '&l=' + f1Cookies.languageCode;
 		// marker f1 fanzone ar version latest V2
-		const thearlink = 'https://solarflarestudio.8thwall.app/f1-fanzone-ar-v2/?u=' + f1Cookies.userID + '&d='+ datetime;// +'&m=c&t='+(new Date());
+		const thearlink = 'https://solarflarestudio.8thwall.app/f1-fanzone-ar-v2/' + params;
+		// const thearlink = 'https://solarflarestudio.8thwall.app/f1-fanzone-ar-v2/?u=' + f1Cookies.userID + '&d='+ datetime;// +'&m=c&t='+(new Date());
 		
 
 		if(DEBUG_MODE)
@@ -1558,8 +1601,11 @@ function specialrenderpipeline() {
 		f1CarHelmet.specialFXMesh.material = f1SpecialFX.plainMat;
 
 		// black out static mesh
-		// if(!f1Cookies.isHelmet)
-			f1CarHelmet.baseFXMesh.material = f1SpecialFX.blackMat;
+		if(f1Cookies.isHelmet)
+			f1CarHelmet.visorFXMesh.material = f1SpecialFX.blackMat;
+
+		f1CarHelmet.baseFXMesh.material = f1SpecialFX.blackMat;
+		
 
 
 //		f1CarHelmet.specialFXMesh.material.map = f1SpecialFX.glowBufferMapSceneTarget.texture;
@@ -1573,9 +1619,10 @@ function specialrenderpipeline() {
 
 	//
 	if(f1CarHelmet.specialFXMesh) {
-		// if(!f1Cookies.isHelmet)
-			f1CarHelmet.baseFXMesh.material = f1SpecialFX.blackMat;
+		f1CarHelmet.baseFXMesh.material = f1SpecialFX.blackMat;
 		f1CarHelmet.specialFXMesh.material = f1SpecialFX.blackMat;
+		if(f1Cookies.isHelmet)
+			f1CarHelmet.visorFXMesh.material = f1SpecialFX.blackMat;
 
 	}
 	if(f1Ribbons.enabled) {
@@ -1597,9 +1644,10 @@ function specialrenderpipeline() {
 
 //
 	if(f1CarHelmet.specialFXMesh) {
-		// if(!f1Cookies.isHelmet)
-			f1CarHelmet.baseFXMesh.material = f1CarHelmet.theBaseMaterial;
+		f1CarHelmet.baseFXMesh.material = f1CarHelmet.theBaseMaterial;
 		f1CarHelmet.specialFXMesh.material = f1CarHelmet.theModelMaterial;
+		if(f1Cookies.isHelmet)
+			f1CarHelmet.visorFXMesh.material = f1CarHelmet.theVisorMaterial;
 	}
 
 	camera.layers.enableAll();
@@ -1685,17 +1733,19 @@ function animate()
 	if(!nowallloaded && f1Materials.alltexturesloaded) {
 		nowallloaded=true;
 
-		document.getElementById('waittilloaded').classList.remove('hidden');
-		document.getElementById('waitingmessage').classList.add('hidden');
 
-		const speedy = new Date().getTime() - loadedtime;
-		if(speedy>2000)
-			document.getElementById('progressblock').classList.add('hidden');
-		else {
-			setTimeout(function()	{
-				document.getElementById('progressblock').classList.add('hidden');
-			}, 2000);
-		}
+		// TODO NEW HTML
+		// document.getElementById('waittilloaded').classList.remove('hidden');
+		// document.getElementById('waitingmessage').classList.add('hidden');
+
+		// const speedy = new Date().getTime() - loadedtime;
+		// if(speedy>2000)
+		// 	document.getElementById('progressblock').classList.add('hidden');
+		// else {
+		// 	setTimeout(function()	{
+		// 		document.getElementById('progressblock').classList.add('hidden');
+		// 	}, 2000);
+		// }
 
 
 		scene.background = f1Garage.backgroundImage;
@@ -1752,3 +1802,73 @@ window.addEventListener('resize', function(event) {
 initit();
 animate();
 
+
+
+
+
+
+
+
+
+
+
+
+// new html
+
+
+
+
+const loadingContent = document.querySelector("#loadingContent");
+const welcomeContent = document.querySelector("#welcomeContent");
+const menu = document.querySelector("#menu");
+const progress = document.querySelector("#file");
+
+
+let loadingProgress = 0;
+move();
+function move() {
+  if (loadingProgress == 0) {
+    loadingProgress = 1;
+    const id = setInterval(frame, 10);
+    function frame() {
+      if (loadingProgress >= 100) {
+        clearInterval(id);
+        loadingProgress = 0;
+      } else {
+        loadingProgress++;
+        progress.value = loadingProgress;
+        weclome();
+      }
+    }
+  }
+}
+
+function weclome() {
+  if (loadingProgress === 100) {
+    menu.classList.remove("hidden");
+    welcomeContent.classList.remove("hidden");
+    loadingContent.classList.add("hidden");
+  }
+}
+
+//==============================
+window.handlelanguageSelect = handlelanguageSelect
+window.handlelanguageChange = handlelanguageChange
+
+function handlelanguageSelect() {
+	uihandlelanguageSelect();
+}
+function handlelanguageChange(e) {
+	console.log(" here > " + e);
+	uihandlelanguageChange(e,f1Aws);
+}
+
+//
+// set up buttons
+document.getElementById('nextButton').onclick = function() {
+	introNextPage(0);
+};
+
+// set up old html
+document.getElementById('canvas-positioner').style.display='none';
+// document.getElementById('oldmaincontainerblock').style.display ="none";

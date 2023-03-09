@@ -33,6 +33,7 @@ class PatternItems {
     buildGUI(patternsData,f1Aws) { // ,layerPatternThumbElements) {
         if(DEBUG_MODE)
             console.log('>> adding thumbs');
+
         var layer1PatternDiv = document.getElementById('layer1patterns_ins');
         var layer2TagsDiv = document.getElementById('layer2tags_ins');
         var layer3DecalsDiv = document.getElementById('layer3decals_ins');

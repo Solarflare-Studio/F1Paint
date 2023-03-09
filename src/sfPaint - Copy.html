@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" href="./sfPaint.css">
+    <!-- <link rel="stylesheet" href="./iframeAR.css">   used by inline iframe ar page -->
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no" />
+<!--
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+-->    
+
+
+        <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+        <link rel="manifest" href="./site.webmanifest">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>F1 PaintShop</title> 
+        <script>
+            const loadtime = new Date();    // used to determine how fast we've loaded the page
+        </script>
+
+<!-- loading the bare minimum style for background body -->
+        <style>
+
+            body {
+                background-color: rgb(0, 0, 0);
+
+                padding: 0;
+                margin: 0;
+                width: auto;
+                height: auto;
+                overflow: none;
+                font-family: "F1PaintShopFont";
+                /* font-family: "F1PaintShopBoldFont"; */
+                font-size: var(--rootFontSize);
+                font-weight: 700;
+
+                animation: fadeInAnimation ease 0.5s;
+                animation-iteration-count: 1;
+                animation-fill-mode: forwards;
+                }
+                @keyframes fadeInAnimation {
+                0% {
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+
+        </style>
+        <style>
+            @font-face {
+                font-family: "F1PaintShopFont";
+                src: url('./assets/fonts/Formula1-Display-Regular.otf') format("truetype");
+                font-weight: normal;
+                font-style: normal;
+            }
+
+            @font-face {
+                font-family: "F1PaintShopBoldFont";
+                src: url('./assets/fonts/Formula1-Display-Bold.otf') format("truetype");	
+                /* font-weight: bold; */
+                font-weight: normal;
+                font-style: normal;
+            }
+            @font-face {
+                font-family: "F1PaintShopBlackFont";
+                src: url('./assets/fonts/Formula1-Display-Black.otf') format("truetype");
+                font-weight: normal;
+                font-style: normal;
+            }
+
+            @font-face {
+                font-family: "F1PaintShopWideFont";
+                src: url('./assets/fonts/Formula1-Display-Wide.otf') format("truetype");	
+                font-weight: normal;
+                font-style: normal;
+            }
+
+
+
+        </style>
+    </head>
+    <body onload='setTimeout( onloaded,1000)'>
+        <div id="intropagesblock">
+            <div class="introblock">
+                <div id="loadingblock" class="splashblock">
+                    <div class="hcentre" style="font-family:'F1PaintShopBoldFont'">
+                        <div>F1 PAINTSHOP</div><br>
+                        <div class="fontNormal">Loading ...</div><br>
+                        <div id="loadingindicatorblock">
+                            <img id="loadingindicatorimage" src="./assets/inapp/F1_LoadingAnim_Wheel-256.gif" />
+                        </div>
+                    </div>       
+                </div>
+                <div id="welcomeblock" class="splashblock fadedout">
+                    <div class="hcentre">
+                        <div id="l_text_1">WELCOME</div><br>
+                        <div class="fontNormal" id="l_text_2">Time to customise your very own F1 Car. Get ready to deck out your very own livery and make unique to your style.</div>
+                        <div id="languagechoices" class="hidden">
+                            <select id='s_languagechoices'>
+                            </select>
+                        </div>
+                        <div id="firstbuttonpanel" class="buttonpanel hidden">
+                            <div id="introokbutton" class="redButton button hidden" onclick="introNextPage(0);"><div id="l_text_3">NEXT</div></div>
+                            <div id="introcarbutton" class="introbutton button" onclick="switchModel(false);introNextPage(0);"><div id="l_text_4">Car</div></div>
+                            <div id="introhelmetbutton" class="introbutton button" onclick="switchModel(true);introNextPage(0);"><div id="l_text_5">Helmet</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="intro2block" class="splashblock hidden">
+                    <div class="hcentre fontNormal">
+                        <div id="l_text_6">Here's some more intro</div><br>
+                        <div id="l_text_7">[TEXT / IMAGES REQUIRED]</div><br>
+                        <div id="waitingmessage"><div  id="l_text_8">We're just tidying the garage for you.....</div></div>
+
+                        <div id="waittilloaded" class="buttonpanel hidden">
+                            <div class="redButton button" onclick="introNextPage(1);"><div id="l_text_9">OK</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tut1block" class="splashblock fadedout helpboxbottom">
+                    <div id="tut1interior" class="hcentre fontNormal">
+                        <div id="l_text_10">[TEXT / IMAGES REQUIRED] Above is the 3D area which shows your car straight from the engineers.</div><br>
+                        <div id="l_text_11">You can touch and drag the 3D panel to look around the car.</div><br>
+                        <div class="buttonpanel">
+                            <div class="redButton button" onclick="introNextPage(2);">Next</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tut2block" class="splashblock fadedout helpboxtop">
+                    <div class="hcentre fontNormal">
+                        <div>Below is where you can choose your different patterns and colour selections.</div><br>
+                        <div>Simply choose your options and press Next for more livery selections.</div><br>
+                        <div class="buttonpanel">
+                            <div class="redButton button" onclick="introNextPage(3);">Let's go!</div>
+                        </div>
+                    </div>
+                </div> 
+                <div id="progressblock" class="hidden progressblock">
+                    <div>Tidying garage in readiness for you....</div>
+                    <div id="progresscontainer" class="progress-bar">
+                        <div id="progress"></div>
+                    </div>                  
+                </div>                      
+            </div>
+        </div>
+        <div id="maincontainerblock" class="container fadedout" style="transition:opacity 0.7s;">
+            <div id="minmax" class="minmax" onclick="onMinMax();"><i class="gg-chevron-double-right"></i></div>
+            <div id="palette_toolsBlock" class="palette_tools disabledUserEvents">
+                <div id="guicontainer">
+                    <div id="guitabs" class="f1patterns">
+                        <div class="f1colourrow guiBGcolour">
+                            <div class="guitabpadder"></div>
+                            <div id="f1patterntab" class="f1tabs f1tabTone1 f1tabActive" onclick="changeTab(1)">PATTERN</div>
+                            <div id="f1colourtab" class="f1tabs f1tabTone2" onclick="changeTab(2)">PAINT</div>
+                            <div id="f1tagtab" class="f1tabs f1tabTone3" onclick="changeTab(3)">TAG</div>
+                            <div id="f1decalstab" class="f1tabs f1tabTone4" onclick="changeTab(4)">SPONSOR</div>
+                            <div class="guitabpadder"></div>
+                        </div>
+                    </div> 
+                </div>              
+                <div id="toolscontainer">
+                    <div id="toolsexpanded">
+                        <div id="patternsPanel" class="f1patterns">
+                            <div id="layer1patterns_ins" class="layerPatternsContainer scrollbox"></div>
+                            <div id="patternColours" class="f1patterncolours hidden">
+                                <div>
+                                    <div class="channelblock">BASE PAINT
+                                        <div id="basepaintbutton" class="paintButtons" onclick="onChangePaint(0);"></div>
+                                    </div>
+                                    <div id="flexpair" class="flexpair">
+                                        <div class="channelblock paintlayout">PRIMARY PAINT
+                                            <div id="primarypaintbutton" class="paintButtons" onclick="onChangePaint(1);"></div>
+                                        </div>  
+                                        <div class="channelblock paintlayout">SECONDARY PAINT
+                                            <div id="secondarypaintbutton" class="paintButtons" onclick="onChangePaint(2);"></div>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div id="redspacer" class="redspacer"></div>
+                                <div id="presetandrandomblock" class="flexpair heightx3">
+                                    <div class="preset">
+                                        <div>PRESET PAINT</div>
+                                        <div class="randomandpreset" onclick="onDefaultPaint();">
+                                            <img width='auto' height='100%' src="./assets/inapp/preselectedpaint.png"/>
+                                        </div>
+                                    </div>
+                                    <div class="preset">
+                                        <div>RANDOM PAINT</div>
+                                        <div class="randomandpreset" onclick="onRandomPaint();">
+                                            <img width='auto' height='100%' src="./assets/inapp/randompaint.png"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- may or may not be having preset colour thumbs to choose from
+                            <div id="paintpresetsblock" class="f1patterncolours hidden">
+                                pick a colour set
+                                <div id="layerPresets_ins" class="layerPresetsContainer scrollbox">
+                                    <div class="patternContainer"><div class="pattern" patternid="4001" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                    <div class="patternContainer"><div class="pattern" patternid="4002" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                    <div class="patternContainer"><div class="pattern" patternid="4003" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                    <div class="patternContainer"><div class="pattern" patternid="4004" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                    <div class="patternContainer"><div class="pattern" patternid="4005" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                    <div class="patternContainer"><div class="pattern" patternid="4006" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                    <div class="patternContainer"><div class="pattern" patternid="4007" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                    <div class="patternContainer"><div class="pattern" patternid="4008" onclick="onPresetPicked(this)" style="background-image: url('./patterns/presets/preset1.jpg');"></div></div>
+                                </div>
+                            </div>
+                            -->
+                            <div id="paintachannelblock" class="f1patterncolours hidden">
+                                <div id="whichchanneltext">WHICH CHANNEL</div>
+                                <div>
+                                    <div id="colourPickerContainer" class="colourscontainer">
+                                        <div style="height:15px"></div>
+                                        <div id="coloursample" class="coloursample"></div>
+                                        <div id="coloursexpanded_2" class="coloursexpanded_2">
+                                            <div class="centreddiv">
+                                                <div class="colourWheelPicker" id="colourWheelPicker"></div>
+                                            </div>
+                                        </div>
+                                    </div>     
+                                </div>
+                                <div id="glosstypeblock">
+                                    <div class="flex3">
+                                        <div id="glossbutton" class="blackButton button" onclick="onMaterialbutton(0);">GLOSS</div>
+                                        <div id="mattebutton" class="blackButton button" onclick="onMaterialbutton(1);">MATTE</div>
+                                        <div id="metallicbutton" class="blackButton button" onclick="onMaterialbutton(2);">METALLIC</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tagblock">
+                                <div id="gettagblockheight">
+                                    <div style="width:100%;">
+                                        <div class="evenflex">
+                                            <div>Enter your 2 character tag</div>
+
+                                            <label id="taginputcontainer" class="input disabledButton">
+                                                <input id="taginput" class="tagInput__field" type="text" placeholder="F1" maxlength=2 value="F1" />
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div id="tagColours" class="f1patterncolours">
+                                        <div>
+                                            <div id="flexpair" class="flexpair">
+                                                <div class="channelblock paintlayout">TAG COLOUR
+                                                    <div id="tagpaintbutton" class="paintButtons" onclick="onChangePaint(4);"></div>
+                                                </div>  
+                                                <div class="channelblock paintlayout">STYLE COLOUR
+                                                    <div id="tagstylepaintbutton" class="paintButtons" onclick="onChangePaint(3);"></div>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="channelblock">Choose a tag style</div>
+                                </div>
+                                <div id="layer2tags_ins" class="layerTagsContainer scrollbox"></div>
+                                <div id="paintatagblock" class="f1patterncolours hidden">
+                                    <div id="whichchanneltext">WHICH CHANNEL</div>
+                                    <div>
+                                        <div id="tagcolourPickerContainer" class="colourscontainer">
+                                            <div style="height:15px"></div>
+                                            <div id="tagcoloursexpanded_2" class="coloursexpanded_2">
+                                                <div class="centreddiv">
+                                                    <div class="colourWheelPicker" id="colourWheelPicker"></div>
+                                                </div>
+                                            </div>
+                                        </div>     
+                                    </div>
+                                </div>                            
+                            </div>
+                            <div id="decalblock" class="hidden">
+                                <div id="getdecalblockheight">
+                                    <div id="decalColours" class="f1patterncolours">
+                                        <div>
+                                            <div class="channelblock">SPONSOR COLOUR
+                                                <div id="decalpaintbutton" class="paintButtons" onclick="onChangePaint(6);"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="channelblock">CHOOSE A SPONSOR</div>
+                                </div>
+                                <div id="layer3decals_ins" class="layerDecalsContainer scrollbox"></div>
+                                <div id="paintdecalblock" class="f1patterncolours hidden">
+                                    <div id="whichchanneltext">WHICH CHANNEL</div>
+                                    <div>
+                                        <div id="decalcolourPickerContainer" class="colourscontainer">
+                                            <div style="height:15px"></div>
+                                            <div id="decalcoloursexpanded_2" class="coloursexpanded_2">
+                                                <div class="centreddiv">
+                                                    <div class="colourWheelPicker" id="colourWheelPicker"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="finalPage" class="hidden">
+                            <div class="hcentre">
+                                <div>Congratulations!</div><br>
+                                <div>Now you can see your livery in AR!</div><br>
+                                <div>Press Back to change your livery or Confirm to proceed with your Livery!</div><br>
+                            </div>   
+                        </div>
+
+
+                        <div id="progressbarPage" class="hidden progressblock">
+                            <div>Preparing......</div>
+                            <div id="progresscontainer" class="progress-bar">
+                                <div id="progress2"></div>
+                            </div>                  
+                        </div>
+
+                        <div id="launchARPage" class="hidden">
+                            <div class="hcentre">
+                                <div>Your paint job is ready!</div><br>
+                                <div>Press the Launch AR button!</div><br>
+                            </div>   
+                        </div>
+                        <!-- main back next buttons -->
+
+                        
+                        <div id="backornextblock" class="splashblock backornextblock">
+                            <div class="buttonpanel flexpair">
+                                <div id="backbutton" class="redButton button mainButtons disabledButton" onclick="backNextPage(-1);">BACK</div>
+                                <div id="nextbutton" class="blackButton button mainButtons" onclick="backNextPage(1);">NEXT</div>
+                                <div id="launchbutton" class="blackButton button mainButtons confirmButton hidden"><a id="launchbuttonlink" target="_blank" href="www.mapflaps.com">LAUNCH AR</a></div>
+                                <div id="confirmbutton" class="redButton button mainButtons confirmButton hidden" onclick="onConfirm();">CONFIRM</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="canvas-positioner">
+                <div id="canvas-container"></div> <!-- this is where I append the webGL3D canvas -->
+            </div>
+            <!-- burger menu -->
+            <div id='burgermenu'><img src='./assets/inapp/burger_icon.png'  style='width: 100%;height: 100%;'></div>
+        </div>
+
+        <!-- cover screen -->
+        <div id="faderblock" class="fader" style="z-index:4;">
+            <div class="rotatemsg">Please rotate your device to Portrait.</div>
+        </div>
+    </div>
+    <div id="versionid" onclick="onConsole(0)">v0.2.0.2</div><br><div id="fpsindicator" style="position: absolute;"></div>
+        <div id="console" class="hidden">
+            <div class="console">
+                <div class="console_button expandbutton" onclick="expandDropdown('toneexpander');">Tone</div>
+                <div class="console_button shrunk expander" id="toneexpander">
+                    <div id="c_tonemappingSliderTxt" class="slidertxt">toneMapping</div>
+                    <input type="range" min="1" max="50" value="23" class="slider" id="c_tonemappingSlider">
+                    <select id="c_tonemap" name="tonemap">
+                        <option value="linear">Linear</option>
+                        <option value="cineon">Cineon</option>
+                        <option value="aces">ACES</option>
+                        <option value="reinhard">reinhard</option>
+                    </select>
+                </div>
+
+                <div class="console_button expandbutton" onclick="expandDropdown('envexpander');">Env map</div>
+                <div class="console_button shrunk expander" id="envexpander">
+                    <div id="c_envStrengthSliderTxt" class="slidertxt">envStrength</div>
+                    <input type="range" min="0" max="1500" value="500" class="slider" id="c_envStrengthSlider">
+                    <select id="c_envstrength" name="envstrength">
+                        <option value="car">Car</option>
+                        <option value="carstatic">Car static</option>
+                        <option value="garage">Garage</option>
+                    </select>
+                </div>
+                <div class="console_button expandbutton" onclick="expandDropdown('lightexpander');">Lights</div>
+                <div class="console_button shrunk expander" id="lightexpander">
+                    <select id="c_whichlight" name="whichlight">
+                        <option value="point1">Point 1</option>
+                        <option value="point2">Point 2</option>
+                        <option value="spot1">Spot 1</option>
+                        <option value="spot2">Spot 2</option>
+                        <option value="dir">Directional</option>
+                        <option value="dir2">Directional 2</option>
+                        <option value="amb">Ambient</option>
+                    </select>
+                    <div id="c_lightIntensitySliderTxt" class="slidertxt">intensity</div>
+                    <input type="range" min="0" max="1000" value="500" class="slider" id="c_lightIntensitySlider">
+
+                    <div class="console_button expandbutton" onclick="expandDropdown('lightdetailexpander');">More lights</div>
+                    <div class="console_button shrunk expander" id="lightdetailexpander">
+                        <div id="c_lightXSliderTxt" class="slidertxt">x</div>
+                        <input type="range" min="-200" max="200" value="80" class="slider" id="c_lightXSlider">
+                        <div id="c_lightYSliderTxt" class="slidertxt">y</div>
+                        <input type="range" min="-200" max="200" value="80" class="slider" id="c_lightYSlider">
+                        <div id="c_lightZSliderTxt" class="slidertxt">z</div>
+                        <input type="range" min="-200" max="200" value="80" class="slider" id="c_lightZSlider">
+                    </div>
+                </div>
+                <div class="console_button expandbutton" onclick="expandDropdown('tagsexpander');">Tags</div>
+                <div class="console_button shrunk expander" id="tagsexpander">
+                    <select id="c_whichtag" name="c_whichtag">
+                        <option value=0>Pos 1</option>
+                        <option value=1>Pos 2</option>
+                        <option value=2>Pos 3</option>
+                        <option value=2>Pos 4</option>
+                    </select>
+                    <div id="c_tagXSliderTxt" class="slidertxt">pos X:</div>
+                    <input type="range" min="-100" max="100" value="50" class="slider" id="c_tagXSlider">
+                    <div id="c_tagYSliderTxt" class="slidertxt">pos Y:</div>
+                    <input type="range" min="-100" max="100" value="50" class="slider" id="c_tagYSlider">
+                    <div id="c_tagScaleSliderTxt" class="slidertxt">scale:</div>
+                    <input type="range" min="0" max="200" value="100" class="slider" id="c_tagScaleSlider">
+                    <div id="c_tagRotSliderTxt" class="slidertxt">rot:</div>
+                    <input type="range" min="0" max="36000" value="0" class="slider" id="c_tagRotSlider">
+                </div>                
+                <div class="console_button expandbutton" onclick="expandDropdown('sfxexpander');">SFX</div>
+                <div class="console_button shrunk expander" id="sfxexpander">
+                    <div id="c_sfxRibbonSliderTxt" class="slidertxt">ribbon bloom</div>
+                    <input type="range" min="0" max="300" value="6" class="slider" id="c_sfxRibbonSlider">
+
+                    <div id="c_sfxSliderTxt" class="slidertxt">bloom</div>
+                    <input type="range" min="0" max="25" value="6" class="slider" id="c_sfxSlider">
+<!--                
+                    <div class="console_button">
+                        <label for="specialFXpipe_input"> specialFXpipe</label><br>
+                        <input  class="introbutton" onclick="onConsole(1)" type="checkbox" id="specialFXpipe_input" name="check" checked>
+                    </div>
+-->                 
+                    <div class="console_button">
+                        <label for="ribbon_input"> xtras</label><br>
+                        <input  class="introbutton" onclick="onConsole(2)" type="checkbox" id="ribbon_input" name="check" checked>
+                        <input  class="introbutton" onclick="onConsole(4)" type="checkbox" id="ribbonGlow_input" name="check" checked>
+                        <!-- <input  class="introbutton" onclick="onConsole(3)" type="button" id="ribbon_generate" name="rib" checked> -->
+
+                        <div class="console_button">
+                            <select id="c_bend" name="c_bend">
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                            </select>
+                            <select id="c_bendmodcon" name="c_bendmodcon">
+                                <option value=-1>LEFT</option>
+                                <option value=1>RIGHT</option>
+                                <option value=0>NONE</option>
+                                <option value=1>X</option>
+                                <option value=2>Y</option>
+                                <option value=4>Z</option>
+                            </select>
+
+                            <div id="c_bendFSliderTxt" class="slidertxt">force</div>
+                            <input type="range" min="-200" max="200" value="50" class="slider" id="c_bendFSlider">
+                            <div id="c_bendPSliderTxt" class="slidertxt">pos</div>
+                            <input type="range" min="0" max="100" value="0" class="slider" id="c_bendPSlider">
+                            <div id="c_bendASliderTxt" class="slidertxt">angle</div>
+                            <input type="range" min="-360" max="360" value="10" class="slider" id="c_bendASlider">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--    handle for colour wheel picker    -->
+        <!-- <svg id="sampleshower">
+            <defs>
+            <g id="colourhandle">
+                    <circle cx="0" cy="0" r="1em" fill="none" stroke="#646464" stroke-width="1px" />
+            </g>
+            </defs>
+        </svg> -->
+    </body>
+</html>

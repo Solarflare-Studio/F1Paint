@@ -68,6 +68,9 @@ class F1Ribbons {
 
         this.setupRibbonMaterials(f1Materials);
 
+
+    
+
         // this.ribbonGeometry = new THREE.BoxGeometry(200, 15, 2, 64,2,2);
 
         document.getElementById('c_bendmodcon').onchange = function () {

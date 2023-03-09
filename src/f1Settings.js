@@ -17,6 +17,8 @@ class F1Settings {
         this.envStrenghtCustom = 6.0;
         this.envStrengthStatic = 4.5;
         this.envStrengthGarage = 3.5;
+
+        this.envStrengthVisor = 5.0;
     }
 }
 export const f1Settings = new F1Settings();

@@ -1,0 +1,90 @@
+{
+"dialogues": [  
+  {
+    "name": "LK_welcomeContent_01",
+    "text": "WELCOME"
+  },
+  {
+    "name": "LK_welcomeContent_02",
+    "text": "Time to customise your very own F1 Car. Get ready to deck out your very own livery and make unique to your style."
+  },
+  {
+    "name": "l_text_3",
+    "text": "NEXT"
+  },
+  {
+    "name": "l_text_4",
+    "text": "CAR"
+  },
+  {
+    "name": "l_text_5",
+    "text": "HELMET"
+  },
+  {
+    "name": "l_text_6",
+    "text": "Here's some more intro"
+  },
+  {
+    "name": "l_text_7",
+    "text": "[TEXT / IMAGES REQUIRED]"
+  },
+  {
+    "name": "l_text_8",
+    "text": "We're just tidying the garage for you....."
+  },
+  {
+    "name": "l_text_9",
+    "text": "OK"
+  },
+  {
+    "name": "l_text_10",
+    "text": "[TEXT / IMAGES REQUIRED] Above is the 3D area which shows your car straight from the engineers."
+  },
+  {
+    "name": "l_text_11",
+    "text": "You can touch and drag the 3D panel to look around the car."
+  },
+  {
+    "name": "l_ar_text_1",
+    "text": "Welcome to the F1 Augment Reality experience."
+  },
+  {
+    "name": "l_ar_text_2",
+    "text": "You'll have to find the below image in your phone camera view!"
+  },
+  {
+    "name": "LK_buttonNext",
+    "text": "NEXT"
+  },
+  {
+    "name": "LK_pattern",
+    "text": "PATTERN"
+  },
+  {
+    "name": "LK_paint",
+    "text": "PAINT"
+  },
+  {
+    "name": "LK_tag",
+    "text": "TAG"
+  },
+  {
+    "name": "LK_sponsor",
+    "text": "SPONSOR"
+  },
+  {
+    "name": "LK_language",
+    "text": "LANGUAGE"
+  },
+  {
+    "name": "LK_security",
+    "text": "SECURITY"
+  },
+  {
+    "name": "LK_otherlinks",
+    "text": "OTHER LINKS"
+  }
+
+]
+}
+
