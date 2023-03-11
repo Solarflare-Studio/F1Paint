@@ -87,6 +87,10 @@ class F1Materials {
     
             // lees envmapintensity settings 280223
             f1Garage.garageMaterial.envMapIntensity = f1Settings.envStrengthGarage;//this.envmapStrength;// * 0.125;
+            f1Garage.plinthSidesMat.envMapIntensity = f1Settings.envStrengthPlinthSides;
+            f1Garage.plinthSidesMat.needsUpdate=true;
+            
+
             f1CarHelmet.theModelMaterial.envMapIntensity = f1Settings.envStrenghtCustom;//this.envmapStrength;
 
             if(f1CarHelmet.theBaseMaterial!=null) {
@@ -119,25 +123,7 @@ class F1Materials {
 
     //======================
     
-    newGarageMat() {
-        return new THREE.MeshStandardMaterial(
-            {
-                name: 'garagenewMaterial',
-                fog: false,
-                metalness: 0.5,
-                envMapIntensity: 1.0,
-                roughness: 0.8,
-                emissiveIntensity: 1,
-                aoMapIntensity: 1.0,
 
-                side: THREE.DoubleSide,
-                transparent: true,
-                normalScale: new THREE.Vector2(-0.2, 0.2),
-
-                depthTest: true,
-            }
-        );
-    }
 
     // ===============================================
     sequentialLoadMaps(_filenames,_filecomplete, _types, _material1, _material2,f1Garage, f1CarHelmet,f1Ribbons) {
@@ -242,10 +228,23 @@ class F1Materials {
                         tex.encoding = THREE.sRGBEncoding;  // garage floor texture map
                         f1Garage.garageMaterial.map = tex;
                         f1Garage.garageMaterial.needsUpdate=true;
+                        // f1Garage.plinthSidesMat.map = tex;
+                        // f1Garage.plinthSidesMat.needsUpdate=true;
+                        
                         break;
                     case 8:
+                        // f1Garage.garageMaterial.alphaMap = tex;
+
                         f1Garage.garageMaterial.roughnessMap = tex;
-                        f1Garage.garageMaterial.needsUpdate=true;                        
+                        f1Garage.garageMaterial.needsUpdate=true;
+                        // f1Garage.plinthSidesMat.roughnessMap = tex;
+                        // f1Garage.plinthSidesMat.needsUpdate=true;
+                        // also used for garagefloor sfx
+                        f1Garage.garageSFXMaterial.uniforms.texture1.value = tex;
+                        f1Garage.garageSFXMaterial.needsUpdate = true;
+
+
+
                         break;
                     case 9:                 // garage wall not use
                         break;
@@ -258,7 +257,8 @@ class F1Materials {
                         break;
                     case 12:                // glow floor
                         tex.premultiplyAlpha = false;
-                        f1Ribbons.floorGlowMat.map = tex; // 
+//try without here                        f1Ribbons.floorGlowMat.map = tex; // 
+                         f1Ribbons.floorGlowMat.map = tex; // 
                         f1Ribbons.floorGlowMat.needsUpdate=true;
                         break;
                     case 13:                // scene bg

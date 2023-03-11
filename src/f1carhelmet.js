@@ -126,7 +126,7 @@ class F1CarHelmet {
                 modelMesh.material = _self.theModelMaterial;
                 _self.specialFXMesh = modelMesh;
                 modelMesh.castShadow = true;
-                modelMesh.receiveShadow = false;
+                modelMesh.receiveShadow = true;//false;
 
                 let staticMesh = theModelScene.getObjectByName('F1PS_F1_Car_Static')
                 staticMesh.layers.set(2); // make base black for glow...
@@ -170,6 +170,7 @@ class F1CarHelmet {
             
             // filelist.push('./assets/garage/concretetilesSquare.jpg' ); // floor
             filelist.push('./assets/garage/Background_Square.jpg' ); // floor
+            // filelist.push('./assets/garage/Background_Square trans.png' ); // floor
             filetypelist.push( 7 ); filecomplete.push(false);
             // filelist.push('./assets/garage/concretetilesSquare.jpg' ); // floor roughmap
             filelist.push('./assets/garage/Background_Square_rm.jpg' ); // floor roughmetal
@@ -184,7 +185,8 @@ class F1CarHelmet {
             // filelist.push('./assets/sfx/ribbon3.png'); // ribbon textures..
             filetypelist.push( 11 ); filecomplete.push(false);
             filelist.push('./assets/sfx/floorglow.jpg'); // flow glow texture
-            filetypelist.push( 12 );             filecomplete.push(false);
+            filetypelist.push( 12 );             
+            filecomplete.push(false);
 
 
             if(_self.isHelmet) { // really is helmet

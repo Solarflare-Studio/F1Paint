@@ -39,7 +39,7 @@ class F1Ribbons {
         this.speedModDebug = 1.0;
         this.dodebug = false;
 
-        this.prevupdate = new Date().getTime();
+        
         // this.timer1 = this.prevupdate;
         this.deviceTime = 0;
         
@@ -112,25 +112,25 @@ class F1Ribbons {
             _self.modifierChange.stack[bendid].constraint = modcon;
         }
 
-        document.getElementById('c_bendFSlider').oninput = function () {
-            const amount = this.value/100.0;
-            const bendid = document.getElementById('c_bend').value - 1;
+        // document.getElementById('c_bendFSlider').oninput = function () {
+        //     const amount = this.value/100.0;
+        //     const bendid = document.getElementById('c_bend').value - 1;
 
-            document.getElementById('c_bendFSliderTxt').innerHTML = 'force: ' + amount;
-            _self.modifierChange.stack[bendid].force = amount;
-        }
-        document.getElementById('c_bendPSlider').oninput = function () {
-            const amount = this.value/100.0;
-            const bendid = document.getElementById('c_bend').value - 1;
-            document.getElementById('c_bendPSliderTxt').innerHTML = 'offset: ' + amount;
-            _self.modifierChange.stack[bendid].offset = amount;
-        }
-        document.getElementById('c_bendASlider').oninput = function () {
-            const amount = this.value * (Math.PI/180.0);
-            const bendid = document.getElementById('c_bend').value - 1;
-            document.getElementById('c_bendASliderTxt').innerHTML = 'angle: ' + amount;
-            _self.modifierChange.stack[bendid].angle = amount;
-        }
+        //     document.getElementById('c_bendFSliderTxt').innerHTML = 'force: ' + amount;
+        //     _self.modifierChange.stack[bendid].force = amount;
+        // }
+        // document.getElementById('c_bendPSlider').oninput = function () {
+        //     const amount = this.value/100.0;
+        //     const bendid = document.getElementById('c_bend').value - 1;
+        //     document.getElementById('c_bendPSliderTxt').innerHTML = 'offset: ' + amount;
+        //     _self.modifierChange.stack[bendid].offset = amount;
+        // }
+        // document.getElementById('c_bendASlider').oninput = function () {
+        //     const amount = this.value * (Math.PI/180.0);
+        //     const bendid = document.getElementById('c_bend').value - 1;
+        //     document.getElementById('c_bendASliderTxt').innerHTML = 'angle: ' + amount;
+        //     _self.modifierChange.stack[bendid].angle = amount;
+        // }
 
     }
     // ==============================================
@@ -379,8 +379,10 @@ class F1Ribbons {
 
         const planeCropMesh = new THREE.Mesh( planeCrop, this.floorGlowMat );
         planeCropMesh.rotateX((Math.PI / 180)*-90);
-        planeCropMesh.position.set(0,-9.8,0);
+//        planeCropMesh.position.set(0,-9.8,0);
+        planeCropMesh.position.set(0,-10.5,0);
         planeCropMesh.layers.set(3);
+        // this.floorGlowMat.color = new THREE.Color(0,0,0);
 
         this.root.add(planeCropMesh);
 
@@ -389,10 +391,8 @@ class F1Ribbons {
     //======================
    
 
-    update() {
+    update(elapsed,currenttime) {
 
-        const currenttime = new Date().getTime();
-        const elapsed = currenttime - this.prevupdate;
         if(DEBUG_MODE)
             document.getElementById('fpsindicator').innerHTML = Math.floor( 1000 / elapsed);
 
@@ -402,12 +402,12 @@ class F1Ribbons {
         
         const modded = (currenttime*0.00005)%360;
         var glow = Math.sin(modded);
-        if(glow <= 0.0) {
+        if(glow <= 0.0) { // woz 0.0
             glow = -(glow*0.5);
         }
+        glow = 1.0;
         this.uniforms.faderTime.value = glow;
 
-        this.prevupdate = currenttime;
         this.deviceTime+=elapsed;
                 
         if(this.modifier && glow>=0.3) {

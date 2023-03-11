@@ -216,8 +216,15 @@ class PatternItems {
                             document.getElementById('basepaintbutton').style.backgroundColor = newcol;//"rgb(255,0,0)";
                         else if(t==1) // primary paint
                             document.getElementById('primarypaintbutton').style.backgroundColor = newcol;//"rgb(255,0,0)";
-                        else if(t==2) // secondary paint
+                        else if(t==2) { // secondary paint
                             document.getElementById('secondarypaintbutton').style.backgroundColor = newcol;//"rgb(255,0,0)";
+
+                            // also tint helmet visor
+                            if(self.isHelmet) {
+                                self.visormaterial.color = new THREE.Color( newcol );
+                                self.visormaterial.needsUpdate = true;
+                            }		                            
+                        }
         
                         var tmpv4 = new THREE.Vector4(colourconversion.r,colourconversion.g,colourconversion.b,1.0);
                         if(t==0)
@@ -266,7 +273,7 @@ class PatternItems {
                         var tintcolour;
                         var colourconversion;
                         var newcol;
-                        if(!self.useCustomSponsorColours || t==1) {
+                        if(!self.useCustomSponsorColours || t==0) {
                             tintcolour = self.patternsData['Patterns'][self.which]['Channels'][t].defaultColour;
                             colourconversion = new THREE.Color("rgb("+tintcolour+")");
                             newcol = self.rgbToHex(colourconversion.r*255.0,colourconversion.g*255.0,colourconversion.b*255.0);
@@ -305,7 +312,7 @@ class PatternItems {
 
     changePattern(which,thefile,mapUniforms,
         thepatternelement,patternsData,liveryData,currentLayer,
-        f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Aws) {
+        f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Aws, visormaterial, isHelmet) {
 
         const patternId = thepatternelement.getAttribute("patternId");
 
@@ -380,7 +387,7 @@ class PatternItems {
             self.patternTexture=0; // todo try this to remove chance of texure now loading twice...
             self.changePattern(which,thefile,mapUniforms,
                 thepatternelement,patternsData,liveryData,currentLayer,
-                f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Aws);
+                f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Aws,visormaterial,isHelmet);
 
         }, 4000); 
 
@@ -398,6 +405,8 @@ class PatternItems {
         this.which = which;
         this.f1Text = f1Text;
         this.thepatternelement = thepatternelement;
+        this.visormaterial = visormaterial;
+        this.isHelmet = isHelmet;
 
         if(thefile == 'smallredimage.png') {
             this.nowloadtexture('./assets/textures/' + thefile,this);

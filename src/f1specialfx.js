@@ -91,10 +91,10 @@ class F1SpecialFX {
 
           // side: THREE.DoubleSide,
           transparent: true,
-          blending: THREE.CustomBlending,
-          blendEquation: THREE.AddEquation,
-          blendSrc: THREE.SrcAlphaFactor,
-          blendDst: THREE.OneMinusSrcAlphaFactor,
+          // blending: THREE.CustomBlending,
+          // blendEquation: THREE.AddEquation,
+          // blendSrc: THREE.SrcAlphaFactor,
+          // blendDst: THREE.OneMinusSrcAlphaFactor,
         })
 
 
@@ -338,7 +338,7 @@ class F1SpecialFX {
             blendSrc: THREE.SrcAlphaFactor,
             blendDst: THREE.OneMinusSrcAlphaFactor,
 
-            encoding: THREE.sRGBEncoding, // specify sRGB encoding
+            // encoding: THREE.sRGBEncoding, // specify sRGB encoding
 
           });
     
@@ -373,7 +373,10 @@ class F1SpecialFX {
       this.fxComposer.addPass( f1BloomPass );
       //
       const renderRibbonScene = new RenderPass( scene, camera );
-      this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( ribbonbloomRenderSize, ribbonbloomRenderSize ), 8.5, 1.0, 0.000015);
+      // this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( ribbonbloomRenderSize, ribbonbloomRenderSize ), 8.5, 1.0, 0.000015);
+      // new also for garage floor
+      // this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( ribbonbloomRenderSize, ribbonbloomRenderSize ), 8.5, 0.15, 0.05);
+      this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( ribbonbloomRenderSize, ribbonbloomRenderSize ), 8.5, 1.0, 0.0005);
 
       //
       this.fxRibbonComposer = new EffectComposer(renderer);

@@ -100,7 +100,7 @@ var clock = new THREE.Clock();
 var selectedChan = -1;
 var selectedBasePatternIndex = -1;
 var selectedIndex = -1;
-
+var prevupdate = 0;
 var loadedtime = 0;
 
 var controls;
@@ -145,7 +145,7 @@ var f1Ribbons = new F1Ribbons(f1Materials);
 
 
 updateProgress(5,'pipelines');
-var f1Garage = new F1Garage(f1Materials);
+var f1Garage = new F1Garage();
 
 
 var f1CarHelmet = new F1CarHelmet();
@@ -248,6 +248,13 @@ function createColourpicker() {
 				f1Gui.setBackgroundColourByID('secondarypaintbutton',color.hexString);
 				processJSON.liveryData['Layers'][currentLayer].Channels[2].tint = color.hexString;
 				f1Layers.mapUniforms.texture1TintChannel3.value = tmpv4;
+
+				// also tint helmet visor
+				if(f1Cookies.isHelmet) {
+					f1CarHelmet.visorFXMesh.material.color = new THREE.Color( color.hexString);
+					f1CarHelmet.visorFXMesh.material.needsUpdate = true;
+				}
+
 				break;
 			case 3: // tag style
 				f1Gui.setBackgroundColourByID('tagstylepaintbutton',color.hexString);
@@ -777,6 +784,8 @@ function introNextPage(nextPage) {
 //==================================================
 function initit()
 {
+	prevupdate = new Date().getTime();
+
 	renderer = new THREE.WebGLRenderer(
 		{ 
 			alpha: true, 
@@ -836,24 +845,27 @@ function initScenes()
 	// lights
 	mainLight = createPointLight(f1Settings.mainLight1Intensity);
 	mainLight2 = createPointLight(f1Settings.mainLight2Intensity);
-	mainLight3 = createSpotLight(f1Settings.mainLight1Intensity);
-	mainLight4 = createSpotLight(f1Settings.mainLight2Intensity);
+	mainLight3 = createSpotLight(f1Settings.spotLight1Intensity);
+	mainLight4 = createSpotLight(f1Settings.spotLight2Intensity);
 	// const mainLight3 = createSpotLight(f1Settings.mainLight1Intensity);
 	// const mainLight4 = createSpotLight(f1Settings.mainLight2Intensity);
 	// mainLight = createSpotLight(f1Settings.mainLight1Intensity);
 	// mainLight2 = createSpotLight(f1Settings.mainLight2Intensity);
 	
-	mainLight.position.set( 80, 80, -10 );
-	mainLight2.position.set( -80, 80, -10 );
-
-	mainLight3.position.set( 80, 80, 50 );
-	mainLight4.position.set( -80, 80, 50 );
+	// mainLight.position.set( 80, 80, -10 );
+	// mainLight2.position.set( -80, 80, -10 );
+	// mainLight3.position.set( 80, 80, 50 );
+	// mainLight4.position.set( -80, 80, 50 );
+	mainLight.position.set( 78, -19, 2 );
+	mainLight2.position.set( -78, -19, 2 );
+	mainLight3.position.set( 71, 80, 63 );
+	mainLight4.position.set( -71, 80, 63 );
 
 	ambLight = new THREE.AmbientLight( 0xffffff, f1Settings.ambientLightIntensity ); 
 
-	const dirlightheight = 190;
-	const dirlightx = 60;
-	const dirlightz =100; // -40
+	const dirlightheight = 152;
+	const dirlightx = 200;
+	const dirlightz = -122; // -40
 	dirLight = createDirectionalLight(f1Settings.dirLight1Intensity);
 	dirLight2 = createDirectionalLight(f1Settings.dirLight2Intensity);
 
@@ -875,6 +887,7 @@ function initScenes()
 
 	scene.add( f1Ribbons.getSceneObjects() );
 //
+	// scene.add( f1Garage.sfxRoot);
 	
 	rootScene.add( f1CarHelmet.theModel );
 	rootScene.add(f1Garage.garageRoot);
@@ -939,23 +952,25 @@ function createDirectionalLight(intensity) {
 //==================================================
 function createPointLight(intensity) {
 	var light = new THREE.PointLight(0xffffff, intensity);
-	light.castShadow = true;
-	light.shadow.radius = 8;
-	light.shadow.bias = - 0.000222;// - 0.000222;
+	// light.castShadow = true;
+	light.castShadow = false; // dont need to i think
+	// light.shadow.radius = 8;
+	// light.shadow.bias = - 0.000222;// - 0.000222;
 	return light;
 }
 
 //==================================================
 function createSpotLight(intensity) {
 	var light = new THREE.SpotLight(0xffffff, intensity);
-	light.shadow.camera.near = 0.5;
-	light.shadow.camera.far = 500;
-	light.shadow.mapSize.width = 1024;
-	light.shadow.mapSize.height = 1024;
+	// light.shadow.camera.near = 0.5;
+	// light.shadow.camera.far = 500;
+	// light.shadow.mapSize.width = 1024;
+	// light.shadow.mapSize.height = 1024;
 
-	light.castShadow = true;
-	light.shadow.radius = 8;
-	light.shadow.bias = - 0.000222;// - 0.000222;
+	light.castShadow = false;
+	// light.castShadow = true;
+	// light.shadow.radius = 8;
+	// light.shadow.bias = - 0.000222;// - 0.000222;
 
 	if(!f1CarHelmet.theModel)
 		if(DEBUG_MODE)
@@ -991,7 +1006,7 @@ function choosePattern(which, theLayer,thefile,thepatternelement) {
 	patternItems.changePattern(which,thefile,
 		f1Layers.mapUniforms,thepatternelement,
 		processJSON.patternsData,processJSON.liveryData,theLayer,
-		f1MetalRough.mapUniforms,f1Text,f1SpecialFX,f1Aws);
+		f1MetalRough.mapUniforms,f1Text,f1SpecialFX,f1Aws,f1CarHelmet.theVisorMaterial,f1Cookies.isHelmet);
 }
 
 //=========================================================
@@ -1109,8 +1124,8 @@ function onDefaultPaint() {
 
 	// actually only got preset on base patterns
 	patternItems.useCustomBaseColours = false; // now no longer reading defaults when changing patterns, will use custom
-	patternItems.useCustomTagColours = false;
-	patternItems.useCustomSponsorColours = false;
+	// patternItems.useCustomTagColours = false;
+	// patternItems.useCustomSponsorColours = false;
 
 	var totChans = 1;	
 	if(which==-1) {
@@ -1145,8 +1160,15 @@ function onDefaultPaint() {
 			f1Layers.mapUniforms.texture1TintChannel1.value = tmpv4;
 		else if(t==1)
 			f1Layers.mapUniforms.texture1TintChannel2.value = tmpv4;
-		else if(t==2)
+		else if(t==2) {
 			f1Layers.mapUniforms.texture1TintChannel3.value = tmpv4;
+			// also tint helmet visor
+			if(f1Cookies.isHelmet) {
+				f1CarHelmet.visorFXMesh.material.color = new THREE.Color( tmp1);
+				f1CarHelmet.visorFXMesh.material.needsUpdate = true;
+			}
+
+		}
 
 	}
 
@@ -1161,7 +1183,7 @@ function onRandomPaint() {
 	var currentLayer = f1Gui.currentPage-1;
 	if(f1Gui.currentPage>1) currentLayer--;
 
-	patternItems.useCustom = true; // now no longer reading defaults when changing patterns, will use custom
+	patternItems.useCustomBaseColours = true; // now no longer reading defaults when changing patterns, will use custom
 	f1SpecialFX.mapUniforms.leadin.value = 2.0;
 	f1SpecialFX.startFX(500);
 
@@ -1227,6 +1249,12 @@ function onRandomPaint() {
 			f1Layers.mapUniforms.texture1TintChannel3.value = tmpv4;
 			f1MetalRough.mapUniforms.baseChannel3Metal.value = metal;
 			f1MetalRough.mapUniforms.baseChannel3Rough.value = rough;
+
+			// also tint helmet visor
+			if(f1Cookies.isHelmet) {
+				f1CarHelmet.visorFXMesh.material.color = new THREE.Color( tmp1);
+				f1CarHelmet.visorFXMesh.material.needsUpdate = true;
+			}			
 		}
 		processJSON.liveryData['Layers'][currentLayer].Channels[t].metalroughtype = glosstype;
 
@@ -1247,7 +1275,7 @@ function onConfirm() {
 	else {
 
 		if(selectedChan<=2)
-			patternItems.useCustom = true; // now no longer reading defaults when changing patterns, will use custom
+			patternItems.useCustomBaseColours = true; // now no longer reading defaults when changing patterns, will use custom
 		else if(selectedChan<=4)
 			patternItems.useCustomTagColours = true;
 		else if(selectedChan<=6)
@@ -1277,7 +1305,6 @@ function getDateTimeStampString() {
 	if(dateMins<10) datetimeStamp = datetimeStamp + "0";
 	datetimeStamp = datetimeStamp + dateMins;
 
-
 	return datetimeStamp;
 }
 //==================================================
@@ -1301,7 +1328,6 @@ function doSavePaintShop(_pixelBuffer,_dateTimeTypePrefix, _renderSize) {
 	imageData.data.set(_pixelBuffer);
 	context.putImageData(imageData, 0, 0);
 
-
 	var dataURL = tmpcanvas.toDataURL();
 	const filename = f1Cookies.userID + _dateTimeTypePrefix;
 	
@@ -1310,7 +1336,6 @@ function doSavePaintShop(_pixelBuffer,_dateTimeTypePrefix, _renderSize) {
 
 	f1Aws.s3upload(dataURLtoBlob(dataURL),filename);
 	tmpcanvas.remove();	// do we do this?
-
 }
 //==================================================
 function onMaterialbutton(glosstype) {
@@ -1374,7 +1399,6 @@ function setMaterial(glosstype,theChan) {
 		f1MetalRough.mapUniforms.decalChannel1Rough.value = rough;
 	}
 
-
 	if(glosstype==0) { // gloss
 		document.getElementById('glossbutton').classList.add('whiteButton');
 		document.getElementById('mattebutton').classList.remove('whiteButton');
@@ -1390,7 +1414,6 @@ function setMaterial(glosstype,theChan) {
 		document.getElementById('mattebutton').classList.remove('whiteButton');
 		document.getElementById('metallicbutton').classList.add('whiteButton');
 	}
-
 }
 
 //==================================================
@@ -1434,7 +1457,6 @@ function postRenderProcess() {
 		// save json record too
 		var jsonfilename = f1Cookies.userID + "_" + datetime +  "_livery.json";
 		var liveryDataString = JSON.stringify( processJSON.liveryData);
-
 
 		var blob = new Blob([liveryDataString],
 			{ type: "text/plain;charset=utf-8" });
@@ -1650,6 +1672,8 @@ function specialrenderpipeline() {
 			f1CarHelmet.visorFXMesh.material = f1CarHelmet.theVisorMaterial;
 	}
 
+
+
 	camera.layers.enableAll();
 	camera.layers.disable(3);// ribbon
 
@@ -1699,6 +1723,10 @@ function parseCookieLivery() {
 //==================================================
 function animate() 
 {
+	const currenttime = new Date().getTime();
+	const elapsed = currenttime - prevupdate;
+	prevupdate = currenttime;
+
 
 	// if not loaded json yet
 	if(processJSON.loadedLiveryJSON==0) {
@@ -1772,7 +1800,13 @@ function animate()
 		}
 
 		if(f1Ribbons.enabled)
-			f1Ribbons.update();
+			f1Ribbons.update(elapsed,currenttime);
+
+		f1Garage.uniforms.fTime.value += elapsed/1000.0;
+		
+		if(f1Garage.uniforms.fTime.value>=5)
+			f1Garage.uniforms.fTime.value = 0.0;
+
 		controls.update();
 		TWEEN.update();
 
@@ -1803,7 +1837,22 @@ initit();
 animate();
 
 
-
+// debug hexagon grid
+document.getElementById('c_bendFSlider').oninput = function () {
+	const amount = this.value/100.0;
+	document.getElementById('c_bendFSliderTxt').innerHTML = 'xoffset: ' + amount;
+	f1Garage.uniforms.offset_x.value = amount;
+}
+document.getElementById('c_bendPSlider').oninput = function () {
+	const amount = this.value/100.0;
+	document.getElementById('c_bendPSliderTxt').innerHTML = 'tot_x: ' + amount;
+	f1Garage.uniforms.tot_x.value = amount;
+}
+document.getElementById('c_bendASlider').oninput = function () {
+	const amount = this.value/100.0;
+	document.getElementById('c_bendASliderTxt').innerHTML = 'yoffset: ' + amount;
+	f1Garage.uniforms.offset_y.value = amount;
+}
 
 
 
@@ -1872,3 +1921,5 @@ document.getElementById('nextButton').onclick = function() {
 // set up old html
 document.getElementById('canvas-positioner').style.display='none';
 // document.getElementById('oldmaincontainerblock').style.display ="none";
+
+

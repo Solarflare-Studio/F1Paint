@@ -34,6 +34,7 @@ class F1Cookies {
         this.userName = (params.get('n') ? params.get('n') : "no name"); // user name
         this.userEmail = (params.get('e') ? params.get('e') : "no email"); // user email
         this.userCarOrHelmet = (params.get('m') ? params.get('m') : "c"); // car or helmet
+
         this.userConsole = (params.get('c') ? params.get('c') : 0); // console
         this.languageCode = "ENG";
         

@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>F1 PaintShop</title>
-    <link rel="stylesheet" href="./sfPaint.css">    <!-- ben old html todo remove-->
+        <!-- ben old html todo remove-->
+    <link rel="stylesheet" href="./sfPaint.css">
 
 
     <link
@@ -200,13 +201,13 @@
           <hr class="border-netural border-t-2 mb-3 mt-6" />
           <ul class="relative text-right list-none py-3">
             <li class="menu-item">T&CS</li>
-            <li class="menu-item"><div id="LK_welcomeContent_01">SECURITY</div></li>
-            <li class="menu-item"><div id="LK_welcomeContent_01">OTHER LINKS</div></li>
+            <li class="menu-item"><div id="LK_security">SECURITY</div></li>
+            <li class="menu-item"><div id="LK_otherlinks">OTHER LINKS</div></li>
           </ul>
         </div>
       </div>
     </header><!-- end of header -->
-    <main class="md:hidden">
+    <main class="md:hidden" style="display:block!important"> <!--ben forced on to override black-->
       <div class="container mx-auto px-6">
          <div id="loadingContent" class="flex justify-center items-center flex-col h-screen text-center">
           <img src="./assets/images/loading.svg" alt="Loading..."  />
@@ -504,7 +505,7 @@
         <div class="rotatemsg">Please rotate your device to Portrait.</div>
     </div> -->
 </div>
-<div id="versionid" onclick="onConsole(0)">v0.2.0.4<div id="fpsindicator"></div></div>
+<div id="versionid" onclick="onConsole(0)">v0.2.0.6<div id="fpsindicator"></div></div>
     <div id="console" class="hidden">
         <div class="console">
             <div class="console_button expandbutton" onclick="expandDropdown('toneexpander');">Tone</div>
@@ -607,9 +608,9 @@
                         </select>
 
                         <div id="c_bendFSliderTxt" class="slidertxt">force</div>
-                        <input type="range" min="-200" max="200" value="50" class="slider" id="c_bendFSlider">
+                        <input type="range" min="-100" max="100" value="0" class="slider" id="c_bendFSlider">
                         <div id="c_bendPSliderTxt" class="slidertxt">pos</div>
-                        <input type="range" min="0" max="100" value="0" class="slider" id="c_bendPSlider">
+                        <input type="range" min="-200" max="200" value="0" class="slider" id="c_bendPSlider">
                         <div id="c_bendASliderTxt" class="slidertxt">angle</div>
                         <input type="range" min="-360" max="360" value="10" class="slider" id="c_bendASlider">
                     </div>

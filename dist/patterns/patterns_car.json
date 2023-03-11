@@ -10,7 +10,7 @@
     "Channels": [
      {
       "channelName": "Chan 1",
-      "defaultColour": "230,30,30"
+      "defaultColour": "150,5,5"
      },
      {
       "channelName": "Chan 2",
@@ -573,262 +573,197 @@
     ]
   },
   {
-  "name": "Pattern 6",
+  "name": "Pat_01",
   "id": 3001,
   "layer": 2,
-  "thumbnail": "car/sponsors/thumbnails/F1PS_F1_Car_Customizable_Decal_F1_thumb.jpg",
-  "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_F1V04.png",
+  "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat01_Sponsor_thumb.jpg",
+  "image": "car/sponsors/Pat_04/2k/F1PS_CarV10_Pat04_Sponsor_2k.png",
   "Channels": [
-   {
+    {
+      "channelName": "Chan 1",
+      "defaultColour": "0,0,0"
+    },
+     {
+      "channelName": "Chan 2",
+      "defaultColour": "255,255,255"
+     },
+     {
+      "channelName": "Chan 3",
+      "defaultColour": "50,50,250"
+     }
+  ]
+ },  
+ {
+ "name": "Pat_02",
+ "id": 3002,
+ "layer": 2,
+ "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat02_Sponsor_thumb.jpg",
+ "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_HamV03.png",
+ "Channels": [
+  {
     "channelName": "Chan 1",
-    "defaultColour": "255,0,0"
-   },
+    "defaultColour": "0,0,0"
+  },
    {
     "channelName": "Chan 2",
-    "defaultColour": "255,255,0"
+    "defaultColour": "255,255,255"
    },
    {
     "channelName": "Chan 3",
     "defaultColour": "50,50,250"
    }
-  ]
- },  
- {
- "name": "Pattern 6",
- "id": 3002,
- "layer": 2,
- "thumbnail": "car/sponsors/thumbnails/F1PS_F1_Car_Customizable_Decal_Ham_thumb.jpg",
- "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_HamV03.png",
- "Channels": [
-  {
-   "channelName": "Chan 1",
-   "defaultColour": "0,0,0"
-  },
-  {
-   "channelName": "Chan 2",
-   "defaultColour": "255,0,0"
-  },
-  {
-   "channelName": "Chan 3",
-   "defaultColour": "50,50,250"
-  }
  ]
   },
   {
-    "name": "Pattern 6",
+    "name": "Pat_03",
     "id": 3003,
     "layer": 2,
-    "thumbnail": "car/sponsors/thumbnails/F1PS_F1_Car_Customizable_Decal_F1_thumb.jpg",
+    "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat03_Sponsor_thumb.jpg",
     "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_F1V04.png",
     "style": 0,
     "Channels": [
-     {
-      "channelName": "Chan 1",
-      "defaultColour": "255,255,255"
-     },
-     {
-      "channelName": "Chan 2",
-      "defaultColour": "255,0,0"
-     },
-     {
-      "channelName": "Chan 3",
-      "defaultColour": "50,50,250"
-     }
+      {
+        "channelName": "Chan 1",
+        "defaultColour": "0,0,0"
+      },
+       {
+        "channelName": "Chan 2",
+        "defaultColour": "255,255,255"
+       },
+       {
+        "channelName": "Chan 3",
+        "defaultColour": "50,50,250"
+       }
     ]
    },  
    {
-   "name": "Pattern 6",
+   "name": "Pat_04",
    "id": 3004,
    "layer": 2,
-   "thumbnail": "car/sponsors/thumbnails/F1PS_F1_Car_Customizable_Decal_Ham_thumb.jpg",
-   "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_HamV03.png",
+   "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat04_Sponsor_thumb.jpg",
+   "image": "car/sponsors/Pat_04/2k/F1PS_CarV10_Pat04_Sponsor_2k.png",
    "Channels": [
     {
-     "channelName": "Chan 1",
-     "defaultColour": "0,0,0"
+      "channelName": "Chan 1",
+      "defaultColour": "0,0,0"
     },
-    {
-     "channelName": "Chan 2",
-     "defaultColour": "255,0,0"
-    },
-    {
-     "channelName": "Chan 3",
-     "defaultColour": "50,50,250"
-    }
+     {
+      "channelName": "Chan 2",
+      "defaultColour": "255,255,255"
+     },
+     {
+      "channelName": "Chan 3",
+      "defaultColour": "50,50,250"
+     }
    ]
   },
   {
-    "name": "Pattern 6",
+    "name": "Pat_05",
     "id": 3005,
     "layer": 2,
-    "thumbnail": "car/sponsors/thumbnails/F1PS_F1_Car_Customizable_Decal_F1_thumb.jpg",
+    "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat05_Sponsor_thumb.jpg",
     "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_F1V04.png",
     "style": 0,
     "Channels": [
-     {
-      "channelName": "Chan 1",
-      "defaultColour": "255,255,255"
-     },
-     {
-      "channelName": "Chan 2",
-      "defaultColour": "255,0,0"
-     },
-     {
-      "channelName": "Chan 3",
-      "defaultColour": "50,50,250"
-     }
+      {
+        "channelName": "Chan 1",
+        "defaultColour": "0,0,0"
+      },
+       {
+        "channelName": "Chan 2",
+        "defaultColour": "255,255,255"
+       },
+       {
+        "channelName": "Chan 3",
+        "defaultColour": "50,50,250"
+       }
     ]
    },  
    {
-   "name": "Pattern 6",
+   "name": "Pat_06",
    "id": 3006,
    "layer": 2,
-   "thumbnail": "car/sponsors/thumbnails/F1PS_F1_Car_Customizable_Decal_Ham_thumb.jpg",
+   "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat06_Sponsor_thumb.jpg",
    "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_HamV03.png",
    "Channels": [
     {
-     "channelName": "Chan 1",
-     "defaultColour": "0,0,0"
+      "channelName": "Chan 1",
+      "defaultColour": "0,0,0"
     },
-    {
-     "channelName": "Chan 2",
-     "defaultColour": "255,0,0"
-    },
-    {
-     "channelName": "Chan 3",
-     "defaultColour": "50,50,250"
-    }
+     {
+      "channelName": "Chan 2",
+      "defaultColour": "255,255,255"
+     },
+     {
+      "channelName": "Chan 3",
+      "defaultColour": "50,50,250"
+     }
    ]
   },
   {
-    "name": "Pattern 6",
+    "name": "Pat_07",
     "id": 3007,
     "layer": 2,
-    "thumbnail": "car/sponsors/thumbnails/F1PS_F1_Car_Customizable_Decal_F1_thumb.jpg",
+    "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat07_Sponsor_thumb.jpg",
     "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_F1V04.png",
     "style": 0,
     "Channels": [
-     {
-      "channelName": "Chan 1",
-      "defaultColour": "255,255,255"
-     },
-     {
-      "channelName": "Chan 2",
-      "defaultColour": "255,0,0"
-     },
-     {
-      "channelName": "Chan 3",
-      "defaultColour": "50,50,250"
-     }
+      {
+        "channelName": "Chan 1",
+        "defaultColour": "0,0,0"
+      },
+       {
+        "channelName": "Chan 2",
+        "defaultColour": "255,255,255"
+       },
+       {
+        "channelName": "Chan 3",
+        "defaultColour": "50,50,250"
+       }
     ]
    },  
    {
-   "name": "Pattern 6",
+   "name": "Pat_08",
    "id": 3008,
    "layer": 2,
-   "thumbnail": "car/sponsors/thumbnails/F1PS_F1_Car_Customizable_Decal_Ham_thumb.jpg",
+   "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat08_Sponsor_thumb.jpg",
    "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_HamV03.png",
    "Channels": [
     {
-     "channelName": "Chan 1",
-     "defaultColour": "0,0,0"
+      "channelName": "Chan 1",
+      "defaultColour": "0,0,0"
     },
-    {
-     "channelName": "Chan 2",
-     "defaultColour": "255,0,0"
-    },
-    {
-     "channelName": "Chan 3",
-     "defaultColour": "50,50,250"
-    }
+     {
+      "channelName": "Chan 2",
+      "defaultColour": "255,255,255"
+     },
+     {
+      "channelName": "Chan 3",
+      "defaultColour": "50,50,250"
+     }
    ]
   },
   {
-    "name": "Pattern 6",
+    "name": "Pat_09",
     "id": 3009,
     "layer": 2,
-    "thumbnail": "car/sponsors/thumbnails/F1PS_F1_Car_Customizable_Decal_F1_thumb.jpg",
+    "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat09_Sponsor_thumb.jpg",
     "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_F1V04.png",
     "style": 0,
     "Channels": [
      {
       "channelName": "Chan 1",
-      "defaultColour": "255,255,255"
-     },
+      "defaultColour": "0,0,0"
+    },
      {
       "channelName": "Chan 2",
-      "defaultColour": "255,0,0"
+      "defaultColour": "255,255,255"
      },
      {
       "channelName": "Chan 3",
       "defaultColour": "50,50,250"
      }
     ]
-   },  
-   {
-   "name": "Pattern 6",
-   "id": 3010,
-   "layer": 2,
-   "thumbnail": "car/sponsors/thumbnails/F1PS_F1_Car_Customizable_Decal_Ham_thumb.jpg",
-   "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_HamV03.png",
-   "Channels": [
-    {
-     "channelName": "Chan 1",
-     "defaultColour": "0,0,0"
-    },
-    {
-     "channelName": "Chan 2",
-     "defaultColour": "255,0,0"
-    },
-    {
-     "channelName": "Chan 3",
-     "defaultColour": "50,50,250"
-    }
-   ]
-  },
-  {
-    "name": "Pattern 6",
-    "id": 3011,
-    "layer": 2,
-    "thumbnail": "car/sponsors/thumbnails/F1PS_F1_Car_Customizable_Decal_F1_thumb.jpg",
-    "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_F1V04.png",
-    "style": 0,
-    "Channels": [
-     {
-      "channelName": "Chan 1",
-      "defaultColour": "255,255,255"
-     },
-     {
-      "channelName": "Chan 2",
-      "defaultColour": "255,0,0"
-     },
-     {
-      "channelName": "Chan 3",
-      "defaultColour": "50,50,250"
-     }
-    ]
-   },  
-   {
-   "name": "Pattern 6",
-   "id": 3012,
-   "layer": 2,
-   "thumbnail": "car/sponsors/thumbnails/F1PS_F1_Car_Customizable_Decal_Ham_thumb.jpg",
-   "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_HamV03.png",
-   "Channels": [
-    {
-     "channelName": "Chan 1",
-     "defaultColour": "0,0,0"
-    },
-    {
-     "channelName": "Chan 2",
-     "defaultColour": "255,0,0"
-    },
-    {
-     "channelName": "Chan 3",
-     "defaultColour": "50,50,250"
-    }
-   ]
-  }  
-
+   }
 ]
 }
