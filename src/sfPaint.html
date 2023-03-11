@@ -9,316 +9,460 @@
         <!-- ben old html todo remove-->
     <link rel="stylesheet" href="./sfPaint.css">
 
+    <link
+    href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300;400;600;700&display=swap"
+    rel="stylesheet"
+  />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300;400;600;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="./assets/images/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="./assets/images/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="./assets/images/favicon-16x16.png"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css"
-      rel="stylesheet"
-    />
-    <link href="./style.css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              brand: "#FF1E00",
-              netural: "#ffffff",
-              primary: "#151420",
-              secondary: "#6F6E7C"
-            },
-            fontFamily: {
-              Titillium: ["'Titillium Web', sans-serif;"],
-              F1PaintShopFont: ["F1PaintShopFont"],
-              F1PaintShopBlackFont: ["F1PaintShopBlackFont"],
-              F1PaintShopWideFont: ["F1PaintShopWideFont"],
-              F1PaintShopBoldFont: ["F1PaintShopBoldFont"],
-            },
-            backgroundImage: {
-              generaPenal: "url('./assets/images/general-penal-bg-image.png')",
-            },
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="./assets/images/apple-touch-icon.png"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="./assets/images/favicon-32x32.png"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="16x16"
+    href="./assets/images/favicon-16x16.png"
+  />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css"
+    rel="stylesheet"
+  />
+  <link href="./style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: "#FF1E00",
+            netural: "#ffffff",
+            primary: "#151420",
+            secondary: "#6F6E7C",
+          },
+          fontFamily: {
+            Titillium: ["'Titillium Web', sans-serif;"],
+            F1PaintShopFont: ["F1PaintShopFont"],
+            F1PaintShopBlackFont: ["F1PaintShopBlackFont"],
+            F1PaintShopWideFont: ["F1PaintShopWideFont"],
+            F1PaintShopBoldFont: ["F1PaintShopBoldFont"],
+          },
+          backgroundImage: {
+            generaPenal: "url('./assets/images/general-penal-bg-image.png')",
           },
         },
-      };
-    </script>
-    <style type="text/tailwindcss">
-      @font-face {
-        font-family: "F1PaintShopFont";
-        src: url("./assets/fonts/Formula1-Display-Regular.otf")
-          format("truetype");
-        font-weight: normal;
-        font-style: normal;
-      }
-      @font-face {
-        font-family: "F1PaintShopBoldFont";
-        src: url("./assets/fonts/Formula1-Display-Bold.otf") format("truetype");
-        font-weight: normal;
-        font-style: normal;
-      }
-      @font-face {
-        font-family: "F1PaintShopBlackFont";
-        src: url("./assets/fonts/Formula1-Display-Black.otf") format("truetype");
-        font-weight: normal;
-        font-style: normal;
+      },
+    };
+  </script>
+  <style type="text/tailwindcss">
+    @font-face {
+      font-family: "F1PaintShopFont";
+      src: url("./assets/fonts/Formula1-Display-Regular.otf")
+        format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "F1PaintShopBoldFont";
+      src: url("./assets/fonts/Formula1-Display-Bold.otf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "F1PaintShopBlackFont";
+      src: url("./assets/fonts/Formula1-Display-Black.otf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "F1PaintShopWideFont";
+      src: url("./assets/fonts/Formula1-Display-Wide.otf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+    @layer utilities {
+      ::-webkit-scrollbar {
+        width: 8px;
       }
 
-      @font-face {
-        font-family: "F1PaintShopWideFont";
-        src: url("./assets/fonts/Formula1-Display-Wide.otf") format("truetype");
-        font-weight: normal;
-        font-style: normal;
+      ::-webkit-scrollbar-thumb {
+        @apply bg-brand rounded-lg;
       }
-      @layer utilities {
-        progress::-webkit-progress-value {
-          @apply bg-netural;
-        }
-        progress::-webkit-progress-bar {
-          @apply bg-transparent;
-        }
-        div[drawer-backdrop] {
-          @apply hidden;
-        }
-        .menu-item {
-          @apply text-netural text-2xl font-Titillium font-normal py-1;
-        }
-        .menu-item.active {
-          @apply font-bold;
-        }
-        .language-option{
-          @apply py-3 text-netural text-xl font-Titillium
-        }
+
+      ::-webkit-scrollbar-thumb:hover {
+        @apply bg-brand;
       }
-    </style>
-  </head>
-  <body class="bg-generaPenal bg-no-repeat bg-[length:100%_100%] bg-center">
-    <div class="hidden md:block h-screen bg-yellow-500 text-4xl font-F1PaintShopBoldFont">Please rotate your device to Portrait.</div>
-    <header class="fixed w-full md:hidden">
-      <div class="container mx-auto p-6 flex justify-between items-center">
-        <figure>
-          <img src="./assets/images/F1_Logo.svg" alt="Logo" />
-        </figure>
-        <button
-          class="text-white rounded-lg bg-netural p-3 hidden"
-          type="button"
-          id="menu"
-          data-drawer-target="drawer-example"
-          data-drawer-show="drawer-example"
-          aria-controls="drawer-example"
-        >
-          <img src="./assets/images/hamburger_icon.svg" />
-        </button>
-      </div>
-      <div
-        id="drawer-example"
-        class="bg-generaPenal bg-no-repeat bg-[length:100%_100%] bg-center fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-transparent w-full before:bg-brand before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-80 before:z-0 before:left-0 container mx-auto px-6"
-        tabindex="-1"
-        aria-labelledby="drawer-label"
+      progress::-webkit-progress-value {
+        @apply bg-netural;
+      }
+      progress::-webkit-progress-bar {
+        @apply bg-transparent;
+      }
+      div[drawer-backdrop] {
+        @apply hidden;
+      }
+      .menu-item {
+        @apply text-netural text-2xl font-Titillium font-normal py-1;
+      }
+      .menu-item.active {
+        @apply font-bold;
+      }
+      .language-option {
+        @apply py-3 text-netural text-xl font-Titillium;
+      }
+      .tab.active {
+        @apply border-netural border-2 border-b-0 rounded-tl-lg opacity-100 !important;
+      }
+      /* .tab[aria-selected="false"] span {
+        @apply hidden;
+      } */
+      .tab.active::after,
+      .tab.active::before {
+        @apply content-[''] border-2 border-netural absolute -bottom-1 w-[500px] h-2 border-t-0;
+      }
+      .tab.active::after {
+        @apply border-r-0 left-full rounded-bl-lg;
+      }
+      .tab.active::before {
+        @apply border-l-0 right-full rounded-br-lg;
+      }
+      .tab {
+        @apply rounded-tr-lg border-t-2 border-r-2 border-netural relative flex justify-center items-center px-4 py-2 text-sm text-netural font-medium font-F1PaintShopFont min-w-[20%] opacity-50;
+      }
+      .tab.prev-tab {
+        @apply border-r-0 border-l-2 rounded-tr-none rounded-tl-lg;
+      }
+      .pattent_check_wrp input:checked + label > div {
+        @apply flex;
+      }
+    }
+  </style>
+</head>
+<body
+  class="bg-generaPenal bg-no-repeat bg-[length:100%_100%] lg:bg-[length:100%_120%] bg-center"
+>
+
+<header class="fixed w-full">
+  <div class="container mx-auto p-6 flex justify-between items-center">
+    <figure>
+      <img src="./assets/images/F1_Logo.svg" alt="Logo" />
+    </figure>
+    <button
+      class="text-white rounded-lg bg-netural p-3 hidden lg:hidden z-40"
+      type="button"
+      id="menu"
+      data-drawer-target="drawer-example"
+      data-drawer-show="drawer-example"
+      aria-controls="drawer-example"
+    >
+      <img src="./assets/images/hamburger_icon.svg" />
+    </button>
+  </div>
+  <div
+    id="drawer-example"
+    class="bg-generaPenal bg-no-repeat bg-[length:100%_100%] bg-center fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-transparent w-full before:bg-brand before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-80 before:z-0 before:left-0 container mx-auto px-6"
+    tabindex="-1"
+    aria-labelledby="drawer-label"
+  >
+    <div class="relative py-6 flex justify-between items-center">
+      <figure>
+        <img src="./assets/images/F1_Logo_light.svg" alt="Logo" />
+      </figure>
+      <button
+        type="button"
+        data-drawer-hide="drawer-example"
+        aria-controls="drawer-example"
+        class="text-netural"
       >
-        <div class="relative py-6 flex justify-between items-center">
-          <figure>
-            <img src="./assets/images/F1_Logo_light.svg" alt="Logo" />
-          </figure>
-          <button
-            type="button"
-           
-            data-drawer-hide="drawer-example"
-            aria-controls="drawer-example"
-            class="text-netural"
+        <svg
+          aria-hidden="true"
+          class="w-8 h-8 m-0"
+          fill="#ffffff"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+        <span class="sr-only">Close menu</span>
+      </button>
+    </div>
+    <div class="relative text-right mt-6">
+      <h2
+        class="text-netural text-2xl font-medium font-F1PaintShopBoldFont"
+      >
+        MENU
+      </h2>
+      <hr class="border-netural border-t-2 my-3" />
+      <ul class="list-none py-3">
+        <li class="menu-item active">ITEM 1</li>
+        <li class="menu-item">ITEM 2</li>
+        <li class="menu-item">ITEM 3</li>
+        <li class="menu-item">ITEM 4</li>
+      </ul>
+      <hr class="border-netural border-t-2 my-3" />
+      <h2
+        class="text-netural text-2xl font-medium font-F1PaintShopBoldFont mb-2"
+      ><div id="LK_language">LANGUAGE</div> <!--ben-->
+      </h2>
+      <div class="relative" id="languageSelect">
+        <button
+          id="languageSelectBtn"
+          data-dropdown-toggle="dropdown"
+          class="w-full text-primary text-xl font-Titillium bg-netural relative text-left rounded-md pl-4 pr-16 h-12"
+          type="button"
+          onclick="handlelanguageSelect()"
+        >
+          <pre id="selectedLanguage"></pre>
+          <span
+            class="absolute right-0 top-0 bg-primary h-12 w-16 rounded-md flex justify-center items-center"
           >
-            <svg
-              aria-hidden="true"
-              class="w-8 h-8 m-0"
-              fill="#ffffff"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
+            <img
+              src="./assets/images/dropdown_arrow.svg"
+              alt="arrow"
+              id="dropdownArrow"
+            />
+          </span>
+        </button>
+        <!-- Dropdown menu -->
+        <div
+          id="dropdown"
+          class="z-10 hidden w-full bg-secondary px-4 !translate-y-12 rounded-md text-left"
+        >
+          <ul aria-labelledby="languageSelectBtn" id="languageChoices" > <!--ben-->
+            <li
+              class="language-option"
+              onclick="handlelanguageChange('Language 1')"
             >
-              <path
-                fill-rule="evenodd"
-                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            <span class="sr-only">Close menu</span>
-          </button>
-        </div>
-
-        <div class="relative text-right mt-6">
-            <h2
-              class="text-netural text-2xl font-medium font-F1PaintShopBoldFont"
+              Language 1
+            </li>
+            <hr class="border-netural border-t-2" />
+            <li
+              class="language-option"
+              onclick="handlelanguageChange('Language 2')"
             >
-              MENU
-            </h2>
-            <hr class="border-netural border-t-2 my-3" />
-            <ul class="list-none py-3">
-              <li class="menu-item active">ITEM 1</li>
-              <li class="menu-item">ITEM 2</li>
-              <li class="menu-item">ITEM 3</li>
-              <li class="menu-item">ITEM 4</li>
-            </ul>
-            <hr class="border-netural border-t-2 my-3" />
-            <h2
-              class="text-netural text-2xl font-medium font-F1PaintShopBoldFont mb-2"
-            ><div id="LK_language">LANGUAGE</div>
-            </h2>
-            <div class="relative" >
-              <button id="languageSelectbtn" data-dropdown-toggle="dropdown" class="w-full text-primary text-xl font-Titillium bg-netural relative text-left rounded-md pl-4 pr-16  h-12" type="button" onclick="handlelanguageSelect()"><pre id="selectedLanguage" ></pre><span class="absolute right-0 top-0 bg-primary  h-12 w-16 rounded-md flex justify-center items-center" ><img src="./assets/images/dropdown_arrow.svg" alt="arrow" id="dropdownArrow" /></span>
-                <!-- Dropdown menu -->
-                <div id="dropdown" class="z-10 hidden w-full bg-secondary px-4 !translate-y-12 rounded-md">
-                    <ul class="" aria-labelledby="languageSelectbtn"  id="languageChoices" > <!--ben-->
-                      <li class="language-option" onclick="handlelanguageChange('Language 1')" >Language 1</li>
-                      <hr class="border-netural border-t-2">
-                      <li class="language-option" onclick="handlelanguageChange('Language 2')" >Language 2</li>
-                    </ul>
-                </div>
-            </div>
-        
-          <hr class="border-netural border-t-2 mb-3 mt-6" />
-          <ul class="relative text-right list-none py-3">
-            <li class="menu-item">T&CS</li>
-            <li class="menu-item"><div id="LK_security">SECURITY</div></li>
-            <li class="menu-item"><div id="LK_otherlinks">OTHER LINKS</div></li>
+              Language 2
+            </li>
           </ul>
         </div>
       </div>
-    </header><!-- end of header -->
-    <main class="md:hidden" style="display:block!important"> <!--ben forced on to override black-->
-      <div class="container mx-auto px-6">
-         <div id="loadingContent" class="flex justify-center items-center flex-col h-screen text-center">
-          <img src="./assets/images/loading.svg" alt="Loading..."  />
-          <h1
-            class="text-netural text-2xl font-medium mt-2  font-F1PaintShopBoldFont"
-          >
-            F1 PAINTSHOP
-          </h1>
-          <p
-            class="text-netural text-sm font-normal py-3 font-Titillium "
-          >
-            We’re just prepping the garage for you now...
-          </p>
-          <progress
-            id="file"
-            value="0"
-            max="100"
-            class="w-72 rounded-full h-4 p-1 border border-2 border-netural flex items-center"
-          ></progress>
-        </div><!-- end of loading content -->
-        <div
-          class="flex justify-center items-center flex-col h-screen text-center px-2 hidden"
-          id="welcomeContent"
-        >
-        <!--ben added LK -->
-          <h1 id="LK_welcomeContent_01"
-            class="w-auto text-netural text-2xl font-medium mt-2 border-b-2 border-netural pb-2 font-F1PaintShopBoldFont"
-          >
-            WELCOME
-          </h1>
-          <p  id="LK_welcomeContent_02"
-            class="text-netural text-2xl leading-7 font-extralight py-3 font-Titillium pt-3 pb-10"
-          >
-            Time to customise your very own F1 Car. Get ready to deck out your
-            very own livery and make unique to your style.
-          </p>
-          <!--ben-->
-          <button id="nextButton"
-            type="button"
-            class="bg-brand text-netural  text-2xl px-16 py-2 rounded-md font-F1PaintShopFont"
-          >
-            NEXT
-          </button>
-        </div><!--end of welcome content -->
+
+      <hr class="border-netural border-t-2 mb-3 mt-6" />
+      <ul class="relative text-right list-none py-3">
+        <li class="menu-item">T&CS</li>
+        <li class="menu-item"><div id="LK_security">SECURITY</div></li> <!--ben-->
+        <li class="menu-item"><div id="LK_otherlinks">OTHER LINKS</div></li> <!--ben-->
+      </ul>
+    </div>
+  </div>
+</header>
+<!-- end of header -->
+
+
+<main>
+  <div
+    class="justify-center items-center flex-col h-screen text-center hidden lg:flex"
+  >
+    <img src="./assets/images/rotate_image.svg" alt="Loading..." />
+    <h1
+      class="text-netural text-2xl font-medium mt-2 font-F1PaintShopBoldFont"
+    >
+      TURN YOUR DEVICE
+    </h1>
+    <p class="text-netural text-sm font-normal py-3 font-Titillium">
+      This experience requires your device to be held<br />
+      portrait, please turn to proceed.
+    </p>
+  </div>
+  <!-- end of desktop content -->
+  <div class="container mx-auto px-6 lg:hidden">
+    <div
+      id="loadingContent"
+      class="flex justify-center items-center flex-col h-screen text-center"
+    >
+      <img src="./assets/images/loading.svg" alt="Loading..." />
+      <h1
+        class="text-netural text-2xl font-medium mt-2 font-F1PaintShopBoldFont"
+      >
+        F1 PAINTSHOP
+      </h1>
+      <p class="text-netural text-sm font-normal py-3 font-Titillium">
+        We’re just prepping the garage for you now...
+      </p>
+      <progress
+        id="file"
+        value="0"
+        max="100"
+        class="w-72 rounded-full h-4 p-1 border border-2 border-netural flex items-center"
+      ></progress>
+    </div>
+    <!-- end of loading content -->
+    <div
+      class="flex justify-center items-center flex-col h-screen text-center px-2 hidden"
+      id="welcomeContent"
+    >
+      <!--ben added LK -->
+      <h1 id="LK_welcomeContent_01"
+        class="w-auto text-netural text-2xl font-medium mt-2 border-b-2 border-netural pb-2 font-F1PaintShopBoldFont"
+      >
+        WELCOME
+      </h1>
+      <!--ben added LK -->
+      <p id="LK_welcomeContent_02"
+        class="text-netural text-2xl leading-7 font-extralight py-3 font-Titillium pt-3 pb-10"
+      >
+        Time to customise your very own F1 Car. Get ready to deck out your
+        very own livery and make unique to your style.
+      </p>
+      <!--ben-->
+      <button id="nextButton"        
+        type="button"
+        class="bg-brand text-netural text-2xl px-16 py-2 rounded-md font-F1PaintShopFont"
+        onclick="handleWelcomeNext()"
+      >
+        NEXT
+      </button>
+    </div>
+    <!--end of welcome content -->
+  </div>
+  <div
+    id="pattenContent"
+    class="h-screen flex justify-between items-center flex-col text-center hidden"
+  >
+    <figure class="w-full h-full">
+      <img
+        src="./assets/images/patten_img.png"
+        alt="Patten"
+        class="w-full h-[50vh]"
+      />
+    </figure>
+    <div class="w-full h-full -z-[1]">
+      <div class="w-full text-right overflow-hidden pb-1">
+        <button class="p-4">
+          <img src="./assets/images/double_arrow.svg" alt="Down Arrow" />
+        </button>
+        <div class="flex gap-x-3 justify-center items-center">
+          <h2 class="tab active">
+            <figure>
+              <img
+                src="./assets/images/patten_icon.svg"
+                alt="Patten Icon"
+              />
+            </figure>
+            <span class="ml-2 border-b-2 border-netural">PATTERN</span>
+          </h2>
+          <h2 class="tab">
+            <figure>
+              <img
+                src="./assets/images/spray_paint_icon.svg"
+                alt="Paint Icon"
+              />
+            </figure>
+            <span class="ml-2 border-b-2 border-netural hidden">PAINT</span>
+          </h2>
+          <h2 class="tab">
+            <figure>
+              <img src="./assets/images/tag_icon.svg" alt="tag_icon Icon" />
+            </figure>
+            <span class="ml-2 border-b-2 border-netural hidden">TAG</span>
+          </h2>
+          <h2 class="tab">
+            <figure>
+              <img
+                src="./assets/images/sponsor_icon.svg"
+                alt="Sponsor Icon"
+              />
+            </figure>
+            <span class="ml-2 border-b-2 border-netural hidden"
+              >SPONSOR</span
+            >
+          </h2>
+        </div>
       </div>
-    </main><!-- end of main -->
-    <!-- <script src="./assets/js/custom.js" ></script> -->
-
-
-
+      <div class="min-h-[300px] bg-primary"></div>
+    </div>
+  </div>
+  <!--end of patten content -->
+  <div
+    id="tutorial"
+    class="hidden fixed top-0 h-screen w-full before:bg-black before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-50 flex justify-around items-center flex-col text-center"
+  >
+    <figure class="w-[30vh] h-[30vh] relative">
+      <img
+        src="./assets/images/tutorial_img.svg"
+        alt="tutorial"
+        class="w-full h-full"
+      />
+    </figure>
+    <div class="bg-netural relative p-4 w-72 rounded-md opacity-95">
+      <h1
+        class="w-36 mx-auto text-2xl font-bold font-F1PaintShopBoldFont border-b-2 border-black pb-2"
+      >
+        TUTORIAL
+      </h1>
+      <p class="text-2xl font-medium font-Titillium leading-7 pt-3 pb-4">
+        To take a look at your masterpiece, tap and drag the screen to move
+        the camera around, and pinch to zoom in and out.
+      </p>
+      <button
+        type="button"
+        class="bg-brand text-netural text-2xl px-16 py-4 rounded-md font-F1PaintShopFont w-full"
+        onclick="handleTutorial()"
+      >
+        OK!
+      </button>
+    </div>
+  </div>
+  <!--end of tutorial-->
+  <div
+    id="pattenTutorial"
+    class="hidden fixed top-0 h-screen w-full before:bg-black before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-50 flex justify-around items-center flex-col text-center"
+  >
+    <div class="bg-netural relative p-4 px-6 w-72 rounded-md opacity-95">
+      <h1
+        class="w-36 mx-auto text-2xl font-bold font-F1PaintShopBoldFont border-b-2 border-black pb-2"
+      >
+        PATTERN
+      </h1>
+      <p
+        class="text-2xl font-medium font-Titillium leading-7 pt-3 pb-4 min-h-[150px]"
+      >
+        Let’s get started then. Choose your pattern.
+      </p>
+      <button
+        type="button"
+        class="bg-brand text-netural text-2xl px-16 py-4 rounded-md font-F1PaintShopFont w-full"
+        onclick="handlePattenTutorial()"
+      >
+        OK!
+      </button>
+    </div>
+    <div></div>
+  </div>
+  <!--end of patten tutorial-->
+</main>
+<!--    <main class="md:hidden" style="display:block!important">--> <!--ben forced on to override black-->
+ 
 
 <!-- old html -->
 
 
-
-
-    <!-- <div id="intropagesblock">
-        <div class="introblock">
-
-            <div id="welcomeblock" class="splashblock fadedout">
-                <div class="hcentre">
-                    <div id="l_text_1">WELCOME</div><br>
-                    <div class="fontNormal" id="l_text_2">Time to customise your very own F1 Car. Get ready to deck out your very own livery and make unique to your style.</div>
-                    <div id="languagechoices" class="hidden">
-                        <select id='s_languagechoices'>
-                        </select>
-                    </div>
-                    <div id="firstbuttonpanel" class="buttonpanel hidden">
-                        <div id="introokbutton" class="redButton button hidden" onclick="introNextPage(0);"><div id="l_text_3">NEXT</div></div>
-                        <div id="introcarbutton" class="introbutton button" onclick="switchModel(false);introNextPage(0);"><div id="l_text_4">Car</div></div>
-                        <div id="introhelmetbutton" class="introbutton button" onclick="switchModel(true);introNextPage(0);"><div id="l_text_5">Helmet</div></div>
-                    </div>
-                </div>
-            </div>
-            <div id="intro2block" class="splashblock hidden">
-                <div class="hcentre fontNormal">
-                    <div id="l_text_6">Here's some more intro</div><br>
-                    <div id="l_text_7">[TEXT / IMAGES REQUIRED]</div><br>
-                    <div id="waitingmessage"><div  id="l_text_8">We're just tidying the garage for you.....</div></div>
-
-                    <div id="waittilloaded" class="buttonpanel hidden">
-                        <div class="redButton button" onclick="introNextPage(1);"><div id="l_text_9">OK</div></div>
-                    </div>
-                </div>
-            </div>
-            <div id="tut1block" class="splashblock fadedout helpboxbottom">
-                <div id="tut1interior" class="hcentre fontNormal">
-                    <div id="l_text_10">[TEXT / IMAGES REQUIRED] Above is the 3D area which shows your car straight from the engineers.</div><br>
-                    <div id="l_text_11">You can touch and drag the 3D panel to look around the car.</div><br>
-                    <div class="buttonpanel">
-                        <div class="redButton button" onclick="introNextPage(2);">Next</div>
-                    </div>
-                </div>
-            </div>
-            <div id="tut2block" class="splashblock fadedout helpboxtop">
-                <div class="hcentre fontNormal">
-                    <div>Below is where you can choose your different patterns and colour selections.</div><br>
-                    <div>Simply choose your options and press Next for more livery selections.</div><br>
-                    <div class="buttonpanel">
-                        <div class="redButton button" onclick="introNextPage(3);">Let's go!</div>
-                    </div>
-                </div>
-            </div> 
-            <div id="progressblock" class="hidden progressblock">
-                <div>Tidying garage in readiness for you....</div>
-                <div id="progresscontainer" class="progress-bar">
-                    <div id="progress"></div>
-                </div>                  
-            </div>                      
-        </div> 
-    </div>-->
     <div id="oldmaincontainerblock" class="oldhtmlcontainer" style="display:none">
         <div id="minmax" class="minmax" onclick="onMinMax();"><i class="gg-chevron-double-right"></i></div>
         <div id="palette_toolsBlock" class="palette_tools disabledUserEvents">
@@ -505,7 +649,7 @@
         <div class="rotatemsg">Please rotate your device to Portrait.</div>
     </div> -->
 </div>
-<div id="versionid" onclick="onConsole(0)">v0.2.0.6<div id="fpsindicator"></div></div>
+<div id="versionid" onclick="onConsole(0)">v0.2.0.7<div id="fpsindicator"></div></div>
     <div id="console" class="hidden">
         <div class="console">
             <div class="console_button expandbutton" onclick="expandDropdown('toneexpander');">Tone</div>
@@ -632,9 +776,9 @@
 
 
 
-<!-- todo new html footer-->
+<!-- ben todo new html footer
     <script src="./assets/js/custom.js" ></script>
-
+-->
 
 
   </body>

@@ -1869,9 +1869,17 @@ document.getElementById('c_bendASlider').oninput = function () {
 
 const loadingContent = document.querySelector("#loadingContent");
 const welcomeContent = document.querySelector("#welcomeContent");
+const pattenContent = document.querySelector("#pattenContent");
+
+const tutorial = document.querySelector("#tutorial");
+const pattenTutorial = document.querySelector("#pattenTutorial");
+
 const menu = document.querySelector("#menu");
 const progress = document.querySelector("#file");
 
+const dropdownArrow = document.querySelector("#dropdownArrow");
+const dropdownElm = document.querySelector('#languageSelect');
+let selectedLanguage = document.querySelector("#selectedLanguage");
 
 let loadingProgress = 0;
 move();
@@ -1903,6 +1911,9 @@ function weclome() {
 //==============================
 window.handlelanguageSelect = handlelanguageSelect
 window.handlelanguageChange = handlelanguageChange
+window.handleWelcomeNext = handleWelcomeNext
+window.handleTutorial = handleTutorial
+window.handlePattenTutorial = handlePattenTutorial
 
 function handlelanguageSelect() {
 	uihandlelanguageSelect();
@@ -1912,11 +1923,36 @@ function handlelanguageChange(e) {
 	uihandlelanguageChange(e,f1Aws);
 }
 
+function handleWelcomeNext(){
+	pattenContent.classList.remove("hidden");
+	welcomeContent.classList.add("hidden");
+	tutorial.classList.remove("hidden")
+  }
+  
+  function handleTutorial(){
+	pattenTutorial.classList.remove('hidden')
+	tutorial.classList.add("hidden")
+  }
+  
+  function handlePattenTutorial(){
+	pattenTutorial.classList.add('hidden')
+	// ben 
+	introNextPage(0);
+  }
+
+  window.addEventListener('click', (event) => {
+	if (event.target.closest('#languageSelect') !== dropdownElm ) {
+	  dropdownArrow.classList.remove("rotate-180");
+	}
+  });
+
+
+
 //
 // set up buttons
-document.getElementById('nextButton').onclick = function() {
-	introNextPage(0);
-};
+// document.getElementById('nextButton').onclick = function() {
+// 	introNextPage(0);
+// };
 
 // set up old html
 document.getElementById('canvas-positioner').style.display='none';
