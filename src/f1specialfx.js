@@ -14,6 +14,7 @@ class F1SpecialFX {
     constructor(isHelmet, renderSize,f1fnames,liveryData,glowRenderSize) {
 
       this.f1BloomRibbonPass = 0;
+      this.f1BloomLayersPass = 0;
 
       this.finalComposer = 0;
       this.fxComposer = 0;
@@ -28,7 +29,33 @@ class F1SpecialFX {
 
     }
     //======================
+    initCarForIntro(f1CarHelmet,_isHelmet) {
+      this.f1BloomLayersPass.strength = 2.5;
+      this.f1BloomLayersPass.radius = 0.8;
+      this.finalPass.uniforms.bloomAmount.value = 1.0;
 
+      f1CarHelmet.customMesh.material = f1CarHelmet.wireFrameMat;
+      f1CarHelmet.staticMesh.material = f1CarHelmet.wireFrameMat;
+      if(_isHelmet)
+        f1CarHelmet.visorMesh.material = f1CarHelmet.wireFrameMat;
+    }
+    resetCarFromIntro(f1CarHelmet,_isHelmet) {
+      this.f1BloomLayersPass.strength = 3.0;
+      this.f1BloomLayersPass.radius = 0.75;
+      this.finalPass.uniforms.bloomAmount.value = 0.4; // start point for layers bloom
+
+      f1CarHelmet.customMesh.material = f1CarHelmet.theCustomMaterial;
+
+      if(f1CarHelmet.customMesh) { // revert the materials
+        f1CarHelmet.staticMesh.material = f1CarHelmet.theStaticMaterial;
+        f1CarHelmet.customMesh.material = f1CarHelmet.theCustomMaterial;
+        if(_isHelmet)
+          f1CarHelmet.visorMesh.material = f1CarHelmet.theVisorMaterial;
+      }
+    
+
+    }
+    //======================
     startFX(duration) {
       this.effectStarttime = new Date().getTime();
       this.duration = duration;
@@ -364,13 +391,13 @@ class F1SpecialFX {
       // render pass of the normal scene but has model materials swapped at render
       const renderScene = new RenderPass( scene, camera );
       // bloom for glow layer
-      const f1BloomPass = new UnrealBloomPass(new THREE.Vector2( this.sfxBloomRenderSize, this.sfxBloomRenderSize ), 3.0, 0.75, 0.00015);
+      this.f1BloomLayersPass = new UnrealBloomPass(new THREE.Vector2( this.sfxBloomRenderSize, this.sfxBloomRenderSize ), 3.0, 0.75, 0.00015);
 
       // composer for glow bloom layer
       this.fxComposer = new EffectComposer(renderer);
       this.fxComposer.renderToScreen = false;
       this.fxComposer.addPass( renderScene );
-      this.fxComposer.addPass( f1BloomPass );
+      this.fxComposer.addPass( this.f1BloomLayersPass );
       //
       const renderRibbonScene = new RenderPass( scene, camera );
       // this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( ribbonbloomRenderSize, ribbonbloomRenderSize ), 8.5, 1.0, 0.000015);
@@ -382,7 +409,7 @@ class F1SpecialFX {
       this.fxRibbonComposer = new EffectComposer(renderer);
       this.fxRibbonComposer.renderToScreen = false;
       this.fxRibbonComposer.addPass( renderRibbonScene );
-      this.fxRibbonComposer.addPass( this.f1BloomRibbonPass ); // todo render bloom
+      this.fxRibbonComposer.addPass( this.f1BloomRibbonPass ); // render bloom
 
       // anti-aliasing test
       this.fxaaPass = new ShaderPass( FXAAShader );
@@ -435,7 +462,10 @@ class F1SpecialFX {
             vec4 outcol = mix(colbase,colBloom,a);
             outcol = max(outcol,colRibbon);
 
-            gl_FragColor = vec4(outcol.xyz,colBloom.a * colbase.a * colRibbon.a );
+            float newalf = max( max(colBloom.a , colbase.a), colRibbon.a);
+
+            gl_FragColor = vec4(outcol.xyz,newalf );
+            // gl_FragColor = vec4(outcol.xyz,colBloom.a * colbase.a * colRibbon.a );
  
           }
     
@@ -465,6 +495,7 @@ class F1SpecialFX {
 
     }
     //======================
+
 
 }
 

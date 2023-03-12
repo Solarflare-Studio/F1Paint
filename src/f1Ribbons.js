@@ -39,9 +39,10 @@ class F1Ribbons {
         this.speedModDebug = 1.0;
         this.dodebug = false;
 
-        
+        this.ribbonStartTime = 0.;
+        this.doingRibbon = false;
+
         // this.timer1 = this.prevupdate;
-        this.deviceTime = 0;
         
 
         this.init(f1Materials);
@@ -59,8 +60,11 @@ class F1Ribbons {
         this.boxroot = new THREE.Object3D();
         this.root.visible=this.enabled;
         this.enableGlow = true;
-        this.ribbonGeometry = new THREE.PlaneGeometry(200, 15, 64,2);
-        this.ribbonGeometry2 = new THREE.PlaneGeometry(300, 35, 64,4);
+        // this.ribbonGeometry = new THREE.PlaneGeometry(200, 15, 64,2);
+        this.ribbonGeometry = new THREE.PlaneGeometry(1500, 80, 64,2);
+        // this.ribbonGeometry = new THREE.CylinderGeometry(50, 50, 1500, 6, 64, true);
+
+        this.ribbonGeometry2 = new THREE.PlaneGeometry(1100, 35, 64,2);
         this.carChangeTween = 0;
         this.carChangeDelta = 0.0;
         this.countbetweenribbons = 0;
@@ -72,7 +76,7 @@ class F1Ribbons {
     
 
         // this.ribbonGeometry = new THREE.BoxGeometry(200, 15, 2, 64,2,2);
-
+/*
         document.getElementById('c_bendmodcon').onchange = function () {
 
             // _self.carChangeAnimate();
@@ -111,6 +115,7 @@ class F1Ribbons {
             _self.modifierChange.stack[bendid].angle = angle;
             _self.modifierChange.stack[bendid].constraint = modcon;
         }
+        */
 
         // document.getElementById('c_bendFSlider').oninput = function () {
         //     const amount = this.value/100.0;
@@ -169,6 +174,103 @@ class F1Ribbons {
             uniform float faderTime;
             varying float viewerDistance;
 
+            vec2 rot(vec2 uv,float a){
+                return vec2(uv.x*cos(a)-uv.y*sin(a),uv.y*cos(a)+uv.x*sin(a));
+            }
+            
+            // generic rand return
+            float rand(float n){
+                 return fract(cos(n*89.42)*343.42);
+            }
+            
+
+            void main() {
+                float count = 6.0;
+                // vec2 uv = vUv.yx;
+                vec2 uv = 2.*( (vUv.yx) )-1.0 ;
+
+                uv = rot(uv,3.1415927*1.0);
+            
+                float spread = 0.5;//1.5;
+                float thickness = .0104;
+                float wobble_freq = .025;
+                float wobble_ampl = .315;
+                float t = fTime*.177;
+                
+
+                float tints[24] = float[24](1.,1.,1.,  1.,0.,0.,  .5,0.,.5,    0.,1.,1.,
+                    1.,1.,1.,  1.,0.,0.,  .5,0.,.5,    0.,1.,1.);
+
+                float thicknesses[8] = float[8]( .3, .6, .8, .4, .3, .6, .8, .4);
+
+                float wobble_frequences[8] = float[8]( .025,.025,.025,.025, .025,.025,.025,.025);
+
+
+                
+                vec3 col = vec3(0.0);
+                float s = 0.;
+                vec3 outcol = vec3(0.0);
+
+              
+                for(float i=0.;i<count;i++){    
+
+
+                    // individual wobble here
+                    uv.x += sin( ((t+(i*10.))-i*116.41) * uv.y * wobble_freq*.125  + (t-i*122.) + i*111.61 ) * (wobble_ampl+(i*.105));
+
+                    // make them all move slightly
+                    uv.x += cos((t*0.1) + i*uv.y * wobble_freq*.81)*.02;
+                    
+                    // offset each line
+                    uv.x +=	i*spread*.03 - spread*count*.011;
+                    float amnt = 0.;
+                    float scalethick = 2.0;
+                    amnt = abs( .01 / uv.x* (thicknesses[int(i)]*scalethick));
+
+                    amnt*=0.5;  // reduce intensity
+                    
+                    int cindex = int(i * 3.);
+                    vec3 cc = vec3(tints[cindex+0],tints[cindex+1],tints[cindex+2]);
+                    outcol = mix(outcol, cc, amnt);
+                }
+               
+                // lowkey dithering :)
+                //	s -= rand(uv.x)*.06;
+  
+                // emboss
+                outcol.x = smoothstep(.2,.7,outcol.x);//-.1;
+                outcol.y = smoothstep(.2,.7,outcol.y);//-.1;
+                outcol.z = smoothstep(.2,.7,outcol.z);//-.1;
+           
+                // float vig = uv.x*uv.y * 15.0; 
+                // outcol+=vig*=.0002;
+
+                float alf = max(max(outcol.r,outcol.g),outcol.b);
+                alf *= 0.45 * faderTime;
+
+                if(uv.y <= -0.9) {
+                    float fadeit = -uv.y;
+                    fadeit = 1.0 - ((fadeit - 0.9) / 0.1);
+                    alf *= fadeit;
+                }
+                else if(uv.y >= 0.9) {
+                    float fadeit = uv.y;
+                    fadeit = 1.0- ((fadeit - 0.9) / 0.1);
+                    alf *= fadeit;
+                }
+                gl_FragColor = vec4( outcol, alf );
+            }
+
+
+
+
+
+
+
+
+
+            /* old ribbons
+
 //==================================================================          
             vec3 getEndFade(vec3 vin, float edge) {
                 if(vUv.x >= edge) {
@@ -196,7 +298,7 @@ class F1Ribbons {
                 colour = texture2D(texture1, uv);
 
                 outcolour = max(outcolour, vec3(0.7,0.6,0) * max(max(colour.r,colour.g),colour.b));
-                outcolour = getEndFade(outcolour, 0.75);
+                // outcolour = getEndFade(outcolour, 0.75); // todo debug
 
                 uv = vUv.yx + vec2(0,b_rate);
                 uv.x = (uv.x*1.3) + 0.5;
@@ -212,8 +314,9 @@ class F1Ribbons {
                 outcolour *= faderTime;
 
                 gl_FragColor = vec4(outcolour,a);
-      
             }
+            */
+
             `,
             side: THREE.DoubleSide,
             transparent: true,
@@ -227,12 +330,22 @@ class F1Ribbons {
         });
         this.failsafeLoadRibbon(this,f1Materials);
 
-        this.ribbonMaterialsimple = new THREE.MeshStandardMaterial( {
+
+        this.ribbonMaterialsimple = new THREE.MeshBasicMaterial({
+            // color: new THREE.Color(0,0.85,0),
+            color: new THREE.Color(0.9,0.05,0.05),
+            wireframe: true,
+
+        });
+
+        this.ribbonMaterialsimpleold = new THREE.MeshBasicMaterial( {
             color: 0xffffff,
             transparent: true,
             opacity: 1,
             side: THREE.DoubleSide,
-            name: 'ribbonMaterial'
+            name: 'ribbonMaterialwirefame',
+
+            wireframe:true,
         } );
         //
         this.redf1mat = new THREE.MeshBasicMaterial( {
@@ -292,6 +405,7 @@ class F1Ribbons {
 
         const bend = new Bend(bendparam.force, bendparam.offset, bendparam.angle);
         themodifier.addModifier(bend);
+        var self = this;
 
         if(!this.dodebug) {
             if(bendparam.yoyo!=0) {
@@ -314,7 +428,6 @@ class F1Ribbons {
     // ==============================================
     createBentMeshParams(bendarray) {
 
-//        var modcon = ModConstant.LEFT;
         for(var b=0;b<bendarray.length;b++) {
             this.createBend(b,bendarray[b],this.modifier);
         }
@@ -345,12 +458,45 @@ class F1Ribbons {
 //TWEEN.Easing.Elastic.
 //TWEEN.Easing.Elastic.InOut
 
-        bends.push(new ABend(2.0, 0.25, 0.0,   2.0, 0.75, 0.0,    30000*this.speedModDebug, TWEEN.Easing.Cubic.InOut,1)); // static
-        bends.push(new ABend(-2.0, 0.5, 0.0,   -2.0, 0.5, 2.0 * Math.PI,    30000*this.speedModDebug, TWEEN.Easing.Linear.None,2));
+
+        this.speedModDebug = 0.7;
+
+        bends.push(new ABend(-1.0, 0.45, 0.0,   1.0, 0.65, 0.0,    30000*this.speedModDebug, TWEEN.Easing.Cubic.InOut,1)); // static
+        bends.push(new ABend(-2.0, 0.5, 0.0,   -2.0, 0.5, 2.0 * Math.PI,    60000*this.speedModDebug, TWEEN.Easing.Linear.None,2));
+        // bends.push(new ABend(-2.0, 0.5, 0.0,   -2.0, 0.5, 2.0 * Math.PI,    25000*this.speedModDebug, TWEEN.Easing.Linear.None,2));
 
         this.createBentMeshParams(bends);
-        this.createTwist([1.3, new Vector3(1,0,0), TWEEN.Easing.Linear.None, 0.0, 20000*this.speedModDebug, 0],this.modifier);// 1]);
-  
+        //        this.createTwist([1.3, new Vector3(1,0,0), TWEEN.Easing.Linear.None, 0.0, 20000*this.speedModDebug, 0],this.modifier);// 1]);
+        this.createTwist([0.8, new Vector3(1,0,0), TWEEN.Easing.Linear.None, 0.2, 20000*this.speedModDebug, 0],this.modifier);// 1]);
+
+
+
+
+
+
+
+
+/*
+
+        bends.push(new ABend(2.0, 0.25, 0.0,   2.0, 0.75, 0.0,    30000*this.speedModDebug, TWEEN.Easing.Cubic.InOut,0)); // static
+        bends.push(new ABend(-2.0, 0.5, 0.0,   -2.0, 0.5, 2.0 * Math.PI,    30000*this.speedModDebug, TWEEN.Easing.Linear.None,2));
+        // bends.push(new ABend(-2.0, 0.5, 0.0,   -2.0, 0.5, 2.0 * Math.PI,    25000*this.speedModDebug, TWEEN.Easing.Linear.None,2));
+
+        this.createBentMeshParams(bends);
+//        this.createTwist([1.3, new Vector3(1,0,0), TWEEN.Easing.Linear.None, 0.0, 20000*this.speedModDebug, 0],this.modifier);// 1]);
+        this.createTwist([0.8, new Vector3(1,0,0), TWEEN.Easing.Linear.None, 0.2, 20000*this.speedModDebug, 0],this.modifier);// 1]);
+
+
+        */
+/*
+
+        bends.push(new ABend(2.0, 0.45, 0.0,   2.0, 0.55, 0.0,    30000*this.speedModDebug, TWEEN.Easing.Cubic.InOut,1)); // static
+        bends.push(new ABend(-2.0, 0.5, 0.0,   -2.0, 0.5, 2.0 * Math.PI,    60000*this.speedModDebug, TWEEN.Easing.Linear.None,2));
+
+        this.createBentMeshParams(bends);
+        this.createTwist([0.8, new Vector3(1,0,0), TWEEN.Easing.Linear.None, 0.2, 90000*this.speedModDebug, 1],this.modifier);// 1]);
+  */
+
 
     }
    
@@ -358,6 +504,7 @@ class F1Ribbons {
     getSceneObjects() {
 
         this.ribbonMesh = new THREE.Mesh( this.ribbonGeometry, this.ribbonMaterial );
+
 
         this.ribbonMesh.layers.set(3); // 1
         this.modifier = new ModifierStack(this.ribbonMesh);
@@ -368,50 +515,81 @@ class F1Ribbons {
 
 
         // ok, another ribbon
-        this.ribbonMesh2 = this.ribbonMesh.clone();
-        this.ribbonMesh2.position.set(-20,25,-100 );
-        this.ribbonMesh2.scale.set(2,3,1.5);
-        this.ribbonMesh2.rotateZ((Math.PI / 180)*180);
+        // this.ribbonMesh2 = this.ribbonMesh.clone();
+        // this.ribbonMesh2.position.set(-20,-10,-500 );
+        // this.ribbonMesh2.scale.set(1,3,1);
+        // this.ribbonMesh2.rotateZ((Math.PI / 180)*10);
 
-        this.root.add(this.ribbonMesh2); // all good with this one
+        // this.root.add(this.ribbonMesh2); // all good with this one
 
         const planeCrop = new THREE.CircleGeometry( 80, 32 ); // same as garage floor
 
         const planeCropMesh = new THREE.Mesh( planeCrop, this.floorGlowMat );
         planeCropMesh.rotateX((Math.PI / 180)*-90);
-//        planeCropMesh.position.set(0,-9.8,0);
         planeCropMesh.position.set(0,-10.5,0);
         planeCropMesh.layers.set(3);
-        // this.floorGlowMat.color = new THREE.Color(0,0,0);
 
         this.root.add(planeCropMesh);
+
+        const plinthSideCropMesh = new THREE.Mesh( new THREE.CylinderGeometry( 78, 78, 9.9, 32, 1, true ), new THREE.MeshBasicMaterial({
+            color: 0x00000,
+            side: THREE.DoubleSide, // render both front and back faces
+            // depthWrite: false, // disable writing to depth buffer
+            // depthTest: false, // disable depth testing
+            name: 'blackMaterial',
+        }) );
+        plinthSideCropMesh.layers.set(3);
+        plinthSideCropMesh.position.set(0,-15.5,0);
+
+        this.root.add(plinthSideCropMesh);
+
+
 
         return this.root;
     }
     //======================
-   
+    triggerRibbon() {
+        this.ribbonStartTime = new Date().getTime();
+        this.doingRibbon = true;
+        this.ribbonBrightMax = 0.8;
+    }
+    //======================
 
     update(elapsed,currenttime) {
 
         if(DEBUG_MODE)
             document.getElementById('fpsindicator').innerHTML = Math.floor( 1000 / elapsed);
 
-        const uvflow = (currenttime*0.25) % 5000;
+        // const uvflow = (currenttime*0.25) % 5000;
+        // this.uniforms.fTime.value = uvflow/5000.0;
 
-        this.uniforms.fTime.value = uvflow/5000.0;
-        
-        const modded = (currenttime*0.00005)%360;
+        const ttime = currenttime - this.ribbonStartTime;
+
+        this.uniforms.fTime.value = (currenttime%100000)/1000;
+
+        const modded = (ttime*0.00005)%360;
         var glow = Math.sin(modded);
+
+        // console.log("preglow = "+ glow);
+
+
         if(glow <= 0.0) { // woz 0.0
             glow = -(glow*0.5);
         }
-        glow = 1.0;
+        else {
+            glow *= this.ribbonBrightMax;
+        }
+
+        // glow=1.0;
+
+        if(!this.doingRibbon)
+            glow = 0.;
+
+        // console.log("glow = "+ glow);
+
         this.uniforms.faderTime.value = glow;
 
-        this.deviceTime+=elapsed;
-                
-        if(this.modifier && glow>=0.3) {
-            this.deviceTime =0;
+        if(this.modifier)   {   // && glow>=0.3) {
              this.modifier && this.modifier.apply();
         }
     }

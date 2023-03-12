@@ -484,18 +484,24 @@ class F1Gui {
         var patternThumbElement = 0;
         var hasfound = false;
         var layerindex = 0;
+        var patternblock = 0;
         if(topage==1 || topage==2) { // base pattern or base paint
+            patternblock = document.getElementById('layer1patterns_ins');
             layerindex = 0;
         }
         else if(topage==3) { // tag
+            patternblock = document.getElementById('layer2tags_ins');
             layerindex = 1;
         }
         else if(topage==4) { // sponsor
+            patternblock = document.getElementById('layer3decals_ins');
             layerindex = 2;
         }
 
         // seek out thumb element from its pattern id attribute
-        const patternblock = document.getElementById('layer1patterns_ins');
+
+
+
         for(var i=0;i<patternblock.children.length;i++) {
             const id= patternblock.children[i].children[0].getAttribute('patternId');
             if(this.processJSON.liveryData['Layers'][layerindex].patternId == id){
@@ -543,40 +549,10 @@ class F1Gui {
 
             this.showPage( 4, false);
 
-
-
-            // try setting the pattern here for this layer
-//            if(	liveryData[0][0]['Layers'][2].patternId != -1) {
-                // var patternThumbElement = this.processJSON.layerPatternThumbElements[2];
-                var patternThumbElement = 0;
-
-                            // seek out thumb element from its pattern id attribute
-                const patternblock = document.getElementById('layer3decals_ins');
-                var hasfound = false;
-                for(var i=0;i<patternblock.children.length;i++) {
-                    const id= patternblock.children[i].children[0].getAttribute('patternId');
-                    if(this.processJSON.liveryData['Layers'][2].patternId == id){
-                        // matched!
-                        if(DEBUG_MODE)
-                            console.log("matched");
-                        hasfound=true;
-                        patternThumbElement = patternblock.children[i].children[0];
-                        break;
-                    }
-                }
-
-                if(!hasfound) {
-                    if(DEBUG_MODE)
-                        console.log(">> **** error finding matching pattern");
-                }
-
-
-                if(patternThumbElement!=0) {
-                    //
-                    isAutoSelectingPattern = true;
-                    patternThumbElement.click();
-                }
-//            }
+            if(patternThumbElement!=0) {
+                isAutoSelectingPattern = true;
+                patternThumbElement.click();
+            }
 
         }
         else if(topage == 5) { // final page to AR?

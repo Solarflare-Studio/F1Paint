@@ -1,7 +1,8 @@
 import {DEBUG_MODE} from './adminuser'
 
 
-class F1Cookies {
+
+class F1User {
 
     constructor() {
         this.forcecar = true;
@@ -158,6 +159,6 @@ class F1Cookies {
 
 }
 
-export { F1Cookies };
+export { F1User };
 
 

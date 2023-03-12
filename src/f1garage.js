@@ -1,4 +1,5 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
+import { TWEEN } from '../node_modules/three/examples/jsm/libs/tween.module.min'
 
 
 
@@ -16,8 +17,8 @@ class F1Garage {
 
         this.garageRoot = new THREE.Object3D();
         this.garageMaterial = this.newGarageMat();
-        this.garageMaterial.color = new THREE.Color( 0x323232)
-        // this.garageMaterial.color = new THREE.Color( 0x181818)
+        // this.garageMaterial.color = new THREE.Color( 0x323232)
+        this.garageMaterial.color = new THREE.Color( 0xd0d0d0)
 
         this.backgroundImage = 0;
         this.backgroundMat =  new THREE.MeshBasicMaterial({
@@ -28,7 +29,10 @@ class F1Garage {
             name: 'scene background',
         });
         this.plinthSidesMat = this.newGarageMat();
-        this.plinthSidesMat.color = new THREE.Color( 0x322020)
+        // this.plinthSidesMat.color = new THREE.Color( 0x322020)
+        this.plinthSidesMat.color = new THREE.Color( 0x727272);
+        this.plinthSidesMat.transparent = false;
+
         this.plinthSidesMat.needsUpdate = true;
 
 
@@ -43,7 +47,7 @@ class F1Garage {
 
         let garageFloor = new THREE.Mesh( new THREE.CircleGeometry( 80, 32 ), this.garageMaterial );
         let garageFloorSFX = new THREE.Mesh( new THREE.CircleGeometry( 80, 32 ), this.garageSFXMaterial );
-        let garageFloorSides = new THREE.Mesh( new THREE.CylinderGeometry( 80, 80, 10, 32, 1, true ), this.garageMaterial);//plinthSidesMat );
+        let garageFloorSides = new THREE.Mesh( new THREE.CylinderGeometry( 80, 80, 10, 32, 1, true ), this.plinthSidesMat );
         garageFloorSides.layers.set(3);
         // garageFloorSides.position.set(0,-5,0);
         garageFloorSides.position.set(0,-5.9,0);
@@ -58,14 +62,16 @@ class F1Garage {
 
         garageFloor.layers.set(1);
         garageFloor.rotateX((Math.PI / 180)*-90);
-        garageFloor.receiveShadow = false;
+        garageFloor.receiveShadow = true;
 
-        // garageFloor.add(garageFloorSides);
-
+        
+        // debug new floor
         this.garageRoot.add(garageFloor);
+
+
         this.garageRoot.add(garageFloorSides);
 
-        // this.garageRoot.add(garageFloorSFX);
+        this.garageRoot.add(garageFloorSFX);
 
 
 
@@ -93,8 +99,29 @@ class F1Garage {
         garageFloorShadow.rotateX((Math.PI / 180)*90);
         garageFloorShadow.receiveShadow = true;
         this.garageRoot.add(garageFloorShadow);
-    }
 
+        this.floorMode = 0;
+    }
+    //======================
+    startFloorMode(v) {
+        this.floorMode = v;
+        this.garageSFXMaterial.uniforms.mode.value = v;
+        this.garageSFXMaterial.uniforms.fTime.value = 0.;
+        var self = this;
+        if(this.floorMode == 1) { // intro floor
+            new TWEEN.Tween(self.garageSFXMaterial.uniforms.fTime)
+            .to({
+                    value: 1.0,
+                },
+                5000
+            )
+            .onComplete(function () {
+                self.floorMode = 0;
+                self.garageSFXMaterial.uniforms.fTime.value = 0.0;
+            })        
+            .start()
+        }
+    }
     //======================
     newGarageMat() {
         return new THREE.MeshStandardMaterial(
@@ -126,6 +153,9 @@ class F1Garage {
             offset_x: { value: 0.0},
             tot_x: { value: 0.0},
             tot_y: { value: 0.0},
+            scale_x: { value: 1.0},
+            scale_y: { value: 1.0},
+            mode: {value: 0 },
           };
   
         this.garageSFXMaterial = new THREE.ShaderMaterial({
@@ -133,15 +163,39 @@ class F1Garage {
 
             uniforms: this.uniforms,
             vertexShader: `
+
+            attribute vec4 tangent;
+
             varying vec2 vUv;
             varying float viewerDistance;
+            varying vec3 vViewDirTangent;
 
             void main() {
                 vUv = uv;
-                vec3 pos = position;
+                vec3 vNormal = normalMatrix * normal;
+                vec3 vTangent = normalMatrix * tangent.xyz;
+                vec3 vBitangent = normalize( cross( vNormal, vTangent ) * tangent.w );
+            
+                mat3 mTBN = transpose(mat3(vTangent, vBitangent, vNormal));
 
+                vec4 mvPos = modelViewMatrix * vec4( position, 1.0 );
+                vec3 viewDir = -mvPos.xyz;
+                vViewDirTangent = mTBN * viewDir;
+            
+                gl_Position = projectionMatrix * mvPos;
+
+
+/*                vec3 pos = position;
+
+
+                vec4 worldPosition = modelViewMatrix * vec4(pos, 1.0);
+                vWorldPosition = worldPosition.xyz;
                 vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
                 gl_Position = projectionMatrix * mvPosition;
+*/
+
+                // vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+                // gl_Position = projectionMatrix * mvPosition;
               
                 // Calculate distance from camera
                 // viewerDistance = length(mvPosition.xyz);    // not currently used
@@ -151,6 +205,252 @@ class F1Garage {
 
 
 //==================================================================
+uniform sampler2D texture1;
+varying vec2 vUv;
+uniform float fTime;
+uniform int mode;
+uniform float offset_x;
+uniform float offset_y;
+
+uniform float tot_x;
+uniform float tot_y;
+
+uniform float scale_x;
+uniform float scale_y;
+
+varying vec3 vViewDirTangent;
+
+float hash21(vec2 p)
+{
+    return fract(sin(dot(p, vec2(141.13, 289.97)))*43758.5453);
+}
+
+float hex(in vec2 p)
+{
+    const vec2 s = vec2(1.7320508, 1);
+
+    p = abs(p);    
+    return max(dot(p, s*.5), p.y); // Hexagon.
+}
+struct HexInfo {
+    vec2 xy;
+    float row;
+    float column;
+    int oddRow;
+    int oddColumn;
+};
+
+HexInfo getHex(vec2 p)
+{    
+    const vec2 s = vec2(1.7320508, 1);
+
+    HexInfo hi;
+    // The hexagon centers: Two sets of repeat hexagons are required to fill in the space, and
+    // the two sets are stored in a "vec4" in order to group some calculations together. The hexagon
+    // center we'll eventually use will depend upon which is closest to the current point. Since 
+    // the central hexagon point is unique, it doubles as the unique hexagon ID.
+    
+    vec4 hC = floor(vec4(p, p - vec2(1, .5))/s.xyxy) + .5;
+    
+    // Centering the coordinates with the hexagon centers above.
+    vec4 h = vec4(p - hC.xy*s, p - (hC.zw + .5)*s);
+    hi.xy = h.xy;
+
+    hi.row = h.z;
+    hi.column = h.w;
+
+
+    vec4 result=dot(h.xy, h.xy) < dot(h.zw, h.zw) 
+        ? vec4(h.xy, hC.xy) 
+        : vec4(h.zw, hC.zw + .5);
+
+    hi.xy = result.xy;
+    hi.column = result.z;
+    hi.row = result.w;
+
+    hi.oddColumn = 0;
+    hi.oddRow = 0;
+    return hi;
+}
+
+void main()
+{
+    const vec3 tintBlueCyan = vec3(0.18,.95,.96);
+    const vec3 tintDarkPurple = vec3(0.59,.29,.91);
+    const vec3 tintRed = vec3(0.91,.04,.03);
+    
+    const vec2 s = vec2(1.7320508, 1);
+
+    vec2 uv = vUv;
+    float vt = fTime; // effect from 0.0 to 1.0
+
+    //
+    const vec2 offset = vec2(-0.11, 0.02);
+    const vec2 totgridsize = vec2(30.0, 30.0) + vec2(1.05, 1.57);
+
+    vec2 u = uv.xy * totgridsize;
+    u += offset + vec2( offset_x,offset_y + 0.03);
+    
+    HexInfo h = getHex(u*1. + s.yx);
+    float eDist = hex(h.xy); // Edge distance.
+
+    vec3 col = vec3(0.0);
+
+    // middle column = 8
+
+
+    float maxh = totgridsize.y;
+    int maxhi = int(maxh) + 1;
+    float maxw = totgridsize.x;
+    int maxwi = int(maxw) + 1;
+    maxh = float(maxhi);
+    maxw = 33.0;
+    
+    const float maxc = 38.0;
+    const float maxr = 66.0;
+
+    float tc = vt * maxc;
+    float tr = vt * maxr;
+
+    int ci = int(h.column * 2.0);
+    int ri = int(h.row * 2.0);
+    float cf = float(ci);
+    float rf = float(ri);
+
+
+    vec2 norm = vec2(cf, rf) - vec2(19.0,33.0 );
+    norm.x *= 2.0;
+
+    // circle splash
+    float radius = 45.0 * vt;
+    float dist = length(norm);
+    if(dist <= radius) {
+        if( dist <= radius - 2.0) {
+            if(dist >= radius - 4.0)
+                col = tintDarkPurple;
+            else {
+                if(dist >= radius - 6.0) {
+                    col = tintRed;
+                }
+                else {
+                    if(dist >= radius - 10.0) {
+                        float calc = (dist - (radius-8.0))/5.0;
+                        col = tintRed * (calc);
+                    }
+                }
+            }
+        } 
+        else {
+            dist = (dist-radius) / (2.0);
+            col = tintBlueCyan * dist;
+        }
+    }
+    
+    
+
+
+
+    // if(ci == 19)
+    //     col.r = 1.0;
+
+//    if(ri == 64 || ri == 65)
+  //      col.r = 1.0;
+
+
+
+
+        // // calculate distance from center of grid
+        // vec2 center = vec2(maxwi / 2.0, maxwi / 2.0);
+        // float dist = length(vec2(h.column, h.row) - center);
+
+        // if(dist < 3.0)
+        //     col.r = 1.0 - (dist / 3.0);
+
+        // // calculate pulse effect based on distance
+        // float pulse = smoothstep(0.0, totgridsize.x / 2.0, dist) * (1.0 - smoothstep(totgridsize.x / 2.0, totgridsize.x, dist));
+        
+        // // calculate color based on pulse effect and edge distance
+        // col = vec3(eDist * pulse);
+
+        /*
+    vec3 col = mix(vec3(0.), vec3(1), smoothstep(0., .03, eDist - .5 + .04));  
+   
+    float t = vt * (totgridsize.x - 3.0);
+    float opacity = smoothstep(t - 1.0, t + 1.0, h.column);
+
+    if(h.column >= 1.0 + t && h.column < 1.5 + t) {
+       col = vec3(1.0*opacity,0,0);
+    }
+    else {
+        col = vec3(0,0,0);
+    }
+    */
+
+    // most modes just do hex outline by using mask from hex image
+    vec4 colour = texture2D(texture1, uv);
+    float g = colour.g;
+
+    col *= g;
+    col *= 0.5;
+
+    gl_FragColor = vec4(col, .6);
+}
+
+
+/*
+
+
+void main() {
+
+
+
+    float timer = fTime / 5.0;
+    vec2 uv = vUv.xy;
+    vec4 colour = texture2D(texture1, uv);
+    float g = colour.g;
+
+    float hexagon_width = 1.0 / (35.8+tot_x);
+    float hexagon_height = 1.0 / (31.59 + tot_y);
+    float hexagon_side_length = min(hexagon_width, hexagon_height) / sqrt(3.0);
+    
+    float moffset_x = (-0.6 + offset_x) * hexagon_width + margin_x;
+    float moffset_y = (-0.3 + offset_y) * hexagon_height + margin_y;
+    uv.xy += vec2(moffset_x,moffset_y);
+    
+    float margin_x = scale_x * hexagon_width;
+    float margin_y = scale_y * hexagon_height;
+
+    
+    // colour = vec4(g*0.15,g*0.15,g*0.15, 1.0);
+    float alpha = 0.0;
+    colour = vec4(0,0,0,0);
+
+    
+    float q = (sqrt(3.0)/3.0 * uv.x - 1.0/3.0 * uv.y) / hexagon_side_length;
+    float r = (2.0/3.0 * uv.y) / hexagon_side_length;
+    
+    // Round the axial coordinates to the nearest integers
+    int column = int(q + 0.5);
+    int row = int(r + 0.5);
+    
+    if(row % 2==0 && column % 2==0) {
+        colour = vec4(1,0,0,0.25);
+    }
+    else {
+        colour = vec4(0,0,1,0.25);
+    }
+
+    
+//    else colour = vec4(0,g,0,g);
+
+
+    gl_FragColor = vec4(colour);
+}
+
+*/
+
+
+/*
 uniform sampler2D texture1;
 varying vec2 vUv;
 uniform float fTime;
@@ -210,7 +510,7 @@ void main() {
 
     gl_FragColor = vec4(colour.rgb, alpha);
 }
-
+*/
 
 //==================================================================          
 /*
@@ -445,3 +745,383 @@ void main() {
 export { F1Garage };
 
 
+
+/*
+
+struct HexInfo {
+    vec2 xy;
+    float row;
+    float column;
+    int oddRow;
+    int oddColumn;
+};
+
+HexInfo getHex(vec2 p)
+{    
+    HexInfo hi;
+    // The hexagon centers: Two sets of repeat hexagons are required to fill in the space, and
+    // the two sets are stored in a "vec4" in order to group some calculations together. The hexagon
+    // center we'll eventually use will depend upon which is closest to the current point. Since 
+    // the central hexagon point is unique, it doubles as the unique hexagon ID.
+    
+    vec4 hC = floor(vec4(p, p - vec2(1, .5))/s.xyxy) + .5;
+    
+    // Centering the coordinates with the hexagon centers above.
+    vec4 h = vec4(p - hC.xy*s, p - (hC.zw + .5)*s);
+    hi.xy = h.xy;
+    
+    vec4 result=dot(h.xy, h.xy) < dot(h.zw, h.zw) 
+        ? vec4(h.xy, hC.xy) 
+        : vec4(h.zw, hC.zw + .5);
+
+    hi.xy = result.xy;
+    
+    hi.row = hC.y;
+    hi.column = hC.x;
+    hi.oddColumn = 0;
+    hi.oddRow = 0;
+    
+    
+    if(int(hi.row) % 2 == 0) hi.oddRow = 1;
+    if(int(hi.column) % 2 == 0) hi.oddColumn = 1;
+    
+    return hi;
+    
+    // Nearest hexagon center (with respect to p) to the current point. In other words, when
+    // "h.xy" is zero, we're at the center. We're also returning the corresponding hexagon ID -
+    // in the form of the hexagonal central point.
+    //
+    // On a side note, I sometimes compare hex distances, but I noticed that Iomateron compared
+    // the squared Euclidian version, which seems neater, so I've adopted that.
+//    return dot(h.xy, h.xy) < dot(h.zw, h.zw) 
+//        ? vec4(h.xy, hC.xy) 
+//        : vec4(h.zw, hC.zw + .5);
+}
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{
+    // Aspect correct screen coordinates.
+	vec2 u = (fragCoord - iResolution.xy*.5)/iResolution.y;
+    
+    // Scaling, translating, then converting it to a hexagonal grid cell coordinate and
+    // a unique coordinate ID. The resultant vector contains everything you need to produce a
+    // pretty pattern, so what you do from here is up to you.
+    HexInfo h = getHex(u*5. + s.yx);
+    
+    // The beauty of working with hexagonal centers is that the relative edge distance will simply 
+    // be the value of the 2D isofield for a hexagon.
+    float eDist = hex(h.xy); // Edge distance.
+
+    // Initiate the background to a white color, putting in some dark borders.
+    vec3 col = mix(vec3(0.), vec3(1), smoothstep(0., .03, eDist - .5 + .04));  
+    
+    float d = length(h.xy);
+    col.r = 1.0 - d;
+    
+    if(h.row == 2.5) {
+        if(h.oddColumn == 1) 
+            col.g = 1.0;
+        else
+            col.b = 1.0;
+        
+    }
+    if(h.column == -.5) {
+//        col.g = 1.0;
+    }
+
+    
+    fragColor = vec4(col, 1);    
+}
+
+
+
+struct HexInfo {
+    vec2 xy;
+    float row;
+    float column;
+};
+
+HexInfo getHex(vec2 p)
+{    
+    HexInfo hi;
+    // The hexagon centers: Two sets of repeat hexagons are required to fill in the space, and
+    // the two sets are stored in a "vec4" in order to group some calculations together. The hexagon
+    // center we'll eventually use will depend upon which is closest to the current point. Since 
+    // the central hexagon point is unique, it doubles as the unique hexagon ID.
+    
+    vec4 hC = floor(vec4(p, p - vec2(1, .5))/s.xyxy) + .5;
+    
+    // Centering the coordinates with the hexagon centers above.
+    vec4 h = vec4(p - hC.xy*s, p - (hC.zw + .5)*s);
+    hi.xy = h.xy;
+    
+    vec4 result=dot(h.xy, h.xy) < dot(h.zw, h.zw) 
+        ? vec4(h.xy, hC.xy) 
+        : vec4(h.zw, hC.zw + .5);
+
+    hi.xy = result.xy;
+    
+    // Nearest hexagon center (with respect to p) to the current point. In other words, when
+    // "h.xy" is zero, we're at the center. We're also returning the corresponding hexagon ID -
+    // in the form of the hexagonal central point.
+    return hi;
+
+}
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{
+    // Aspect correct screen coordinates.
+	vec2 u = (fragCoord - iResolution.xy*.5)/iResolution.y;
+    
+    // Scaling, translating, then converting it to a hexagonal grid cell coordinate and
+    // a unique coordinate ID. The resultant vector contains everything you need to produce a
+    // pretty pattern, so what you do from here is up to you.
+    HexInfo h = getHex(u*5. + s.yx);
+    
+    // The beauty of working with hexagonal centers is that the relative edge distance will simply 
+    // be the value of the 2D isofield for a hexagon.
+    float eDist = hex(h.xy); // Edge distance.
+
+    // Initiate the background to a white color, putting in some dark borders.
+    vec3 col = mix(vec3(0.), vec3(1), smoothstep(0., .03, eDist - .5 + .04));  
+    
+    float d = length(h.xy);
+    col.r = 1.0 - d;
+
+    
+    fragColor = vec4(col, 1);    
+}
+
+
+working shader toy
+#define FLAT_TOP_HEXAGON
+
+// Helper vector. If you're doing anything that involves regular triangles or hexagons, the
+// 30-60-90 triangle will be involved in some way, which has sides of 1, sqrt(3) and 2.
+const vec2 s = vec2(1.7320508, 1);
+
+float hash21(vec2 p)
+{
+    return fract(sin(dot(p, vec2(141.13, 289.97)))*43758.5453);
+}
+
+// The 2D hexagonal isosuface function: If you were to render a horizontal line and one that
+// slopes at 60 degrees, mirror, then combine them, you'd arrive at the following. As an aside,
+// the function is a bound -- as opposed to a Euclidean distance representation, but either
+// way, the result is hexagonal boundary lines.
+float hex(in vec2 p)
+{    
+    p = abs(p);
+    
+    return max(dot(p, s*.5), p.y); // Hexagon.
+}
+
+// This function returns the hexagonal grid coordinate for the grid cell, and the corresponding 
+// hexagon cell ID -- in the form of the central hexagonal point. That's basically all you need to 
+// produce a hexagonal grid.
+//
+// When working with 2D, I guess it's not that important to streamline this particular function.
+// However, if you need to raymarch a hexagonal grid, the number of operations tend to matter.
+// This one has minimal setup, one "floor" call, a couple of "dot" calls, a ternary operator, etc.
+// To use it to raymarch, you'd have to double up on everything -- in order to deal with 
+// overlapping fields from neighboring cells, so the fewer operations the better.
+
+struct HexInfo {
+    vec2 xy;
+    float row;
+    float column;
+    int oddRow;
+    int oddColumn;
+};
+
+HexInfo getHex(vec2 p)
+{    
+    HexInfo hi;
+    // The hexagon centers: Two sets of repeat hexagons are required to fill in the space, and
+    // the two sets are stored in a "vec4" in order to group some calculations together. The hexagon
+    // center we'll eventually use will depend upon which is closest to the current point. Since 
+    // the central hexagon point is unique, it doubles as the unique hexagon ID.
+    
+    vec4 hC = floor(vec4(p, p - vec2(1, .5))/s.xyxy) + .5;
+    
+    // Centering the coordinates with the hexagon centers above.
+    vec4 h = vec4(p - hC.xy*s, p - (hC.zw + .5)*s);
+    hi.xy = h.xy;
+
+    hi.row = h.z;
+    hi.column = h.w;
+
+
+    vec4 result=dot(h.xy, h.xy) < dot(h.zw, h.zw) 
+        ? vec4(h.xy, hC.xy) 
+        : vec4(h.zw, hC.zw + .5);
+
+    hi.xy = result.xy;
+    hi.row = result.z;
+
+    hi.oddColumn = 0;
+    hi.oddRow = 0;
+    
+    
+    return hi;
+    
+    // Nearest hexagon center (with respect to p) to the current point. In other words, when
+    // "h.xy" is zero, we're at the center. We're also returning the corresponding hexagon ID -
+    // in the form of the hexagonal central point.
+    //
+    // On a side note, I sometimes compare hex distances, but I noticed that Iomateron compared
+    // the squared Euclidian version, which seems neater, so I've adopted that.
+//    return dot(h.xy, h.xy) < dot(h.zw, h.zw) 
+//        ? vec4(h.xy, hC.xy) 
+//        : vec4(h.zw, hC.zw + .5);
+}
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{
+    // Aspect correct screen coordinates.
+	vec2 u = (fragCoord - iResolution.xy*.5)/iResolution.y;
+    
+    // Scaling, translating, then converting it to a hexagonal grid cell coordinate and
+    // a unique coordinate ID. The resultant vector contains everything you need to produce a
+    // pretty pattern, so what you do from here is up to you.
+    HexInfo h = getHex(u*6. + s.yx);
+    
+    // The beauty of working with hexagonal centers is that the relative edge distance will simply 
+    // be the value of the 2D isofield for a hexagon.
+    float eDist = hex(h.xy); // Edge distance.
+
+    // Initiate the background to a white color, putting in some dark borders.
+    vec3 col = mix(vec3(0.), vec3(1), smoothstep(0., .03, eDist - .5 + .04));  
+    
+    float d = length(h.xy);
+    col.r = 1.0 - d;
+    
+    if(h.row >= 0.6) {
+        if(h.oddColumn == 1) 
+            col.g = 1.0;
+        else
+            col.b = 1.0;
+        
+    }
+    
+    fragColor = vec4(col, 1);    
+}
+
+*/
+
+/*
+exce
+#define FLAT_TOP_HEXAGON
+
+// Helper vector. If you're doing anything that involves regular triangles or hexagons, the
+// 30-60-90 triangle will be involved in some way, which has sides of 1, sqrt(3) and 2.
+const vec2 s = vec2(1.7320508, 1);
+
+float hash21(vec2 p)
+{
+    return fract(sin(dot(p, vec2(141.13, 289.97)))*43758.5453);
+}
+
+// The 2D hexagonal isosuface function: If you were to render a horizontal line and one that
+// slopes at 60 degrees, mirror, then combine them, you'd arrive at the following. As an aside,
+// the function is a bound -- as opposed to a Euclidean distance representation, but either
+// way, the result is hexagonal boundary lines.
+float hex(in vec2 p)
+{    
+    p = abs(p);
+    
+    return max(dot(p, s*.5), p.y); // Hexagon.
+}
+
+// This function returns the hexagonal grid coordinate for the grid cell, and the corresponding 
+// hexagon cell ID -- in the form of the central hexagonal point. That's basically all you need to 
+// produce a hexagonal grid.
+//
+// When working with 2D, I guess it's not that important to streamline this particular function.
+// However, if you need to raymarch a hexagonal grid, the number of operations tend to matter.
+// This one has minimal setup, one "floor" call, a couple of "dot" calls, a ternary operator, etc.
+// To use it to raymarch, you'd have to double up on everything -- in order to deal with 
+// overlapping fields from neighboring cells, so the fewer operations the better.
+
+struct HexInfo {
+    vec2 xy;
+    float row;
+    float column;
+    int oddRow;
+    int oddColumn;
+};
+
+HexInfo getHex(vec2 p)
+{    
+    HexInfo hi;
+    // The hexagon centers: Two sets of repeat hexagons are required to fill in the space, and
+    // the two sets are stored in a "vec4" in order to group some calculations together. The hexagon
+    // center we'll eventually use will depend upon which is closest to the current point. Since 
+    // the central hexagon point is unique, it doubles as the unique hexagon ID.
+    
+    vec4 hC = floor(vec4(p, p - vec2(1, .5))/s.xyxy) + .5;
+    
+    // Centering the coordinates with the hexagon centers above.
+    vec4 h = vec4(p - hC.xy*s, p - (hC.zw + .5)*s);
+    hi.xy = h.xy;
+
+    hi.row = h.z;
+    hi.column = h.w;
+
+
+    vec4 result=dot(h.xy, h.xy) < dot(h.zw, h.zw) 
+        ? vec4(h.xy, hC.xy) 
+        : vec4(h.zw, hC.zw + .5);
+
+    hi.xy = result.xy;
+    hi.column = result.z;
+    hi.row = result.w;
+
+    hi.oddColumn = 0;
+    hi.oddRow = 0;
+    
+    
+    return hi;
+    
+    // Nearest hexagon center (with respect to p) to the current point. In other words, when
+    // "h.xy" is zero, we're at the center. We're also returning the corresponding hexagon ID -
+    // in the form of the hexagonal central point.
+    //
+    // On a side note, I sometimes compare hex distances, but I noticed that Iomateron compared
+    // the squared Euclidian version, which seems neater, so I've adopted that.
+//    return dot(h.xy, h.xy) < dot(h.zw, h.zw) 
+//        ? vec4(h.xy, hC.xy) 
+//        : vec4(h.zw, hC.zw + .5);
+}
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{
+    // Aspect correct screen coordinates.
+	vec2 u = (fragCoord - iResolution.xy*.5)/iResolution.y;
+    
+    // Scaling, translating, then converting it to a hexagonal grid cell coordinate and
+    // a unique coordinate ID. The resultant vector contains everything you need to produce a
+    // pretty pattern, so what you do from here is up to you.
+    HexInfo h = getHex(u*6. + s.yx);
+    
+    // The beauty of working with hexagonal centers is that the relative edge distance will simply 
+    // be the value of the 2D isofield for a hexagon.
+    float eDist = hex(h.xy); // Edge distance.
+
+    // Initiate the background to a white color, putting in some dark borders.
+    vec3 col = mix(vec3(0.), vec3(1), smoothstep(0., .03, eDist - .5 + .04));  
+    
+    float d = length(h.xy);
+    col.r = 1.0 - d;
+    
+    if(h.column == 0.5) {
+        if(h.oddColumn == 1) 
+            col.g = 1.0;
+        else
+            col.b = 1.0;
+        
+    }
+    
+    fragColor = vec4(col, 1);    
+}
+*/

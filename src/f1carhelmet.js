@@ -15,25 +15,48 @@ class F1CarHelmet {
 
         this.gltfLoader = new GLTFLoader();
 
-        if (this.theModel) {
+        if (this.theModelRoot) {
             // If theModel already exists, remove it and its children
-            while (this.theModel.children.length > 0) {
-              this.theModel.remove(this.theModel.children[0]);
+            while (this.theModelRoot.children.length > 0) {
+              this.theModelRoot.remove(this.theModelRoot.children[0]);
             }
         }
 
-        this.theModel = new THREE.Object3D();
+        this.theModelRoot = new THREE.Object3D();
         this.f1materials = f1materials;
 
-        this.specialFXMesh = 0;
-        this.baseFXMesh = 0;
-        this.visorFXMesh = 0;
+        this.customMesh = 0;
+        this.staticMesh = 0;
+        this.visorMesh = 0;
 
         var _self = this;
 
+        // for wireframe
+        // clipping plane for intro spfx
+        this.clipPlanes = [
+            // new THREE.Plane( new THREE.Vector3( 0, 0, -1 ), 0 ),
+            new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 ),
+            new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 ),
+        ];
+
+        this.clipPlanesCustom = [
+            // new THREE.Plane( new THREE.Vector3( 0, 0, 1 ), 0 ),
+            new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0 ),
+        ];          
+
+        this.wireFrameMat = new THREE.MeshBasicMaterial({
+            // color: new THREE.Color(0,0.85,0),
+            color: new THREE.Color(0.9,0.05,0.05),
+            wireframe: true,
+
+            // clipping for intro
+            clippingPlanes: this.clipPlanes,
+            clipIntersection: false
+        });
+
          // main customisable material
-        this.theModelMaterial = new THREE.MeshStandardMaterial({ // pbr
-            name: 'theModelMaterial',
+        this.theCustomMaterial = new THREE.MeshStandardMaterial({ // pbr
+            name: 'theCustomMaterial',
             map: f1Layers.customMapBufferMapSceneTarget.texture,
             fog: false,
             metalness: 1.0,
@@ -52,14 +75,20 @@ class F1CarHelmet {
             // normalScale: new THREE.Vector2(-0.5, 0.5),
             normalScale: new THREE.Vector2(1, -1),
             // envMap: this.envMap
-            side: THREE.DoubleSide
+            side: THREE.DoubleSide,
+
+
+            // clipping for intro
+            clippingPlanes: this.clipPlanesCustom,
+            clipIntersection: false,
+            
 
           })
         
         // car model has two meshes
         // if(!this.isHelmet) {
             // base texture doesnt change
-            this.theBaseMaterial = new THREE.MeshStandardMaterial({ // pbr
+            this.theStaticMaterial = new THREE.MeshStandardMaterial({ // pbr
                 name: 'theModelBaseMaterial',
                 fog: false,
                 // metalness: 1.0,
@@ -76,10 +105,15 @@ class F1CarHelmet {
                 emissive: new THREE.Color(0,0,0),
                 // normalScale: new THREE.Vector2(-0.5, 0.5),
                 normalScale: new THREE.Vector2(1, -1),
-                side: THREE.DoubleSide
+                side: THREE.DoubleSide,
                 // envMap: this.envMap
+
+                // clipping for intro
+                clippingPlanes: this.clipPlanesCustom,
+                clipIntersection: false
+
             })
-            // this.theBaseMaterial.color = new THREE.Color(0xffffff)
+            // this.theStaticMaterial.color = new THREE.Color(0xffffff)
         // }
         // visor
         if(this.isHelmet) {
@@ -97,66 +131,64 @@ class F1CarHelmet {
                 emissive: new THREE.Color(0,0,0),
                 // normalScale: new THREE.Vector2(-0.5, 0.5),
                 normalScale: new THREE.Vector2(1, -1),
-                // envMap: this.envMap
-                side: THREE.DoubleSide
+                side: THREE.DoubleSide,
+
+                // clipping for intro
+                clippingPlanes: this.clipPlanesCustom,
+                clipIntersection: false
             })
         }
         //
-        var helmet3D;
+        var model3D;
         if(this.isHelmet)
-            helmet3D = f1fnames.helmet_files[0];//'./assets/helmet/F1PS_Helmet.glb';
+            model3D = f1fnames.helmet_files[0];
         else
-            // helmet3D = './assets/car/F1PS_F1_Car_Mesh_v02_Collapsed.glb';
-            helmet3D = f1fnames.car_files[0];//'./assets/car/F1PS_F1_Car_V03_NewUV.glb';
+            model3D = f1fnames.car_files[0];
 
 
 
-        this.helmetCentre = new THREE.Vector3();
         if(DEBUG_MODE)
-            console.log(">> attempting to load 3d mesh="+helmet3D);
-        this.gltfLoader.load( helmet3D, function ( gltf ) {
+            console.log(">> attempting to load 3d mesh="+model3D);
+        this.gltfLoader.load( model3D, function ( gltf ) {
             let theModelScene = gltf.scene;
-            _self.theModel.add(theModelScene);
+            _self.theModelRoot.add(theModelScene);
             if(DEBUG_MODE)
                 console.log(">> attempting to traverse mesh "+theModelScene.children.length);
 
             if(!_self.isHelmet) {
-                let modelMesh = theModelScene.getObjectByName('F1PS_F1_Car_Customizable')
-                modelMesh.layers.set(2);
-                modelMesh.material = _self.theModelMaterial;
-                _self.specialFXMesh = modelMesh;
-                modelMesh.castShadow = true;
-                modelMesh.receiveShadow = true;//false;
+                _self.customMesh = theModelScene.getObjectByName('F1PS_F1_Car_Customizable')
+                _self.customMesh.layers.set(2);
+                _self.customMesh.material = _self.theCustomMaterial;
+                _self.customMesh.castShadow = true;
+                _self.customMesh.receiveShadow = true;//false;
 
                 let staticMesh = theModelScene.getObjectByName('F1PS_F1_Car_Static')
                 staticMesh.layers.set(2); // make base black for glow...
-                staticMesh.material = _self.theBaseMaterial;
+                staticMesh.material = _self.theStaticMaterial;
                 staticMesh.castShadow = true;
                 // staticMesh.receiveShadow = false;
                 staticMesh.receiveShadow = true; // maybe! todo
-                _self.baseFXMesh = staticMesh;
+                _self.staticMesh = staticMesh;
             }
             else {
-                let modelMesh = theModelScene.getObjectByName('Helmet_main_1')
-                modelMesh.layers.set(2);
-                modelMesh.material = _self.theModelMaterial;
-                _self.specialFXMesh = modelMesh;
-                modelMesh.castShadow = true;
-                modelMesh.receiveShadow = false;
+                _self.customMesh = theModelScene.getObjectByName('Helmet_main_1')
+                _self.customMesh.layers.set(2);
+                _self.customMesh.material = _self.theCustomMaterial;
+                _self.customMesh.castShadow = true;
+                _self.customMesh.receiveShadow = false;
 
                 let staticMesh = theModelScene.getObjectByName('Helmet_main_2')
                 staticMesh.layers.set(2); // make base black for glow...
-                staticMesh.material = _self.theBaseMaterial;
+                staticMesh.material = _self.theStaticMaterial;
                 staticMesh.castShadow = true;
                 staticMesh.receiveShadow = true; // maybe! todo
-                _self.baseFXMesh = staticMesh;
+                _self.staticMesh = staticMesh;
 
-                let visorMesh = theModelScene.getObjectByName('Helmet_main_visor')
-                visorMesh.layers.set(2); // make base black for glow...
-                visorMesh.material = _self.theVisorMaterial;
-                visorMesh.castShadow = true;
-                visorMesh.receiveShadow = true; // maybe! todo
-                _self.visorFXMesh = visorMesh;
+                _self.visorMesh = theModelScene.getObjectByName('Helmet_main_visor')
+                _self.visorMesh.layers.set(2); // make base black for glow...
+                _self.visorMesh.material = _self.theVisorMaterial;
+                _self.visorMesh.castShadow = true;
+                _self.visorMesh.receiveShadow = true; // maybe! todo
                 // staticMesh.receiveShadow = false;
 
             }
@@ -221,17 +253,17 @@ class F1CarHelmet {
             filelist.push('envmap'); // force load of envmap now then
             filetypelist.push( 10 ); filecomplete.push(false);
 
-            _self.f1materials.sequentialLoadMaps( filelist,filecomplete, filetypelist,_self.theBaseMaterial,_self.theModelMaterial,f1Garage, _self,f1Ribbons);
+            _self.f1materials.sequentialLoadMaps( filelist,filecomplete, filetypelist,_self.theStaticMaterial,_self.theCustomMaterial,f1Garage, _self,f1Ribbons);
 
 
             // position 3D
             if(_self.isHelmet) {  
-                _self.theModel.scale.set(22,22,22);
-                _self.theModel.position.set(0,10,0); // helmet
+                _self.theModelRoot.scale.set(22,22,22);
+                _self.theModelRoot.position.set(0,10,0); // helmet
             }
             else {
-                _self.theModel.scale.set(18,18,18); // split
-                _self.theModel.position.set(0,20,-20); // 
+                _self.theModelRoot.scale.set(18,18,18); // split
+                _self.theModelRoot.position.set(0,20,-20); // 
 
             }
         }, undefined, function ( error ) {

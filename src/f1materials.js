@@ -54,11 +54,15 @@ class F1Materials {
             f1Settings.envStrengthGarage = strength;
             f1Garage.garageMaterial.envMapIntensity = f1Settings.envStrengthGarage;
             f1Garage.garageMaterial.needsUpdate=true;
+
+            f1Garage.plinthSidesMat.envMapIntensity = f1Settings.envStrengthPlinthSides;
+            f1Garage.plinthSidesMat.needsUpdate=true;
+            
         }
         else if(which==0){
             f1Settings.envStrenghtCustom = strength;
-            f1CarHelmet.theModelMaterial.envMapIntensity = f1Settings.envStrenghtCustom;
-            f1CarHelmet.theModelMaterial.needsUpdate=true;
+            f1CarHelmet.theCustomMaterial.envMapIntensity = f1Settings.envStrenghtCustom;
+            f1CarHelmet.theCustomMaterial.needsUpdate=true;
         }
         else if(which==3){
             f1Settings.envStrengthVisor = strength;
@@ -69,8 +73,8 @@ class F1Materials {
         }        
         else {
             f1Settings.envStrengthStatic = strength;
-            f1CarHelmet.theBaseMaterial.envMapIntensity = f1Settings.envStrengthStatic;
-            f1CarHelmet.theBaseMaterial.needsUpdate=true;
+            f1CarHelmet.theStaticMaterial.envMapIntensity = f1Settings.envStrengthStatic;
+            f1CarHelmet.theStaticMaterial.needsUpdate=true;
         }
 
     }
@@ -78,25 +82,27 @@ class F1Materials {
     quickSetMaps(result,f1CarHelmet,f1Garage) {
 
         result.mapping = THREE.CubeReflectionMapping;
-        if(f1CarHelmet && f1CarHelmet.theModelMaterial && f1Garage.garageMaterial) {
+        if(f1CarHelmet && f1CarHelmet.theCustomMaterial && f1Garage.garageMaterial) {
             if(DEBUG_MODE)
                 console.log(">> Materials all ready - envmap applying..")
             // f1CarHelmet.envMap = result;
-            f1CarHelmet.theModelMaterial.envMap = result;
+            f1CarHelmet.theCustomMaterial.envMap = result;
             f1Garage.garageMaterial.envMap = result;
     
             // lees envmapintensity settings 280223
             f1Garage.garageMaterial.envMapIntensity = f1Settings.envStrengthGarage;//this.envmapStrength;// * 0.125;
+
+
+            f1Garage.plinthSidesMat.envMap = result;
             f1Garage.plinthSidesMat.envMapIntensity = f1Settings.envStrengthPlinthSides;
-            f1Garage.plinthSidesMat.needsUpdate=true;
             
 
-            f1CarHelmet.theModelMaterial.envMapIntensity = f1Settings.envStrenghtCustom;//this.envmapStrength;
+            f1CarHelmet.theCustomMaterial.envMapIntensity = f1Settings.envStrenghtCustom;//this.envmapStrength;
 
-            if(f1CarHelmet.theBaseMaterial!=null) {
-                f1CarHelmet.theBaseMaterial.envMap = result;
-                f1CarHelmet.theBaseMaterial.envMapIntensity = f1Settings.envStrengthStatic;//this.envmapStrength;
-                f1CarHelmet.theBaseMaterial.needsUpdate=true;
+            if(f1CarHelmet.theStaticMaterial!=null) {
+                f1CarHelmet.theStaticMaterial.envMap = result;
+                f1CarHelmet.theStaticMaterial.envMapIntensity = f1Settings.envStrengthStatic;//this.envmapStrength;
+                f1CarHelmet.theStaticMaterial.needsUpdate=true;
 
                 if(f1CarHelmet.theVisorMaterial) {
                     f1CarHelmet.theVisorMaterial.envMap = result;
@@ -105,8 +111,9 @@ class F1Materials {
                 }
             }
             
-    
-            f1CarHelmet.theModelMaterial.needsUpdate=true;
+            f1Garage.plinthSidesMat.needsUpdate=true;
+
+            f1CarHelmet.theCustomMaterial.needsUpdate=true;
             f1Garage.garageMaterial.needsUpdate=true;
         }
         else {
@@ -228,8 +235,8 @@ class F1Materials {
                         tex.encoding = THREE.sRGBEncoding;  // garage floor texture map
                         f1Garage.garageMaterial.map = tex;
                         f1Garage.garageMaterial.needsUpdate=true;
-                        // f1Garage.plinthSidesMat.map = tex;
-                        // f1Garage.plinthSidesMat.needsUpdate=true;
+                        f1Garage.plinthSidesMat.map = tex;
+                        f1Garage.plinthSidesMat.needsUpdate=true;
                         
                         break;
                     case 8:
@@ -237,12 +244,11 @@ class F1Materials {
 
                         f1Garage.garageMaterial.roughnessMap = tex;
                         f1Garage.garageMaterial.needsUpdate=true;
-                        // f1Garage.plinthSidesMat.roughnessMap = tex;
-                        // f1Garage.plinthSidesMat.needsUpdate=true;
+                        f1Garage.plinthSidesMat.roughnessMap = tex;
+                        f1Garage.plinthSidesMat.needsUpdate=true;
                         // also used for garagefloor sfx
                         f1Garage.garageSFXMaterial.uniforms.texture1.value = tex;
                         f1Garage.garageSFXMaterial.needsUpdate = true;
-
 
 
                         break;

@@ -34,7 +34,7 @@ import {F1Ribbons} from'./f1Ribbons'
 // import {F1Settings} from './F1Settings'
 import { f1Settings } from './f1Settings.js';
 
-import {F1Cookies} from './F1Cookies'
+import {F1User} from './f1User'
 import {DEBUG_MODE, createLightHelper} from './adminuser'
 
 import { updateProgress } from './f1gui';
@@ -75,7 +75,7 @@ window.onMinMax = onMinMax;
 window.onConsole = onConsole;
 
 //===================================
-const f1Cookies = new F1Cookies();
+const f1User = new F1User();
 
 var renderSize = 1024;
 // var renderSize = 2048;
@@ -84,6 +84,8 @@ var customMapRenderSize = 2048;
 var customRoughMapRenderSize = 1024;
 var sfxBloomRenderSize = 512;
 
+const camfrom = new THREE.Vector3(165.0,52.3,-3.7);
+const camto = new THREE.Vector3(44.0,36.0,90.0);
 
 // set files names
 var f1fnames = new F1AssetFileNames();
@@ -114,7 +116,7 @@ var mainLight4;
 var ambLight;
 var dirLight;
 var dirLight2;
-var dirLightFloor;
+// var dirLightFloor;
 
 var centredControlsTarget = 0;
 
@@ -127,26 +129,26 @@ var f1Aws = new F1Aws();
 f1Aws.loadfromAWS('languages','languages.json',0);
 
 
-var patternItems = new PatternItems(!f1Cookies.cookie_livery_value == "");
+var patternItems = new PatternItems(!f1User.cookie_livery_value == "");
 var processJSON = new ProcessJSON(patternItems);
-processJSON.loadPatterns(f1Cookies,f1Aws);
+processJSON.loadPatterns(f1User,f1Aws);
 var f1Fonts = new F1Fonts();
 
 var f1Gui = new F1Gui(processJSON);
 updateProgress(5,'patterns');
 
 var f1Materials  = new F1Materials(f1Settings);
-var f1Layers = new F1Layers(f1Cookies.isHelmet, customMapRenderSize,f1fnames);
-var f1MetalRough = new F1MetalRough(f1Cookies.isHelmet, customRoughMapRenderSize,f1fnames);
-// var f1PostRender = new F1PostRender(f1Cookies.isHelmet, renderSize,f1fnames);
-var f1SpecialFX =  new F1SpecialFX(f1Cookies.isHelmet, renderSize,f1fnames, sfxBloomRenderSize);
+var f1Layers = new F1Layers(f1User.isHelmet, customMapRenderSize,f1fnames);
+var f1MetalRough = new F1MetalRough(f1User.isHelmet, customRoughMapRenderSize,f1fnames);
+// var f1PostRender = new F1PostRender(f1User.isHelmet, renderSize,f1fnames);
+var f1SpecialFX =  new F1SpecialFX(f1User.isHelmet, renderSize,f1fnames, sfxBloomRenderSize);
 var f1Text = new F1Text(f1Layers.mapUniforms, f1MetalRough.mapUniforms);
 var f1Ribbons = new F1Ribbons(f1Materials);
 
 
 updateProgress(5,'pipelines');
 var f1Garage = new F1Garage();
-
+var gameStage = 0;
 
 var f1CarHelmet = new F1CarHelmet();
 
@@ -250,9 +252,9 @@ function createColourpicker() {
 				f1Layers.mapUniforms.texture1TintChannel3.value = tmpv4;
 
 				// also tint helmet visor
-				if(f1Cookies.isHelmet) {
-					f1CarHelmet.visorFXMesh.material.color = new THREE.Color( color.hexString);
-					f1CarHelmet.visorFXMesh.material.needsUpdate = true;
+				if(f1User.isHelmet) {
+					f1CarHelmet.visorMesh.material.color = new THREE.Color( color.hexString);
+					f1CarHelmet.visorMesh.material.needsUpdate = true;
 				}
 
 				break;
@@ -379,11 +381,11 @@ function setupConsoleListeners() {
 			console.log(this.value);
 		if(this.value=="car") {
 			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrenghtCustom;
-			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theModelMaterial.envMapIntensity * 100.0;
+			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theCustomMaterial.envMapIntensity * 100.0;
 		}
 		else if(this.value=="carstatic") {
 			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrengthStatic;
-			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theBaseMaterial.envMapIntensity * 100.0; // static gets 100x
+			document.getElementById('c_envStrengthSlider').value = f1CarHelmet.theStaticMaterial.envMapIntensity * 100.0; // static gets 100x
 		}
 		else if(this.value=="visor") {
 			document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrengthVisor;
@@ -581,9 +583,14 @@ function onConsole(_switch) {
 	if(!DEBUG_MODE)
 		return;
 
-	const console = document.getElementById('console');
+	if(DEBUG_MODE) {
+		console.log("> camerapos: " + camera.position.x + ", " + camera.position.y + ", " + camera.position.z);
+	}
+
+
+	const consolecontainer = document.getElementById('console');
 	if(_switch==0) {
-		if(console.className == 'hidden') {
+		if(consolecontainer.className == 'hidden') {
 			// update values in sliders
 			document.getElementById('c_tonemappingSliderTxt').innerHTML = 'toneMapping : ' + renderer.toneMappingExposure;
 			document.getElementById('c_tonemappingSlider').value = renderer.toneMappingExposure;
@@ -601,10 +608,10 @@ function onConsole(_switch) {
 			else 
 				document.getElementById('c_envStrengthSliderTxt').innerHTML = 'envStrength : ' + f1Settings.envStrengthGarage;
 			
-			console.classList.remove('hidden');
+			consolecontainer.classList.remove('hidden');
 		}
 		else
-			console.classList.add('hidden');
+			consolecontainer.classList.add('hidden');
 	}
 	else if(_switch==1) {
 		deb_specialPipelineToggle=!deb_specialPipelineToggle;
@@ -693,9 +700,9 @@ function onMinMax() {
 
 //==================================================
 function switchModel(_isHelmet) {
-	if(f1Cookies.isHelmet == _isHelmet) return;
-	f1Cookies.isHelmet = _isHelmet;
-	processJSON.loadPatterns(f1Cookies,f1Aws);
+	if(f1User.isHelmet == _isHelmet) return;
+	f1User.isHelmet = _isHelmet;
+	processJSON.loadPatterns(f1User,f1Aws);
 }
 //==================================================
 function seekPatternThumb(patternblock,layer) {
@@ -723,6 +730,9 @@ function seekPatternThumb(patternblock,layer) {
 //==================================================
 function introNextPage(nextPage) {
 	if(nextPage==0) { // first page Okeyed
+
+		gameStage = 1;
+
 		// TODO NEW HTML
 		document.getElementById('welcomeContent').classList.add('hidden');
 
@@ -731,16 +741,131 @@ function introNextPage(nextPage) {
 
 
 		setSize(window.innerWidth,window.innerHeight );
+		// prep and do car intro
+		seekPatternThumb(document.getElementById('layer1patterns_ins'),0).click();
+		setAutoSelectingPattern(false);		
 		changeTab(1);
 
+		renderer.localClippingEnabled = true;	// for sfx intro
 
-		// document.getElementById('welcomeblock').classList.add('fadedout');
-		// document.getElementById('intro2block').classList.remove('hidden');
+		// const helpers = new THREE.Group();
+//		helpers.add( new THREE.PlaneHelper( f1CarHelmet.clipPlanes[ 0 ], 100, 0x0000ff ) );
+		// helpers.add( new THREE.PlaneHelper( f1CarHelmet.clipPlanes[ 1 ], 100, 0x00ff00 ) );
+		// helpers.visible = true;
+		// scene.add( helpers );
+		controls.enabled = false;
+
+		const carinduration = 3500;	// delays 500 first
+		const carwireduration = 5000;  // delays 800 first
+		
+		mainLight.intensity = 0;
+		mainLight2.intensity= 0;
+		mainLight3.intensity = 0;
+		mainLight4.intensity= 0;
+		dirLight.intensity = 0;
+		dirLight2.intensity= 0;
+		
+		f1Materials.setEnvStrength(0,f1CarHelmet,f1Garage,0);
+		f1Materials.setEnvStrength(0,f1CarHelmet,f1Garage,1);
+		f1Materials.setEnvStrength(0,f1CarHelmet,f1Garage,2);
+		if(f1User.isHelmet)
+			f1Materials.setEnvStrength(0,f1CarHelmet,f1Garage,3);
+
+
+		camera.position.set(camfrom.x,camfrom.y,camfrom.z);
+		f1CarHelmet.customMesh.castShadow = false;
+		f1CarHelmet.staticMesh.castShadow = false;
+		if(f1User.isHelmet)
+			f1CarHelmet.visorMesh.castShadow = false;
+
+
+		f1CarHelmet.clipPlanes[0].constant = -10;
+		f1CarHelmet.clipPlanes[1].constant = 15;
+		f1CarHelmet.clipPlanesCustom[0].constant = -f1CarHelmet.clipPlanes[1].constant;
+
+		// switch the shadows back on once we've started showing some mesh
+		setTimeout(function() {
+			f1CarHelmet.customMesh.castShadow = true;
+			f1CarHelmet.staticMesh.castShadow = true;
+			if(f1User.isHelmet)
+				f1CarHelmet.visorMesh.castShadow = true;
+		},600);
+
+		new TWEEN.Tween(mainLight)
+		.to({
+				intensity: f1Settings.mainLight1Intensity,
+			},
+			1000
+		)
+		.easing(TWEEN.Easing.Sinusoidal.Out)
+		.onUpdate(function (object) {
+			const amnt = object.intensity / f1Settings.mainLight1Intensity;
+			mainLight2.intensity = amnt * f1Settings.mainLight2Intensity;
+			mainLight3.intensity = amnt * f1Settings.spotLight1Intensity;
+			mainLight4.intensity = amnt * f1Settings.spotLight2Intensity;
+			ambLight.intensity = amnt * f1Settings.ambientLightIntensity;
+			dirLight.intensity = amnt * f1Settings.dirLight1Intensity;
+			dirLight2.intensity= amnt * f1Settings.dirLight2Intensity;
+
+			f1Materials.setEnvStrength(amnt * f1Settings.envStrenghtCustom,f1CarHelmet,f1Garage,0);
+			f1Materials.setEnvStrength(amnt * f1Settings.envStrengthStatic,f1CarHelmet,f1Garage,1);
+			f1Materials.setEnvStrength(amnt * f1Settings.envStrengthGarage,f1CarHelmet,f1Garage,2);
+			if(f1User.isHelmet)
+				f1Materials.setEnvStrength(amnt * f1Settings.envStrengthVisor,f1CarHelmet,f1Garage,3);
+
+		})		
+		.start()
+
+
+
+		new TWEEN.Tween(f1CarHelmet.clipPlanes[0])
+		.to({
+				constant: 19.0,
+			},
+			carwireduration
+		)
+		.delay(500)
+		.easing(TWEEN.Easing.Sinusoidal.Out)
+		.onUpdate(function (object) {
+			f1CarHelmet.clipPlanes[1].constant = -object.constant + 5;
+			f1CarHelmet.clipPlanesCustom[0].constant = -f1CarHelmet.clipPlanes[1].constant;
+		})		
+		.start()
+
+		new TWEEN.Tween(camera.position)
+		.to({
+				x: camto.x,
+				y: camto.y,
+				z: camto.z,
+			},
+			carinduration
+		)
+		.delay(800)
+		.easing(TWEEN.Easing.Sinusoidal.InOut)
+		.onComplete(function () {
+			controls.enabled = true;
+			f1Garage.startFloorMode(1);
+		})
+		.start()
+
+
+		//
+		setTimeout( function() {
+			f1SpecialFX.resetCarFromIntro(f1CarHelmet,f1User.isHelmet);
+			renderer.localClippingEnabled = false;	// was for sfx intro
+			// seekPatternThumb(document.getElementById('layer1patterns_ins'),0).click();
+			// setAutoSelectingPattern(false);		
+			// changeTab(1);
+			gameStage = 2; // moved on from intro
+			f1Ribbons.triggerRibbon();
+	
+		}, carinduration + 800);
+		
 
 
 
 	}
-	// TODO NEW HTML
+	// TODO NEW HTML never here
 	else if(nextPage==1) { // have clicked on second intro page Ok button ==> fade in tutorial page 1
 		// document.getElementById('intro2block').classList.add('fadedout');
 
@@ -795,6 +920,8 @@ function initit()
 			premultipliedAlpha: true,
 			physicallyCorrectLights: true,
 	});
+
+
 	renderer.sortObjects = false;
 
 	// shadow test
@@ -823,7 +950,8 @@ function initScenes()
 	scene.background =  new THREE.Color( 0x555555 );
 
 	camera = new THREE.PerspectiveCamera( 45, renderSize / renderSize, 0.1, 900 );
-	camera.position.set(44,36, 90);
+
+	camera.position.set(camfrom.x,camfrom.y,camfrom.z);
 
 	camera.layers.enable(2); // car/helmet model
 	camera.layers.disable(3); // ribbon
@@ -840,7 +968,7 @@ function initScenes()
     // POST RENDER EFFECTS
 	f1SpecialFX.setupBloom(scene, camera,renderer,renderSize,f1Garage);
 
-	f1CarHelmet.init(f1Materials,f1Layers, f1Cookies.isHelmet, f1fnames, f1MetalRough,f1SpecialFX, f1Garage,f1Ribbons);
+	f1CarHelmet.init(f1Materials,f1Layers, f1User.isHelmet, f1fnames, f1MetalRough,f1SpecialFX, f1Garage,f1Ribbons);
 
 	// lights
 	mainLight = createPointLight(f1Settings.mainLight1Intensity);
@@ -856,24 +984,25 @@ function initScenes()
 	// mainLight2.position.set( -80, 80, -10 );
 	// mainLight3.position.set( 80, 80, 50 );
 	// mainLight4.position.set( -80, 80, 50 );
-	mainLight.position.set( 78, -19, 2 );
+	mainLight.position.set( 78, -19, 2 );	// points
 	mainLight2.position.set( -78, -19, 2 );
-	mainLight3.position.set( 71, 80, 63 );
-	mainLight4.position.set( -71, 80, 63 );
+
+	mainLight3.position.set( 71, 27, 63 ); // spots
+	mainLight4.position.set( -71, 27, 63 );
 
 	ambLight = new THREE.AmbientLight( 0xffffff, f1Settings.ambientLightIntensity ); 
 
-	const dirlightheight = 152;
-	const dirlightx = 200;
-	const dirlightz = -122; // -40
 	dirLight = createDirectionalLight(f1Settings.dirLight1Intensity);
 	dirLight2 = createDirectionalLight(f1Settings.dirLight2Intensity);
 
+	const dirlightheight = 152;
+	const dirlightx = 78;
+	const dirlightz = -10; // -40
 
 	dirLight.position.set( dirlightx, dirlightheight, dirlightz);
-	// dirLight.target = f1CarHelmet.theModel;
+	// dirLight.target = f1CarHelmet.theModelRoot;
 	dirLight2.position.set( -dirlightx, dirlightheight, dirlightz);
-	// dirLight2.target = f1CarHelmet.theModel;
+	// dirLight2.target = f1CarHelmet.theModelRoot;
 
 
 	scene.add(mainLight);
@@ -889,7 +1018,7 @@ function initScenes()
 //
 	// scene.add( f1Garage.sfxRoot);
 	
-	rootScene.add( f1CarHelmet.theModel );
+	rootScene.add( f1CarHelmet.theModelRoot );
 	rootScene.add(f1Garage.garageRoot);
 	scene.add(rootScene);
 
@@ -945,7 +1074,7 @@ function createDirectionalLight(intensity) {
 	light.shadow.camera.right = 100;
 	light.shadow.camera.top = 100;
 	light.shadow.camera.bottom = -100;
-	light.target.position.set( new THREE.Vector3(0,0,0));//f1CarHelmet.theModel.position;
+	light.target.position.set( new THREE.Vector3(0,0,0));//f1CarHelmet.theModelRoot.position;
 
 	return light;
 }
@@ -976,8 +1105,8 @@ function createSpotLight(intensity) {
 		if(DEBUG_MODE)
 			console.log("not readu***********************");
 
-	// light.target.position = new THREE.Vector3(0,0,0);// f1CarHelmet.theModel.position;
-	light.target.position.set( new THREE.Vector3(0,0,0));//f1CarHelmet.theModel.position;
+	// light.target.position = new THREE.Vector3(0,0,0);// f1CarHelmet.theModelRoot.position;
+	light.target.position.set( new THREE.Vector3(0,0,0));//f1CarHelmet.theModelRoot.position;
 
 	return light;
 
@@ -1006,7 +1135,7 @@ function choosePattern(which, theLayer,thefile,thepatternelement) {
 	patternItems.changePattern(which,thefile,
 		f1Layers.mapUniforms,thepatternelement,
 		processJSON.patternsData,processJSON.liveryData,theLayer,
-		f1MetalRough.mapUniforms,f1Text,f1SpecialFX,f1Aws,f1CarHelmet.theVisorMaterial,f1Cookies.isHelmet);
+		f1MetalRough.mapUniforms,f1Text,f1SpecialFX,f1Aws,f1CarHelmet.theVisorMaterial,f1User.isHelmet);
 }
 
 //=========================================================
@@ -1163,9 +1292,9 @@ function onDefaultPaint() {
 		else if(t==2) {
 			f1Layers.mapUniforms.texture1TintChannel3.value = tmpv4;
 			// also tint helmet visor
-			if(f1Cookies.isHelmet) {
-				f1CarHelmet.visorFXMesh.material.color = new THREE.Color( tmp1);
-				f1CarHelmet.visorFXMesh.material.needsUpdate = true;
+			if(f1User.isHelmet) {
+				f1CarHelmet.visorMesh.material.color = new THREE.Color( tmp1);
+				f1CarHelmet.visorMesh.material.needsUpdate = true;
 			}
 
 		}
@@ -1251,9 +1380,9 @@ function onRandomPaint() {
 			f1MetalRough.mapUniforms.baseChannel3Rough.value = rough;
 
 			// also tint helmet visor
-			if(f1Cookies.isHelmet) {
-				f1CarHelmet.visorFXMesh.material.color = new THREE.Color( tmp1);
-				f1CarHelmet.visorFXMesh.material.needsUpdate = true;
+			if(f1User.isHelmet) {
+				f1CarHelmet.visorMesh.material.color = new THREE.Color( tmp1);
+				f1CarHelmet.visorMesh.material.needsUpdate = true;
 			}			
 		}
 		processJSON.liveryData['Layers'][currentLayer].Channels[t].metalroughtype = glosstype;
@@ -1329,7 +1458,7 @@ function doSavePaintShop(_pixelBuffer,_dateTimeTypePrefix, _renderSize) {
 	context.putImageData(imageData, 0, 0);
 
 	var dataURL = tmpcanvas.toDataURL();
-	const filename = f1Cookies.userID + _dateTimeTypePrefix;
+	const filename = f1User.userID + _dateTimeTypePrefix;
 	
 	if(DEBUG_MODE)
 		console.log('>> file saving "' + filename + '"');
@@ -1455,7 +1584,7 @@ function postRenderProcess() {
 		doSavePaintShop(pixelBufferRoughMetal, "_" + datetime +  "_roughmetal.png", customRoughMapRenderSize);
 
 		// save json record too
-		var jsonfilename = f1Cookies.userID + "_" + datetime +  "_livery.json";
+		var jsonfilename = f1User.userID + "_" + datetime +  "_livery.json";
 		var liveryDataString = JSON.stringify( processJSON.liveryData);
 
 		var blob = new Blob([liveryDataString],
@@ -1491,10 +1620,10 @@ function postRenderProcess() {
 
 
 		// include user id, datetime, helmet or car and language
-		const params = '?u=' + f1Cookies.userID + '&d='+ datetime + '&m=' + (f1Cookies.isHelmet ? 'h' : 'c') + '&l=' + f1Cookies.languageCode;
+		const params = '?u=' + f1User.userID + '&d='+ datetime + '&m=' + (f1User.isHelmet ? 'h' : 'c') + '&l=' + f1User.languageCode;
 		// marker f1 fanzone ar version latest V2
 		const thearlink = 'https://solarflarestudio.8thwall.app/f1-fanzone-ar-v2/' + params;
-		// const thearlink = 'https://solarflarestudio.8thwall.app/f1-fanzone-ar-v2/?u=' + f1Cookies.userID + '&d='+ datetime;// +'&m=c&t='+(new Date());
+		// const thearlink = 'https://solarflarestudio.8thwall.app/f1-fanzone-ar-v2/?u=' + f1User.userID + '&d='+ datetime;// +'&m=c&t='+(new Date());
 		
 
 		if(DEBUG_MODE)
@@ -1548,6 +1677,10 @@ function checkFilesHaveSaved() {
 //==================================
 function renderpipeline() {
 
+	if(gameStage==1) {
+		doIntroRender();
+		return;
+	}
 
 	if(deb_specialPipelineToggle) {
 		specialrenderpipeline();
@@ -1568,11 +1701,95 @@ function renderpipeline() {
 	renderer.render( f1Layers.customMapBufferMapScene, f1Layers.customMapBufferMapCamera );
 
 	// apply composited layers buffer as model map
-	f1CarHelmet.theModelMaterial.map = f1Layers.customMapBufferMapSceneTarget.texture;
-	f1CarHelmet.theModelMaterial.needsUpdate = true;
+	f1CarHelmet.theCustomMaterial.map = f1Layers.customMapBufferMapSceneTarget.texture;
+	f1CarHelmet.theCustomMaterial.needsUpdate = true;
 
 	renderer.setRenderTarget(null);
 	renderer.render(scene,camera);
+}
+
+//==================================
+function doIntroRender() {
+
+	if(!f1CarHelmet.customMesh) // not ready
+		return;
+
+	camera.layers.enableAll();
+	camera.layers.disable(3); // ribbon
+
+	// render the rough / metal map to offscreen
+	renderer.setRenderTarget(f1MetalRough.metalBufferMapSceneTarget);
+	renderer.render( f1MetalRough.metalBufferMapScene, f1MetalRough.metalBufferMapCamera );
+
+	// render the main map layers to offscreen
+	renderer.setRenderTarget(f1Layers.customMapBufferMapSceneTarget);
+	renderer.render( f1Layers.customMapBufferMapScene, f1Layers.customMapBufferMapCamera );
+
+	// apply composited layers buffer as model map
+	f1CarHelmet.theCustomMaterial.map = f1Layers.customMapBufferMapSceneTarget.texture;
+	f1CarHelmet.theCustomMaterial.needsUpdate = true;
+	camera.layers.enable(3); // ribbon
+
+
+
+	scene.background =  new THREE.Color( 0x000000 );
+
+
+	f1CarHelmet.customMesh.material = f1CarHelmet.wireFrameMat;
+	f1CarHelmet.staticMesh.material = f1CarHelmet.wireFrameMat;
+	if(f1User.isHelmet)
+	  f1CarHelmet.visorMesh.material = f1CarHelmet.wireFrameMat;
+
+	camera.layers.disable(1); // garage
+	f1SpecialFX.fxComposer.render();
+
+	//
+	// if(f1CarHelmet.customMesh) {
+	// 	f1CarHelmet.staticMesh.material = f1SpecialFX.blackMat;
+	// 	f1CarHelmet.customMesh.material = f1SpecialFX.blackMat;
+	// 	if(f1User.isHelmet)
+	// 		f1CarHelmet.visorMesh.material = f1SpecialFX.blackMat;
+	// }
+	if(f1Ribbons.enabled) {
+		camera.layers.disable(2); // car
+
+
+		camera.layers.enable(3); // ribbon
+
+
+		f1SpecialFX.fxRibbonComposer.render();
+		camera.layers.disable(3);
+		camera.layers.enable(2); // car
+	}
+
+	//
+	camera.layers.enable(1);// garage
+	
+	if(f1Garage.backgroundImage!=0)
+		scene.background = f1Garage.backgroundImage;
+	else
+		scene.background =  new THREE.Color( 0x555555 );
+
+//
+	// if(f1CarHelmet.customMesh) { // revert the materials
+	// 	f1CarHelmet.staticMesh.material = f1CarHelmet.theStaticMaterial;
+	// 	f1CarHelmet.customMesh.material = f1CarHelmet.theCustomMaterial;
+	// 	if(f1User.isHelmet)
+	// 		f1CarHelmet.visorMesh.material = f1CarHelmet.theVisorMaterial;
+	// }
+
+	f1CarHelmet.customMesh.material = f1CarHelmet.theCustomMaterial;
+	f1CarHelmet.staticMesh.material = f1CarHelmet.theStaticMaterial;
+	if(f1User.isHelmet)
+	  f1CarHelmet.visorMesh.material = f1CarHelmet.theVisorMaterial;
+
+	camera.layers.enableAll();
+	camera.layers.disable(3);// ribbon
+
+
+
+	f1SpecialFX.finalComposer.render();
+
 }
 
 //==================================
@@ -1589,11 +1806,11 @@ function specialrenderpipeline() {
 	renderer.render( f1Layers.customMapBufferMapScene, f1Layers.customMapBufferMapCamera );
 
 	// apply composited layers buffer as model map
-	f1CarHelmet.theModelMaterial.map = f1Layers.customMapBufferMapSceneTarget.texture;
-	f1CarHelmet.theModelMaterial.needsUpdate = true;
+	f1CarHelmet.theCustomMaterial.map = f1Layers.customMapBufferMapSceneTarget.texture;
+	f1CarHelmet.theCustomMaterial.needsUpdate = true;
 
 	// prevent attempt before loaded
-	if(f1CarHelmet.specialFXMesh) {
+	if(f1CarHelmet.customMesh) {
 
 		// get tint values from appropriate layer = base/tag/sponsor colouring
 		f1SpecialFX.mapUniforms.layer.value = f1Gui.currentPage;
@@ -1620,17 +1837,17 @@ function specialrenderpipeline() {
 
 		// apply to car custom layer mesh copy
 		f1SpecialFX.plainMat.map = f1SpecialFX.glowBufferMapSceneTarget.texture;
-		f1CarHelmet.specialFXMesh.material = f1SpecialFX.plainMat;
+		f1CarHelmet.customMesh.material = f1SpecialFX.plainMat;
 
 		// black out static mesh
-		if(f1Cookies.isHelmet)
-			f1CarHelmet.visorFXMesh.material = f1SpecialFX.blackMat;
+		if(f1User.isHelmet)
+			f1CarHelmet.visorMesh.material = f1SpecialFX.blackMat;
 
-		f1CarHelmet.baseFXMesh.material = f1SpecialFX.blackMat;
+		f1CarHelmet.staticMesh.material = f1SpecialFX.blackMat;
 		
 
 
-//		f1CarHelmet.specialFXMesh.material.map = f1SpecialFX.glowBufferMapSceneTarget.texture;
+//		f1CarHelmet.customMesh.material.map = f1SpecialFX.glowBufferMapSceneTarget.texture;
 	}
 	scene.background =  new THREE.Color( 0x000000 );
 
@@ -1640,11 +1857,11 @@ function specialrenderpipeline() {
 	f1SpecialFX.fxComposer.render();
 
 	//
-	if(f1CarHelmet.specialFXMesh) {
-		f1CarHelmet.baseFXMesh.material = f1SpecialFX.blackMat;
-		f1CarHelmet.specialFXMesh.material = f1SpecialFX.blackMat;
-		if(f1Cookies.isHelmet)
-			f1CarHelmet.visorFXMesh.material = f1SpecialFX.blackMat;
+	if(f1CarHelmet.customMesh) {
+		f1CarHelmet.staticMesh.material = f1SpecialFX.blackMat;
+		f1CarHelmet.customMesh.material = f1SpecialFX.blackMat;
+		if(f1User.isHelmet)
+			f1CarHelmet.visorMesh.material = f1SpecialFX.blackMat;
 
 	}
 	if(f1Ribbons.enabled) {
@@ -1665,11 +1882,11 @@ function specialrenderpipeline() {
 		scene.background =  new THREE.Color( 0x555555 );
 
 //
-	if(f1CarHelmet.specialFXMesh) {
-		f1CarHelmet.baseFXMesh.material = f1CarHelmet.theBaseMaterial;
-		f1CarHelmet.specialFXMesh.material = f1CarHelmet.theModelMaterial;
-		if(f1Cookies.isHelmet)
-			f1CarHelmet.visorFXMesh.material = f1CarHelmet.theVisorMaterial;
+	if(f1CarHelmet.customMesh) { // revert the materials
+		f1CarHelmet.staticMesh.material = f1CarHelmet.theStaticMaterial;
+		f1CarHelmet.customMesh.material = f1CarHelmet.theCustomMaterial;
+		if(f1User.isHelmet)
+			f1CarHelmet.visorMesh.material = f1CarHelmet.theVisorMaterial;
 	}
 
 
@@ -1736,14 +1953,14 @@ function animate()
 	else if(processJSON.loadedLiveryJSON==1) {
 		
 		// clear all livery (and cookie livery)
-		if(f1Cookies.aUserParam==null) {
+		if(f1User.aUserParam==null) {
 			processJSON.resetLiveryLayerPatterns();
 		}
-		if(f1Cookies.cookie_livery_value!="") {
+		if(f1User.cookie_livery_value!="") {
 			parseCookieLivery();
 		}
 		else
-			f1Cookies.cookie_livery_value = document.cookie.replace(/(?:(?:^|.*;\s*)F1Livery\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+			f1User.cookie_livery_value = document.cookie.replace(/(?:(?:^|.*;\s*)F1Livery\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
 
 
@@ -1760,6 +1977,7 @@ function animate()
 	// detect if we have completed loading assets
 	if(!nowallloaded && f1Materials.alltexturesloaded) {
 		nowallloaded=true;
+		f1SpecialFX.initCarForIntro(f1CarHelmet,f1User.isHelmet);
 
 
 		// TODO NEW HTML
@@ -1802,13 +2020,17 @@ function animate()
 		if(f1Ribbons.enabled)
 			f1Ribbons.update(elapsed,currenttime);
 
-		f1Garage.uniforms.fTime.value += elapsed/1000.0;
-		
-		if(f1Garage.uniforms.fTime.value>=5)
-			f1Garage.uniforms.fTime.value = 0.0;
+		//  if(f1Garage.floorMode!=0) {
+		//  	f1Garage.uniforms.fTime.value += elapsed/1000.0;
+		//  }
+		// if(f1Garage.uniforms.fTime.value>=5) {
+		// 	f1Garage.uniforms.fTime.value = 0.0;
+		// 	f1SpecialFX.carStarted = 2.0;
+		// }
 
 		controls.update();
 		TWEEN.update();
+
 
 		if(f1SpecialFX.finalPass.uniforms.amountBloom.value>0.0) {
 			f1SpecialFX.timePassing();
@@ -1838,22 +2060,38 @@ animate();
 
 
 // debug hexagon grid
-document.getElementById('c_bendFSlider').oninput = function () {
+document.getElementById('c_off_xSlider').oninput = function () {
 	const amount = this.value/100.0;
-	document.getElementById('c_bendFSliderTxt').innerHTML = 'xoffset: ' + amount;
+	document.getElementById('c_off_xSliderTxt').innerHTML = 'xoffset: ' + amount;
 	f1Garage.uniforms.offset_x.value = amount;
 }
-document.getElementById('c_bendPSlider').oninput = function () {
+document.getElementById('c_tot_xSlider').oninput = function () {
 	const amount = this.value/100.0;
-	document.getElementById('c_bendPSliderTxt').innerHTML = 'tot_x: ' + amount;
+	document.getElementById('c_tot_xSliderTxt').innerHTML = 'tot_x: ' + amount;
 	f1Garage.uniforms.tot_x.value = amount;
 }
-document.getElementById('c_bendASlider').oninput = function () {
+document.getElementById('c_off_ySlider').oninput = function () {
 	const amount = this.value/100.0;
-	document.getElementById('c_bendASliderTxt').innerHTML = 'yoffset: ' + amount;
+	document.getElementById('c_off_ySliderTxt').innerHTML = 'yoffset: ' + amount;
 	f1Garage.uniforms.offset_y.value = amount;
 }
+document.getElementById('c_tot_ySlider').oninput = function () {
+	const amount = this.value/100.0;
+	document.getElementById('c_tot_ySliderTxt').innerHTML = 'tot_y: ' + amount;
+	f1Garage.uniforms.tot_y.value = amount;
+}
 
+document.getElementById('c_scale_xSlider').oninput = function () {
+	const amount = this.value/100.0;
+	document.getElementById('c_scale_xSliderTxt').innerHTML = 'scale_x: ' + amount;
+	f1Garage.uniforms.scale_x.value = amount;
+}
+
+document.getElementById('c_scale_ySlider').oninput = function () {
+	const amount = this.value/100.0;
+	document.getElementById('c_scale_ySliderTxt').innerHTML = 'scale_y: ' + amount;
+	f1Garage.uniforms.scale_y.value = amount;
+}
 
 
 
@@ -1863,8 +2101,8 @@ document.getElementById('c_bendASlider').oninput = function () {
 
 
 // new html
-
-
+// from custom.js
+// with ben mods 
 
 
 const loadingContent = document.querySelector("#loadingContent");
@@ -1915,12 +2153,12 @@ window.handleWelcomeNext = handleWelcomeNext
 window.handleTutorial = handleTutorial
 window.handlePattenTutorial = handlePattenTutorial
 
+
 function handlelanguageSelect() {
-	uihandlelanguageSelect();
+	uihandlelanguageSelect();	// ben see f1Gui
 }
 function handlelanguageChange(e) {
-	console.log(" here > " + e);
-	uihandlelanguageChange(e,f1Aws);
+	uihandlelanguageChange(e,f1Aws);	// ben see f1Gui
 }
 
 function handleWelcomeNext(){
@@ -1949,10 +2187,6 @@ function handleWelcomeNext(){
 
 
 //
-// set up buttons
-// document.getElementById('nextButton').onclick = function() {
-// 	introNextPage(0);
-// };
 
 // set up old html
 document.getElementById('canvas-positioner').style.display='none';

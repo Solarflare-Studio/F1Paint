@@ -54,11 +54,11 @@
     "Channels": [
       {
         "channelName": "Chan 1",
-        "defaultColour": "255,255,255"
-       },
+        "defaultColour": "0,0,0"
+      },
        {
         "channelName": "Chan 2",
-        "defaultColour": "0,0,0"
+        "defaultColour": "255,255,255"
        },
        {
         "channelName": "Chan 3",
@@ -586,7 +586,7 @@
      {
       "channelName": "Chan 2",
       "defaultColour": "255,255,255"
-     },
+    },
      {
       "channelName": "Chan 3",
       "defaultColour": "50,50,250"
