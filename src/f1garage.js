@@ -29,8 +29,8 @@ class F1Garage {
             name: 'scene background',
         });
         this.plinthSidesMat = this.newGarageMat();
-        // this.plinthSidesMat.color = new THREE.Color( 0x322020)
-        this.plinthSidesMat.color = new THREE.Color( 0x929292);
+        this.plinthSidesMat.color = new THREE.Color( 0x322020)
+        // this.plinthSidesMat.color = new THREE.Color( 0x929292);
 
         this.plinthSidesMat.transparent = false;
 
@@ -49,8 +49,8 @@ class F1Garage {
         let garageFloor = new THREE.Mesh( new THREE.CircleGeometry( 80, 32 ), this.garageMaterial );
         let garageFloorSFX = new THREE.Mesh( new THREE.CircleGeometry( 80, 32 ), this.garageSFXMaterial );
         let garageFloorSides = new THREE.Mesh( new THREE.CylinderGeometry( 80, 80, 10, 32, 1, true ), this.plinthSidesMat );
-        // garageFloorSides.layers.set(3); // with glow
-        garageFloorSides.layers.set(1); // without
+        garageFloorSides.layers.set(3); // with glow
+        // garageFloorSides.layers.set(1); // without
         // garageFloorSides.position.set(0,-5,0);
         garageFloorSides.position.set(0,-5.9,0);
 
@@ -141,27 +141,20 @@ class F1Garage {
         this.garageSFXMaterial.uniforms.mode.value = v;
         this.garageSFXMaterial.uniforms.fTime.value = 0.;
         var self = this;
-        if(this.floorMode == 0) { // wipe
-            var fadeIn = new THREE.Vector2(255,0);
+        if(this.floorMode == 0) { // wipe to zero
+
             self.garageSFXMaterial.uniforms.dimmer.value = 0.8;
-            new TWEEN.Tween(fadeIn)
-            .to({
-                    x: 0.0,
-                },
-                4000
+            new TWEEN.Tween({ value: 255 })
+            .to({ value: 0 },
+                1000
             )
-            // .easing(TWEEN.Easing.LINEAR.NONE)
+            .easing(TWEEN.Easing.Cubic.InOut)
             .onUpdate(function (object) {
-                for(var y=0;y<64;y++) {
-                    for(var x=0;x<64;x++) {
-                        var i = x*3 + (y*64*3);
-                        self.hexPixelBuffer[i]  = 0;//Math.min(self.hexPixelBuffer[i], x);
-                        self.hexPixelBuffer[i+1]  = 0;//Math.min(self.hexPixelBuffer[i+1], x);
-                        self.hexPixelBuffer[i+2]  = 0;//Math.min(self.hexPixelBuffer[i+2], x);
-                        // self.hexPixelBuffer[i] = self.multplyByte(self.hexPixelBuffer[i], object.x);
-                        // self.hexPixelBuffer[i+1] = self.multplyByte(self.hexPixelBuffer[i+1], object.x);
-                        // self.hexPixelBuffer[i+2] = self.multplyByte(self.hexPixelBuffer[i+2], object.x);
-                    }
+                for (var i = 0; i < self.hexPixelBuffer.length; i += 3) {
+                    if(self.hexPixelBuffer[i]>object.value) 
+                        self.hexPixelBuffer[i] = object.value;
+                    if(self.hexPixelBuffer[i+1]>object.value) self.hexPixelBuffer[i+1] = object.value;
+                    if(self.hexPixelBuffer[i+2]>object.value) self.hexPixelBuffer[i+2] = object.value;
                 }
 
                 self.hexPixTexture.needsUpdate=true;
@@ -180,6 +173,7 @@ class F1Garage {
                 },
                 5000
             )
+            .easing(TWEEN.Easing.Cubic.Out)
             .onComplete(function () {
                 self.floorMode = 0;
                 self.garageSFXMaterial.uniforms.fTime.value = 0.0;
@@ -187,39 +181,38 @@ class F1Garage {
             .start()
         }
         else if(this.floorMode == 2) { // tests
-            var fadeIn = new THREE.Vector2(0,0);
             var self = this;
             self.garageSFXMaterial.uniforms.dimmer.value = 0.8;
 
-            new TWEEN.Tween(fadeIn)
+            new TWEEN.Tween({ value: 0 })
             .to({
-                    x: 1.0,
+                    value: 255,
                 },
                 2000
             )
-            // .easing(TWEEN.Easing.LINEAR.NONE)
+            .easing(TWEEN.Easing.Cubic.InOut)
             .onUpdate(function (object) {
                 for(var y=13;y<35;y++) {
                     var x = 21;
                     var i = x*3 + (y*64*3);
-                    self.hexPixelBuffer[i] = 255 * object.x;
-                    self.hexPixelBuffer[i+1] = 255 * object.x;
-                    self.hexPixelBuffer[i+2] = 255 * object.x;
+                    if(self.hexPixelBuffer[i]<object.value) self.hexPixelBuffer[i] = object.value;
+                    if(self.hexPixelBuffer[i+1]<object.value) self.hexPixelBuffer[i+1] = object.value;
+                    if(self.hexPixelBuffer[i+2]<object.value) self.hexPixelBuffer[i+2] = object.value;
                     x = 43;
                     i = x*3 + ((y+1.)*64*3);
-                    self.hexPixelBuffer[i] = 255 * object.x;
-                    self.hexPixelBuffer[i+1] = 255 * object.x;
-                    self.hexPixelBuffer[i+2] = 255 * object.x;
+                    if(self.hexPixelBuffer[i]<object.value) self.hexPixelBuffer[i] = object.value;
+                    if(self.hexPixelBuffer[i+1]<object.value) self.hexPixelBuffer[i+1] = object.value;
+                    if(self.hexPixelBuffer[i+2]<object.value) self.hexPixelBuffer[i+2] = object.value;
                 }
                 for(var x=21;x<44;x++) {
                     var i = x*3 + (13*64*3);
-                    self.hexPixelBuffer[i] = 255 * object.x;
-                    self.hexPixelBuffer[i+1] = 255 * object.x;
-                    self.hexPixelBuffer[i+2] = 255 * object.x;
+                    if(self.hexPixelBuffer[i]<object.value) self.hexPixelBuffer[i] = object.value;
+                    if(self.hexPixelBuffer[i+1]<object.value) self.hexPixelBuffer[i+1] = object.value;
+                    if(self.hexPixelBuffer[i+2]<object.value) self.hexPixelBuffer[i+2] = object.value;
                     i = x*3 + (12*64*3);
-                    self.hexPixelBuffer[i] = 255 * object.x;
-                    self.hexPixelBuffer[i+1] = 255 * object.x;
-                    self.hexPixelBuffer[i+2] = 255 * object.x;
+                    if(self.hexPixelBuffer[i]<object.value) self.hexPixelBuffer[i] = object.value;
+                    if(self.hexPixelBuffer[i+1]<object.value) self.hexPixelBuffer[i+1] = object.value;
+                    if(self.hexPixelBuffer[i+2]<object.value) self.hexPixelBuffer[i+2] = object.value;
                 }
 
                 self.hexPixTexture.needsUpdate=true;
@@ -265,7 +258,7 @@ class F1Garage {
             scale_x: { value: 1.0},
             scale_y: { value: 1.0},
             mode: {value: 0 },
-            dimmer: {value: 0.5}
+            dimmer: {value: 0.5},
           };
   
         this.garageSFXMaterial = new THREE.ShaderMaterial({
@@ -419,7 +412,7 @@ class F1Garage {
                 vec3 outcol = vec3(0.0);
 
                 // ==============
-                if(int(mode)==2) { // use pixelmap
+                if(int(mode)==2 || int(mode)==0) { // use pixelmap
                     vec2 targetuv=vec2(cf/maxc,rf/maxr);
                     vec3 colourpixels = texture2D(texture2, targetuv).xyz;
                     outcol = colourpixels.xyz;

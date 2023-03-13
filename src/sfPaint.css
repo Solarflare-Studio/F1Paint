@@ -672,8 +672,9 @@ header {
 }
 
 .tagInput__field {
+	color: #202020;
 	user-select: text;
-
+	padding-left: 10px!important;
 	width: 3em;
 }
 

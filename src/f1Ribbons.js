@@ -203,7 +203,7 @@ class F1Ribbons {
                 float tints[24] = float[24](1.,1.,1., 0.91,.04,.03,  0.59,.29,.91,    0.,1.,1.,
                     1.,1.,1.,  0.91,.04,.03,  0.59,.29,.91,    0.,1.,1.);
 
-                float thicknesses[8] = float[8]( .3, .6, .8, .4, .3, .6, .8, .4);
+                float thicknesses[8] = float[8]( .3, 1.2, .8, .4, .3, .6, .8, .4);
 
                 float wobble_frequences[8] = float[8]( .025,.025,.025,.025, .025,.025,.025,.025);
 
@@ -219,6 +219,8 @@ class F1Ribbons {
                 // wobble_ampl+=(waveyMod*i)*0.3;
 
                 // spread=0.;
+
+                // vec3 debug = vec3(0,0,1);
               
                 for(float i=0.;i<count;i++){    
 
@@ -226,11 +228,19 @@ class F1Ribbons {
                     // float wwwwobble_ampl = wobble_ampl +(waveyMod*i)*0.003;
 
                     // individual wobble here
+                    // float sinwave_01 = sin( ((t+(i*10.))-i*116.41);
+                    // if(sinwave_01 > debug.x)
+                    //     debug.x = sinwave_01;
+
+
+                    // uv.x += sinwave_01 * uv.y * wobble_freq*.125  + (t-i*122.) + i*111.61 ) * (wobble_ampl+(i*.105));
                     uv.x += sin( ((t+(i*10.))-i*116.41) * uv.y * wobble_freq*.125  + (t-i*122.) + i*111.61 ) * (wobble_ampl+(i*.105));
                     // uv.x += sin( ((t+(i*10.))-i*116.41) * uv.y * wwwwobble_freq*.125  + (t-i*122.) + i*111.61 ) * (wwwwobble_ampl+(i*.105));
 
                     // make them all move slightly
-                    uv.x += cos((t*0.1) + i*uv.y * wobble_freq*.81)*.02;
+                    float coswave_01 = cos((t*0.1) + i*uv.y * wobble_freq*.81);
+                    uv.x += coswave_01*.02;
+//good                    uv.x += cos((t*0.1) + i*uv.y * wobble_freq*.81)*.02;
                     // uv.x += cos((t*0.1) + i*uv.y * wwwwobble_freq*.81)*.02;
                     
                     // offset each line
@@ -271,11 +281,13 @@ class F1Ribbons {
                     alf *= fadeit;
                 }
 
-                if(viewerDistance < 100.0) {
-                    float amnt = viewerDistance / 100.0;
+                if(viewerDistance < 200.0) {
+                    float amnt = viewerDistance / 200.0;
                     outcol *= amnt;
                     alf *= amnt;
                 }
+
+// outcol = debug;
 
                 gl_FragColor = vec4( outcol, alf );
             }

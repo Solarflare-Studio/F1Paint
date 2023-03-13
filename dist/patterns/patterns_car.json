@@ -576,8 +576,8 @@
   "name": "Pat_01",
   "id": 3001,
   "layer": 2,
-  "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat01_Sponsor_thumb.jpg",
-  "image": "car/sponsors/Pat_04/2k/F1PS_CarV10_Pat04_Sponsor_2k.png",
+  "thumbnail": "car/04_Sponsors/_Thumbs/F1PS_Pat01_Sponsor_thumb.jpg",
+  "image": "car/04_Sponsors/Pat_01/2k/F1PS_CarV10_Pat01_Sponsor_2k.png",
   "Channels": [
     {
       "channelName": "Chan 1",
@@ -597,8 +597,8 @@
  "name": "Pat_02",
  "id": 3002,
  "layer": 2,
- "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat02_Sponsor_thumb.jpg",
- "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_HamV03.png",
+ "thumbnail": "car/04_Sponsors/_Thumbs/F1PS_Pat02_Sponsor_thumb.jpg",
+ "image": "car/04_Sponsors/Pat_02/2k/F1PS_CarV10_Pat02_Sponsor_2k.png",
  "Channels": [
   {
     "channelName": "Chan 1",
@@ -618,8 +618,8 @@
     "name": "Pat_03",
     "id": 3003,
     "layer": 2,
-    "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat03_Sponsor_thumb.jpg",
-    "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_F1V04.png",
+    "thumbnail": "car/04_Sponsors/_Thumbs/F1PS_Pat03_Sponsor_thumb.jpg",
+    "image": "car/04_Sponsors/Pat_03/2k/F1PS_CarV10_Pat03_Sponsor_2k.png",
     "style": 0,
     "Channels": [
       {
@@ -640,8 +640,8 @@
    "name": "Pat_04",
    "id": 3004,
    "layer": 2,
-   "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat04_Sponsor_thumb.jpg",
-   "image": "car/sponsors/Pat_04/2k/F1PS_CarV10_Pat04_Sponsor_2k.png",
+   "thumbnail": "car/04_Sponsors/_Thumbs/F1PS_Pat04_Sponsor_thumb.jpg",
+   "image": "car/04_Sponsors/Pat_04/2k/F1PS_CarV10_Pat04_Sponsor_2k.png",
    "Channels": [
     {
       "channelName": "Chan 1",
@@ -661,8 +661,8 @@
     "name": "Pat_05",
     "id": 3005,
     "layer": 2,
-    "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat05_Sponsor_thumb.jpg",
-    "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_F1V04.png",
+    "thumbnail": "car/04_Sponsors/_Thumbs/F1PS_Pat05_Sponsor_thumb.jpg",
+    "image": "car/04_Sponsors/Pat_05/2k/F1PS_CarV10_Pat05_Sponsor_2k.png",
     "style": 0,
     "Channels": [
       {
@@ -683,8 +683,8 @@
    "name": "Pat_06",
    "id": 3006,
    "layer": 2,
-   "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat06_Sponsor_thumb.jpg",
-   "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_HamV03.png",
+   "thumbnail": "car/04_Sponsors/_Thumbs/F1PS_Pat06_Sponsor_thumb.jpg",
+   "image": "car/04_Sponsors/Pat_06/2k/F1PS_CarV10_Pat06_Sponsor_2k.png",
    "Channels": [
     {
       "channelName": "Chan 1",
@@ -704,8 +704,8 @@
     "name": "Pat_07",
     "id": 3007,
     "layer": 2,
-    "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat07_Sponsor_thumb.jpg",
-    "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_F1V04.png",
+    "thumbnail": "car/04_Sponsors/_Thumbs/F1PS_Pat07_Sponsor_thumb.jpg",
+    "image": "car/04_Sponsors/Pat_07/2k/F1PS_CarV10_Pat07_Sponsor_2k.png",
     "style": 0,
     "Channels": [
       {
@@ -726,8 +726,8 @@
    "name": "Pat_08",
    "id": 3008,
    "layer": 2,
-   "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat08_Sponsor_thumb.jpg",
-   "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_HamV03.png",
+   "thumbnail": "car/04_Sponsors/_Thumbs/F1PS_Pat08_Sponsor_thumb.jpg",
+   "image": "car/04_Sponsors/Pat_08/2k/F1PS_CarV10_Pat08_Sponsor_2k.png",
    "Channels": [
     {
       "channelName": "Chan 1",
@@ -747,8 +747,8 @@
     "name": "Pat_09",
     "id": 3009,
     "layer": 2,
-    "thumbnail": "car/sponsors/_Thumbs/F1PS_Pat09_Sponsor_thumb.jpg",
-    "image": "car/sponsors/F1PS_F1_Car_Customizable_Decal_F1V04.png",
+    "thumbnail": "car/04_Sponsors/_Thumbs/F1PS_Pat09_Sponsor_thumb.jpg",
+    "image": "car/04_Sponsors/Pat_09/2k/F1PS_CarV10_Pat09_Sponsor_2k.png",
     "style": 0,
     "Channels": [
      {

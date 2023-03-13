@@ -746,7 +746,7 @@ function introNextPage(nextPage) {
 		// prep and do car intro
 		seekPatternThumb(document.getElementById('layer1patterns_ins'),0).click();
 		setAutoSelectingPattern(false);		
-		changeTab(1);
+		changeTab(1,true);
 
 		renderer.localClippingEnabled = true;	// for sfx intro
 
@@ -760,18 +760,18 @@ function introNextPage(nextPage) {
 		const carinduration = 3500;	// delays 500 first
 		const carwireduration = 5000;  // delays 800 first
 		
-		mainLight.intensity = 0;
-		mainLight2.intensity= 0;
-		mainLight3.intensity = 0;
-		mainLight4.intensity= 0;
-		dirLight.intensity = 0;
-		dirLight2.intensity= 0;
+		// mainLight.intensity = 0;
+		// mainLight2.intensity= 0;
+		// mainLight3.intensity = 0;
+		// mainLight4.intensity= 0;
+		// dirLight.intensity = 0;
+		// dirLight2.intensity= 0;
 		
-		f1Materials.setEnvStrength(0,f1CarHelmet,f1Garage,0);
-		f1Materials.setEnvStrength(0,f1CarHelmet,f1Garage,1);
-		f1Materials.setEnvStrength(0,f1CarHelmet,f1Garage,2);
-		if(f1User.isHelmet)
-			f1Materials.setEnvStrength(0,f1CarHelmet,f1Garage,3);
+		// f1Materials.setEnvStrength(0,f1CarHelmet,f1Garage,0);
+		// f1Materials.setEnvStrength(0,f1CarHelmet,f1Garage,1);
+		// f1Materials.setEnvStrength(0,f1CarHelmet,f1Garage,2);
+		// if(f1User.isHelmet)
+		// 	f1Materials.setEnvStrength(0,f1CarHelmet,f1Garage,3);
 
 
 		camera.position.set(camfrom.x,camfrom.y,camfrom.z);
@@ -793,30 +793,30 @@ function introNextPage(nextPage) {
 				f1CarHelmet.visorMesh.castShadow = true;
 		},600);
 
-		new TWEEN.Tween(mainLight)
-		.to({
-				intensity: f1Settings.mainLight1Intensity,
-			},
-			1000
-		)
-		.easing(TWEEN.Easing.Sinusoidal.Out)
-		.onUpdate(function (object) {
-			const amnt = object.intensity / f1Settings.mainLight1Intensity;
-			mainLight2.intensity = amnt * f1Settings.mainLight2Intensity;
-			mainLight3.intensity = amnt * f1Settings.spotLight1Intensity;
-			mainLight4.intensity = amnt * f1Settings.spotLight2Intensity;
-			ambLight.intensity = amnt * f1Settings.ambientLightIntensity;
-			dirLight.intensity = amnt * f1Settings.dirLight1Intensity;
-			dirLight2.intensity= amnt * f1Settings.dirLight2Intensity;
+		// new TWEEN.Tween(mainLight)
+		// .to({
+		// 		intensity: f1Settings.mainLight1Intensity,
+		// 	},
+		// 	1000
+		// )
+		// .easing(TWEEN.Easing.Sinusoidal.Out)
+		// .onUpdate(function (object) {
+		// 	const amnt = object.intensity / f1Settings.mainLight1Intensity;
+		// 	mainLight2.intensity = amnt * f1Settings.mainLight2Intensity;
+		// 	mainLight3.intensity = amnt * f1Settings.spotLight1Intensity;
+		// 	mainLight4.intensity = amnt * f1Settings.spotLight2Intensity;
+		// 	ambLight.intensity = amnt * f1Settings.ambientLightIntensity;
+		// 	dirLight.intensity = amnt * f1Settings.dirLight1Intensity;
+		// 	dirLight2.intensity= amnt * f1Settings.dirLight2Intensity;
 
-			f1Materials.setEnvStrength(amnt * f1Settings.envStrenghtCustom,f1CarHelmet,f1Garage,0);
-			f1Materials.setEnvStrength(amnt * f1Settings.envStrengthStatic,f1CarHelmet,f1Garage,1);
-			f1Materials.setEnvStrength(amnt * f1Settings.envStrengthGarage,f1CarHelmet,f1Garage,2);
-			if(f1User.isHelmet)
-				f1Materials.setEnvStrength(amnt * f1Settings.envStrengthVisor,f1CarHelmet,f1Garage,3);
+		// 	f1Materials.setEnvStrength(amnt * f1Settings.envStrenghtCustom,f1CarHelmet,f1Garage,0);
+		// 	f1Materials.setEnvStrength(amnt * f1Settings.envStrengthStatic,f1CarHelmet,f1Garage,1);
+		// 	f1Materials.setEnvStrength(amnt * f1Settings.envStrengthGarage,f1CarHelmet,f1Garage,2);
+		// 	if(f1User.isHelmet)
+		// 		f1Materials.setEnvStrength(amnt * f1Settings.envStrengthVisor,f1CarHelmet,f1Garage,3);
 
-		})		
-		.start()
+		// })		
+		// .start()
 
 
 
@@ -849,7 +849,7 @@ function introNextPage(nextPage) {
 			controls.enabled = true;
 			f1SpecialFX.resetCarFromIntro(f1CarHelmet,f1User.isHelmet);
 			renderer.localClippingEnabled = false;	// was for sfx intro
-			f1Garage.startFloorMode(1);
+			f1Garage.startFloorMode(1); // radial
 			gameStage = 2; // moved on from intro
 			f1Ribbons.triggerRibbon();
 
@@ -894,7 +894,7 @@ function introNextPage(nextPage) {
 
 		// enable tools
 		updateProgress(5,'activating');
-		changeTab(1);
+		changeTab(1,true);
 
 
 		// todo new html
@@ -1190,7 +1190,7 @@ function backNextPage(backornext) {
 
 //==================================================
 // gui tabs
-function changeTab(which) {
+function changeTab(which, dontdofloorfx) {
 	if(f1Gui.pickingColour) {
 		// same as confirm
 		if(selectedChan<=2)
@@ -1201,6 +1201,8 @@ function changeTab(which) {
 			patternItems.useCustomSponsorColours = true;
 	}
 	f1Gui.changedPage(which);
+	if(!dontdofloorfx)
+		f1Garage.startFloorMode(1); // radial 
 
 }
 

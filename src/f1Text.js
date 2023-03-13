@@ -34,9 +34,10 @@ class F1Text {
 
         this.locos = new Array();
         // x,y,size, rotation
-        this.locos.push([ 0.466,-0.678, 0.133, 90]); // left side
-        this.locos.push([-0.589, 0.693, 0.133,-90]); // right side
-        this.locos.push([-0.909, -0.441, 0.105,  -180]); // front nose
+        // this.locos.push([ 0.466 - 0.26,-0.678 -0.09, 0.133 +0.08, 90 +180]); // left side
+        this.locos.push([ - 0.26, -0.09, 0.08, 180]); // left side
+        this.locos.push([-0.14, -0.23, 0.08,180]); // right side
+        this.locos.push([0.24, -0.375, 0.1,  90]); // front nose
         //
 
 
