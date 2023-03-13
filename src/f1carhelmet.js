@@ -149,6 +149,11 @@ class F1CarHelmet {
 
         if(DEBUG_MODE)
             console.log(">> attempting to load 3d mesh="+model3D);
+
+
+        return;
+
+
         this.gltfLoader.load( model3D, function ( gltf ) {
             let theModelScene = gltf.scene;
             _self.theModelRoot.add(theModelScene);

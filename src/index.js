@@ -131,7 +131,7 @@ f1Aws.loadfromAWS('languages','languages.json',0);
 
 var patternItems = new PatternItems(!f1User.cookie_livery_value == "");
 var processJSON = new ProcessJSON(patternItems);
-processJSON.loadPatterns(f1User,f1Aws);
+// processJSON.loadPatterns(f1User,f1Aws);
 var f1Fonts = new F1Fonts();
 
 var f1Gui = new F1Gui(processJSON);
@@ -2134,10 +2134,19 @@ function move() {
     }
   }
 }
+function showparams() {
+	const wctext = document.getElementById('LK_welcomeContent_02');
+	if(f1User.userID!="noID")
+		wctext.innerHTML = "Coming soon!<br><br>userId=" + f1User.userID;
+	else
+		wctext.innerHTML = "Coming soon!<br><br>" + f1User.wholeurls;
+	
+}
 
 function weclome() {
   if (loadingProgress === 100) {
-    menu.classList.remove("hidden");
+    // menu.classList.remove("hidden");
+	showparams();
     welcomeContent.classList.remove("hidden");
     loadingContent.classList.add("hidden");
   }
@@ -2159,9 +2168,9 @@ function handlelanguageChange(e) {
 }
 
 function handleWelcomeNext(){
-	pattenContent.classList.remove("hidden");
-	welcomeContent.classList.add("hidden");
-	tutorial.classList.remove("hidden")
+	// pattenContent.classList.remove("hidden");
+	// welcomeContent.classList.add("hidden");
+	// tutorial.classList.remove("hidden")
   }
   
   function handleTutorial(){

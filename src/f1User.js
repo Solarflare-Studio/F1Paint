@@ -41,6 +41,7 @@ class F1User {
         
         DEBUG_MODE=this.userConsole;
 
+        this.wholeurls = params;
         
         
         if(this.forcecar && this.userCarOrHelmet!='h') this.userCarOrHelmet='c';
