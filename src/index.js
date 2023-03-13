@@ -80,7 +80,7 @@ const f1User = new F1User();
 var renderSize = 1024;
 // var renderSize = 2048;
 
-var customMapRenderSize = 2048;
+var customMapRenderSize = 2048;	// probably unneccesary
 var customRoughMapRenderSize = 1024;
 var sfxBloomRenderSize = 512;
 
@@ -650,7 +650,7 @@ var haveminimized = false;
 
 function onMinMax() {
 
-	if(haveminimized) {
+	if(haveminimized) { // was maxed 3d, now return to bring back dialog
 		var posy = new THREE.Vector3(window.innerHeight - f1Gui.tabHeight,0,0);
 		var top = f1Gui.bestToolPosY;
 		if(DEBUG_MODE)
@@ -671,8 +671,9 @@ function onMinMax() {
 			f1Gui.setRendererSize(window.innerWidth, d.x + f1Gui.tabHeight, renderer,camera);
 		})
 		.start()
+		f1Garage.startFloorMode(0);// lets wipe
 	}
-	else if(!haveminimized) {
+	else if(!haveminimized) { // increase 3D window size
 		var posy = new THREE.Vector3(f1Gui.bestToolPosY,0,0);
 		var top = window.innerHeight - f1Gui.tabHeight;
 		if(DEBUG_MODE)
@@ -694,6 +695,7 @@ function onMinMax() {
 
 		})
 		.start()
+		f1Garage.startFloorMode(2);// lets have the hex
 	}
 	haveminimized=!haveminimized;
 }
@@ -832,6 +834,7 @@ function introNextPage(nextPage) {
 		})		
 		.start()
 
+		// swoosh camera in and then allow user to start
 		new TWEEN.Tween(camera.position)
 		.to({
 				x: camto.x,
@@ -844,23 +847,15 @@ function introNextPage(nextPage) {
 		.easing(TWEEN.Easing.Sinusoidal.InOut)
 		.onComplete(function () {
 			controls.enabled = true;
+			f1SpecialFX.resetCarFromIntro(f1CarHelmet,f1User.isHelmet);
+			renderer.localClippingEnabled = false;	// was for sfx intro
 			f1Garage.startFloorMode(1);
+			gameStage = 2; // moved on from intro
+			f1Ribbons.triggerRibbon();
+
 		})
 		.start()
 
-
-		//
-		setTimeout( function() {
-			f1SpecialFX.resetCarFromIntro(f1CarHelmet,f1User.isHelmet);
-			renderer.localClippingEnabled = false;	// was for sfx intro
-			// seekPatternThumb(document.getElementById('layer1patterns_ins'),0).click();
-			// setAutoSelectingPattern(false);		
-			// changeTab(1);
-			gameStage = 2; // moved on from intro
-			f1Ribbons.triggerRibbon();
-	
-		}, carinduration + 800);
-		
 
 
 

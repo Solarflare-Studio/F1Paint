@@ -163,7 +163,7 @@ class F1Ribbons {
                 gl_Position = projectionMatrix * mvPosition;
               
                 // Calculate distance from camera
-                // viewerDistance = length(mvPosition.xyz);    // not currently used
+                viewerDistance = length(mvPosition.xyz);    // for removing the ribbon if in front of your nose
             }
             `,
             fragmentShader: `
@@ -196,10 +196,12 @@ class F1Ribbons {
                 float wobble_freq = .025;
                 float wobble_ampl = .315;
                 float t = fTime*.177;
+
+                float waveup = t * 4.0;
                 
 
-                float tints[24] = float[24](1.,1.,1.,  1.,0.,0.,  .5,0.,.5,    0.,1.,1.,
-                    1.,1.,1.,  1.,0.,0.,  .5,0.,.5,    0.,1.,1.);
+                float tints[24] = float[24](1.,1.,1., 0.91,.04,.03,  0.59,.29,.91,    0.,1.,1.,
+                    1.,1.,1.,  0.91,.04,.03,  0.59,.29,.91,    0.,1.,1.);
 
                 float thicknesses[8] = float[8]( .3, .6, .8, .4, .3, .6, .8, .4);
 
@@ -211,15 +213,25 @@ class F1Ribbons {
                 float s = 0.;
                 vec3 outcol = vec3(0.0);
 
+                float waveyMod = (sin(waveup)*0.5+0.5);
+                // spread+=(sin(waveup)*0.5)*.5;
+                wobble_freq+=(waveyMod)*0.05;
+                // wobble_ampl+=(waveyMod*i)*0.3;
+
+                // spread=0.;
               
                 for(float i=0.;i<count;i++){    
 
+                    // float wwwwobble_freq = wobble_freq +(waveyMod*i)*0.05;
+                    // float wwwwobble_ampl = wobble_ampl +(waveyMod*i)*0.003;
 
                     // individual wobble here
                     uv.x += sin( ((t+(i*10.))-i*116.41) * uv.y * wobble_freq*.125  + (t-i*122.) + i*111.61 ) * (wobble_ampl+(i*.105));
+                    // uv.x += sin( ((t+(i*10.))-i*116.41) * uv.y * wwwwobble_freq*.125  + (t-i*122.) + i*111.61 ) * (wwwwobble_ampl+(i*.105));
 
                     // make them all move slightly
                     uv.x += cos((t*0.1) + i*uv.y * wobble_freq*.81)*.02;
+                    // uv.x += cos((t*0.1) + i*uv.y * wwwwobble_freq*.81)*.02;
                     
                     // offset each line
                     uv.x +=	i*spread*.03 - spread*count*.011;
@@ -258,6 +270,13 @@ class F1Ribbons {
                     fadeit = 1.0- ((fadeit - 0.9) / 0.1);
                     alf *= fadeit;
                 }
+
+                if(viewerDistance < 100.0) {
+                    float amnt = viewerDistance / 100.0;
+                    outcol *= amnt;
+                    alf *= amnt;
+                }
+
                 gl_FragColor = vec4( outcol, alf );
             }
 
@@ -459,7 +478,7 @@ class F1Ribbons {
 //TWEEN.Easing.Elastic.InOut
 
 
-        this.speedModDebug = 0.7;
+        this.speedModDebug = 0.5;
 
         bends.push(new ABend(-1.0, 0.45, 0.0,   1.0, 0.65, 0.0,    30000*this.speedModDebug, TWEEN.Easing.Cubic.InOut,1)); // static
         bends.push(new ABend(-2.0, 0.5, 0.0,   -2.0, 0.5, 2.0 * Math.PI,    60000*this.speedModDebug, TWEEN.Easing.Linear.None,2));
@@ -565,9 +584,10 @@ class F1Ribbons {
 
         const ttime = currenttime - this.ribbonStartTime;
 
-        this.uniforms.fTime.value = (currenttime%100000)/1000;
+        this.uniforms.fTime.value = ((currenttime%100000)/1000)*0.5;
 
-        const modded = (ttime*0.00005)%360;
+        // const modded = (ttime*0.00015)%360;
+        const modded = (ttime*0.0001)%360;
         var glow = Math.sin(modded);
 
         // console.log("preglow = "+ glow);

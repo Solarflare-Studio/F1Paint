@@ -403,7 +403,9 @@ class F1SpecialFX {
       // this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( ribbonbloomRenderSize, ribbonbloomRenderSize ), 8.5, 1.0, 0.000015);
       // new also for garage floor
       // this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( ribbonbloomRenderSize, ribbonbloomRenderSize ), 8.5, 0.15, 0.05);
-      this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( ribbonbloomRenderSize, ribbonbloomRenderSize ), 8.5, 1.0, 0.0005);
+      // this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( ribbonbloomRenderSize, ribbonbloomRenderSize ), 8.5, 1.0, 0.0005);
+      // this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( ribbonbloomRenderSize, ribbonbloomRenderSize ), 7.5, 0.9, 0.0005);
+      this.f1BloomRibbonPass = new UnrealBloomPass(new THREE.Vector2( ribbonbloomRenderSize, ribbonbloomRenderSize ), 6.5, 0.5, 0.00005);
 
       //
       this.fxRibbonComposer = new EffectComposer(renderer);

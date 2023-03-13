@@ -30,7 +30,8 @@ class F1Garage {
         });
         this.plinthSidesMat = this.newGarageMat();
         // this.plinthSidesMat.color = new THREE.Color( 0x322020)
-        this.plinthSidesMat.color = new THREE.Color( 0x727272);
+        this.plinthSidesMat.color = new THREE.Color( 0x929292);
+
         this.plinthSidesMat.transparent = false;
 
         this.plinthSidesMat.needsUpdate = true;
@@ -48,7 +49,8 @@ class F1Garage {
         let garageFloor = new THREE.Mesh( new THREE.CircleGeometry( 80, 32 ), this.garageMaterial );
         let garageFloorSFX = new THREE.Mesh( new THREE.CircleGeometry( 80, 32 ), this.garageSFXMaterial );
         let garageFloorSides = new THREE.Mesh( new THREE.CylinderGeometry( 80, 80, 10, 32, 1, true ), this.plinthSidesMat );
-        garageFloorSides.layers.set(3);
+        // garageFloorSides.layers.set(3); // with glow
+        garageFloorSides.layers.set(1); // without
         // garageFloorSides.position.set(0,-5,0);
         garageFloorSides.position.set(0,-5.9,0);
 
@@ -101,14 +103,77 @@ class F1Garage {
         this.garageRoot.add(garageFloorShadow);
 
         this.floorMode = 0;
+
+        // create blank hex floor grid for later
+        this.hexPixelBuffer = this.createHexPixelData(64,64);
+        this.hexPixTexture = new THREE.DataTexture(this.hexPixelBuffer, 64,64, THREE.RGBFormat );
+        this.garageSFXMaterial.uniforms.texture2.value = this.hexPixTexture;
+        this.garageSFXMaterial.needsUpdate=true;
     }
     //======================
-    startFloorMode(v) {
+    createHexPixelData(width,height) {
+
+        // create a pixel buffer with alternating black and white pixels
+        var pixels = new Uint8Array(width * height * 3);
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
+                var i = (y * width + x) * 3;
+                var color = 0;// ((x ^ y) & 0x8) ? 255 : 0;
+                pixels[i] = pixels[i + 1] = pixels[i + 2] = color;
+            }
+        }
+        return pixels;
+    }
+    //======================
+    multplyByte(b,factor) {
+        if(b!=0) {
+            console.log('ss');
+        }
+        let floatValue = b / 255.0;
+        let resultFloatValue = floatValue * factor;
+        return Math.round(resultFloatValue * 255.0);
+    }
+    //======================
+
+
+    startFloorMode(v,extras) {
         this.floorMode = v;
         this.garageSFXMaterial.uniforms.mode.value = v;
         this.garageSFXMaterial.uniforms.fTime.value = 0.;
         var self = this;
+        if(this.floorMode == 0) { // wipe
+            var fadeIn = new THREE.Vector2(255,0);
+            self.garageSFXMaterial.uniforms.dimmer.value = 0.8;
+            new TWEEN.Tween(fadeIn)
+            .to({
+                    x: 0.0,
+                },
+                4000
+            )
+            // .easing(TWEEN.Easing.LINEAR.NONE)
+            .onUpdate(function (object) {
+                for(var y=0;y<64;y++) {
+                    for(var x=0;x<64;x++) {
+                        var i = x*3 + (y*64*3);
+                        self.hexPixelBuffer[i]  = 0;//Math.min(self.hexPixelBuffer[i], x);
+                        self.hexPixelBuffer[i+1]  = 0;//Math.min(self.hexPixelBuffer[i+1], x);
+                        self.hexPixelBuffer[i+2]  = 0;//Math.min(self.hexPixelBuffer[i+2], x);
+                        // self.hexPixelBuffer[i] = self.multplyByte(self.hexPixelBuffer[i], object.x);
+                        // self.hexPixelBuffer[i+1] = self.multplyByte(self.hexPixelBuffer[i+1], object.x);
+                        // self.hexPixelBuffer[i+2] = self.multplyByte(self.hexPixelBuffer[i+2], object.x);
+                    }
+                }
+
+                self.hexPixTexture.needsUpdate=true;
+            })
+            .onComplete(function () {
+                // Call nextPosition only after the animation has completed
+            })        
+            .start()               
+        }
         if(this.floorMode == 1) { // intro floor
+            self.garageSFXMaterial.uniforms.dimmer.value = 0.5;
+
             new TWEEN.Tween(self.garageSFXMaterial.uniforms.fTime)
             .to({
                     value: 1.0,
@@ -120,6 +185,49 @@ class F1Garage {
                 self.garageSFXMaterial.uniforms.fTime.value = 0.0;
             })        
             .start()
+        }
+        else if(this.floorMode == 2) { // tests
+            var fadeIn = new THREE.Vector2(0,0);
+            var self = this;
+            self.garageSFXMaterial.uniforms.dimmer.value = 0.8;
+
+            new TWEEN.Tween(fadeIn)
+            .to({
+                    x: 1.0,
+                },
+                2000
+            )
+            // .easing(TWEEN.Easing.LINEAR.NONE)
+            .onUpdate(function (object) {
+                for(var y=13;y<35;y++) {
+                    var x = 21;
+                    var i = x*3 + (y*64*3);
+                    self.hexPixelBuffer[i] = 255 * object.x;
+                    self.hexPixelBuffer[i+1] = 255 * object.x;
+                    self.hexPixelBuffer[i+2] = 255 * object.x;
+                    x = 43;
+                    i = x*3 + ((y+1.)*64*3);
+                    self.hexPixelBuffer[i] = 255 * object.x;
+                    self.hexPixelBuffer[i+1] = 255 * object.x;
+                    self.hexPixelBuffer[i+2] = 255 * object.x;
+                }
+                for(var x=21;x<44;x++) {
+                    var i = x*3 + (13*64*3);
+                    self.hexPixelBuffer[i] = 255 * object.x;
+                    self.hexPixelBuffer[i+1] = 255 * object.x;
+                    self.hexPixelBuffer[i+2] = 255 * object.x;
+                    i = x*3 + (12*64*3);
+                    self.hexPixelBuffer[i] = 255 * object.x;
+                    self.hexPixelBuffer[i+1] = 255 * object.x;
+                    self.hexPixelBuffer[i+2] = 255 * object.x;
+                }
+
+                self.hexPixTexture.needsUpdate=true;
+            })
+            .onComplete(function () {
+                // Call nextPosition only after the animation has completed
+            })        
+            .start()            
         }
     }
     //======================
@@ -148,6 +256,7 @@ class F1Garage {
     garageShaderMaterial() {
         this.uniforms = {
             texture1: { value: 0 },  // base pattern
+            texture2: { value: 0 },  // hex pixels for alternative method
             fTime: { value: 0.0},
             offset_y: { value: 0.0},
             offset_x: { value: 0.0},
@@ -156,10 +265,11 @@ class F1Garage {
             scale_x: { value: 1.0},
             scale_y: { value: 1.0},
             mode: {value: 0 },
+            dimmer: {value: 0.5}
           };
   
         this.garageSFXMaterial = new THREE.ShaderMaterial({
-            name: 'garageFloorSFMaterial',
+            name: 'garageFloorSFXMaterial',
 
             uniforms: this.uniforms,
             vertexShader: `
@@ -202,516 +312,162 @@ class F1Garage {
             }
             `,
             fragmentShader: `
+            uniform sampler2D texture1;
+            uniform sampler2D texture2; // input texture to drive hexagons if non computational
 
+            uniform float dimmer;
 
-//==================================================================
-uniform sampler2D texture1;
-varying vec2 vUv;
-uniform float fTime;
-uniform int mode;
-uniform float offset_x;
-uniform float offset_y;
-
-uniform float tot_x;
-uniform float tot_y;
-
-uniform float scale_x;
-uniform float scale_y;
-
-varying vec3 vViewDirTangent;
-
-float hash21(vec2 p)
-{
-    return fract(sin(dot(p, vec2(141.13, 289.97)))*43758.5453);
-}
-
-float hex(in vec2 p)
-{
-    const vec2 s = vec2(1.7320508, 1);
-
-    p = abs(p);    
-    return max(dot(p, s*.5), p.y); // Hexagon.
-}
-struct HexInfo {
-    vec2 xy;
-    float row;
-    float column;
-    int oddRow;
-    int oddColumn;
-};
-
-HexInfo getHex(vec2 p)
-{    
-    const vec2 s = vec2(1.7320508, 1);
-
-    HexInfo hi;
-    // The hexagon centers: Two sets of repeat hexagons are required to fill in the space, and
-    // the two sets are stored in a "vec4" in order to group some calculations together. The hexagon
-    // center we'll eventually use will depend upon which is closest to the current point. Since 
-    // the central hexagon point is unique, it doubles as the unique hexagon ID.
-    
-    vec4 hC = floor(vec4(p, p - vec2(1, .5))/s.xyxy) + .5;
-    
-    // Centering the coordinates with the hexagon centers above.
-    vec4 h = vec4(p - hC.xy*s, p - (hC.zw + .5)*s);
-    hi.xy = h.xy;
-
-    hi.row = h.z;
-    hi.column = h.w;
-
-
-    vec4 result=dot(h.xy, h.xy) < dot(h.zw, h.zw) 
-        ? vec4(h.xy, hC.xy) 
-        : vec4(h.zw, hC.zw + .5);
-
-    hi.xy = result.xy;
-    hi.column = result.z;
-    hi.row = result.w;
-
-    hi.oddColumn = 0;
-    hi.oddRow = 0;
-    return hi;
-}
-
-void main()
-{
-    const vec3 tintBlueCyan = vec3(0.18,.95,.96);
-    const vec3 tintDarkPurple = vec3(0.59,.29,.91);
-    const vec3 tintRed = vec3(0.91,.04,.03);
-    
-    const vec2 s = vec2(1.7320508, 1);
-
-    vec2 uv = vUv;
-    float vt = fTime; // effect from 0.0 to 1.0
-
-    //
-    const vec2 offset = vec2(-0.11, 0.02);
-    const vec2 totgridsize = vec2(30.0, 30.0) + vec2(1.05, 1.57);
-
-    vec2 u = uv.xy * totgridsize;
-    u += offset + vec2( offset_x,offset_y + 0.03);
-    
-    HexInfo h = getHex(u*1. + s.yx);
-    float eDist = hex(h.xy); // Edge distance.
-
-    vec3 col = vec3(0.0);
-
-    // middle column = 8
-
-
-    float maxh = totgridsize.y;
-    int maxhi = int(maxh) + 1;
-    float maxw = totgridsize.x;
-    int maxwi = int(maxw) + 1;
-    maxh = float(maxhi);
-    maxw = 33.0;
-    
-    const float maxc = 38.0;
-    const float maxr = 66.0;
-
-    float tc = vt * maxc;
-    float tr = vt * maxr;
-
-    int ci = int(h.column * 2.0);
-    int ri = int(h.row * 2.0);
-    float cf = float(ci);
-    float rf = float(ri);
-
-
-    vec2 norm = vec2(cf, rf) - vec2(19.0,33.0 );
-    norm.x *= 2.0;
-
-    // circle splash
-    float radius = 45.0 * vt;
-    float dist = length(norm);
-    if(dist <= radius) {
-        if( dist <= radius - 2.0) {
-            if(dist >= radius - 4.0)
-                col = tintDarkPurple;
-            else {
-                if(dist >= radius - 6.0) {
-                    col = tintRed;
-                }
-                else {
-                    if(dist >= radius - 10.0) {
-                        float calc = (dist - (radius-8.0))/5.0;
-                        col = tintRed * (calc);
-                    }
-                }
-            }
-        } 
-        else {
-            dist = (dist-radius) / (2.0);
-            col = tintBlueCyan * dist;
-        }
-    }
-    
-    
-
-
-
-    // if(ci == 19)
-    //     col.r = 1.0;
-
-//    if(ri == 64 || ri == 65)
-  //      col.r = 1.0;
-
-
-
-
-        // // calculate distance from center of grid
-        // vec2 center = vec2(maxwi / 2.0, maxwi / 2.0);
-        // float dist = length(vec2(h.column, h.row) - center);
-
-        // if(dist < 3.0)
-        //     col.r = 1.0 - (dist / 3.0);
-
-        // // calculate pulse effect based on distance
-        // float pulse = smoothstep(0.0, totgridsize.x / 2.0, dist) * (1.0 - smoothstep(totgridsize.x / 2.0, totgridsize.x, dist));
-        
-        // // calculate color based on pulse effect and edge distance
-        // col = vec3(eDist * pulse);
-
-        /*
-    vec3 col = mix(vec3(0.), vec3(1), smoothstep(0., .03, eDist - .5 + .04));  
-   
-    float t = vt * (totgridsize.x - 3.0);
-    float opacity = smoothstep(t - 1.0, t + 1.0, h.column);
-
-    if(h.column >= 1.0 + t && h.column < 1.5 + t) {
-       col = vec3(1.0*opacity,0,0);
-    }
-    else {
-        col = vec3(0,0,0);
-    }
-    */
-
-    // most modes just do hex outline by using mask from hex image
-    vec4 colour = texture2D(texture1, uv);
-    float g = colour.g;
-
-    col *= g;
-    col *= 0.5;
-
-    gl_FragColor = vec4(col, .6);
-}
-
-
-/*
-
-
-void main() {
-
-
-
-    float timer = fTime / 5.0;
-    vec2 uv = vUv.xy;
-    vec4 colour = texture2D(texture1, uv);
-    float g = colour.g;
-
-    float hexagon_width = 1.0 / (35.8+tot_x);
-    float hexagon_height = 1.0 / (31.59 + tot_y);
-    float hexagon_side_length = min(hexagon_width, hexagon_height) / sqrt(3.0);
-    
-    float moffset_x = (-0.6 + offset_x) * hexagon_width + margin_x;
-    float moffset_y = (-0.3 + offset_y) * hexagon_height + margin_y;
-    uv.xy += vec2(moffset_x,moffset_y);
-    
-    float margin_x = scale_x * hexagon_width;
-    float margin_y = scale_y * hexagon_height;
-
-    
-    // colour = vec4(g*0.15,g*0.15,g*0.15, 1.0);
-    float alpha = 0.0;
-    colour = vec4(0,0,0,0);
-
-    
-    float q = (sqrt(3.0)/3.0 * uv.x - 1.0/3.0 * uv.y) / hexagon_side_length;
-    float r = (2.0/3.0 * uv.y) / hexagon_side_length;
-    
-    // Round the axial coordinates to the nearest integers
-    int column = int(q + 0.5);
-    int row = int(r + 0.5);
-    
-    if(row % 2==0 && column % 2==0) {
-        colour = vec4(1,0,0,0.25);
-    }
-    else {
-        colour = vec4(0,0,1,0.25);
-    }
-
-    
-//    else colour = vec4(0,g,0,g);
-
-
-    gl_FragColor = vec4(colour);
-}
-
-*/
-
-
-/*
-uniform sampler2D texture1;
-varying vec2 vUv;
-uniform float fTime;
-uniform float offset_x;
-uniform float offset_y;
-
-uniform float tot_x;
-uniform float tot_y;
-
-
-void main() {
-    float timer = fTime / 5.0;
-    vec2 uv = vUv.xy;
-    vec4 colour = texture2D(texture1, uv);
-    float g = colour.g;
-    
-    // colour = vec4(g*0.15,g*0.15,g*0.15, 1.0);
-    float alpha = 0.0;
-    colour = vec4(0,0,0,0);
-
-
-    float hexagon_width = 1.0 / (35.8+tot_x);
-    float hexagon_height = 1.0 / (31.59 + tot_y);
-
-    float margin_x = 0.33 * hexagon_width;
-    float margin_y = 0.13 * hexagon_height;
-
-
-    float moffset_x = (-0.6 + offset_x) * hexagon_width;
-    float moffset_y = (-0.3 + offset_y) * hexagon_height;
-    
-    float t = timer;
-    int column = int(t * (31.59 + tot_y));
-    int row = int(t * (35.32 + tot_x));
-
-    // detect
-
-    // // detect if in hexagon
-    if(int((uv.y+moffset_y) / hexagon_height) == column) {
-        colour = vec4(g, 0, 0, g);
-        alpha = g;
-    }
-    if(int((uv.x+moffset_x) / hexagon_width) == row) {
-        colour = vec4(0, g, g, g);
-        alpha = g;
-    }
-
-    // // Adding the margin to the hexagon
-    if (int((uv.y + moffset_y + margin_y) / hexagon_height) == column) {
-        colour = vec4(g, 0, 0, g);
-        alpha = g;
-    }
-    if (int((uv.x + moffset_x + margin_x) / hexagon_width) == row) {
-        colour = vec4(0, g, g, g);
-        alpha = g;
-    }
-
-    gl_FragColor = vec4(colour.rgb, alpha);
-}
-*/
-
-//==================================================================          
-/*
-for (int y = 0; y < num_rows; y++) {
-    for (int x = 0; x < num_cols; x++) {
-      // Compute the position of the hexagon
-      float hex_x = tx + x * sx * 3.0 + (y % 2) * sx * 1.5;
-      float hex_y = ty + y * sy * 2.0;
-  
-      // Apply the shader to color the hexagon
-      colorHexagon(hex_x, hex_y);
-    }
-  }
-  */
-
-/*
-uniform sampler2D texture1;
-varying vec2 vUv;
-uniform float fTime;
-void main() {
-    vec2 uv = vUv.xy;
-    vec4 colour = texture2D(texture1, uv);
-    float g = colour.g;
-    
-    colour = vec4(0, 0, 0, 0);
-
-    float size_y = 1.0 / 31.9;
-    float size_x = 1.0 / 35.8;
-
-    float offset_x = 0.5;
-    float offset_y = 0.5;
-
-    if( uv.x >= offset_x-size_x && uv.x <= offset_x+size_x ) {
-        if( uv.y >= offset_y-size_x && uv.y <= offset_y+size_y ) {
-            colour = vec4(g,0,0,g);
-        }
-    }
-    
-    gl_FragColor = vec4(colour.rgb, 1.0);
-}
-*/
-/*
-
-void main() {
-    vec2 uv = vUv.xy;
-    vec4 colour = texture2D(texture1, uv);
-    float g = colour.g;
-
-    float sx = 0.0187;
-    float sy = 0.017;
-
-    float x5 = sx * 3.0;
-    float y5 = sy * 3.0;
-
-    float tx = 0.335;
-    float ty = 0.308;
-
-    float tx5 = tx - x5;
-    float ty5 = ty;
-
-    float dist = abs(uv.x - tx);
-    float hexWidth = sx * 2.0;
-    float hexSpacing = sx;
-    float hexesPerRow = 10.0;
-    float hexRowOffset = 0.5 * hexWidth;
-
-    if (dist < hexWidth * 0.5) {
-        colour = vec4(g, 0.0, 0.0, g);
-    } else if (dist > (hexesPerRow * hexWidth + (hexesPerRow - 1.0) * hexSpacing) - hexWidth * 0.5) {
-        colour = vec4(g * 0.27, g, g, g);
-    } else {
-        float rowOffset = mod(floor((uv.y + ty) / (sy * 2.0)), 2.0) * hexRowOffset;
-        float hexOffset = mod(floor((uv.x - tx - rowOffset) / (hexWidth + hexSpacing)), hexesPerRow);
-        float start = tx + hexOffset * (hexWidth + hexSpacing) + rowOffset;
-        float end = start + hexWidth;
-
-        float t = clamp((fTime / 2.0 - start) / (end - start), 0.0, 1.0);
-        colour = mix(vec4(0.0), vec4(g), t);
-    }
-
-    gl_FragColor = vec4(colour.rgb * g, g);
-}
-
-*/
-
-/*
-void main() {
-    vec2 uv = vUv.xy;
-    vec4 colour = texture2D(texture1, uv);
-    float g = colour.g;
-
-    float sx = 0.0187;
-    float sy = 0.017;
-
-    float x5 = sx * 3.0;
-    float y5 = sy * 3.0;
-
-    float tx = 0.335;
-    float ty = 0.308;
-
-    float tx5 = tx - x5;
-    float ty5 = ty;
-
-    colour = vec4(0, 0, 0, 0);
-    
-    if(uv.x >= tx-sx && uv.x <= tx+sx && uv.y >= ty-sy && uv.y <= ty+sy )
-        colour = vec4(g,0,0,g);
-    else
-    if(uv.x >= tx5-sx && uv.x <= tx5+sx && uv.y >= ty5-sy && uv.y <= ty5+sy )
-        colour = vec4(g*0.27,g,g,g);
-
-    gl_FragColor = vec4(colour.rgb, 1.0);
-}
-*/
-/*
-uniform sampler2D texture1;
-varying vec2 vUv;
-uniform float fTime;
-
-void main() {
-    vec2 uv = vUv.xy;
-    vec4 colour = texture2D(texture1, uv);
-    float g = colour.g;
-
-    float sx = 0.0187;
-    float sy = 0.017;
-
-    float x5 = sx * 3.0;
-    float y5 = sy * 3.0;
-
-    float tx = 0.335;
-    float ty = 0.308;
-
-    float tx5 = tx - x5;
-    float ty5 = ty;
-
-    // Calculate the index of the current hexagon based on fTime
-    float timeIndex = mod(fTime * 0.1, 4.0); // Assuming 2 seconds for a full cycle
-    int hexagonIndex = int(floor(timeIndex * 16.0)); // Assuming 16 hexagons in the grid
-
-    // Calculate the coordinates of the hexagon based on its index
-    float hexagonX = mod(float(hexagonIndex), 4.0) * (sx * 4.0) + tx - (sx * 4.0);
-    float hexagonY = floor(float(hexagonIndex) / 4.0) * (sy * 4.0) + ty - (sy * 4.0);
-
-    colour = vec4(0, 0, 0, 0);
-    
-    // Check if the current pixel is within the current hexagon
-    if (uv.x >= hexagonX - sx && uv.x <= hexagonX + sx && uv.y >= hexagonY - sy && uv.y <= hexagonY + sy) {
-        colour = vec4(g, 0, 0, g);
-    } else if (uv.x >= tx5 - sx && uv.x <= tx5 + sx && uv.y >= ty5 - sy && uv.y <= ty5 + sy) {
-        colour = vec4(g * 0.27, g, g, g);
-    }
-
-    gl_FragColor = vec4(colour.rgb, 1.0);
-}
-
-*/
-
-
-/*
             varying vec2 vUv;
             uniform float fTime;
+            uniform int mode;
+            uniform float offset_x;
+            uniform float offset_y;
 
-            void main() {
+            uniform float tot_x;
+            uniform float tot_y;
 
-                vec2 uv = vUv.xy;
-                vec4 colour = texture2D(texture1, uv);
+            uniform float scale_x;
+            uniform float scale_y;
 
-                float g = colour.g;// *0.5;
+            varying vec3 vViewDirTangent;
+            //==================================================================
+            float hash21(vec2 p)
+            {
+                return fract(sin(dot(p, vec2(141.13, 289.97)))*43758.5453);
+            }
+            //==================================================================
+            float hex(in vec2 p)
+            {
+                const vec2 s = vec2(1.7320508, 1);
 
-                float sx = 0.0187;
-                float sy = 0.017;
+                p = abs(p);    
+                return max(dot(p, s*.5), p.y); // Hexagon.
+            }
+            //==================================================================
+            struct HexInfo {
+                vec2 xy;
+                float row;
+                float column;
+                int oddRow;
+                int oddColumn;
+            };
+            //==================================================================
+            HexInfo getHex(vec2 p)
+            {    
+                const vec2 s = vec2(1.7320508, 1);
 
-                float x5 = sx * 3.0;
-                float y5 = sy * 3.0;
-
-
-                float tx = 0.335;
-                float ty = 0.308;
-
-                float tx5 = tx - x5;
-                float ty5 = ty;
-
-
-                colour = vec4(0,0,0,0);
+                HexInfo hi;
+                // The hexagon centers: Two sets of repeat hexagons are required to fill in the space, and
+                // the two sets are stored in a "vec4" in order to group some calculations together. The hexagon
+                // center we'll eventually use will depend upon which is closest to the current point. Since 
+                // the central hexagon point is unique, it doubles as the unique hexagon ID.
                 
-                if(uv.x >= tx-sx && uv.x <= tx+sx && uv.y >= ty-sy && uv.y <= ty+sy )
-                    colour = vec4(g,0,0,g);
-                else
-                if(uv.x >= tx5-sx && uv.x <= tx5+sx && uv.y >= ty5-sy && uv.y <= ty5+sy )
-                    colour = vec4(g*0.27,g,g,g);
+                vec4 hC = floor(vec4(p, p - vec2(1, .5))/s.xyxy) + .5;
+                
+                // Centering the coordinates with the hexagon centers above.
+                vec4 h = vec4(p - hC.xy*s, p - (hC.zw + .5)*s);
+                hi.xy = h.xy;
 
-                    //
-                // colour = vec4(1,1,1,1);
-                // colour = vec4(g*0.27,g,g,g);
+                hi.row = h.z;
+                hi.column = h.w;
 
-                colour.r = sin(fTime);
+                vec4 result=dot(h.xy, h.xy) < dot(h.zw, h.zw) 
+                    ? vec4(h.xy, hC.xy) 
+                    : vec4(h.zw, hC.zw + .5);
 
-                gl_FragColor = vec4(colour);
-      
-            }*/
+                hi.xy = result.xy;
+                hi.column = result.z;
+                hi.row = result.w;
+
+                hi.oddColumn = 0;
+                hi.oddRow = 0;
+                return hi;
+            }
+            //==================================================================
+            void main()
+            {
+                float tints[24] = float[24](1.,1.,1., 0.91,.04,.03,  0.59,.29,.91,    0.,1.,1.,
+                    1.,1.,1.,  0.91,.04,.03,  0.59,.29,.91,    0.,1.,1.);
+
+                const vec3 tintBlueCyan = vec3(0.18,.95,.96);
+                const vec3 tintDarkPurple = vec3(0.59,.29,.91);
+                const vec3 tintRed = vec3(0.91,.04,.03);
+
+                // max extents
+                const float maxc = 38.0;
+                const float maxr = 66.0;
+                
+                const vec2 s = vec2(1.7320508, 1);
+
+                vec2 uv = vUv;
+                float vt = fTime; // effect from 0.0 to 1.0
+
+                //
+                const vec2 offset = vec2(-0.11, 0.02);
+                const vec2 totgridsize = vec2(30.0, 30.0) + vec2(1.05, 1.57);
+
+                vec2 u = uv.xy * totgridsize;
+                u += offset + vec2( offset_x,offset_y + 0.03);
+                
+                HexInfo h = getHex(u*1. + s.yx);
+                float eDist = hex(h.xy); // Edge distance.
+                int ci = int(h.column * 2.0);
+                int ri = int(h.row * 2.0);
+                float cf = float(ci);
+                float rf = float(ri);
+
+                vec3 outcol = vec3(0.0);
+
+                // ==============
+                if(int(mode)==2) { // use pixelmap
+                    vec2 targetuv=vec2(cf/maxc,rf/maxr);
+                    vec3 colourpixels = texture2D(texture2, targetuv).xyz;
+                    outcol = colourpixels.xyz;
+                }
+                // ==============
+                else if(int(mode)==1) { // draws circle from centre outwards
+                    float tc = vt * maxc;
+                    float tr = vt * maxr;
+
+
+                    vec2 norm = vec2(cf, rf) - vec2(19.0,33.0 );
+                    norm.x *= 2.0;
+
+                    // circle splash
+                    float radius = 45.0 * vt;
+                    float dist = length(norm);
+                    if(dist <= radius) {
+                        if( dist <= radius - 2.0) {
+                            if(dist >= radius - 4.0)
+                                outcol = tintDarkPurple;
+                            else {
+                                if(dist >= radius - 6.0) {
+                                    outcol = tintRed;
+                                }
+                                else {
+                                    if(dist >= radius - 10.0) {
+                                        float calc = (dist - (radius-8.0))/5.0;
+                                        outcol = tintRed * (calc);
+                                    }
+                                }
+                            }
+                        } 
+                        else {
+                            dist = (dist-radius) / (2.0);
+                            outcol = tintBlueCyan * dist;
+                        }
+                    }
+                }
+
+                // most modes just do hex outline by using mask from hex image
+                vec4 colour = texture2D(texture1, uv);
+                float g = colour.g;
+
+                outcol *= g;
+                outcol *= dimmer;// 0.5;
+
+                gl_FragColor = vec4(outcol, .6);
+            }
             `,
             side: THREE.DoubleSide,
             transparent: true,

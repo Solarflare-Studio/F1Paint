@@ -230,7 +230,7 @@ class F1CarHelmet {
             }
             else {  // is the car
 
-                // now do car base mat              
+                // now do car static mat              
                 filelist.push(f1fnames.car_files[6] ); // base
                 filetypelist.push( 0 ); filecomplete.push(false);
                 filelist.push(f1fnames.car_files[9] ); // metal
@@ -242,6 +242,7 @@ class F1CarHelmet {
                 filelist.push(f1fnames.car_files[7] ); // normal
                 filetypelist.push( 4 ); filecomplete.push(false);
 
+                // custom mat
                 filelist.push(f1fnames.car_files[2] ); // normal
                 filetypelist.push( 5 ); filecomplete.push(false);
                 filelist.push(f1fnames.car_files[3] ); // ao
