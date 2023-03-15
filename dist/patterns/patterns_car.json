@@ -70,8 +70,8 @@
     "name": "Gelato",
     "id": 1001,
     "layer": 0,
-    "thumbnail": "car/base/thumbnails/F1_Customizable_ColorMask_Design_18_thumb.jpg",
-    "image": "car/base/01_Gelato/V03/F1PS_Car_Gelato_V03.jpg",
+    "thumbnail": "car/02_Patterns/_Thumbs/F1PS_Pattern_01_Gelato_thumb.jpg",
+    "image": "car/02_Patterns/01_Gelato/2k/F1PS_Car_Gelato_2k.jpg",
     "style": 0,
     "Channels": [
      {
@@ -89,11 +89,11 @@
     ]
   },  
   {
-    "name": "FAB 20",
+    "name": "Cyber",
     "id": 1002,
     "layer": 0,
-    "thumbnail": "car/base/thumbnails/F1PS_F1_Car_Customizable_ColorMask_thumb.jpg",
-    "image": "car/base/F1PS_Car_Customizable_Design 20_V06.jpg",
+    "thumbnail": "car/02_Patterns/_Thumbs/F1PS_Pattern_04_Lightspeed_thumb.jpg",
+    "image": "car/02_Patterns/02_Cyber/2k/F1PS_Car_Cyber_2k.jpg",
     "style": 0,
     "Channels": [
      {
@@ -111,11 +111,11 @@
     ]
   },  
   {
-    "name": "TEST NEONCOMPLEX",
+    "name": "Gradient",
     "id": 1003,
     "layer": 0,
     "thumbnail": "car/base/thumbnails/F1_Customizable_ColorMask_Design_18_thumb.jpg",
-    "image": "car/base/BodyTest-NeonComplex.jpg",
+    "image": "car/02_Patterns/03_Gradient/2k/F1PS_Car_Gradient_2k.jpg",
     "style": 0,
     "Channels": [
      {
@@ -136,7 +136,7 @@
     "name": "BodyTest-NeonWass.jpg",
     "id": 1004,
     "layer": 0,
-    "thumbnail": "car/base/thumbnails/test1thumb.jpg",
+    "thumbnail": "car/02_Patterns/_Thumbs/F1PS_Pattern_04_Lightspeed_thumb.jpg",
     "image": "car/base/BodyTest-NeonWass.jpg",
     "style": 0,
     "Channels": [
@@ -378,8 +378,8 @@
   "name": "Varsity",
   "id": 2001,
   "layer": 1,
-  "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag_01_Varsity.png",
-  "image": "car/03_Tags/Tag_01/1k/F1PS_CarV10_Tag01_Example_1k.png",
+  "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag01_thumb.jpg",
+  "image": "car/smallblankimage.png",
   "style": 1,
   "Channels": [
    {
@@ -400,7 +400,7 @@
     "name": "Circle",
     "id": 2002,
     "layer": 1,
-    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag_02_Circle.png",
+    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag02_thumb.jpg",
     "image": "car/03_Tags/Tag_02/1k/F1PS_CarV10_Tag02_1k.png",
     "style": 2,
     "Channels": [
@@ -422,7 +422,7 @@
     "name": "Chevron",
     "id": 2003,
     "layer": 1,
-    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag_03_Chevron.png",
+    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag03_thumb.jpg",
     "image": "car/03_Tags/Tag_03/1k/F1PS_CarV10_Tag03_1k.png",
     "style": 3,
     "Channels": [
@@ -444,7 +444,7 @@
     "name": "Spin",
     "id": 2004,
     "layer": 1,
-    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag_04_Spin.png",
+    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag04_thumb.jpg",
     "image": "car/03_Tags/Tag_04/1k/F1PS_CarV10_Tag04_1k.png",
     "style": 4,
     "Channels": [
@@ -466,7 +466,7 @@
     "name": "Hex",
     "id": 2005,
     "layer": 1,
-    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag_05_Hex.png",
+    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag05_thumb.jpg",
     "image": "car/03_Tags/Tag_05/1k/F1PS_CarV10_Tag05_1k.png",
     "style": 5,
     "Channels": [
@@ -488,8 +488,8 @@
     "name": "OutlineWide",
     "id": 2006,
     "layer": 1,
-    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag_06_OutlineWide.png",
-    "image": "car/03_Tags/Tag_06/1k/F1PS_CarV10_Tag06_Example_1k.png",
+    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag06_thumb.jpg",
+    "image": "car/smallblankimage.png",
     "style": 6,
     "Channels": [
      {
@@ -510,8 +510,8 @@
     "name": "OutlineBold",
     "id": 2007,
     "layer": 1,
-    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag_07_OutlineBold.png",
-    "image": "car/03_Tags/Tag_07/1k/F1PS_CarV10_Tag07_Example_1k.png",
+    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag07_thumb.jpg",
+    "image": "car/smallblankimage.png",
     "style": 7,
     "Channels": [
      {
@@ -532,7 +532,7 @@
     "name": "Square",
     "id": 2008,
     "layer": 1,
-    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag_08_Square.png",
+    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag08_thumb.jpg",
     "image": "car/03_Tags/Tag_08/1k/F1PS_CarV10_Tag08_1k.png",
     "style": 8,
     "Channels": [
@@ -554,7 +554,7 @@
     "name": "Diamond",
     "id": 2009,
     "layer": 1,
-    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag_09_Diamond.png",
+    "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag09_thumb.jpg",
     "image": "car/03_Tags/Tag_09/1k/F1PS_CarV10_Tag09_1k.png",
     "style": 9,
     "Channels": [

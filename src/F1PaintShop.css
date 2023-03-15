@@ -1,0 +1,131 @@
+/* webgl */
+
+#canvas-container {
+	width: 100%;
+	height: auto;
+	border: 0px solid #000;
+	user-select: none;
+}
+
+#canvas-positioner {
+	position: absolute;
+	top: 0px;
+}
+
+/* should be removed with new html */
+#oldhtmlglosstypeblock {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.oldhtmlflex3{
+    display: flex;
+    justify-content: space-evenly;
+    width: 80%;
+}
+
+#paintachannelblock {
+	color: white;
+    font-family: F1PaintShopFont;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
+
+.oldhtmlblackButton {
+	background-color: #151420;
+	border: solid 2px #FFFFFF;
+	color: #FFFFFF;
+    padding: 10px;
+
+}
+.oldhtmlwhiteButton {
+	background-color: #ffffff;
+	border: solid 2px #FFFFFF;
+	color: #ff1e00;
+}
+
+.oldhtmldisabledButton {
+	opacity: 0.5;
+	pointer-events: none!important;
+}
+.oldhtmlprogress-bar {
+	width: 50%;
+	height: 20px;
+	background-color: rgb(161, 148, 148);
+	border-radius: 25px;
+	/* position: relative; */
+	/* margin: 50px auto; */
+}
+
+#oldhtmlprogress2 {
+	height: 100%;
+	border-radius: 25px;
+	background-color: green;
+	width: 0;
+	/* position: absolute; */
+	top: 0;
+	left: 0;
+}
+#launchar {
+	color:white;
+	font-size: 1.1em;
+}
+
+
+
+
+
+
+/* admin controls */
+#console {
+	position: absolute;
+    top: 3em;
+    left: 0;
+	text-align: center;
+	max-width: 20%;
+	z-index: 5;
+}
+.console {
+    margin-left: 5%;
+    background-color: wheat;
+    /* margin: 30%; */
+	font-size:0.8em;
+    width: 100%;
+	padding-top: 1px;
+	z-index: 3;
+}
+.console_button {
+	border:	2px solid rgb(0,0,0,0.3);
+	margin: 2px;
+	transition: 0.3s;
+}
+
+#versionid {
+	pointer-events: all;
+	position: absolute;
+    font-size: 0.9em;
+	width: 6em;
+	height: 3em;
+	color: white;
+	top: 0;
+	z-index: 3;
+
+}
+
+
+.consoleslider {
+	width: -webkit-fill-available;
+}
+
+.consoleshrunk {
+	max-height: 0em!important;
+}
+.consoleexpander {
+	overflow: hidden;
+	max-height: 55em;
+}
+.consoleexpandbutton{
+	background-color: rgb(156, 135, 96);
+}

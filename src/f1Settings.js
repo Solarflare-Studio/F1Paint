@@ -16,7 +16,7 @@ class F1Settings {
 
         this.ambientLightIntensity = 0.3;
 
-        this.tonemappingamount = 1.5;
+        this.tonemappingamount = 2.6; // 1.5; strange, everythings gone dark!
 
         this.envStrenghtCustom = 2.5;
         this.envStrengthStatic = 4.0;

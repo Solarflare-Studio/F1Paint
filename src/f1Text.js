@@ -39,8 +39,9 @@ class F1Text {
         this.locos.push([-0.14, -0.23, 0.08,180]); // right side
         this.locos.push([0.266, -0.375, 0.09,  90]); // front nose
         //
+        //left
         this.locosstylemods = new Array();
-        this.locosstylemods.push([ - 0.221, -0.109, 0.126, 180]); // left side
+        this.locosstylemods.push([ - 0.223, -0.111, 0.144, 180]); // left side
         this.locosstylemods.push([ - 0.259, -0.122, 0.107, 180]); // left side
         this.locosstylemods.push([ - 0.261, -0.115, 0.072, 180]); // left side
         this.locosstylemods.push([ - 0.259, -0.122, 0.097, 180]); // left side
@@ -48,9 +49,32 @@ class F1Text {
         this.locosstylemods.push([ - 0.224, -0.112, 0.153, 180]); // left side
         this.locosstylemods.push([ - 0.224, -0.114, 0.184, 180]); // left side
         this.locosstylemods.push([ - 0.259, -0.122, 0.097, 180]); // left side
-        this.locosstylemods.push([ - 0.259, -0.122, 0.078, 180]); // left side
+        this.locosstylemods.push([ - 0.259, -0.119, 0.078, 180]); // left side
 
+        //right
+        this.locosstylemods2 = new Array();
+        this.locosstylemods2.push([ - 0.177, -0.256, 0.144, 180]); 
+        this.locosstylemods2.push([ - 0.143, -0.263, 0.107, 180]); 
+        this.locosstylemods2.push([ - 0.143, -0.263, 0.072, 180]);
+        this.locosstylemods2.push([ - 0.142, -0.264, 0.097, 180]);
+        this.locosstylemods2.push([ - 0.142, -0.264, 0.097, 180]);
+        this.locosstylemods2.push([ - 0.175, -0.254, 0.153, 180]);
+        this.locosstylemods2.push([ - 0.176, -0.254, 0.184, 180]);
+        this.locosstylemods2.push([ - 0.142, -0.264, 0.153, 180]);
+        this.locosstylemods2.push([ - 0.142, -0.264, 0.153, 180]);
 
+        //nose
+        this.locosstylemods3 = new Array();
+        this.locosstylemods3.push([ 0.266, -0.375, 0.09,  90]); 
+        this.locosstylemods3.push([ 0.266, -0.375, 0.09,  90]); 
+        this.locosstylemods3.push([ 0.266, -0.376, 0.068,  90]); 
+        this.locosstylemods3.push([ 0.262, -0.376, 0.093,  90]); 
+        this.locosstylemods3.push([ 0.263, -0.376, 0.09,  90]); 
+        this.locosstylemods3.push([ 0.266, -0.375, 0.09,  90]); 
+        this.locosstylemods3.push([ 0.266, -0.375, 0.09,  90]); 
+        this.locosstylemods3.push([ 0.266, -0.375, 0.09,  90]); 
+        this.locosstylemods3.push([ 0.264, -0.376, 0.08,  90]); 
+        
 
 
         document.getElementById('c_tagXSlider').value = _self.locos[0][0] * 1000.0;
@@ -162,21 +186,27 @@ class F1Text {
         inputField.addEventListener("click", function() {
             inputField.placeholder = inputField.value;
             inputField.value = "";
-            
         });
 
 
         inputField.addEventListener('input', function() {
-        //   let inputValue = inputField.value;
-        //   console.log(inputValue);
-        //   _self.textTexture = _self.createText(inputValue);
-            this.value = this.value.toUpperCase()
-            _self.fixText();
-            _self.composite();
-        //   _self.f1Layers_mapUniforms.texture2Tag.value = _self.tagComposite;
-        //   _self.f1MetalRough_mapUniforms.texture2Tag.value = _self.tagComposite;
 
-
+            var letters = /^[A-Za-z0-9]+$/;
+            if(this.value.match(letters)) {
+                this.value = this.value.toUpperCase();
+                _self.fixText();
+                _self.composite();
+            }
+            else {
+                // prevent typing invalid characters
+                var lastValidValue = this.getAttribute('data-last-valid-value');
+                if (lastValidValue) {
+                    this.value = lastValidValue;
+                } else {
+                    this.value = 'F1';
+                }            
+            }
+            this.setAttribute('data-last-valid-value', this.value);
         });
 
 
@@ -356,6 +386,8 @@ class F1Text {
 
         sizemodifier = 0.75;
         this.locos[0] = this.locosstylemods[styletype-1];
+        this.locos[1] = this.locosstylemods2[styletype-1];
+        this.locos[2] = this.locosstylemods3[styletype-1];
 
 
         switch (styletype) {
@@ -387,7 +419,7 @@ class F1Text {
                 break;
             case 6:
                 fontdesc += "F1PaintShopWideFont";
-                sizemodifier = 0.5;
+                sizemodifier = 0.45;
                 needsoutline = true;
                 break;
             case 7:
