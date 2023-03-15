@@ -45,7 +45,7 @@ class F1Text {
         this.locosstylemods.push([ - 0.261, -0.115, 0.072, 180]); // left side
         this.locosstylemods.push([ - 0.259, -0.122, 0.097, 180]); // left side
         this.locosstylemods.push([ - 0.259, -0.122, 0.097, 180]); // left side
-        this.locosstylemods.push([ - 0.26, -0.09, 0.08, 180]); // left side
+        this.locosstylemods.push([ - 0.224, -0.112, 0.153, 180]); // left side
         this.locosstylemods.push([ - 0.224, -0.114, 0.184, 180]); // left side
         this.locosstylemods.push([ - 0.259, -0.122, 0.097, 180]); // left side
         this.locosstylemods.push([ - 0.259, -0.122, 0.078, 180]); // left side
