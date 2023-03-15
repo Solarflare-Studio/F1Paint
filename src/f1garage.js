@@ -173,14 +173,14 @@ class F1Garage {
                 },
                 5000
             )
-            .easing(TWEEN.Easing.Cubic.Out)
+            .easing(TWEEN.Easing.Quintic.Out)
             .onComplete(function () {
                 self.floorMode = 0;
                 self.garageSFXMaterial.uniforms.fTime.value = 0.0;
             })        
             .start()
         }
-        else if(this.floorMode == 2) { // tests
+        else if(this.floorMode == 2) { // start grid
             var self = this;
             self.garageSFXMaterial.uniforms.dimmer.value = 0.8;
 
@@ -190,9 +190,9 @@ class F1Garage {
                 },
                 2000
             )
-            .easing(TWEEN.Easing.Cubic.InOut)
+            .easing(TWEEN.Easing.Quintic.InOut)
             .onUpdate(function (object) {
-                for(var y=13;y<35;y++) {
+                for(var y=13;y<23;y++) {
                     var x = 21;
                     var i = x*3 + (y*64*3);
                     if(self.hexPixelBuffer[i]<object.value) self.hexPixelBuffer[i] = object.value;

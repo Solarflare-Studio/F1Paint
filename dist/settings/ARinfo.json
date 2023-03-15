@@ -11,6 +11,11 @@
         "ARmarkerR_z": 0.0,
         "ARmarkerR_s": 1.0,
         "ARmarkerR_r": 0.0,
+        "ARmarkerH_x": 0.0,
+        "ARmarkerH_y": 0.0,
+        "ARmarkerH_z": 0.0,
+        "ARmarkerH_s": 1.0,
+        "ARmarkerH_r": 0.0,        
         "ARlight_i": 7.0,
         "ARenv_i": 4.0
       }

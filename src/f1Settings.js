@@ -20,7 +20,7 @@ class F1Settings {
 
         this.envStrenghtCustom = 2.5;
         this.envStrengthStatic = 4.0;
-        this.envStrengthGarage = 3.0;
+        this.envStrengthGarage = 2.0;
         this.envStrengthPlinthSides = 1.5;
 
         this.envStrengthVisor = 5.0;

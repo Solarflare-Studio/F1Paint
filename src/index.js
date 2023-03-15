@@ -744,8 +744,9 @@ function introNextPage(nextPage) {
 
 		setSize(window.innerWidth,window.innerHeight );
 		// prep and do car intro
-		seekPatternThumb(document.getElementById('layer1patterns_ins'),0).click();
-		setAutoSelectingPattern(false);		
+		// setAutoSelectingPattern(true);
+		// seekPatternThumb(document.getElementById('layer1patterns_ins'),0).click();
+		setAutoSelectingPattern(true);
 		changeTab(1,true);
 
 		renderer.localClippingEnabled = true;	// for sfx intro
@@ -1130,7 +1131,7 @@ function choosePattern(which, theLayer,thefile,thepatternelement) {
 	patternItems.changePattern(which,thefile,
 		f1Layers.mapUniforms,thepatternelement,
 		processJSON.patternsData,processJSON.liveryData,theLayer,
-		f1MetalRough.mapUniforms,f1Text,f1SpecialFX,f1Aws,f1CarHelmet.theVisorMaterial,f1User.isHelmet);
+		f1MetalRough.mapUniforms,f1Text,f1SpecialFX,f1Aws,f1CarHelmet.theVisorMaterial,f1User.isHelmet,f1Garage);
 }
 
 //=========================================================
@@ -1201,8 +1202,8 @@ function changeTab(which, dontdofloorfx) {
 			patternItems.useCustomSponsorColours = true;
 	}
 	f1Gui.changedPage(which);
-	if(!dontdofloorfx)
-		f1Garage.startFloorMode(1); // radial 
+	// if(!dontdofloorfx)
+	// 	f1Garage.startFloorMode(1); // radial 
 
 }
 
@@ -1308,6 +1309,9 @@ function onRandomPaint() {
 	var which = selectedBasePatternIndex;
 	var currentLayer = f1Gui.currentPage-1;
 	if(f1Gui.currentPage>1) currentLayer--;
+
+	f1Garage.startFloorMode(1); // radial 
+
 
 	patternItems.useCustomBaseColours = true; // now no longer reading defaults when changing patterns, will use custom
 	f1SpecialFX.mapUniforms.leadin.value = 2.0;
@@ -1577,11 +1581,11 @@ function postRenderProcess() {
 		const datetime = getDateTimeStampString();
 		processJSON.liveryData['timestamp'] = datetime;
 		f1Aws.filessavedcount = 0;
-		doSavePaintShop(pixelBuffer, "_" + datetime +  "_map.png", customMapRenderSize);
-		doSavePaintShop(pixelBufferRoughMetal, "_" + datetime +  "_roughmetal.png", customRoughMapRenderSize);
+		doSavePaintShop(pixelBuffer, "_" + datetime + '_' + f1User.userCarOrHelmet + "_map.png", customMapRenderSize);
+		doSavePaintShop(pixelBufferRoughMetal, "_" + datetime + '_' + f1User.userCarOrHelmet +  "_roughmetal.png", customRoughMapRenderSize);
 
 		// save json record too
-		var jsonfilename = f1User.userID + "_" + datetime +  "_livery.json";
+		var jsonfilename = f1User.userID + "_" + datetime + '_' + f1User.userCarOrHelmet + "_livery.json";
 		var liveryDataString = JSON.stringify( processJSON.liveryData);
 
 		var blob = new Blob([liveryDataString],
@@ -1617,7 +1621,11 @@ function postRenderProcess() {
 
 
 		// include user id, datetime, helmet or car and language
-		const params = '?u=' + f1User.userID + '&d='+ datetime + '&m=' + (f1User.isHelmet ? 'h' : 'c') + '&l=' + f1User.languageCode;
+		var helmetParam = "";
+		if(f1User.isHelmet) {
+			helmetParam = "&m=h&v=" + processJSON.liveryData['Layers'][0].Channels[2].tint;
+		}
+		const params = '?u=' + f1User.userID + '&d='+ datetime + '&l=' + f1User.languageCode + helmetParam;
 		// marker f1 fanzone ar version latest V2
 		const thearlink = 'https://solarflarestudio.8thwall.app/f1-fanzone-ar-v2/' + params;
 		// const thearlink = 'https://solarflarestudio.8thwall.app/f1-fanzone-ar-v2/?u=' + f1User.userID + '&d='+ datetime;// +'&m=c&t='+(new Date());
