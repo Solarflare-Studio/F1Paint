@@ -26,7 +26,9 @@ class PatternItems {
     }
     // ===============================================
     haveReadThumb(url,self,thumbimage) {
-        thumbimage.style.backgroundImage = "url('" + url + "')";
+
+        thumbimage.src = url;
+//        thumbimage.style.backgroundImage = "url('" + url + "')";
 
     }
     // ===============================================
@@ -34,18 +36,130 @@ class PatternItems {
         if(DEBUG_MODE)
             console.log('>> adding thumbs');
 
+
+
         var layer1PatternDiv = document.getElementById('layer1patterns_ins');
         var layer2TagsDiv = document.getElementById('layer2tags_ins');
-        var layer3DecalsDiv = document.getElementById('layer3decals_ins');
+        var layer3SponsorsDiv = document.getElementById('layer3sponsors_ins');
 
-        layer1PatternDiv.innerHTML="";
-        layer2TagsDiv.innerHTML="";
-        layer3DecalsDiv.innerHTML="";
+        // layer1PatternDiv.innerHTML="";
+        // layer2TagsDiv.innerHTML="";
+        // layer3DecalsDiv.innerHTML="";
+
+        var layer1count=0;
+        var layer2count=0;
+        var layer3count=0;
 
         for(var i=0;i<patternsData['Patterns'].length;i++) {
 
             var thumbContainer = document.createElement("div");
-            thumbContainer.classList.add("patternContainer");
+            thumbContainer.classList.add("pattent_check_wrp");
+
+            var thumbInput = document.createElement("input");
+            thumbInput.classList.add('w-full');
+            thumbInput.classList.add('h-full');
+            thumbInput.classList.add('hidden');
+            thumbInput.setAttribute('type','radio');
+
+            var thumbLabel = document.createElement("label");
+            thumbLabel.classList.add('relative');
+
+            var thumbFigure = document.createElement("figure");
+            thumbFigure.classList.add("rounded-br-[18px]");
+            var thumbImage = document.createElement("img");
+            thumbImage.classList.add("rounded-br-[18px]");
+            thumbImage.classList.add("w-full");
+            thumbImage.classList.add("h-full");
+            var thumbExtra = document.createElement("div");
+            thumbExtra.classList.add('hidden');
+            var thumbExtra2 = document.createElement("span");
+            var thumbExtra3 = document.createElement("img");
+            thumbExtra3.src = "./assets/images/check_mark.svg";
+            thumbExtra3.setAttribute('alt','checked');
+
+            var thethumbfile = patternsData['Patterns'][i].thumbnail;
+
+            switch (patternsData['Patterns'][i].layer) {
+                case 0: // base pattern later
+                    thumbInput.setAttribute('id','pattent'+(layer1count+1));
+                    thumbInput.setAttribute('name','pattten');
+                    if(layer1count==0)
+                        thumbInput.setAttribute('checked','true');
+
+                    thumbLabel.setAttribute('for','pattent'+(layer1count+1));
+                    thumbImage.setAttribute('alt','pattern '+(layer1count+1));
+                    thumbExtra2.innerHTML=patternsData['Patterns'][i].name;
+
+                    if(layer1count!=0)
+                        f1Aws.loadfromAWS('patterns',thethumbfile,5,this.haveReadThumb,this,thumbImage); // aws thumbs
+                    else
+                        thumbImage.src = "./assets/inapp/newnone.jpg";
+
+                    layer1count++;
+                    break;
+                case 1: // tag pattern later
+                    thumbInput.setAttribute('id','tag'+(layer2count+1));
+                    thumbInput.setAttribute('name','tag');
+                    if(layer2count==0)
+                        thumbInput.setAttribute('checked','true');
+
+                    thumbLabel.setAttribute('for','tag'+(layer2count+1));
+                    thumbImage.setAttribute('alt','tag '+(layer2count+1));
+                    thumbExtra2.innerHTML=patternsData['Patterns'][i].name;
+
+                    if(layer2count!=0)
+                        f1Aws.loadfromAWS('patterns',thethumbfile,5,this.haveReadThumb,this,thumbImage); // aws thumbs
+                    else
+                        thumbImage.src = "./assets/inapp/newnone.jpg";
+
+                    layer2count++;
+                    break;
+
+                case 2: // sponsor pattern later
+                    thumbInput.setAttribute('id','sponsor'+(layer3count+1));
+                    thumbInput.setAttribute('name','sponsor');
+                    if(layer3count==0)
+                        thumbInput.setAttribute('checked','true');
+
+                    thumbLabel.setAttribute('for','sponsor'+(layer3count+1));
+                    thumbImage.setAttribute('alt','sponsor '+(layer3count+1));
+                    thumbExtra2.innerHTML=patternsData['Patterns'][i].name;
+
+                    if(layer3count!=0)
+                        f1Aws.loadfromAWS('patterns',thethumbfile,5,this.haveReadThumb,this,thumbImage); // aws thumbs
+                    else
+                        thumbImage.src = "./assets/inapp/newnone.jpg";
+
+                    layer3count++;
+                    break;                    
+
+            }
+
+            thumbImage.setAttribute('patternId', patternsData['Patterns'][i].id);
+            thumbImage.setAttribute('onClick', "onPatternPicked("+ (i) +",'" + patternsData['Patterns'][i].image + "',this)");
+
+
+            thumbFigure.appendChild(thumbImage);
+            thumbLabel.appendChild(thumbFigure);
+            thumbExtra.appendChild(thumbExtra2);
+            thumbExtra.appendChild(thumbExtra3);
+            thumbLabel.appendChild(thumbExtra);
+
+            thumbContainer.appendChild(thumbInput);
+            thumbContainer.appendChild(thumbLabel);
+
+            if(patternsData['Patterns'][i].layer==0)
+                layer1PatternDiv.appendChild(thumbContainer); 
+            else if(patternsData['Patterns'][i].layer==1)
+                layer2TagsDiv.appendChild(thumbContainer);
+            else if(patternsData['Patterns'][i].layer==2)
+                layer3SponsorsDiv.appendChild(thumbContainer);
+
+
+
+
+//
+/*
 
             var thumbimage = document.createElement("div");
             thumbimage.classList.add("pattern");
@@ -99,6 +213,11 @@ class PatternItems {
                 else
                     alert("error layer overflow");//layer2PatternDiv.appendChild(thumbimage);                 
             }
+
+
+
+*/
+
         }
     }
     //======
@@ -114,6 +233,10 @@ class PatternItems {
     nowloadtexture(url,self) {
         const texture = new THREE.TextureLoader().load(url, (tex) => {
             clearTimeout(self.patternLoaderTimeout);
+
+            if(!getAutoSelectingPattern()) 
+             	self.f1Garage.startFloorMode(1); // radial 
+
 
             if(DEBUG_MODE)
                 console.log(">>>> Texture image = LOADED > "+self.thefile);
@@ -144,16 +267,17 @@ class PatternItems {
 
                     self.f1SpecialFX.startFX(1000); // sfx lead out
                 }
-                else 
+                else {
                     setAutoSelectingPattern(false);
+                }
 
 
                 if(self.currentLayer==0)
-                    document.getElementById('layer1patterns_ins').classList.remove('disabledButton');
+                    document.getElementById('layer1patterns_ins').classList.remove('oldhtmldisabledButton');
                 else if(self.currentLayer==1)
-                    document.getElementById('layer2tags_ins').classList.remove('disabledButton');
+                    document.getElementById('layer2tags_ins').classList.remove('oldhtmldisabledButton');
                 else if(self.currentLayer==2)
-                    document.getElementById('layer3decals_ins').classList.remove('disabledButton');
+                    document.getElementById('layer3sponsors_ins').classList.remove('oldhtmldisabledButton');
         
 
                 if(self.currentLayer==0) { // base
@@ -169,7 +293,7 @@ class PatternItems {
                     self.f1Text.tagPattern = tex;
                     // f1Text.locations = patternsData['Patterns'][which].location; // todo
                     self.f1Text.locations = 1;
-                    document.getElementById('taginputcontainer').classList.remove('disabledButton');
+                    document.getElementById('taginput').classList.remove('oldhtmldisabledButton');
                     self.f1Text.fontstyle = self.liveryData['Layers'].tagfontstyle;
                     self.f1Text.fixText();
                     self.f1Text.composite();
@@ -289,7 +413,7 @@ class PatternItems {
                         }
 
                         if(t==1) // 
-                            document.getElementById('decalpaintbutton').style.backgroundColor = newcol;//"rgb(255,0,0)";
+                            document.getElementById('sponsorpaintbutton').style.backgroundColor = newcol;//"rgb(255,0,0)";
         
                         var tmpv4 = new THREE.Vector4(colourconversion.r,colourconversion.g,colourconversion.b,1.0);
                         if(t==0)
@@ -298,10 +422,10 @@ class PatternItems {
                             self.mapUniforms.decal2Tint.value = tmpv4;
                     }
                 }
-                self.thepatternelement.classList.add('patternSelected');
+                // self.thepatternelement.classList.add('patternSelected');
                 self.currentPatternElement = self.thepatternelement;
                 // Show description name
-                self.currentPatternElement.children[0].classList.remove('hidden');
+                // self.currentPatternElement.children[0].classList.remove('hidden');
 
             }, forceddelay);
 
@@ -312,7 +436,7 @@ class PatternItems {
 
     changePattern(which,thefile,mapUniforms,
         thepatternelement,patternsData,liveryData,currentLayer,
-        f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Aws, visormaterial, isHelmet) {
+        f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Aws, visormaterial, isHelmet,f1Garage) {
 
         const patternId = thepatternelement.getAttribute("patternId");
 
@@ -328,45 +452,45 @@ class PatternItems {
     
 
         if(this.currentPatternElement!=0) {
-            this.currentPatternElement.classList.remove('patternSelected');
-            this.currentPatternElement.children[0].classList.add('hidden');
+            // this.currentPatternElement.classList.remove('patternSelected');
+            // this.currentPatternElement.children[0].classList.add('hidden');
         }
 
         var isNone = false;
         if(patternsData['Patterns'][which].id == -1 && currentLayer!=0) { // a null one
             if(currentLayer==0) {
-                document.getElementById('layer1patterns_ins').classList.remove('disabledButton');
+                document.getElementById('layer1patterns_ins').classList.remove('oldhtmldisabledButton');
                 // never!
             }
             else if(currentLayer==1) {
                 isNone=true;
-                document.getElementById('layer2tags_ins').classList.remove('disabledButton');
-                document.getElementById('taginputcontainer').classList.add('disabledButton');
+                document.getElementById('layer2tags_ins').classList.remove('oldhtmldisabledButton');
+                document.getElementById('taginput').classList.add('oldhtmldisabledButton');
                 mapUniforms.useTag.value = 0;
 
                 f1SpecialFX.mapUniforms.useTag.value = 0;
                 f1MetalRoughmapUniforms.useTag.value = 0;
 
-                thepatternelement.classList.add('patternSelected');
+                // thepatternelement.classList.add('patternSelected');
                 this.currentPatternElement = thepatternelement;
                 // Show description name
-                this.currentPatternElement.children[0].classList.remove('hidden');
+                // this.currentPatternElement.children[0].classList.remove('hidden');
 
 
             }
             else if(currentLayer==2) {
                 isNone=true;
 
-                document.getElementById('layer3decals_ins').classList.remove('disabledButton');
+                document.getElementById('layer3sponsors_ins').classList.remove('oldhtmldisabledButton');
                 mapUniforms.useDecal.value = 0;
                 f1MetalRoughmapUniforms.useDecal.value = 0;
 
                 f1SpecialFX.mapUniforms.useDecal.value = 0;
 
-                thepatternelement.classList.add('patternSelected');
+                // thepatternelement.classList.add('patternSelected');
                 this.currentPatternElement = thepatternelement;
                 // Show description name
-                this.currentPatternElement.children[0].classList.remove('hidden');
+                // this.currentPatternElement.children[0].classList.remove('hidden');
 
             }
  
@@ -387,7 +511,7 @@ class PatternItems {
             self.patternTexture=0; // todo try this to remove chance of texure now loading twice...
             self.changePattern(which,thefile,mapUniforms,
                 thepatternelement,patternsData,liveryData,currentLayer,
-                f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Aws,visormaterial,isHelmet);
+                f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Aws,visormaterial,isHelmet,f1Garage);
 
         }, 4000); 
 
@@ -407,6 +531,7 @@ class PatternItems {
         this.thepatternelement = thepatternelement;
         this.visormaterial = visormaterial;
         this.isHelmet = isHelmet;
+        this.f1Garage = f1Garage;
 
         if(thefile == 'smallredimage.png') {
             this.nowloadtexture('./assets/textures/' + thefile,this);
