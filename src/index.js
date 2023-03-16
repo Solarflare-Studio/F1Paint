@@ -2287,6 +2287,10 @@ f1PaintTab.forEach((box) => {
 	  const parentElm = currTarget.closest("li");
 
 	  /* ben added */
+	  const activeTab = document.querySelector(".activeTab");
+
+
+
 	  removeExtraPages();
 
 	  switch (parentElm.id) {
@@ -2304,6 +2308,32 @@ f1PaintTab.forEach((box) => {
 			break;	
 	  }
 	  //
+
+
+	  const currTabId = event.currentTarget.id;
+	//   if (nextElement) {
+		tabContentWrp.forEach((elm) => {
+		  const currElmId = `${elm.id}-tab`;
+		  if (currElmId === currTabId) {
+			elm.classList.remove("hidden");
+		  } else {
+			elm.classList.add("hidden");
+		  }
+		});
+		// activeTab.classList.remove("activeTab");
+		// nextElement.classList.add("activeTab");
+	//   }
+
+
+
+
+
+
+
+
+
+
+
 
 	  // Get the previous and next elements
 	  const previousElement = parentElm.previousElementSibling;
