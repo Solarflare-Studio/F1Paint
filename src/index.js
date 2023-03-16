@@ -979,20 +979,28 @@ function initScenes()
 	// mainLight2.position.set( -80, 80, -10 );
 	// mainLight3.position.set( 80, 80, 50 );
 	// mainLight4.position.set( -80, 80, 50 );
-	mainLight.position.set( 78, -19, 2 );	// points
-	mainLight2.position.set( -78, -19, 2 );
+	// mainLight.position.set( 78, -19, 2 );	// points
+	// mainLight2.position.set( -78, -19, 2 );
 
-	mainLight3.position.set( 71, 27, 63 ); // spots
-	mainLight4.position.set( -71, 27, 63 );
+	// mainLight3.position.set( 71, 27, 63 ); // spots
+	// mainLight4.position.set( -71, 27, 63 );
+
+	mainLight.position.set( 77, -59, 93 );	// points
+	mainLight2.position.set( -80, -37, -43 );
+
+	mainLight3.position.set( -26, 37, -43 ); // spots
+	mainLight4.position.set( 79, 40, 52 );
+
+
 
 	ambLight = new THREE.AmbientLight( 0xffffff, f1Settings.ambientLightIntensity ); 
 
 	dirLight = createDirectionalLight(f1Settings.dirLight1Intensity);
 	dirLight2 = createDirectionalLight(f1Settings.dirLight2Intensity);
 
-	const dirlightheight = 152;
-	const dirlightx = 78;
-	const dirlightz = -10; // -40
+	const dirlightheight = 200;//152;
+	const dirlightx = 1;//78;
+	const dirlightz = 126;//-10; // -40
 
 	dirLight.position.set( dirlightx, dirlightheight, dirlightz);
 	// dirLight.target = f1CarHelmet.theModelRoot;
@@ -1006,7 +1014,7 @@ function initScenes()
 	scene.add(mainLight4);
 	scene.add( ambLight );
 	scene.add( dirLight );
-	scene.add( dirLight2 );
+//	scene.add( dirLight2 );
 
 
 	scene.add( f1Ribbons.getSceneObjects() );
