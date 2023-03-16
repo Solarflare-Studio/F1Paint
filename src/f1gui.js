@@ -501,16 +501,17 @@ class F1Gui {
         // seek out thumb element from its pattern id attribute
 
 
-
-        for(var i=0;i<patternblock.children.length;i++) {
-            const id= patternblock.children[i].children[0].getAttribute('patternId');
-            if(this.processJSON.liveryData['Layers'][layerindex].patternId == id){
-                // matched!
-                if(DEBUG_MODE)
-                    console.log("matched");
-                hasfound=true;
-                patternThumbElement = patternblock.children[i].children[0];
-                break;
+        if(patternblock!=0) {
+            for(var i=0;i<patternblock.children.length;i++) {
+                const id= patternblock.children[i].children[0].getAttribute('patternId');
+                if(this.processJSON.liveryData['Layers'][layerindex].patternId == id){
+                    // matched!
+                    if(DEBUG_MODE)
+                        console.log("matched");
+                    hasfound=true;
+                    patternThumbElement = patternblock.children[i].children[0];
+                    break;
+                }
             }
         }
         if(!hasfound && DEBUG_MODE)
