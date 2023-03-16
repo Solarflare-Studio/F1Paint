@@ -793,9 +793,11 @@ document.getElementById("nextBtn").classList.add("hidden");
 
         const guiElements = document.getElementById('tabContent');
 
-        const guiHeight = guiElements.offsetHeight;
+        // const guiHeight = guiElements.offsetHeight;
+        this.bestToolPosY = (h) / 2.;
 
-        this.setRendererSize(w,h-guiHeight, renderer,camera);
+        // this.setRendererSize(w,h-guiHeight, renderer,camera);
+        this.setRendererSize(w,this.bestToolPosY, renderer,camera);
 
 
         return;

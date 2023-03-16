@@ -644,8 +644,16 @@ var haveminimized = false;
 function onMinMax() {
 
 	if(haveminimized) { // was maxed 3d, now return to bring back dialog
-		var posy = new THREE.Vector3(window.innerHeight - f1Gui.tabHeight,0,0);
+		// var posy = new THREE.Vector3(window.innerHeight - f1Gui.tabHeight,0,0);
 		var top = f1Gui.bestToolPosY;
+
+	    // const guiElements = document.getElementById('tabContent');
+        // const guiHeight = guiElements.offsetHeight;
+
+		var posy = new THREE.Vector3(window.innerHeight,0,0);
+		// var top = guiHeight;
+
+
 		if(DEBUG_MODE)
 			console.log(">> top = " + top);
 		document.getElementById('minmax').classList.remove('gg-chevron-rotated');
@@ -667,8 +675,17 @@ function onMinMax() {
 		f1Garage.startFloorMode(0);// lets wipe
 	}
 	else if(!haveminimized) { // increase 3D window size
+		// var posy = new THREE.Vector3(f1Gui.bestToolPosY,0,0);
+		// var top = window.innerHeight - f1Gui.tabHeight;
+
+	    // const guiElements = document.getElementById('tabContent');
+        // const guiHeight = guiElements.offsetHeight;
+		// var top = f1Gui.bestToolPosY;
+
 		var posy = new THREE.Vector3(f1Gui.bestToolPosY,0,0);
-		var top = window.innerHeight - f1Gui.tabHeight;
+		var top = window.innerHeight;
+
+
 		if(DEBUG_MODE)
 			console.log(">> top = " + top);
 		document.getElementById('minmax').classList.add('gg-chevron-rotated');
@@ -2234,7 +2251,9 @@ function handleTabToggle() {
 	zoomIn.classList.toggle("hidden");
 	zoomOut.classList.toggle("hidden");
 	tabContent.classList.toggle("hidden");
-  }
+
+	onMinMax();
+}
 
 
 // Paint Tutorial Handler
@@ -2290,8 +2309,9 @@ f1PaintTab.forEach((box) => {
 	  const activeTab = document.querySelector(".activeTab");
 
 
-
 	  removeExtraPages();
+
+
 
 	  switch (parentElm.id) {
 		case "patten-li":
@@ -2391,13 +2411,21 @@ nextBtn.addEventListener("click", () => {
 
 	// 	return;
 	}
+	else if(activeTab.id=='sponsor-li') {
+        document.getElementById('paintachannelblock').classList.add('hidden');
+
+	}
+
+
 
 	const nextElement = activeTab.nextElementSibling;
 	if (!nextElement) return;
 	/* ben added */
+	var tabname = "";
 	switch (nextElement.id) {
 		case "patten-li":
 			changeTab(1);
+			tabname="patten-tab";
 			break;
 		  case "paint-li":
 			changeTab(2);
@@ -2414,7 +2442,8 @@ nextBtn.addEventListener("click", () => {
 	}
 	//
 
-	const currTabId = nextElement.childNodes[1].id;
+	const currTabId = nextElement.children[0].id;
+	// const currTabId = nextElement.childNodes[1].id;
 	if (nextElement) {
 	  tabContentWrp.forEach((elm) => {
 		const currElmId = `${elm.id}-tab`;
@@ -2476,8 +2505,8 @@ nextBtn.addEventListener("click", () => {
 			break;
 	}
 	//
-
-	const currTabId = previousElement.childNodes[1].id;
+	const currTabId = previousElement.children[0].id;
+	// const currTabId = previousElement.childNodes[1].id;
 	if (previousElement) {
 	  tabContentWrp.forEach((elm) => {
 		const currElmId = `${elm.id}-tab`;

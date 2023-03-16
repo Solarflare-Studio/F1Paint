@@ -1,5 +1,18 @@
 /* webgl */
 
+.benfixzoom {
+	z-index: 99;
+    position: relative;
+}
+
+.benfixpattenContent {
+	min-height:50%;
+}
+
+.benfixtabContent {
+	max-height:50%;
+}
+
 #canvas-container {
 	width: 100%;
 	height: auto;
