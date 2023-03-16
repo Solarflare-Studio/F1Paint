@@ -115,6 +115,9 @@ class PatternItems {
         const texture = new THREE.TextureLoader().load(url, (tex) => {
             clearTimeout(self.patternLoaderTimeout);
 
+            if(!getAutoSelectingPattern()) 
+                self.f1Garage.startFloorMode(1); // radial 
+
             if(DEBUG_MODE)
                 console.log(">>>> Texture image = LOADED > "+self.thefile);
 
@@ -312,7 +315,7 @@ class PatternItems {
 
     changePattern(which,thefile,mapUniforms,
         thepatternelement,patternsData,liveryData,currentLayer,
-        f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Aws, visormaterial, isHelmet) {
+        f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Aws, visormaterial, isHelmet, f1Garage) {
 
         const patternId = thepatternelement.getAttribute("patternId");
 
@@ -387,7 +390,7 @@ class PatternItems {
             self.patternTexture=0; // todo try this to remove chance of texure now loading twice...
             self.changePattern(which,thefile,mapUniforms,
                 thepatternelement,patternsData,liveryData,currentLayer,
-                f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Aws,visormaterial,isHelmet);
+                f1MetalRoughmapUniforms,f1Text,f1SpecialFX,f1Aws,visormaterial,isHelmet,f1Garage);
 
         }, 4000); 
 
@@ -407,6 +410,7 @@ class PatternItems {
         this.thepatternelement = thepatternelement;
         this.visormaterial = visormaterial;
         this.isHelmet = isHelmet;
+        this.f1Garage = f1Garage;
 
         if(thefile == 'smallredimage.png') {
             this.nowloadtexture('./assets/textures/' + thefile,this);

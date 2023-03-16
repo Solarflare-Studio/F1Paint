@@ -37,13 +37,50 @@ class F1Text {
         // this.locos.push([ 0.466 - 0.26,-0.678 -0.09, 0.133 +0.08, 90 +180]); // left side
         this.locos.push([ - 0.26, -0.09, 0.08, 180]); // left side
         this.locos.push([-0.14, -0.23, 0.08,180]); // right side
-        this.locos.push([0.24, -0.375, 0.1,  90]); // front nose
+//        this.locos.push([0.24, -0.375, 0.1,  90]); // front nose
+        this.locos.push([0.266, -0.375, 0.09,  90]); // front nose
+
         //
+       //left
+       this.locosstylemods = new Array();
+       this.locosstylemods.push([ - 0.223, -0.111, 0.144, 180]); // left side
+       this.locosstylemods.push([ - 0.259, -0.122, 0.107, 180]); // left side
+       this.locosstylemods.push([ - 0.261, -0.115, 0.072, 180]); // left side
+       this.locosstylemods.push([ - 0.259, -0.122, 0.097, 180]); // left side
+       this.locosstylemods.push([ - 0.259, -0.122, 0.097, 180]); // left side
+       this.locosstylemods.push([ - 0.224, -0.112, 0.153, 180]); // left side
+       this.locosstylemods.push([ - 0.224, -0.114, 0.184, 180]); // left side
+       this.locosstylemods.push([ - 0.259, -0.122, 0.097, 180]); // left side
+       this.locosstylemods.push([ - 0.259, -0.119, 0.078, 180]); // left side
+
+       //right
+       this.locosstylemods2 = new Array();
+       this.locosstylemods2.push([ - 0.177, -0.256, 0.144, 180]); 
+       this.locosstylemods2.push([ - 0.143, -0.263, 0.107, 180]); 
+       this.locosstylemods2.push([ - 0.143, -0.263, 0.072, 180]);
+       this.locosstylemods2.push([ - 0.142, -0.264, 0.097, 180]);
+       this.locosstylemods2.push([ - 0.142, -0.264, 0.097, 180]);
+       this.locosstylemods2.push([ - 0.175, -0.254, 0.153, 180]);
+       this.locosstylemods2.push([ - 0.176, -0.254, 0.184, 180]);
+       this.locosstylemods2.push([ - 0.142, -0.264, 0.153, 180]);
+       this.locosstylemods2.push([ - 0.142, -0.264, 0.153, 180]);
+
+       //nose
+       this.locosstylemods3 = new Array();
+       this.locosstylemods3.push([ 0.266, -0.375, 0.09,  90]); 
+       this.locosstylemods3.push([ 0.266, -0.375, 0.09,  90]); 
+       this.locosstylemods3.push([ 0.266, -0.376, 0.068,  90]); 
+       this.locosstylemods3.push([ 0.262, -0.376, 0.093,  90]); 
+       this.locosstylemods3.push([ 0.263, -0.376, 0.09,  90]); 
+       this.locosstylemods3.push([ 0.266, -0.375, 0.09,  90]); 
+       this.locosstylemods3.push([ 0.266, -0.375, 0.09,  90]); 
+       this.locosstylemods3.push([ 0.266, -0.375, 0.09,  90]); 
+       this.locosstylemods3.push([ 0.264, -0.376, 0.08,  90]); 
 
 
-        document.getElementById('c_tagXSlider').value = _self.locos[0][0] * 100.0;
-        document.getElementById('c_tagYSlider').value = _self.locos[0][1] * 100.0;
-        document.getElementById('c_tagScaleSlider').value = _self.locos[0][2] * 100.0;
+        document.getElementById('c_tagXSlider').value = _self.locos[0][0] * 1000.0;
+        document.getElementById('c_tagYSlider').value = _self.locos[0][1] * 1000.0;
+        document.getElementById('c_tagScaleSlider').value = _self.locos[0][2] * 1000.0;
         document.getElementById('c_tagRotSlider').value = _self.locos[0][3] * 100.0;
 
         document.getElementById('c_tagXSliderTxt').value = "x= " + _self.locos[0][0];
@@ -58,9 +95,9 @@ class F1Text {
         // console sliders
         document.getElementById('c_whichtag').onchange = function (){
             const loco = this.value;
-            document.getElementById('c_tagXSlider').value = _self.locos[loco][0] * 100.0;
-            document.getElementById('c_tagYSlider').value = _self.locos[loco][1] * 100.0;
-            document.getElementById('c_tagScaleSlider').value = _self.locos[loco][2] * 100.0;
+            document.getElementById('c_tagXSlider').value = _self.locos[loco][0] * 1000.0;
+            document.getElementById('c_tagYSlider').value = _self.locos[loco][1] * 1000.0;
+            document.getElementById('c_tagScaleSlider').value = _self.locos[loco][2] * 1000.0;
             document.getElementById('c_tagRotSlider').value = _self.locos[loco][3] * 100.0;            
 
             document.getElementById('c_tagXSliderTxt').innerHTML = "x= " + _self.locos[loco][0];
@@ -74,19 +111,19 @@ class F1Text {
 
         document.getElementById('c_tagXSlider').addEventListener('input', function() {
             const loco = document.getElementById('c_whichtag').value;
-            _self.locos[loco][0] = this.value / 100.0;
+            _self.locos[loco][0] = this.value / 1000.0;
             document.getElementById('c_tagXSliderTxt').innerHTML = "x= " + _self.locos[loco][0];
             _self.composite();
         });
         document.getElementById('c_tagYSlider').addEventListener('input', function() {
             const loco = document.getElementById('c_whichtag').value;
-            _self.locos[loco][1] = this.value / 100.0;
+            _self.locos[loco][1] = this.value / 1000.0;
             document.getElementById('c_tagYSliderTxt').innerHTML = "y= " + _self.locos[loco][1];
             _self.composite();
         });
         document.getElementById('c_tagScaleSlider').addEventListener('input', function() {
             const loco = document.getElementById('c_whichtag').value;
-            _self.locos[loco][2] = this.value / 100.0;
+            _self.locos[loco][2] = this.value / 1000.0;
             document.getElementById('c_tagScaleSliderTxt').innerHTML = "scale= " + _self.locos[loco][2];
             _self.composite();
         });
@@ -155,15 +192,22 @@ class F1Text {
 
 
         inputField.addEventListener('input', function() {
-        //   let inputValue = inputField.value;
-        //   console.log(inputValue);
-        //   _self.textTexture = _self.createText(inputValue);
-            this.value = this.value.toUpperCase()
-            _self.fixText();
-            _self.composite();
-        //   _self.f1Layers_mapUniforms.texture2Tag.value = _self.tagComposite;
-        //   _self.f1MetalRough_mapUniforms.texture2Tag.value = _self.tagComposite;
-
+            var letters = /^[A-Za-z0-9]+$/;
+            if(this.value.match(letters)) {
+                this.value = this.value.toUpperCase();
+                _self.fixText();
+                _self.composite();
+            }
+            else {
+                // prevent typing invalid characters
+                var lastValidValue = this.getAttribute('data-last-valid-value');
+                if (lastValidValue) {
+                    this.value = lastValidValue;
+                } else {
+                    this.value = 'F1';
+                }            
+            }
+            this.setAttribute('data-last-valid-value', this.value);
 
         });
 
@@ -306,7 +350,9 @@ class F1Text {
     createText(text, styletype) {
         // Create a canvas element
         // const sizecanvas = 1024;
-        const sizefont = this.sizecanvas * 0.5;
+//premerge        const sizefont = this.sizecanvas * 0.5;
+        const sizefont = this.sizecanvas * 0.45;
+
         var sizemodifier = 1.0;
         let canvas = document.createElement('canvas');
         canvas.width = this.sizecanvas;
@@ -342,8 +388,61 @@ class F1Text {
         var needsoutline = false;
         var needsgapoutline = false;
 
-        sizemodifier = 0.95;
+        sizemodifier = 0.75;
+        this.locos[0] = this.locosstylemods[styletype-1];
+        this.locos[1] = this.locosstylemods2[styletype-1];
+        this.locos[2] = this.locosstylemods3[styletype-1];
 
+
+        switch (styletype) {
+            case 1:
+                fontdesc += "F1PaintShopBoldFont";
+                context.lineJoin = 'round';
+                needsgapoutline=true;
+                sizemodifier = 0.75;
+                break;
+            case 2:
+                fontdesc += "F1PaintShopBoldFont";
+                sizemodifier = 0.75;
+                needsoutline = false;
+                break;
+            case 3:
+                fontdesc += "F1PaintShopWideFont";
+                sizemodifier = 0.5;
+                needsoutline = false;
+                break;
+            case 4:
+                fontdesc += "F1PaintShopBoldFont";
+                sizemodifier = 0.75;
+                needsoutline = false;
+                break;
+            case 5:
+                fontdesc += "F1PaintShopBoldFont";
+                sizemodifier = 0.75;
+                needsoutline = false;
+                break;
+            case 6:
+                fontdesc += "F1PaintShopWideFont";
+                sizemodifier = 0.45;
+                needsoutline = true;
+                break;
+            case 7:
+                fontdesc += "F1PaintShopBoldFont";
+                sizemodifier = 0.75;
+                needsoutline = true;
+                break;
+            case 8:
+                fontdesc += "F1PaintShopBoldFont";
+                sizemodifier = 0.75;
+                needsoutline = true;
+                break;
+            case 9:
+                fontdesc += "F1PaintShopBoldFont";
+                sizemodifier = 0.75;
+                needsoutline = false;
+                break;
+        }
+/*
         if(styletype==0) { // 
             fontdesc += "F1PaintShopBoldFont";
         }
@@ -374,7 +473,7 @@ class F1Text {
 
         }
 
-
+*/
 
         // if(styletype==0) // normal
         //     fontdesc += "F1PaintShopFont";
