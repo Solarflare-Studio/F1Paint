@@ -4,894 +4,468 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<!--ben    <meta name="viewport" content="width=device-width, initial-scale=1.0" />  -->
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no" /> <!--ben-->    
-
-<!--    <link rel="stylesheet" href="./sfPaint.css">--> <!--ben, will remove as I remove my old html-->
-    <link rel="stylesheet" href="./F1PaintShop.css"> <!--ben, new css for webgl and extras -->
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>F1 PaintShop</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300;400;600;700&display=swap"
-      rel="stylesheet"
-    />
+        <!-- ben old html todo remove-->
+    <link rel="stylesheet" href="./sfPaint.css">
 
     <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="./assets/images/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="./assets/images/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="./assets/images/favicon-16x16.png"
-    />
+    href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300;400;600;700&display=swap"
+    rel="stylesheet"
+  />
 
-    <!-- <link href="./style.css" /> -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              brand: "#FF1E00",
-              netural: "#ffffff",
-              primary: "#151420",
-              secondary: "#6F6E7C",
-            },
-            fontFamily: {
-              Titillium: ["'Titillium Web', sans-serif;"],
-              F1PaintShopFont: ["F1PaintShopFont"],
-              F1PaintShopBlackFont: ["F1PaintShopBlackFont"],
-              F1PaintShopWideFont: ["F1PaintShopWideFont"],
-              F1PaintShopBoldFont: ["F1PaintShopBoldFont"],
-            },
-            backgroundImage: {
-              generaPenal: "url('./assets/images/general-penal-bg-image.png')",
-            },
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="./assets/images/apple-touch-icon.png"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="./assets/images/favicon-32x32.png"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="16x16"
+    href="./assets/images/favicon-16x16.png"
+  />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css"
+    rel="stylesheet"
+  />
+  <link href="./style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: "#FF1E00",
+            netural: "#ffffff",
+            primary: "#151420",
+            secondary: "#6F6E7C",
+          },
+          fontFamily: {
+            Titillium: ["'Titillium Web', sans-serif;"],
+            F1PaintShopFont: ["F1PaintShopFont"],
+            F1PaintShopBlackFont: ["F1PaintShopBlackFont"],
+            F1PaintShopWideFont: ["F1PaintShopWideFont"],
+            F1PaintShopBoldFont: ["F1PaintShopBoldFont"],
+          },
+          backgroundImage: {
+            generaPenal: "url('./assets/images/general-penal-bg-image.png')",
           },
         },
-      };
-    </script>
-    <style type="text/tailwindcss">
-      @font-face {
-        font-family: "F1PaintShopFont";
-        src: url("./assets/fonts/Formula1-Display-Regular.otf")
-          format("truetype");
-        font-weight: normal;
-        font-style: normal;
-      }
-      @font-face {
-        font-family: "F1PaintShopBoldFont";
-        src: url("./assets/fonts/Formula1-Display-Bold.otf") format("truetype");
-        font-weight: normal;
-        font-style: normal;
-      }
-      @font-face {
-        font-family: "F1PaintShopBlackFont";
-        src: url("./assets/fonts/Formula1-Display-Black.otf") format("truetype");
-        font-weight: normal;
-        font-style: normal;
+      },
+    };
+  </script>
+  <style type="text/tailwindcss">
+    @font-face {
+      font-family: "F1PaintShopFont";
+      src: url("./assets/fonts/Formula1-Display-Regular.otf")
+        format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "F1PaintShopBoldFont";
+      src: url("./assets/fonts/Formula1-Display-Bold.otf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "F1PaintShopBlackFont";
+      src: url("./assets/fonts/Formula1-Display-Black.otf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "F1PaintShopWideFont";
+      src: url("./assets/fonts/Formula1-Display-Wide.otf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+    @layer utilities {
+      ::-webkit-scrollbar {
+        width: 8px;
       }
 
-      @font-face {
-        font-family: "F1PaintShopWideFont";
-        src: url("./assets/fonts/Formula1-Display-Wide.otf") format("truetype");
-        font-weight: normal;
-        font-style: normal;
+      ::-webkit-scrollbar-thumb {
+        @apply bg-brand rounded-lg;
       }
-      @layer utilities {
-        ::-webkit-scrollbar {
-          width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-          @apply bg-secondary rounded-lg;
-        }
-        ::-webkit-scrollbar-thumb {
-          @apply bg-brand rounded-lg;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          @apply bg-brand;
-        }
-        progress::-webkit-progress-value {
-          @apply bg-netural;
-        }
-        progress::-webkit-scrollbar-track,
-        progress::-webkit-progress-bar {
-          @apply bg-transparent;
-        }
 
-        div[drawer-backdrop] {
-          @apply hidden;
-        }
-        .menu-item {
-          @apply text-netural text-2xl font-Titillium font-normal py-1;
-        }
-        .menu-item button[aria-selected="true"] {
-          @apply font-bold;
-        }
-        .language-option {
-          @apply py-3 text-netural text-xl font-Titillium;
-        }
-        .pattent_check_wrp input:checked + label > div {
-          @apply w-full flex  justify-between pl-2 pr-4 py-1 text-netural bg-brand rounded-br-[18px] -mt-[34px] z-0 relative;
-        }
-        .pattent_check_wrp input:checked + label > div img {
-          @apply w-4;
-        }
-        .pattent_check_wrp input:checked + label > figure {
-          @apply border-2 border-brand;
-        }
-        .pattent_check_wrp label {
-          @apply bg-netural min-h-[74px] rounded-br-[18px] flex justify-end items-end flex-col;
-        }
-        .pattent_check_wrp label figure {
-          @apply w-full;
-        }
-        .pattent_check_wrp label figure img {
-          @apply min-h-[74px];
-        }
-        .prev-btn {
-          @apply bg-transparent border-2 border-netural text-netural text-2xl w-full py-2 rounded-md font-F1PaintShopFont basis-1/2;
-        }
-        .next-btn {
-          @apply border-2 border-brand bg-brand text-netural text-2xl w-full py-2 rounded-md font-F1PaintShopFont basis-1/2;
-        }
-        .tab {
-          @apply px-2;
-        }
-        .tab.activeTab {
-          @apply px-0;
-        }
-        .tab {
-          @apply w-1/5 border-t-2 border-r-2 rounded-tr-lg border-netural relative mr-2;
-        }
-        .tab button {
-          @apply w-full px-0 py-2;
-        }
-        .tab button img {
-          @apply mx-auto;
-        }
-        .tab.activeTab {
-          @apply w-2/5 border-l-2 border-r-2 rounded-tl-lg;
-        }
-        .tab.activeTab button {
-          @apply px-2 flex mx-auto justify-center items-center;
-        }
-        .tab.activeTab span {
-          @apply block  text-xs text-netural font-medium font-F1PaintShopFont;
-        }
-        .tab.prevTab {
-          @apply border-r-0 border-l-2 rounded-tl-lg rounded-tr-none ml-2;
-        }
-        .tab.activeTab::after,
-        .tab.activeTab::before {
-          @apply content-[''] border-2 border-netural absolute -bottom-1 w-[800px] h-2 border-t-0;
-        }
-        .tab.activeTab::after {
-          @apply border-r-0 left-full rounded-bl-lg;
-        }
-        .tab.activeTab::before {
-          @apply border-l-0 right-full rounded-br-lg;
-        }
-        .tab.activeTab:first-child {
-          @apply border-l-0 rounded-tl-none;
-        }
-        .tab.activeTab:last-child {
-          @apply border-r-0 rounded-tr-none;
-        }
-        .label {
-          @apply text-netural my-2 block text-[10px] tracking-wider font-F1PaintShopFont font-medium;
-        }
-        .color-picker {
-          @apply h-12 w-full  border-2 border-netural rounded-lg;
-        }
-        #sponsor .pattent_check_wrp label,
-        #tag .pattent_check_wrp label {
-          @apply text-[10px];
-        }
+      ::-webkit-scrollbar-thumb:hover {
+        @apply bg-brand;
       }
-    </style>
-  </head>
-  <body
-    class="bg-generaPenal bg-no-repeat bg-[length:100%_100%] lg:bg-[length:100%_120%] bg-center"
+      progress::-webkit-progress-value {
+        @apply bg-netural;
+      }
+      progress::-webkit-progress-bar {
+        @apply bg-transparent;
+      }
+      div[drawer-backdrop] {
+        @apply hidden;
+      }
+      .menu-item {
+        @apply text-netural text-2xl font-Titillium font-normal py-1;
+      }
+      .menu-item.active {
+        @apply font-bold;
+      }
+      .language-option {
+        @apply py-3 text-netural text-xl font-Titillium;
+      }
+      .tab.active {
+        @apply border-netural border-2 border-b-0 rounded-tl-lg opacity-100 !important;
+      }
+      /* .tab[aria-selected="false"] span {
+        @apply hidden;
+      } */
+      .tab.active::after,
+      .tab.active::before {
+        @apply content-[''] border-2 border-netural absolute -bottom-1 w-[500px] h-2 border-t-0;
+      }
+      .tab.active::after {
+        @apply border-r-0 left-full rounded-bl-lg;
+      }
+      .tab.active::before {
+        @apply border-l-0 right-full rounded-br-lg;
+      }
+      .tab {
+        @apply rounded-tr-lg border-t-2 border-r-2 border-netural relative flex justify-center items-center px-4 py-2 text-sm text-netural font-medium font-F1PaintShopFont min-w-[20%] opacity-50;
+      }
+      .tab.prev-tab {
+        @apply border-r-0 border-l-2 rounded-tr-none rounded-tl-lg;
+      }
+      .pattent_check_wrp input:checked + label > div {
+        @apply flex;
+      }
+    }
+  </style>
+</head>
+<body
+  class="bg-generaPenal bg-no-repeat bg-[length:100%_100%] lg:bg-[length:100%_120%] bg-center"
+>
+
+<header class="fixed w-full">
+  <div class="container mx-auto p-6 flex justify-between items-center">
+    <figure>
+      <img src="./assets/images/F1_Logo.svg" alt="Logo" />
+    </figure>
+    <button
+      class="text-white rounded-lg bg-netural p-3 hidden lg:hidden z-40"
+      type="button"
+      id="menu"
+      data-drawer-target="drawer-example"
+      data-drawer-show="drawer-example"
+      aria-controls="drawer-example"
+    >
+      <img src="./assets/images/hamburger_icon.svg" />
+    </button>
+  </div>
+  <div
+    id="drawer-example"
+    class="bg-generaPenal bg-no-repeat bg-[length:100%_100%] bg-center fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-transparent w-full before:bg-brand before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-80 before:z-0 before:left-0 container mx-auto px-6"
+    tabindex="-1"
+    aria-labelledby="drawer-label"
   >
-    <header class="w-full">
-      <div class="mx-auto p-6 flex justify-between items-center">
-        <figure>
-          <img src="./assets/images/F1_Logo.svg" alt="Logo" />
-        </figure>
+    <div class="relative py-6 flex justify-between items-center">
+      <figure>
+        <img src="./assets/images/F1_Logo_light.svg" alt="Logo" />
+      </figure>
+      <button
+        type="button"
+        data-drawer-hide="drawer-example"
+        aria-controls="drawer-example"
+        class="text-netural"
+      >
+        <svg
+          aria-hidden="true"
+          class="w-8 h-8 m-0"
+          fill="#ffffff"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+        <span class="sr-only">Close menu</span>
+      </button>
+    </div>
+    <div class="relative text-right mt-6">
+      <h2
+        class="text-netural text-2xl font-medium font-F1PaintShopBoldFont"
+      >
+        MENU
+      </h2>
+      <hr class="border-netural border-t-2 my-3" />
+      <ul class="list-none py-3">
+        <li class="menu-item active">ITEM 1</li>
+        <li class="menu-item">ITEM 2</li>
+        <li class="menu-item">ITEM 3</li>
+        <li class="menu-item">ITEM 4</li>
+      </ul>
+      <hr class="border-netural border-t-2 my-3" />
+      <h2
+        class="text-netural text-2xl font-medium font-F1PaintShopBoldFont mb-2"
+      ><div id="LK_language">LANGUAGE</div> <!--ben-->
+      </h2>
+      <div class="relative" id="languageSelect">
         <button
-          class="text-white rounded-lg bg-netural p-3 hidden lg:hidden z-40"
+          id="languageSelectBtn"
+          data-dropdown-toggle="dropdown"
+          class="w-full text-primary text-xl font-Titillium bg-netural relative text-left rounded-md pl-4 pr-16 h-12"
           type="button"
-          id="menu"
-          data-drawer-target="drawer-example"
-          data-drawer-show="drawer-example"
-          aria-controls="drawer-example"
+          onclick="handlelanguageSelect()"
         >
-          <img src="./assets/images/hamburger_icon.svg" />
+          <pre id="selectedLanguage"></pre>
+          <span
+            class="absolute right-0 top-0 bg-primary h-12 w-16 rounded-md flex justify-center items-center"
+          >
+            <img
+              src="./assets/images/dropdown_arrow.svg"
+              alt="arrow"
+              id="dropdownArrow"
+            />
+          </span>
         </button>
-      </div>
-      <div
-        id="drawer-example"
-        class="bg-generaPenal bg-no-repeat bg-[length:100%_100%] bg-center fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-transparent w-full before:bg-brand before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-80 before:z-0 before:left-0 mx-auto px-6"
-        tabindex="-1"
-        aria-labelledby="drawer-label"
-      >
-        <div class="relative z-40 py-6 flex justify-between items-center">
-          <figure>
-            <img src="./assets/images/F1_Logo_light.svg" alt="Logo" />
-          </figure>
-          <button
-            type="button"
-            data-drawer-hide="drawer-example"
-            aria-controls="drawer-example"
-            class="text-netural"
-          >
-            <svg
-              aria-hidden="true"
-              class="w-8 h-8 m-0"
-              fill="#ffffff"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
+        <!-- Dropdown menu -->
+        <div
+          id="dropdown"
+          class="z-10 hidden w-full bg-secondary px-4 !translate-y-12 rounded-md text-left"
+        >
+          <ul aria-labelledby="languageSelectBtn" id="languageChoices" > <!--ben-->
+            <li
+              class="language-option"
+              onclick="handlelanguageChange('Language 1')"
             >
-              <path
-                fill-rule="evenodd"
-                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            <span class="sr-only">Close menu</span>
-          </button>
+              Language 1
+            </li>
+            <hr class="border-netural border-t-2" />
+            <li
+              class="language-option"
+              onclick="handlelanguageChange('Language 2')"
+            >
+              Language 2
+            </li>
+          </ul>
         </div>
-        <div class="relative text-right mt-6">
-          <h2
-            class="text-netural text-2xl font-medium font-F1PaintShopBoldFont"
-          >
-            MENU
+      </div>
+
+      <hr class="border-netural border-t-2 mb-3 mt-6" />
+      <ul class="relative text-right list-none py-3">
+        <li class="menu-item">T&CS</li>
+        <li class="menu-item"><div id="LK_security">SECURITY</div></li> <!--ben-->
+        <li class="menu-item"><div id="LK_otherlinks">OTHER LINKS</div></li> <!--ben-->
+      </ul>
+    </div>
+  </div>
+</header>
+<!-- end of header -->
+
+
+<main>
+  <div
+    class="justify-center items-center flex-col h-screen text-center hidden lg:flex"
+  >
+    <img src="./assets/images/rotate_image.svg" alt="Loading..." />
+    <h1
+      class="text-netural text-2xl font-medium mt-2 font-F1PaintShopBoldFont"
+    >
+      TURN YOUR DEVICE
+    </h1>
+    <p class="text-netural text-sm font-normal py-3 font-Titillium">
+      This experience requires your device to be held<br />
+      portrait, please turn to proceed.
+    </p>
+  </div>
+  <!-- end of desktop content -->
+  <div class="container mx-auto px-6 lg:hidden">
+    <div
+      id="loadingContent"
+      class="flex justify-center items-center flex-col h-screen text-center"
+    >
+      <img src="./assets/images/loading.svg" alt="Loading..." />
+      <h1
+        class="text-netural text-2xl font-medium mt-2 font-F1PaintShopBoldFont"
+      >
+        F1 PAINTSHOP
+      </h1>
+      <p class="text-netural text-sm font-normal py-3 font-Titillium">
+        We’re just prepping the garage for you now...
+      </p>
+      <progress
+        id="file"
+        value="0"
+        max="100"
+        class="w-72 rounded-full h-4 p-1 border border-2 border-netural flex items-center"
+      ></progress>
+    </div>
+    <!-- end of loading content -->
+    <div
+      class="flex justify-center items-center flex-col h-screen text-center px-2 hidden"
+      id="welcomeContent"
+    >
+      <!--ben added LK -->
+      <h1 id="LK_welcomeContent_01"
+        class="w-auto text-netural text-2xl font-medium mt-2 border-b-2 border-netural pb-2 font-F1PaintShopBoldFont"
+      >
+        WELCOME
+      </h1>
+      <!--ben added LK -->
+      <p id="LK_welcomeContent_02"
+        class="text-netural text-2xl leading-7 font-extralight py-3 font-Titillium pt-3 pb-10"
+      >
+        Time to customise your very own F1 Car. Get ready to deck out your
+        very own livery and make unique to your style.
+      </p>
+      <!--ben-->
+      <button id="nextButton"        
+        type="button"
+        class="bg-brand text-netural text-2xl px-16 py-2 rounded-md font-F1PaintShopFont"
+        onclick="handleWelcomeNext()"
+      >
+        NEXT
+      </button>
+    </div>
+    <!--end of welcome content -->
+  </div>
+  <div
+    id="pattenContent"
+    class="h-screen flex justify-between items-center flex-col text-center hidden"
+  >
+    <figure class="w-full h-full">
+      <img
+        src="./assets/images/patten_img.png"
+        alt="Patten"
+        class="w-full h-[50vh]"
+      />
+    </figure>
+    <div class="w-full h-full -z-[1]">
+      <div class="w-full text-right overflow-hidden pb-1">
+        <button class="p-4">
+          <img src="./assets/images/double_arrow.svg" alt="Down Arrow" />
+        </button>
+        <div class="flex gap-x-3 justify-center items-center">
+          <h2 class="tab active">
+            <figure>
+              <img
+                src="./assets/images/patten_icon.svg"
+                alt="Patten Icon"
+              />
+            </figure>
+            <span class="ml-2 border-b-2 border-netural">PATTERN</span>
           </h2>
-          <hr class="border-netural border-t-2 my-3" />
-          <ul class="list-none py-3">
-            <li class="menu-item active">ITEM 1</li>
-            <li class="menu-item">ITEM 2</li>
-            <li class="menu-item">ITEM 3</li>
-            <li class="menu-item">ITEM 4</li>
-          </ul>
-          <hr class="border-netural border-t-2 my-3" />
-          <h2
-            class="text-netural text-2xl font-medium font-F1PaintShopBoldFont mb-2"
-          >
-          ><div id="LK_language">LANGUAGE</div> <!--ben-->
-        </h2>
-          <div class="relative" id="languageSelect">
-            <button
-              id="languageSelectBtn"
-              data-dropdown-toggle="dropdown"
-              class="w-full text-primary text-xl font-Titillium bg-netural relative text-left rounded-md pl-4 pr-16 h-12"
-              type="button"
-              onclick="handleLanguageSelect()"
-            >
-              <pre id="selectedLanguage"></pre>
-              <span
-                class="absolute right-0 top-0 bg-primary h-12 w-16 rounded-md flex justify-center items-center"
-              >
-                <img
-                  src="./assets/images/dropdown_arrow.svg"
-                  alt="arrow"
-                  id="dropdownArrow"
-                />
-              </span>
-            </button>
-            <!-- Dropdown menu -->
-            <div
-              id="dropdown"
-              class="z-10 hidden w-full bg-secondary px-4 !translate-y-12 rounded-md text-left"
-            >
-            <ul aria-labelledby="languageSelectBtn" id="languageChoices" > <!--ben-->
-              <li
-                  class="language-option"
-                  onclick="handleLanguageChange('Language 1')"
-                >
-                  Language 1
-                </li>
-                <hr class="border-netural border-t-2" />
-                <li
-                  class="language-option"
-                  onclick="handleLanguageChange('Language 2')"
-                >
-                  Language 2
-                </li>
-              </ul>
-            </div>
-          </div>
-          <hr class="border-netural border-t-2 mb-3 mt-6" />
-          <ul class="relative text-right list-none py-3">
-            <li class="menu-item">T&CS</li>
-            <li class="menu-item"><div id="LK_security">SECURITY</div></li> <!--ben-->
-            <li class="menu-item"><div id="LK_otherlinks">OTHER LINKS</div></li> <!--ben-->
-          </ul>
-        </div>
-      </div>
-    </header>
-    <!-- end of header -->
-    <main>
-
-      <!-- ben added webgl canvas -->
-      <div id="canvas-positioner">
-        <div id="canvas-container"></div> <!-- this is where I append the webGL3D canvas -->
-      </div>      
-      <!---->
-
-
-      <div
-        class="justify-center items-center flex-col h-[89vh] text-center hidden lg:flex"
-      >
-        <img src="./assets/images/rotate_image.svg" alt="Loading..." />
-        <h1
-          class="text-netural text-2xl font-medium mt-2 font-F1PaintShopBoldFont"
-        >
-          TURN YOUR DEVICE
-        </h1>
-        <p class="text-netural text-sm font-normal py-3 font-Titillium">
-          This experience requires your device to be held<br />
-          portrait, please turn to proceed.
-        </p>
-      </div>
-      <!-- end of desktop content -->
-      <div class="mx-auto px-6 lg:hidden">
-        <div
-          id="loadingContent"
-          class="flex justify-center items-center flex-col h-[89vh] text-center"
-        >
-          <img src="./assets/images/loading.svg" alt="Loading..." />
-          <h1
-            class="text-netural text-2xl font-medium mt-2 font-F1PaintShopBoldFont"
-          >
-            F1 PAINTSHOP
-          </h1>
-          <p class="text-netural text-sm font-normal py-3 font-Titillium">
-            We’re just prepping the garage for you now...
-          </p>
-          <progress
-            id="file"
-            value="0"
-            max="100"
-            class="w-72 rounded-full h-4 p-1 border border-2 border-netural flex items-center"
-          ></progress>
-        </div>
-        <!-- end of loading content -->
-        <div
-          class="flex justify-center items-center flex-col h-[89vh] text-center px-2 hidden"
-          id="welcomeContent"
-        >
-        <!--ben added LK -->
-        <h1 id="LK_welcomeContent_01"
-            class="w-auto text-netural text-2xl font-medium mt-2 border-b-2 border-netural pb-2 font-F1PaintShopBoldFont"
-          >
-            WELCOME
-          </h1>
-          <!--ben added LK -->
-          <p id="LK_welcomeContent_02"
-            class="text-netural text-2xl leading-7 font-extralight py-3 font-Titillium pt-3 pb-10"
-          >
-            Time to customise your very own F1 Car. Get ready to deck out your
-            very own livery and make unique to your style.
-          </p>
-          <!--ben-->
-          <button id="nextButton"        
-            type="button"
-            class="bg-brand text-netural text-2xl px-16 py-2 rounded-md font-F1PaintShopFont"
-            onclick="handleWelcomeNext()"
-          >
-            NEXT
-          </button>
-        </div>
-        <!--end of welcome content -->
-      </div>
-      <div
-        id="pattenContent"
-        class="h-[89vh] flex justify-between items-center flex-col text-center hidden"
-      >
-        <div class="w-full h-full flex flex-col justify-center items-center benfixpattenContent">
-          <figure class="w-full h-full flex justify-center items-center">
-            <img src="./assets/images/paint_demo.png" alt="Patten" />
-          </figure>
-          <div class="w-full text-right overflow-hidden pb-5 -z[1]">
-            <button class="p-4 benfixzoom" onclick="handleTabToggle()">
+          <h2 class="tab">
+            <figure>
               <img
-                src="./assets/images/zoom_In.svg"
-                alt="Zoom In"
-                id="zoomIn"
+                src="./assets/images/spray_paint_icon.svg"
+                alt="Paint Icon"
               />
+            </figure>
+            <span class="ml-2 border-b-2 border-netural hidden">PAINT</span>
+          </h2>
+          <h2 class="tab">
+            <figure>
+              <img src="./assets/images/tag_icon.svg" alt="tag_icon Icon" />
+            </figure>
+            <span class="ml-2 border-b-2 border-netural hidden">TAG</span>
+          </h2>
+          <h2 class="tab">
+            <figure>
               <img
-                src="./assets/images/Zoom_Out.svg"
-                alt="Zoom Out"
-                id="zoomOut"
-                class="hidden"
+                src="./assets/images/sponsor_icon.svg"
+                alt="Sponsor Icon"
               />
-            </button>
-
-            <ul
-              class="flex justify-around -mb-px text-sm font-medium text-center pb-5"
-              id="myTab"
-              data-tabs-toggle="#tabContent"
-              role="tablist"
+            </figure>
+            <span class="ml-2 border-b-2 border-netural hidden"
+              >SPONSOR</span
             >
-              <li id="patten-li" role="presentation" class="tab activeTab">
-                <button
-                  id="patten-tab"
-                  data-tabs-target="#patten"
-                  type="button"
-                  role="tab"
-                  aria-controls="patten"
-                  aria-selected="false"
-                >
-                  <figure>
-                    <img
-                      src="./assets/images/patten_icon.svg"
-                      alt="Patten Icon"
-                      class="w-5 h-5 min-w-[25px]"
-                    />
-                  </figure>
-                  <span class="ml-1 border-b-2 border-netural hidden"
-                    >PATTERN</span
-                  >
-                </button>
-              </li>
-              <li id="paint-li" role="presentation" class="tab">
-                <button
-                  id="paint-tab"
-                  data-tabs-target="#paint"
-                  type="button"
-                  role="tab"
-                  aria-controls="paint"
-                  aria-selected="false"
-                  onclick="handlePaintTutorial()"
-                >
-                  <figure>
-                    <img
-                      src="./assets/images/spray_paint_icon.svg"
-                      alt="Paint Icon"
-                      class="w-5 h-5 min-w-[25px]"
-                    />
-                  </figure>
-                  <span class="ml-1 border-b-2 border-netural hidden"
-                    >PAINT</span
-                  >
-                </button>
-              </li>
-              <li id="tag-li" role="presentation" class="tab">
-                <button
-                  id="tag-tab"
-                  data-tabs-target="#tag"
-                  type="button"
-                  role="tab"
-                  aria-controls="tag"
-                  aria-selected="false"
-                  onclick="handleTagTutorial()"
-                >
-                  <figure>
-                    <img
-                      src="./assets/images/tag_icon.svg"
-                      alt="tag_icon Icon"
-                      class="w-5 h-5 min-w-[25px]"
-                    />
-                  </figure>
-                  <span class="ml-1 border-b-2 border-netural hidden">TAG</span>
-                </button>
-              </li>
-              <li id="sponsor-li" role="presentation" class="tab">
-                <button
-                  id="sponsor-tab"
-                  data-tabs-target="#sponsor"
-                  type="button"
-                  role="tab"
-                  aria-controls="sponsor"
-                  aria-selected="false"
-                  onclick="handleSponsorTutorial()"
-                >
-                  <figure>
-                    <img
-                      src="./assets/images/sponsor_icon.svg"
-                      alt="Sponsor Icon"
-                      class="w-5 h-5 min-w-[25px]"
-                    />
-                  </figure>
-                  <span class="ml-1 border-b-2 border-netural hidden"
-                    >SPONSOR</span
-                  >
-                </button>
-              </li>
-              <!-- ben fake tab for last page AR -->
-              <li id="launchar-li" role="presentation" class="tab hidden">
-                <button
-                  id="launchar-tab"
-                  data-tabs-target="#launchar"
-                  type="button"
-                  role="tab"
-                  aria-controls="launchar"
-                  aria-selected="false"
-                >
-                  <figure>
-                    <img
-                      src="./assets/images/sponsor_icon.svg"
-                      alt="launchar Icon"
-                      class="w-5 h-5 min-w-[25px]"
-                    />
-                  </figure>
-                  <span class="ml-1 border-b-2 border-netural hidden"
-                    >LAUNCHAR</span
-                  >
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="tabContent" class="bg-primary w-full -z-0 benfixtabContent">
-          <div class="mx-auto p-4">
-            <div id="tab" class="w-full text-left">
-              <div
-                id="patten"
-                role="tabpanel"
-                aria-labelledby="patten-tab"
-                class="tab-content-wrp"
-              >
-                <!--ben add id layer1patterns_ins-->
-                <div id="layer1patterns_ins"
-                  class="max-h-[30vh] overflow-y-auto grid grid-cols-2 gap-4 pr-3 w-full"
-                >
-                  <!-- ben removed pattern placeholders -->
-                </div>
-              </div>
-              <div
-                id="paint"
-                role="tabpanel"
-                aria-labelledby="paint-tab"
-                class="min-h-[30vh] tab-content-wrp"
-              >
-                <div>
-                  <span class="label">BASE PAINT</span>
-                  <div class="color-picker bg-brand" id="basepaintbutton" onclick="onChangePaint(0);"></div> <!--ben-->
-                </div>
-                <div class="flex gap-x-6">
-                  <div class="basis-1/2">
-                    <span class="label">PRIMARY PAINT</span>
-                    <div class="color-picker bg[#151320]" id="primarypaintbutton" onclick="onChangePaint(1);"></div> <!--ben-->
-                  </div>
-                  <div class="basis-1/2">
-                    <span class="label">SECONDARY PAINT</span>
-                    <div class="color-picker bg-netural" id="secondarypaintbutton" onclick="onChangePaint(2);"></div> <!--ben-->
-                  </div>
-                </div>
-                <hr class="my-4 border-netural border-b-2" />
-                <div>
-                  <span class="label">RANDOMISE PAINT</span>
-                  <div
-                    class="color-picker bg-netural flex justify-center items-center"  onclick="onRandomPaint();"
-                  >
-                    <img
-                      src="./assets/images/random_color.svg"
-                      alt="'Random Color"
-                    />
-                  </div>
-                </div>
-              </div>
-
-
-            <!--ben temporary paint selector page-->
-            <div id="paintachannelblock" class="f1patterncolours hidden">
-              <div id="whichchanneltext">WHICH CHANNEL</div>
-              <div>
-                  <div id="colourPickerContainer" class="colourscontainer">
-                      <div style="height:15px"></div>
-                      <div id="coloursample" class="coloursample"></div>
-                      <div id="coloursexpanded_2" class="coloursexpanded_2">
-                          <div class="centreddiv">
-                              <div class="colourWheelPicker" id="colourWheelPicker"></div>
-                          </div>
-                      </div>
-                  </div>     
-              </div>
-              <div id="oldhtmlglosstypeblock">
-                  <div class="oldhtmlflex3">
-                      <div id="glossbutton" class="oldhtmlblackButton" onclick="onMaterialbutton(0);">GLOSS</div>
-                      <div id="mattebutton" class="oldhtmlblackButton" onclick="onMaterialbutton(1);">MATTE</div>
-                      <div id="metallicbutton" class="oldhtmlblackButton" onclick="onMaterialbutton(2);">METALLIC</div>
-                  </div>
-              </div>
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-
-              <div
-                id="tag"
-                role="tabpanel"
-                aria-labelledby="tag-tab"
-                class="tab-content-wrp"
-              >
-                <div class="flex gap-x-3">
-                  <div class="basis-1/3">
-                    <span class="label">YOUR TAG</span>
-                    <!-- ben add id and value -->
-                    <input
-                      id="taginput"
-                      value="F1"
-                      type="text"
-                      placeholder="F1"
-                      maxlength="2"
-                      class="color-picker bg-netural text-2xl text-[#B6B6B6] font-medium text-center focus-visible:outline-0"
-                    />
-                  </div>
-                  <div class="basis-1/3">
-                    <span class="label">TAG PAINT</span>
-                    <div class="color-picker bg-[#013AB8]" id="tagpaintbutton" onclick="onChangePaint(4);"></div> <!--ben-->
-                  </div>
-                  <div class="basis-1/3">
-                    <span class="label">STYLE PAINT</span>
-                    <div class="color-picker bg-[#343434]" id="tagstylepaintbutton" onclick="onChangePaint(3);"></div> <!--ben-->
-                  </div>
-                </div>
-                <!--ben add id layer2tags_ins -->
-                <div id="layer2tags_ins"
-                      class="max-h-[20vh] overflow-y-auto grid grid-cols-2 gap-4 pr-3 w-full mt-3"
-                >
-                <!--ben removed below tag placeholders-->
-                </div>
-              </div>
-              <div
-                id="sponsor"
-                role="tabpanel"
-                aria-labelledby="sponsor-tab"
-                class="tab-content-wrp"
-              >
-                <div>
-                  <span class="label">SPONSOR PAINT</span>
-                  <div class="color-picker bg-[#02BFFE]" id="sponsorpaintbutton" onclick="onChangePaint(6);"></div>
-                </div>
-
-                <!--ben add id layer3sponsors_ins -->
-                <div id="layer3sponsors_ins"
-                  class="max-h-[20vh] overflow-y-auto grid grid-cols-2 gap-4 pr-3 w-full mt-3"
-                >
-                  <!--ben removed below sponsor placeholders              -->
-                </div>
-              </div>
-
-              <!-- ar page -->
-
-              <!--my old html last pages-->
-
-              <div 
-                id="launchar"
-                role="tabpanel"
-                aria-labelledby="launchar-tab"
-                class="tab-content-wrp"
-              >
-                <div id="finalPage">
-                  <span class="label">
-                    <div class="hcentre">
-                        <div>Congratulations!</div><br>
-                        <div>Now you can see your livery in AR!</div><br>
-                        <div>Press Back to change your livery or Next to proceed with your Livery!</div><br>
-                    </div>   
-                  </span>
-                </div>
-
-
-                <div id="progressbarPage" class="hidden progressblock">
-                    <div>Preparing......</div>
-                    <div id="progresscontainer" class="oldhtmlprogress-bar">
-                        <div id="oldhtmlprogress2"></div>
-                    </div>                  
-                </div>
-
-                <div id="launchARPage" class="hidden">
-                    <div class="hcentre">
-                        <div>Your paint job is ready!</div><br>
-                        <div>Press the Launch AR button!</div><br>
-
-                        <div id="launchbutton" class="prev-btn hidden" style="text-align: center;">
-                          <a id="launchbuttonlink" target="_blank" href="www.mapflaps.com">LAUNCH AR</a>
-                        </div>
-
-                    </div>   
-                </div>
-              </div>
-              <!--end of my old html last pages-->
-
-
-
-
-
-            </div>
-
-
-            <div class="flex justify-between items-center gap-x-3 w-full mt-4">
-              <button
-                type="button"
-                id="prevBtn"
-                class="prev-btn opacity-50"
-                disabled
-              >
-                BACK
-              </button>
-              <button type="button" id="nextBtn" class="next-btn">NEXT</button>
-            </div>
-          </div>
+          </h2>
         </div>
       </div>
-      <!--end of patten content -->
-      <div
-        id="tutorial"
-        class="hidden fixed top-0 h-screen w-full before:bg-black before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-50 flex justify-around items-center flex-col text-center z-50"
+      <div class="min-h-[300px] bg-primary"></div>
+    </div>
+  </div>
+  <!--end of patten content -->
+  <div
+    id="tutorial"
+    class="hidden fixed top-0 h-screen w-full before:bg-black before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-50 flex justify-around items-center flex-col text-center"
+  >
+    <figure class="w-[30vh] h-[30vh] relative">
+      <img
+        src="./assets/images/tutorial_img.svg"
+        alt="tutorial"
+        class="w-full h-full"
+      />
+    </figure>
+    <div class="bg-netural relative p-4 w-72 rounded-md opacity-95">
+      <h1
+        class="w-36 mx-auto text-2xl font-bold font-F1PaintShopBoldFont border-b-2 border-black pb-2"
       >
-        <figure class="w-[30vh] h-[30vh] relative">
-          <img
-            src="./assets/images/tutorial_img.svg"
-            alt="tutorial"
-            class="w-full h-full"
-          />
-        </figure>
-        <div class="bg-netural relative p-4 w-72 rounded-md opacity-95">
-          <h1
-            class="w-36 mx-auto text-2xl font-bold font-F1PaintShopBoldFont border-b-2 border-black pb-2"
-          >
-            TUTORIAL
-          </h1>
-          <p class="text-2xl font-medium font-Titillium leading-7 pt-3 pb-4">
-            To take a look at your masterpiece, tap and drag the screen to move
-            the camera around, and pinch to zoom in and out.
-          </p>
-          <button
-            type="button"
-            class="bg-brand text-netural text-2xl px-16 py-4 rounded-md font-F1PaintShopFont w-full"
-            onclick="handleTutorial()"
-          >
-            OK!
-          </button>
-        </div>
-      </div>
-      <!--end of tutorial-->
-      <div
-        id="pattenTutorial"
-        class="hidden fixed top-0 h-screen w-full before:bg-black before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-50 flex justify-around items-center flex-col text-center z-50"
+        TUTORIAL
+      </h1>
+      <p class="text-2xl font-medium font-Titillium leading-7 pt-3 pb-4">
+        To take a look at your masterpiece, tap and drag the screen to move
+        the camera around, and pinch to zoom in and out.
+      </p>
+      <button
+        type="button"
+        class="bg-brand text-netural text-2xl px-16 py-4 rounded-md font-F1PaintShopFont w-full"
+        onclick="handleTutorial()"
       >
-        <div class="bg-netural relative p-4 px-6 w-72 rounded-md opacity-95">
-          <h1
-            class="w-36 mx-auto text-2xl font-bold font-F1PaintShopBoldFont border-b-2 border-black pb-2"
-          >
-            PATTERN
-          </h1>
-          <p
-            class="text-2xl font-medium font-Titillium leading-7 pt-3 pb-4 min-h-[150px]"
-          >
-            Let’s get started then. Choose your pattern.
-          </p>
-          <!-- ben added id to handleCloseTutorial below -->
-          <button
-            type="button"
-            class="bg-brand text-netural text-2xl px-16 py-4 rounded-md font-F1PaintShopFont w-full"
-            onclick="handleCloseTutorial(0)"
-          >
-            OK!
-          </button>
-        </div>
-        <div></div>
-      </div>
-      <!--end of pattern tutorial-->
-      <div
-        id="paintTutorial"
-        class="hidden fixed top-0 h-screen w-full before:bg-black before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-50 flex justify-around items-center flex-col text-center z-50"
+        OK!
+      </button>
+    </div>
+  </div>
+  <!--end of tutorial-->
+  <div
+    id="pattenTutorial"
+    class="hidden fixed top-0 h-screen w-full before:bg-black before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-50 flex justify-around items-center flex-col text-center"
+  >
+    <div class="bg-netural relative p-4 px-6 w-72 rounded-md opacity-95">
+      <h1
+        class="w-36 mx-auto text-2xl font-bold font-F1PaintShopBoldFont border-b-2 border-black pb-2"
       >
-        <div class="bg-netural relative p-4 px-6 w-72 rounded-md opacity-95">
-          <h1
-            class="w-36 mx-auto text-2xl font-bold font-F1PaintShopBoldFont border-b-2 border-black pb-2"
-          >
-            PAINT
-          </h1>
-          <p
-            class="text-2xl font-medium font-Titillium leading-7 pt-3 pb-4 min-h-[150px]"
-          >
-            Looking good already, now get colourful.
-          </p>
-          <!-- ben added id to handleCloseTutorial below -->
-          <button
-            type="button"
-            class="bg-brand text-netural text-2xl px-16 py-4 rounded-md font-F1PaintShopFont w-full"
-            onclick="handleCloseTutorial(1)"
-          >
-            OK!
-          </button>
-        </div>
-        <div></div>
-      </div>
-      <!--end of paint tutorial-->
-      <div
-        id="tagTutorial"
-        class="hidden fixed top-0 h-screen w-full before:bg-black before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-50 flex justify-around items-center flex-col text-center z-50"
+        PATTERN
+      </h1>
+      <p
+        class="text-2xl font-medium font-Titillium leading-7 pt-3 pb-4 min-h-[150px]"
       >
-        <div class="bg-netural relative p-4 px-6 w-72 rounded-md opacity-95">
-          <h1
-            class="w-36 mx-auto text-2xl font-bold font-F1PaintShopBoldFont border-b-2 border-black pb-2"
-          >
-            TAG
-          </h1>
-          <p
-            class="text-2xl font-medium font-Titillium leading-7 pt-3 pb-4 min-h-[150px]"
-          >
-            Get personal, add your own tag.
-          </p>
-          <!-- ben added id to handleCloseTutorial below -->
-          <button
-            type="button"
-            class="bg-brand text-netural text-2xl px-16 py-4 rounded-md font-F1PaintShopFont w-full"
-            onclick="handleCloseTutorial(2)"
-          >
-            OK!
-          </button>
-        </div>
-        <div></div>
-      </div>
-      <!--end of tag tutorial-->
-      <div
-        id="sponsorTutorial"
-        class="hidden fixed top-0 h-screen w-full before:bg-black before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-50 flex justify-around items-center flex-col text-center z-50"
+        Let’s get started then. Choose your pattern.
+      </p>
+      <button
+        type="button"
+        class="bg-brand text-netural text-2xl px-16 py-4 rounded-md font-F1PaintShopFont w-full"
+        onclick="handlePattenTutorial()"
       >
-        <div class="bg-netural relative p-4 px-6 w-72 rounded-md opacity-95">
-          <h1
-            class="w-36 mx-auto text-2xl font-bold font-F1PaintShopBoldFont border-b-2 border-black pb-2"
-          >
-            SPONSOR
-          </h1>
-          <p
-            class="text-2xl font-medium font-Titillium leading-7 pt-3 pb-4 min-h-[150px]"
-          >
-            Finishing touches... add some sponsors.
-          </p>
-          <!-- ben added id to handleCloseTutorial below -->
-          <button
-            type="button"
-            class="bg-brand text-netural text-2xl px-16 py-4 rounded-md font-F1PaintShopFont w-full"
-            onclick="handleCloseTutorial(3)"
-          >
-            OK!
-          </button>
-        </div>
-        <div></div>
-      </div>
-      <!--end of tag tutorial-->
-    </main>
+        OK!
+      </button>
+    </div>
+    <div></div>
+  </div>
+  <!--end of patten tutorial-->
+</main>
 <!--    <main class="md:hidden" style="display:block!important">--> <!--ben forced on to override black-->
  
 
 <!-- old html -->
 
 
-
-
-
-
     <div id="oldmaincontainerblock" class="oldhtmlcontainer" style="display:none">
         <div id="minmax" class="minmax" onclick="onMinMax();"><i class="gg-chevron-double-right"></i></div>
         <div id="palette_toolsBlock" class="palette_tools disabledUserEvents">
-            <!--
             <div id="guicontainer">
                 <div id="guitabs" class="f1patterns">
                     <div class="f1colourrow guiBGcolour">
@@ -904,14 +478,170 @@
                     </div>
                 </div> 
             </div>              
-            -->
             <div id="toolscontainer">
- 
+                <div id="toolsexpanded">
+                    <div id="patternsPanel" class="f1patterns">
+                        <div id="layer1patterns_ins" class="layerPatternsContainer scrollbox"></div>
+                        <div id="patternColours" class="f1patterncolours hidden">
+                            <div>
+                                <div class="channelblock">BASE PAINT
+                                    <div id="basepaintbutton" class="paintButtons" onclick="onChangePaint(0);"></div>
+                                </div>
+                                <div id="flexpair" class="flexpair">
+                                    <div class="channelblock paintlayout">PRIMARY PAINT
+                                        <div id="primarypaintbutton" class="paintButtons" onclick="onChangePaint(1);"></div>
+                                    </div>  
+                                    <div class="channelblock paintlayout">SECONDARY PAINT
+                                        <div id="secondarypaintbutton" class="paintButtons" onclick="onChangePaint(2);"></div>
+                                    </div>  
+                                </div>
+                            </div>
+                            <div id="redspacer" class="redspacer"></div>
+                            <div id="presetandrandomblock" class="flexpair heightx3">
+                                <div class="preset">
+                                    <div>PRESET PAINT</div>
+                                    <div class="randomandpreset" onclick="onDefaultPaint();">
+                                        <img width='auto' height='100%' src="./assets/inapp/preselectedpaint.png"/>
+                                    </div>
+                                </div>
+                                <div class="preset">
+                                    <div>RANDOM PAINT</div>
+                                    <div class="randomandpreset" onclick="onRandomPaint();">
+                                        <img width='auto' height='100%' src="./assets/inapp/randompaint.png"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="paintachannelblock" class="f1patterncolours hidden">
+                            <div id="whichchanneltext">WHICH CHANNEL</div>
+                            <div>
+                                <div id="colourPickerContainer" class="colourscontainer">
+                                    <div style="height:15px"></div>
+                                    <div id="coloursample" class="coloursample"></div>
+                                    <div id="coloursexpanded_2" class="coloursexpanded_2">
+                                        <div class="centreddiv">
+                                            <div class="colourWheelPicker" id="colourWheelPicker"></div>
+                                        </div>
+                                    </div>
+                                </div>     
+                            </div>
+                            <div id="glosstypeblock">
+                                <div class="flex3">
+                                    <div id="glossbutton" class="blackButton button" onclick="onMaterialbutton(0);">GLOSS</div>
+                                    <div id="mattebutton" class="blackButton button" onclick="onMaterialbutton(1);">MATTE</div>
+                                    <div id="metallicbutton" class="blackButton button" onclick="onMaterialbutton(2);">METALLIC</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tagblock">
+                            <div id="gettagblockheight">
+                                <div style="width:100%;">
+                                    <div class="evenflex">
+                                        <div>Enter your 2 character tag</div>
+
+                                        <label id="taginputcontainer" class="input disabledButton">
+                                            <input id="taginput" class="tagInput__field" type="text" placeholder="F1" maxlength=2 value="F1" />
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div id="tagColours" class="f1patterncolours">
+                                    <div>
+                                        <div id="flexpair" class="flexpair">
+                                            <div class="channelblock paintlayout">TAG COLOUR
+                                                <div id="tagpaintbutton" class="paintButtons" onclick="onChangePaint(4);"></div>
+                                            </div>  
+                                            <div class="channelblock paintlayout">STYLE COLOUR
+                                                <div id="tagstylepaintbutton" class="paintButtons" onclick="onChangePaint(3);"></div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="channelblock">Choose a tag style</div>
+                            </div>
+                            <div id="layer2tags_ins" class="layerTagsContainer scrollbox"></div>
+                            <div id="paintatagblock" class="f1patterncolours hidden">
+                                <div id="whichchanneltext">WHICH CHANNEL</div>
+                                <div>
+                                    <div id="tagcolourPickerContainer" class="colourscontainer">
+                                        <div style="height:15px"></div>
+                                        <div id="tagcoloursexpanded_2" class="coloursexpanded_2">
+                                            <div class="centreddiv">
+                                                <div class="colourWheelPicker" id="colourWheelPicker"></div>
+                                            </div>
+                                        </div>
+                                    </div>     
+                                </div>
+                            </div>                            
+                        </div>
+                        <div id="decalblock" class="hidden">
+                            <div id="getdecalblockheight">
+                                <div id="decalColours" class="f1patterncolours">
+                                    <div>
+                                        <div class="channelblock">SPONSOR COLOUR
+                                            <div id="decalpaintbutton" class="paintButtons" onclick="onChangePaint(6);"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="channelblock">CHOOSE A SPONSOR</div>
+                            </div>
+                            <div id="layer3decals_ins" class="layerDecalsContainer scrollbox"></div>
+                            <div id="paintdecalblock" class="f1patterncolours hidden">
+                                <div id="whichchanneltext">WHICH CHANNEL</div>
+                                <div>
+                                    <div id="decalcolourPickerContainer" class="colourscontainer">
+                                        <div style="height:15px"></div>
+                                        <div id="decalcoloursexpanded_2" class="coloursexpanded_2">
+                                            <div class="centreddiv">
+                                                <div class="colourWheelPicker" id="colourWheelPicker"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="finalPage" class="hidden">
+                        <div class="hcentre">
+                            <div>Congratulations!</div><br>
+                            <div>Now you can see your livery in AR!</div><br>
+                            <div>Press Back to change your livery or Confirm to proceed with your Livery!</div><br>
+                        </div>   
+                    </div>
+
+
+                    <div id="progressbarPage" class="hidden progressblock">
+                        <div>Preparing......</div>
+                        <div id="progresscontainer" class="progress-bar">
+                            <div id="progress2"></div>
+                        </div>                  
+                    </div>
+
+                    <div id="launchARPage" class="hidden">
+                        <div class="hcentre">
+                            <div>Your paint job is ready!</div><br>
+                            <div>Press the Launch AR button!</div><br>
+                        </div>   
+                    </div>
+                    <!-- main back next buttons -->
+
+                    
+                    <div id="backornextblock" class="splashblock backornextblock">
+                        <div class="buttonpanel flexpair">
+                            <div id="backbutton" class="redButton button mainButtons disabledButton" onclick="backNextPage(-1);">BACK</div>
+                            <div id="nextbutton" class="blackButton button mainButtons" onclick="backNextPage(1);">NEXT</div>
+                            <div id="launchbutton" class="blackButton button mainButtons confirmButton hidden"><a id="launchbuttonlink" target="_blank" href="www.mapflaps.com">LAUNCH AR</a></div>
+                            <div id="confirmbutton" class="redButton button mainButtons confirmButton hidden" onclick="onConfirm();">CONFIRM</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- <div id="canvas-positioner">
-            <div id="canvas-container"></div>
-        </div> -->
+        <div id="canvas-positioner">
+            <div id="canvas-container"></div> <!-- this is where I append the webGL3D canvas -->
+        </div>
     </div>
 
     <!-- cover screen -->
@@ -922,10 +652,10 @@
 <div id="versionid" onclick="onConsole(0)">v0.3.0.0<div id="fpsindicator"></div></div>
     <div id="console" class="hidden">
         <div class="console">
-            <div class="console_button consoleexpandbutton" onclick="expandDropdown('toneexpander');">Tone</div>
-            <div class="console_button consoleshrunk consoleexpander" id="toneexpander">
+            <div class="console_button expandbutton" onclick="expandDropdown('toneexpander');">Tone</div>
+            <div class="console_button shrunk expander" id="toneexpander">
                 <div id="c_tonemappingSliderTxt" class="slidertxt">toneMapping</div>
-                <input type="range" min="1" max="50" value="23" class="consoleslider" id="c_tonemappingSlider">
+                <input type="range" min="1" max="50" value="23" class="slider" id="c_tonemappingSlider">
                 <select id="c_tonemap" name="tonemap">
                     <option value="linear">Linear</option>
                     <option value="cineon">Cineon</option>
@@ -934,10 +664,10 @@
                 </select>
             </div>
 
-            <div class="console_button consoleexpandbutton" onclick="expandDropdown('envexpander');">Env map</div>
-            <div class="console_button consoleshrunk consoleexpander" id="envexpander">
+            <div class="console_button expandbutton" onclick="expandDropdown('envexpander');">Env map</div>
+            <div class="console_button shrunk expander" id="envexpander">
                 <div id="c_envStrengthSliderTxt" class="slidertxt">envStrength</div>
-                <input type="range" min="0" max="1500" value="500" class="consoleslider" id="c_envStrengthSlider">
+                <input type="range" min="0" max="1500" value="500" class="slider" id="c_envStrengthSlider">
                 <select id="c_envstrength" name="envstrength">
                     <option value="car">Car</option>
                     <option value="carstatic">Car static</option>
@@ -945,8 +675,8 @@
                     <option value="visor">Visor</option>
                 </select>
             </div>
-            <div class="console_button consoleexpandbutton" onclick="expandDropdown('lightexpander');">Lights</div>
-            <div class="console_button consoleshrunk consoleexpander" id="lightexpander">
+            <div class="console_button expandbutton" onclick="expandDropdown('lightexpander');">Lights</div>
+            <div class="console_button shrunk expander" id="lightexpander">
                 <select id="c_whichlight" name="whichlight">
                     <option value="point1">Point 1</option>
                     <option value="point2">Point 2</option>
@@ -957,42 +687,42 @@
                     <option value="amb">Ambient</option>
                 </select>
                 <div id="c_lightIntensitySliderTxt" class="slidertxt">intensity</div>
-                <input type="range" min="0" max="1000" value="500" class="consoleslider" id="c_lightIntensitySlider">
+                <input type="range" min="0" max="1000" value="500" class="slider" id="c_lightIntensitySlider">
 
-                <div class="console_button consoleexpandbutton" onclick="expandDropdown('lightdetailexpander');">More lights</div>
-                <div class="console_button consoleshrunk consoleexpander" id="lightdetailexpander">
+                <div class="console_button expandbutton" onclick="expandDropdown('lightdetailexpander');">More lights</div>
+                <div class="console_button shrunk expander" id="lightdetailexpander">
                     <div id="c_lightXSliderTxt" class="slidertxt">x</div>
-                    <input type="range" min="-200" max="200" value="80" class="consoleslider" id="c_lightXSlider">
+                    <input type="range" min="-200" max="200" value="80" class="slider" id="c_lightXSlider">
                     <div id="c_lightYSliderTxt" class="slidertxt">y</div>
-                    <input type="range" min="-200" max="200" value="80" class="consoleslider" id="c_lightYSlider">
+                    <input type="range" min="-200" max="200" value="80" class="slider" id="c_lightYSlider">
                     <div id="c_lightZSliderTxt" class="slidertxt">z</div>
-                    <input type="range" min="-200" max="200" value="80" class="consoleslider" id="c_lightZSlider">
+                    <input type="range" min="-200" max="200" value="80" class="slider" id="c_lightZSlider">
                 </div>
             </div>
-            <div class="console_button consoleexpandbutton" onclick="expandDropdown('tagsexpander');">Tags</div>
-            <div class="console_button consoleshrunk consoleexpander" id="tagsexpander">
+            <div class="console_button expandbutton" onclick="expandDropdown('tagsexpander');">Tags</div>
+            <div class="console_button shrunk expander" id="tagsexpander">
                 <select id="c_whichtag" name="c_whichtag">
                     <option value=0>Pos 1</option>
                     <option value=1>Pos 2</option>
                     <option value=2>Pos 3</option>
-<!--                    <option value=2>Pos 4</option>  -->
+                    <option value=2>Pos 4</option>
                 </select>
                 <div id="c_tagXSliderTxt" class="slidertxt">pos X:</div>
-                <input type="range" min="-1000" max="1000" value="500" class="consoleslider" id="c_tagXSlider">
+                <input type="range" min="-100" max="100" value="50" class="slider" id="c_tagXSlider">
                 <div id="c_tagYSliderTxt" class="slidertxt">pos Y:</div>
-                <input type="range" min="-1000" max="1000" value="500" class="consoleslider" id="c_tagYSlider">
+                <input type="range" min="-100" max="100" value="50" class="slider" id="c_tagYSlider">
                 <div id="c_tagScaleSliderTxt" class="slidertxt">scale:</div>
-                <input type="range" min="0" max="2000" value="1000" class="consoleslider" id="c_tagScaleSlider">
+                <input type="range" min="0" max="200" value="100" class="slider" id="c_tagScaleSlider">
                 <div id="c_tagRotSliderTxt" class="slidertxt">rot:</div>
-                <input type="range" min="0" max="36000" value="0" class="consoleslider" id="c_tagRotSlider">
+                <input type="range" min="0" max="36000" value="0" class="slider" id="c_tagRotSlider">
             </div>                
-            <div class="console_button consoleexpandbutton" onclick="expandDropdown('sfxexpander');">SFX</div>
-            <div class="console_button consoleshrunk consoleexpander" id="sfxexpander">
+            <div class="console_button expandbutton" onclick="expandDropdown('sfxexpander');">SFX</div>
+            <div class="console_button shrunk expander" id="sfxexpander">
                 <div id="c_sfxRibbonSliderTxt" class="slidertxt">ribbon bloom</div>
-                <input type="range" min="0" max="300" value="6" class="consoleslider" id="c_sfxRibbonSlider">
+                <input type="range" min="0" max="300" value="6" class="slider" id="c_sfxRibbonSlider">
 
                 <div id="c_sfxSliderTxt" class="slidertxt">bloom</div>
-                <input type="range" min="0" max="25" value="6" class="consoleslider" id="c_sfxSlider">
+                <input type="range" min="0" max="25" value="6" class="slider" id="c_sfxSlider">
 <!--                
                 <div class="console_button">
                     <label for="specialFXpipe_input"> specialFXpipe</label><br>
@@ -1022,17 +752,17 @@
                         </select>
 
                         <div id="c_off_xSliderTxt" class="slidertxt">off x</div>
-                        <input type="range" min="-1000" max="1000" value="0" class="consoleslider" id="c_off_xSlider">
+                        <input type="range" min="-1000" max="1000" value="0" class="slider" id="c_off_xSlider">
                         <div id="c_tot_xSliderTxt" class="slidertxt">tot x</div>
-                        <input type="range" min="-4000" max="4000" value="0" class="consoleslider" id="c_tot_xSlider">
+                        <input type="range" min="-4000" max="4000" value="0" class="slider" id="c_tot_xSlider">
                         <div id="c_scale_xSliderTxt" class="slidertxt">scale x</div>
-                        <input type="range" min="-2000" max="2000" value="100" class="consoleslider" id="c_scale_xSlider">
+                        <input type="range" min="-2000" max="2000" value="100" class="slider" id="c_scale_xSlider">
                         <div id="c_off_ySliderTxt" class="slidertxt">off y</div>
-                        <input type="range" min="-1000" max="1000" value="0" class="consoleslider" id="c_off_ySlider">
+                        <input type="range" min="-1000" max="1000" value="0" class="slider" id="c_off_ySlider">
                         <div id="c_tot_ySliderTxt" class="slidertxt">tot y</div>
-                        <input type="range" min="-4000" max="4000" value="0" class="consoleslider" id="c_tot_ySlider">
+                        <input type="range" min="-4000" max="4000" value="0" class="slider" id="c_tot_ySlider">
                         <div id="c_scale_ySliderTxt" class="slidertxt">scale y</div>
-                        <input type="range" min="-2000" max="2000" value="100" class="consoleslider" id="c_scale_ySlider">
+                        <input type="range" min="-2000" max="2000" value="100" class="slider" id="c_scale_ySlider">
 
                     </div>
                 </div>
@@ -1061,13 +791,3 @@
   </body>
 
 
-              <!--
-              <div id="backornextblock" class="splashblock backornextblock">
-                  <div class="buttonpanel flexpair">
-                      <div id="backbutton" class="redButton button mainButtons disabledButton" onclick="backNextPage(-1);">BACK</div>
-                      <div id="nextbutton" class="blackButton button mainButtons" onclick="backNextPage(1);">NEXT</div>
-                      <div id="launchbutton" class="blackButton button mainButtons confirmButton hidden"><a id="launchbuttonlink" target="_blank" href="www.mapflaps.com">LAUNCH AR</a></div>
-                      <div id="confirmbutton" class="redButton button mainButtons confirmButton hidden" onclick="onConfirm();">CONFIRM</div>
-                  </div>
-              </div>
-              -->

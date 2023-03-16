@@ -55,7 +55,7 @@ class F1Layers {
           texture1Base: { value: this.baseLayer },  // base pattern
           texture2Tag: { value: this.tagLayer },  // tag
           texture3Decal: { value: this.decalLayer },  // decal
-          texture1TintChannel1: { value: new THREE.Vector4(.6,0.2,0.2,1) }, // base colours TODO get from default
+          texture1TintChannel1: { value: new THREE.Vector4(.19,0,0.314,1) }, // base colours TODO get from default
           texture1TintChannel2: { value: new THREE.Vector4(0,1,0,1) },
           texture1TintChannel3: { value: new THREE.Vector4(0,0,1,1) },
           tagTint:{value: new THREE.Vector4(1,1,1,1)},

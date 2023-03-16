@@ -24,9 +24,7 @@ class F1Aws {
           // Set the AWS Region
         this.region = "eu-west-2"; //REGION
         this.bucketName = "f1-fanzone-paintshop"; //BUCKET_NAME        
-        // this.IdentityPoolId = "eu-west-2:cbf69f68-9773-42df-90ba-9f93aa42132b";
-        this.IdentityPoolId = "eu-west-2:a8b5a2f0-f4f8-475e-83cc-fef46286b88c";        
-
+        this.IdentityPoolId = "eu-west-2:cbf69f68-9773-42df-90ba-9f93aa42132b";
         this.filessavedcount = 0;
 
           // Initialize the Amazon Cognito credentials provider for writing images

@@ -232,17 +232,13 @@ class F1Ribbons {
                     // if(sinwave_01 > debug.x)
                     //     debug.x = sinwave_01;
 
-                    uv.x += sin( ((t+(i*10.))-i*116.41) * uv.y * (wobble_freq*(i*0.15))*.125  + (t-i*122.) + i*111.61 ) * (wobble_ampl+(i*.105));
-//good                    uv.x += sin( ((t+(i*10.))-i*116.41) * uv.y * wobble_freq*.125  + (t-i*122.) + i*111.61 ) * (wobble_ampl+(i*.105));
-
-
 
                     // uv.x += sinwave_01 * uv.y * wobble_freq*.125  + (t-i*122.) + i*111.61 ) * (wobble_ampl+(i*.105));
-                    // uv.x += sin( ((t+(i*10.))-i*116.41) * uv.y * wobble_freq*.125  + (t-i*122.) + i*111.61 ) * (wobble_ampl+(i*.105));
+                    uv.x += sin( ((t+(i*10.))-i*116.41) * uv.y * wobble_freq*.125  + (t-i*122.) + i*111.61 ) * (wobble_ampl+(i*.105));
                     // uv.x += sin( ((t+(i*10.))-i*116.41) * uv.y * wwwwobble_freq*.125  + (t-i*122.) + i*111.61 ) * (wwwwobble_ampl+(i*.105));
 
                     // make them all move slightly
-                    float coswave_01 = cos((t*0.1*(i*1.5)) + i*uv.y * wobble_freq*.81);
+                    float coswave_01 = cos((t*0.1) + i*uv.y * wobble_freq*.81);
                     uv.x += coswave_01*.02;
 //good                    uv.x += cos((t*0.1) + i*uv.y * wobble_freq*.81)*.02;
                     // uv.x += cos((t*0.1) + i*uv.y * wwwwobble_freq*.81)*.02;
