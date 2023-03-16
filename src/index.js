@@ -1582,11 +1582,17 @@ function postRenderProcess() {
 
 		doBuildBasemap = false;
 
+
 		const datetime = getDateTimeStampString();
 		processJSON.liveryData['timestamp'] = datetime;
 		f1Aws.filessavedcount = 0;
-		doSavePaintShop(pixelBuffer, "_" + datetime +  "_map.png", customMapRenderSize);
-		doSavePaintShop(pixelBufferRoughMetal, "_" + datetime +  "_roughmetal.png", customRoughMapRenderSize);
+		doSavePaintShop(pixelBuffer, "_" + datetime + '_' + f1User.userCarOrHelmet + "_map.png", customMapRenderSize);
+		doSavePaintShop(pixelBufferRoughMetal, "_" + datetime + '_' + f1User.userCarOrHelmet +  "_roughmetal.png", customRoughMapRenderSize);
+
+		// save json record too
+		var jsonfilename = f1User.userID + "_" + datetime + '_' + f1User.userCarOrHelmet + "_livery.json";
+		var liveryDataString = JSON.stringify( processJSON.liveryData);
+
 
 		// save json record too
 		var jsonfilename = f1User.userID + "_" + datetime +  "_livery.json";
