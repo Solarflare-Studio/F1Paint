@@ -1623,9 +1623,12 @@ function postRenderProcess() {
 		// const thearlink = 'https://solarflarestudio.8thwall.app/f1testmarkerv6/?u=' + userID + '&d='+ datetime;// +'&m=c&t='+(new Date());
 
 
-
 		// include user id, datetime, helmet or car and language
-		const params = '?u=' + f1User.userID + '&d='+ datetime + '&m=' + (f1User.isHelmet ? 'h' : 'c') + '&l=' + f1User.languageCode;
+		var helmetParam = "";
+		if(f1User.isHelmet) {
+			helmetParam = "&m=h&v=" + processJSON.liveryData['Layers'][0].Channels[2].tint;
+		}
+		const params = '?u=' + f1User.userID + '&d='+ datetime + '&l=' + f1User.languageCode + helmetParam;
 		// marker f1 fanzone ar version latest V2
 		const thearlink = 'https://solarflarestudio.8thwall.app/f1-fanzone-ar-v2/' + params;
 		// const thearlink = 'https://solarflarestudio.8thwall.app/f1-fanzone-ar-v2/?u=' + f1User.userID + '&d='+ datetime;// +'&m=c&t='+(new Date());
@@ -1636,6 +1639,9 @@ function postRenderProcess() {
 		
 
 		document.getElementById('launchbuttonlink').href = new URL(thearlink);
+
+
+
 		
 		// update cookie
 		var d = new Date();
