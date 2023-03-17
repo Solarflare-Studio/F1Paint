@@ -33,6 +33,8 @@ class PatternItems {
     }
     // ===============================================
     buildGUI(patternsData,f1Aws) { // ,layerPatternThumbElements) {
+
+
         if(DEBUG_MODE)
             console.log('>> adding thumbs');
 
@@ -93,7 +95,7 @@ class PatternItems {
                     if(layer1count!=0)
                         f1Aws.loadfromAWS('patterns',thethumbfile,5,this.haveReadThumb,this,thumbImage); // aws thumbs
                     else
-                        thumbImage.src = "./assets/inapp/noneicon.png";
+                        thumbImage.src = "./assets/inapp/newnone.jpg";
 
                     layer1count++;
                     break;
@@ -110,7 +112,7 @@ class PatternItems {
                     if(layer2count!=0)
                         f1Aws.loadfromAWS('patterns',thethumbfile,5,this.haveReadThumb,this,thumbImage); // aws thumbs
                     else
-                        thumbImage.src = "./assets/inapp/noneicon.png";
+                        thumbImage.src = "./assets/inapp/newnone.jpg";
 
                     layer2count++;
                     break;
@@ -128,7 +130,7 @@ class PatternItems {
                     if(layer3count!=0)
                         f1Aws.loadfromAWS('patterns',thethumbfile,5,this.haveReadThumb,this,thumbImage); // aws thumbs
                     else
-                        thumbImage.src = "./assets/inapp/noneicon.png";
+                        thumbImage.src = "./assets/inapp/newnone.jpg";
 
                     layer3count++;
                     break;                    
@@ -136,7 +138,7 @@ class PatternItems {
             }
 
             thumbImage.setAttribute('patternId', patternsData['Patterns'][i].id);
-            thumbImage.setAttribute('onClick', "onPatternPicked("+ (i) +",'" + patternsData['Patterns'][i].image + "',this)");
+            // thumbImage.setAttribute('onClick', "onPatternPicked("+ (i) +",'" + patternsData['Patterns'][i].image + "',this)");
 
 
             thumbFigure.appendChild(thumbImage);
@@ -414,10 +416,11 @@ class PatternItems {
                             self.mapUniforms.decal2Tint.value = tmpv4;
                     }
                 }
-                self.thepatternelement.classList.add('patternSelected');
+                // self.thepatternelement.classList.add('patternSelected');
                 self.currentPatternElement = self.thepatternelement;
-                // Show description name
-                self.currentPatternElement.children[0].classList.remove('hidden');
+                
+                // // Show description name
+                // self.currentPatternElement.children[0].classList.remove('hidden');
 
             }, forceddelay);
 
@@ -443,10 +446,10 @@ class PatternItems {
 
     
 
-        if(this.currentPatternElement!=0) {
-            this.currentPatternElement.classList.remove('patternSelected');
-            this.currentPatternElement.children[0].classList.add('hidden');
-        }
+        // if(this.currentPatternElement!=0) {
+        //     this.currentPatternElement.classList.remove('patternSelected');
+        //     this.currentPatternElement.children[0].classList.add('hidden');
+        // }
 
         var isNone = false;
         if(patternsData['Patterns'][which].id == -1 && currentLayer!=0) { // a null one
@@ -463,10 +466,10 @@ class PatternItems {
                 f1SpecialFX.mapUniforms.useTag.value = 0;
                 f1MetalRoughmapUniforms.useTag.value = 0;
 
-                thepatternelement.classList.add('patternSelected');
+                // thepatternelement.classList.add('patternSelected');
                 this.currentPatternElement = thepatternelement;
-                // Show description name
-                this.currentPatternElement.children[0].classList.remove('hidden');
+                // // Show description name
+                // this.currentPatternElement.children[0].classList.remove('hidden');
 
 
             }
@@ -479,10 +482,10 @@ class PatternItems {
 
                 f1SpecialFX.mapUniforms.useDecal.value = 0;
 
-                thepatternelement.classList.add('patternSelected');
+                // thepatternelement.classList.add('patternSelected');
                 this.currentPatternElement = thepatternelement;
-                // Show description name
-                this.currentPatternElement.children[0].classList.remove('hidden');
+                // // Show description name
+                // this.currentPatternElement.children[0].classList.remove('hidden');
 
             }
  

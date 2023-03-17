@@ -296,71 +296,70 @@ class F1Gui {
         this.currentPage = _page;
 
         // do tab highlights
-        document.getElementById('f1patterntab').classList.remove('f1tabActive');
-        document.getElementById('f1colourtab').classList.remove('f1tabActive');
-        document.getElementById('f1tagtab').classList.remove('f1tabActive');
-        document.getElementById('f1decalstab').classList.remove('f1tabActive');
-        document.getElementById('launchbutton').classList.add('hidden');
-        document.getElementById("launchARPage").classList.add("hidden");
-        document.getElementById("progressbarPage").classList.add("hidden");
+        // TODO HTML
+        // document.getElementById('f1patterntab').classList.remove('f1tabActive');
+        // document.getElementById('f1colourtab').classList.remove('f1tabActive');
+        // document.getElementById('f1tagtab').classList.remove('f1tabActive');
+        // document.getElementById('f1decalstab').classList.remove('f1tabActive');
+        // document.getElementById('launchbutton').classList.add('hidden');
+        // document.getElementById("launchARPage").classList.add("hidden");
+        // document.getElementById("progressbarPage").classList.add("hidden");
 
-        if(this.currentPage<=1) { // disable back
-            document.getElementById('backbutton').classList.add('disabledButton');
-            document.getElementById('nextbutton').classList.remove('disabledButton');
-        }
-        else {
-            document.getElementById('backbutton').classList.remove('disabledButton');
-            if(this.currentPage>=5) {
-                document.getElementById('nextbutton').classList.add('disabledButton');
-            }
-            else
-                document.getElementById('nextbutton').classList.remove('disabledButton');
-        }
+        // if(this.currentPage<=1) { // disable back
+        //     document.getElementById('backbutton').classList.add('disabledButton');
+        //     document.getElementById('nextbutton').classList.remove('disabledButton');
+        // }
+        // else {
+        //     document.getElementById('backbutton').classList.remove('disabledButton');
+        //     if(this.currentPage>=5) {
+        //         document.getElementById('nextbutton').classList.add('disabledButton');
+        //     }
+        //     else
+        //         document.getElementById('nextbutton').classList.remove('disabledButton');
+        // }
 
         if(_page == 1) { // patterns page
-            document.getElementById('f1patterntab').classList.add('f1tabActive');
-            // document.getElementById("patternColours").classList.add("hidden");
+            // document.getElementById('f1patterntab').classList.add('f1tabActive');
+            // // document.getElementById("patternColours").classList.add("hidden");
 
-            document.getElementById("tagblock").classList.add("hidden");
-            document.getElementById("decalblock").classList.add("hidden");
+            // document.getElementById("tagblock").classList.add("hidden");
+            // document.getElementById("decalblock").classList.add("hidden");
 
-            document.getElementById("finalPage").classList.add("hidden");
-            document.getElementById('confirmbutton').classList.add('hidden');
-            document.getElementById('nextbutton').classList.remove('hidden');
-            document.getElementById('backbutton').classList.remove('hidden');
+            // document.getElementById("finalPage").classList.add("hidden");
+            // document.getElementById('confirmbutton').classList.add('hidden');
+            // document.getElementById('nextbutton').classList.remove('hidden');
+            // document.getElementById('backbutton').classList.remove('hidden');
 
-            document.getElementById("layer1patterns_ins").classList.remove("hidden");
-            document.getElementById('paintatagblock').classList.add('hidden');
-            document.getElementById('paintdecalblock').classList.add('hidden');
+            // document.getElementById("layer1patterns_ins").classList.remove("hidden");
+            // document.getElementById('paintatagblock').classList.add('hidden');
+            // document.getElementById('paintdecalblock').classList.add('hidden');
 
-            document.getElementById('paintachannelblock').classList.add('hidden');
-            document.getElementById('patternColours').classList.add('hidden');
-
-
-
+            // document.getElementById('paintachannelblock').classList.add('hidden');
+            // document.getElementById('patternColours').classList.add('hidden');
         }
         else if(_page==2) { // paint
-            document.getElementById('f1colourtab').classList.add('f1tabActive');
-            document.getElementById("layer1patterns_ins").classList.add("hidden");
-            document.getElementById("tagblock").classList.add("hidden");
-            document.getElementById("decalblock").classList.add("hidden");
+            // document.getElementById('f1colourtab').classList.add('f1tabActive');
+            // document.getElementById("layer1patterns_ins").classList.add("hidden");
+            // document.getElementById("tagblock").classList.add("hidden");
+            // document.getElementById("decalblock").classList.add("hidden");
 
-            document.getElementById("finalPage").classList.add("hidden");
-            document.getElementById('confirmbutton').classList.add('hidden');
-            document.getElementById('nextbutton').classList.remove('hidden');
-            document.getElementById('backbutton').classList.remove('hidden');
+            // document.getElementById("finalPage").classList.add("hidden");
+            // document.getElementById('confirmbutton').classList.add('hidden');
+            // document.getElementById('nextbutton').classList.remove('hidden');
+            // document.getElementById('backbutton').classList.remove('hidden');
 
-            document.getElementById("patternColours").classList.remove("hidden");
-            document.getElementById('paintatagblock').classList.add('hidden');
-            document.getElementById('paintachannelblock').classList.add('hidden');
+            // document.getElementById("patternColours").classList.remove("hidden");
+            // document.getElementById('paintatagblock').classList.add('hidden');
+            // document.getElementById('paintachannelblock').classList.add('hidden');
 
 
-            document.getElementById('paintdecalblock').classList.add('hidden');
-            document.getElementById('decalblock').classList.add('hidden');
-            document.getElementById('layer3decals_ins').classList.add('hidden');
+            // document.getElementById('paintdecalblock').classList.add('hidden');
+            // document.getElementById('decalblock').classList.add('hidden');
+            // document.getElementById('layer3decals_ins').classList.add('hidden');
 
             // need to make sure the base pattern is loaded into glow sfx
 
+            // TODO HTML
             if(this.processJSON.liveryData['Layers'][0].patternId == -1) {  // a none pattern
                 // no 1st pattern selected, so hide second and third paint choices
                 document.getElementById("flexpair").classList.add("hidden");
@@ -370,104 +369,77 @@ class F1Gui {
             }
         }
         else if(_page==3) { // tags
-            document.getElementById('f1tagtab').classList.add('f1tabActive');
-            document.getElementById("patternColours").classList.add("hidden");
-            document.getElementById("layer1patterns_ins").classList.add("hidden");
-            document.getElementById("finalPage").classList.add("hidden");
-            document.getElementById('confirmbutton').classList.add('hidden');
-            document.getElementById('nextbutton').classList.remove('hidden');
-            document.getElementById('backbutton').classList.remove('hidden');
-            document.getElementById("decalblock").classList.add("hidden");
+            // document.getElementById('f1tagtab').classList.add('f1tabActive');
+            // document.getElementById("patternColours").classList.add("hidden");
+            // document.getElementById("layer1patterns_ins").classList.add("hidden");
+            // document.getElementById("finalPage").classList.add("hidden");
+            // document.getElementById('confirmbutton').classList.add('hidden');
+            // document.getElementById('nextbutton').classList.remove('hidden');
+            // document.getElementById('backbutton').classList.remove('hidden');
+            // document.getElementById("decalblock").classList.add("hidden");
 
-            document.getElementById("tagblock").classList.remove("hidden");
+            // document.getElementById("tagblock").classList.remove("hidden");
 
             // set tag colour buttons
             var tagstylecolour = this.processJSON.liveryData['Layers'][1].Channels[0].tint;
             var tagcolour = this.processJSON.liveryData['Layers'][1].Channels[1].tint;
-            document.getElementById('tagpaintbutton').style.backgroundColor = tagcolour;
-            document.getElementById('tagstylepaintbutton').style.backgroundColor = tagstylecolour;
+            // document.getElementById('tagpaintbutton').style.backgroundColor = tagcolour;
+            // document.getElementById('tagstylepaintbutton').style.backgroundColor = tagstylecolour;
 
-            document.getElementById('paintatagblock').classList.add('hidden');
-            document.getElementById('layer2tags_ins').classList.remove('hidden');
+            // document.getElementById('paintatagblock').classList.add('hidden');
+            // document.getElementById('layer2tags_ins').classList.remove('hidden');
 
-            document.getElementById('paintachannelblock').classList.add('hidden');
-            document.getElementById('paintdecalblock').classList.add('hidden');
+            // document.getElementById('paintachannelblock').classList.add('hidden');
+            // document.getElementById('paintdecalblock').classList.add('hidden');
         }
         else if(_page==4) { // decals
-            document.getElementById('f1decalstab').classList.add('f1tabActive');
-            document.getElementById("patternColours").classList.add("hidden");
-            document.getElementById("layer1patterns_ins").classList.add("hidden");
-            document.getElementById("tagblock").classList.add("hidden");
-            document.getElementById("finalPage").classList.add("hidden");
-            document.getElementById('confirmbutton').classList.add('hidden');
-            document.getElementById('nextbutton').classList.remove('hidden');
-            document.getElementById('backbutton').classList.remove('hidden');
-            document.getElementById('paintatagblock').classList.add('hidden');
+            // document.getElementById('f1decalstab').classList.add('f1tabActive');
+            // document.getElementById("patternColours").classList.add("hidden");
+            // document.getElementById("layer1patterns_ins").classList.add("hidden");
+            // document.getElementById("tagblock").classList.add("hidden");
+            // document.getElementById("finalPage").classList.add("hidden");
+            // document.getElementById('confirmbutton').classList.add('hidden');
+            // document.getElementById('nextbutton').classList.remove('hidden');
+            // document.getElementById('backbutton').classList.remove('hidden');
+            // document.getElementById('paintatagblock').classList.add('hidden');
 
-            document.getElementById("decalblock").classList.remove("hidden");
+            // document.getElementById("decalblock").classList.remove("hidden");
 
             // set decal colour button
             var decalcolour = this.processJSON.liveryData['Layers'][2].Channels[1].tint;
-            document.getElementById('decalpaintbutton').style.backgroundColor = decalcolour;
-
-            document.getElementById('paintdecalblock').classList.add('hidden');
-            document.getElementById('decalblock').classList.remove('hidden');
-            document.getElementById('layer3decals_ins').classList.remove('hidden');
-
-            document.getElementById('paintachannelblock').classList.add('hidden');
-
-
+            // document.getElementById('decalpaintbutton').style.backgroundColor = decalcolour;
+            // document.getElementById('paintdecalblock').classList.add('hidden');
+            // document.getElementById('decalblock').classList.remove('hidden');
+            // document.getElementById('layer3decals_ins').classList.remove('hidden');
+            // document.getElementById('paintachannelblock').classList.add('hidden');
         }
         else if(_page==5) { // launch AR = todo, is actually prepare paint job
-            document.getElementById("patternColours").classList.add("hidden");
-            document.getElementById("layer1patterns_ins").classList.add("hidden");
-            document.getElementById("tagblock").classList.add("hidden");
-            document.getElementById("decalblock").classList.add("hidden");
-            document.getElementById('paintatagblock').classList.add('hidden');
-
-
-            document.getElementById('backbutton').classList.remove('hidden');
-            document.getElementById('nextbutton').classList.add('hidden');
-            document.getElementById('confirmbutton').classList.remove('hidden');
-
-
-            document.getElementById("finalPage").classList.remove("hidden");
+            // document.getElementById("patternColours").classList.add("hidden");
+            // document.getElementById("layer1patterns_ins").classList.add("hidden");
+            // document.getElementById("tagblock").classList.add("hidden");
+            // document.getElementById("decalblock").classList.add("hidden");
+            // document.getElementById('paintatagblock').classList.add('hidden');
+            // document.getElementById('backbutton').classList.remove('hidden');
+            // document.getElementById('nextbutton').classList.add('hidden');
+            // document.getElementById('confirmbutton').classList.remove('hidden');
+            // document.getElementById("finalPage").classList.remove("hidden");
         }
         else if(_page==6) { // actual launch ar page
             // user has pressed confirm
-            document.getElementById("finalPage").classList.add("hidden");
-            document.getElementById('confirmbutton').classList.add('hidden');
-            document.getElementById('backbutton').classList.add('hidden');
-            document.getElementById('nextbutton').classList.add('hidden');
-
-            document.getElementById("progressbarPage").classList.remove("hidden");
-
-            // this.currentProgress = 0;
-
-//            this.updateProgress2(5);
-
-  
-
-
-
-
-    
-
+            // document.getElementById("finalPage").classList.add("hidden");
+            // document.getElementById('confirmbutton').classList.add('hidden');
+            // document.getElementById('backbutton').classList.add('hidden');
+            // document.getElementById('nextbutton').classList.add('hidden');
+            // document.getElementById("progressbarPage").classList.remove("hidden");
         }
         else if(_page==7) { // actual launch ar page
-            document.getElementById("progressbarPage").classList.add("hidden");
-
-
-            // document.getElementById("ARpage").classList.remove("hidden");
-            document.getElementById('nextbutton').classList.add('hidden');
-            document.getElementById('launchbutton').classList.remove('hidden');
-
-
-
-
-            // document.getElementById("launchbutton").classList.remove("hidden");
-            document.getElementById("launchARPage").classList.remove("hidden");
-            document.getElementById('backbutton').classList.remove('hidden');
+            // document.getElementById("progressbarPage").classList.add("hidden");
+            // // document.getElementById("ARpage").classList.remove("hidden");
+            // document.getElementById('nextbutton').classList.add('hidden');
+            // document.getElementById('launchbutton').classList.remove('hidden');
+            // // document.getElementById("launchbutton").classList.remove("hidden");
+            // document.getElementById("launchARPage").classList.remove("hidden");
+            // document.getElementById('backbutton').classList.remove('hidden');
         }
 
     }
@@ -503,13 +475,16 @@ class F1Gui {
 
         if(patternblock!=0) {
             for(var i=0;i<patternblock.children.length;i++) {
-                const id= patternblock.children[i].children[0].getAttribute('patternId');
+                const id= patternblock.children[i].children[1].children[0].children[0].getAttribute('patternId');
+
+//                const id= patternblock.children[i].children[0].getAttribute('patternId');
                 if(this.processJSON.liveryData['Layers'][layerindex].patternId == id){
                     // matched!
                     if(DEBUG_MODE)
                         console.log("matched");
                     hasfound=true;
-                    patternThumbElement = patternblock.children[i].children[0];
+                    // patternThumbElement = patternblock.children[i].children[0];
+                    patternThumbElement = patternblock.children[i].children[1].children[0].children[0];
                     break;
                 }
             }

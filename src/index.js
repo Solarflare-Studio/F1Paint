@@ -708,14 +708,18 @@ function seekPatternThumb(patternblock,layer) {
 	var hasfound = false;
 	var element;
 	for(var i=0;i<patternblock.children.length;i++) {
-		const id= patternblock.children[i].children[0].getAttribute('patternId');
+		// const id= patternblock.children[i].children[0].getAttribute('patternId');
+		const id= patternblock.children[i].children[1].children[0].children[0].getAttribute('patternId');
+
 		if(processJSON.liveryData['Layers'][layer].patternId == id){
 			// matched!
 			if(DEBUG_MODE)
 				console.log("matched");
 			hasfound=true;
 			// patternThumbElement = patternblock.children[i].children[0];
-			element = patternblock.children[i].children[0];
+			// element = patternblock.children[i].children[0];
+			element = patternblock.children[i].children[1].children[0].children[0];
+
 			break;
 		}
 	}
@@ -1935,7 +1939,9 @@ function dolayerpattern(layer,patternblock) {
 	var element;
 	var index;
 	for(var i=0;i<patternblock.children.length;i++) {
-		const id= patternblock.children[i].children[0].getAttribute('patternId');
+		// const id= patternblock.children[i].children[0].getAttribute('patternId');
+		const id= patternblock.children[i].children[1].children[0].children[0].getAttribute('patternId');
+
 		if(processJSON.liveryData['Layers'][layer].patternId == id){
 			element = patternblock.children[i].children[0];
 			index=i;
@@ -2220,11 +2226,11 @@ function handleWelcomeNext(){
 //
 
 // set up old html
-// document.getElementById('canvas-positioner').style.display='none';
 // document.getElementById('oldmaincontainerblock').style.display ="none";
 
 
 */
+document.getElementById('canvas-positioner').style.display='none';
 
 
 
