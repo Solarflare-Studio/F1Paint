@@ -70,8 +70,8 @@
       "name": "Gelato",
       "id": 1001,
       "layer": 0,
-      "thumbnail": "car/02_Patterns/_Thumbs/F1PS_Pattern_01_Gelato_thumb.jpg",
-      "image": "car/02_Patterns/01_Gelato/2k/F1PS_Car_Gelato_2k.jpg",
+      "thumbnail": "helmet/02_Patterns/_Thumbs/F1PS_Pattern_01_Gelato_thumb.jpg",
+      "image": "helmet/02_Patterns/01_Gelato/2k/F1PS_Helmet_Gelato_2k.jpg",
       "style": 0,
       "Channels": [
        {
@@ -89,11 +89,11 @@
       ]
     },  
     {
-      "name": "Cyber",
+      "name": "Gradient",
       "id": 1002,
       "layer": 0,
-      "thumbnail": "car/02_Patterns/_Thumbs/F1PS_Pattern_02_Cyber_thumb.jpg",
-      "image": "car/02_Patterns/02_Cyber/2k/F1PS_Car_Cyber_2k.jpg",
+      "thumbnail": "helmet/02_Patterns/_Thumbs/F1PS_Pattern_03_GradMap_thumb.jpg",
+      "image": "helmet/02_Patterns/03_Gradient/2k/Custom_ColorMask.jpg",
       "style": 0,
       "Channels": [
        {
@@ -110,50 +110,7 @@
        }
       ]
     },  
-    {
-      "name": "Gradient",
-      "id": 1003,
-      "layer": 0,
-      "thumbnail": "car/02_Patterns/_Thumbs/F1PS_Pattern_03_GradMap_thumb.jpg",
-      "image": "car/02_Patterns/03_Gradient/2k/F1PS_Car_Gradient_2k.jpg",
-      "style": 0,
-      "Channels": [
-       {
-        "channelName": "Chan 1",
-        "defaultColour": "26,32,90"
-       },
-       {
-        "channelName": "Chan 2",
-        "defaultColour": "50,255,50"
-       },
-       {
-        "channelName": "Chan 3",
-        "defaultColour": "255,0,200"
-       }
-      ]
-    },  
-    {
-      "name": "Lightspeed",
-      "id": 1004,
-      "layer": 0,
-      "thumbnail": "car/02_Patterns/_Thumbs/F1PS_Pattern_04_Lightspeed_thumb.jpg",
-      "image": "car/02_Patterns/04_Lightspeed/2k/F1PS_Car_Lightspeed_2k.jpg",
-      "style": 0,
-      "Channels": [
-       {
-        "channelName": "Chan 1",
-        "defaultColour": "26,32,90"
-       },
-       {
-        "channelName": "Chan 2",
-        "defaultColour": "50,255,50"
-       },
-       {
-        "channelName": "Chan 3",
-        "defaultColour": "255,0,200"
-       }
-      ]
-    },  
+
     {
       "name": "Varsity",
       "id": 2001,

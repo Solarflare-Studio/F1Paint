@@ -181,14 +181,14 @@ class F1CarHelmet {
                 staticMesh.layers.set(2); // make base black for glow...
                 staticMesh.material = _self.theStaticMaterial;
                 staticMesh.castShadow = true;
-                staticMesh.receiveShadow = true; // maybe! todo
+                staticMesh.receiveShadow = false;// true; // maybe! todo
                 _self.staticMesh = staticMesh;
 
                 _self.visorMesh = theModelScene.getObjectByName('Helmet_main_visor')
                 _self.visorMesh.layers.set(2); // make base black for glow...
                 _self.visorMesh.material = _self.theVisorMaterial;
                 _self.visorMesh.castShadow = true;
-                _self.visorMesh.receiveShadow = true; // maybe! todo
+                _self.visorMesh.receiveShadow = false;// true; // maybe! todo
                 // staticMesh.receiveShadow = false;
 
             }
@@ -225,15 +225,15 @@ class F1CarHelmet {
 
                 // todo
                 // now do HELMET static mat              
-                filelist.push(f1fnames.helmet_files[1] ); // base
+                filelist.push(f1fnames.helmet_files[6] ); // base
                 filetypelist.push( 0 ); filecomplete.push(false);
-                filelist.push(f1fnames.helmet_files[4] ); // metal
+                filelist.push(f1fnames.helmet_files[9] ); // metal
                 filetypelist.push( 1 ); filecomplete.push(false);
-                filelist.push(f1fnames.helmet_files[5] ); // rough
+                filelist.push(f1fnames.helmet_files[10] ); // rough
                 filetypelist.push( 2 ); filecomplete.push(false);
-                filelist.push(f1fnames.helmet_files[3] ); // ao
+                filelist.push(f1fnames.helmet_files[8] ); // ao
                 filetypelist.push( 3 ); filecomplete.push(false);
-                filelist.push(f1fnames.helmet_files[2] ); // normal
+                filelist.push(f1fnames.helmet_files[7] ); // normal
                 filetypelist.push( 4 ); filecomplete.push(false);
 
                 // custom mat
