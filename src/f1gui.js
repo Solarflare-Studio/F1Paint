@@ -704,6 +704,15 @@ class F1Gui {
     }
     //======================
     setSize(w,h,renderer,camera, colorPatternPicker ) {
+
+        // TODO HTML calc sizes
+
+        this.setRendererSize(w,h, renderer,camera);
+
+        return;
+        // TODO HTML
+
+
         const rootElement = document.querySelector(':root');
         const toolsElement = document.getElementById('palette_toolsBlock')
 
