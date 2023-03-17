@@ -223,10 +223,27 @@ class F1CarHelmet {
 
             if(_self.isHelmet) { // really is helmet
 
+                // todo
+                // now do HELMET static mat              
+                filelist.push(f1fnames.helmet_files[1] ); // base
+                filetypelist.push( 0 ); filecomplete.push(false);
+                filelist.push(f1fnames.helmet_files[4] ); // metal
+                filetypelist.push( 1 ); filecomplete.push(false);
+                filelist.push(f1fnames.helmet_files[5] ); // rough
+                filetypelist.push( 2 ); filecomplete.push(false);
+                filelist.push(f1fnames.helmet_files[3] ); // ao
+                filetypelist.push( 3 ); filecomplete.push(false);
+                filelist.push(f1fnames.helmet_files[2] ); // normal
+                filetypelist.push( 4 ); filecomplete.push(false);
+
+                // custom mat
+                filelist.push(f1fnames.helmet_files[2] ); // normal
                 filetypelist.push( 5 ); filecomplete.push(false);
-                filelist.push('./assets/helmet/Helmet Triangulated_Normal.png' ); // normal
+                filelist.push(f1fnames.helmet_files[3] ); // ao
                 filetypelist.push( 6 ); filecomplete.push(false);
-                filelist.push('./assets/helmet/Helmet Triangulated_AO.png' ); // ao
+
+
+
             }
             else {  // is the car
 
