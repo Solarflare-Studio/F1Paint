@@ -27,7 +27,7 @@ class F1Text {
 
         var _self=this;
 
-
+        this.currentStyle = -1;
 
 
         // this.f1Garagemat = f1Garage.garageWall.material;
@@ -95,6 +95,7 @@ class F1Text {
         // console sliders
         document.getElementById('c_whichtag').onchange = function (){
             const loco = this.value;
+
             document.getElementById('c_tagXSlider').value = _self.locos[loco][0] * 1000.0;
             document.getElementById('c_tagYSlider').value = _self.locos[loco][1] * 1000.0;
             document.getElementById('c_tagScaleSlider').value = _self.locos[loco][2] * 1000.0;
@@ -172,9 +173,12 @@ class F1Text {
         var _self = this;
         this.processJSON = processJSON;
 
-      
+        this.loadedFonts = false;
 
-
+        const font = new FontFace('F1PaintShopWideFont', 'url("./assets/fonts/Formula1-Display-Wide.otf")');
+        font.load().then((loadedFont) => {
+            document.fonts.add(loadedFont);
+        });
 
         //
 
@@ -347,7 +351,7 @@ class F1Text {
 
     }
     //======================
-    createText(text, styletype) {
+    actualCreateText(text,styletype) {
         // Create a canvas element
         // const sizecanvas = 1024;
 //premerge        const sizefont = this.sizecanvas * 0.5;
@@ -435,6 +439,7 @@ class F1Text {
                 fontdesc += "F1PaintShopBoldFont";
                 sizemodifier = 0.75;
                 needsoutline = true;
+
                 break;
             case 9:
                 fontdesc += "F1PaintShopBoldFont";
@@ -501,6 +506,10 @@ class F1Text {
 
         if(needsoutline) {
             context.strokeStyle = 'rgb(255,0,0)';
+            if(styletype==8) {
+                context.fillStyle = 'rgb(0,0,0)';// 'red';
+                context.strokeStyle = 'rgb(255,0,0)';
+            }
             context.lineWidth = sizefont*0.08*sizemodifier;
             context.strokeText(text, this.sizecanvas*0.5,sizefont);
             context.fillText(text, this.sizecanvas*0.5,sizefont);// sizefont);
@@ -532,11 +541,31 @@ class F1Text {
         return texture;
 
     }
+    //======================
+    createText(text, styletype) {
+
+        this.currentStyle = styletype;
+        return this.actualCreateText(text,styletype);
+
+        var self = this;
+        if(!this.loadedFont) {
+            // force preload wide font
+            const font = new FontFace('F1PaintShopWideFont', 'url("./assets/fonts/Formula1-Display-Wide.otf")');
+            font.load().then((loadedFont) => {
+                document.fonts.add(loadedFont);
+                return self.actualCreateText(text,styletype);
+            });
+        }
+        else {
+            return self.actualCreateText(text,styletype);
+        }
+
+
+    }
 
     //======================
 
 }
 
 export { F1Text };
-
 

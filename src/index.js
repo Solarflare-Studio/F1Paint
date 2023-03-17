@@ -1250,6 +1250,10 @@ function onDefaultPaint() {
 	// f1SpecialFX.finalPass.uniforms.amountBloom.value = 1.0;
 
 
+	if(!getAutoSelectingPattern()) 
+		f1Garage.startFloorMode(1); // radial 
+
+
 	var which = selectedBasePatternIndex;
 	var currentLayer = f1Gui.currentPage-1;
 	if(f1Gui.currentPage>1) currentLayer--;
@@ -1314,6 +1318,10 @@ function onRandomPaint() {
 	var which = selectedBasePatternIndex;
 	var currentLayer = f1Gui.currentPage-1;
 	if(f1Gui.currentPage>1) currentLayer--;
+
+
+	if(!getAutoSelectingPattern()) 
+		f1Garage.startFloorMode(1); // radial 
 
 	patternItems.useCustomBaseColours = true; // now no longer reading defaults when changing patterns, will use custom
 	f1SpecialFX.mapUniforms.leadin.value = 2.0;

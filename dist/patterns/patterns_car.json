@@ -226,7 +226,7 @@
       "layer": 1,
       "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag04_thumb.jpg",
       "image": "car/03_Tags/Tag_04/1k/F1PS_CarV10_Tag04_1k.png",
-      "style": 3,
+      "style": 4,
       "Channels": [
        {
         "channelName": "Chan 1",
@@ -248,7 +248,7 @@
       "layer": 1,
       "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag05_thumb.jpg",
       "image": "car/03_Tags/Tag_05/1k/F1PS_CarV10_Tag05_1k.png",
-      "style": 3,
+      "style": 5,
       "Channels": [
        {
         "channelName": "Chan 1",
@@ -270,7 +270,7 @@
       "layer": 1,
       "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag06_thumb.jpg",
       "image": "car/smallblankimage.png",
-      "style": 3,
+      "style": 6,
       "Channels": [
        {
         "channelName": "Chan 1",
@@ -291,8 +291,8 @@
       "id": 2007,
       "layer": 1,
       "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag07_thumb.jpg",
-      "image": "car/03_Tags/Tag_07/1k/F1PS_CarV10_Tag07_Example_1k.png",
-      "style": 3,
+      "image": "car/smallblankimage.png",
+      "style": 7,
       "Channels": [
        {
         "channelName": "Chan 1",
@@ -314,7 +314,7 @@
       "layer": 1,
       "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag08_thumb.jpg",
       "image": "car/03_Tags/Tag_08/1k/F1PS_CarV10_Tag08_1k.png",
-      "style": 3,
+      "style": 8,
       "Channels": [
        {
         "channelName": "Chan 1",
@@ -336,7 +336,7 @@
       "layer": 1,
       "thumbnail": "car/03_Tags/_Thumbs/F1PS_Tag09_thumb.jpg",
       "image": "car/03_Tags/Tag_09/1k/F1PS_CarV10_Tag09_1k.png",
-      "style": 3,
+      "style": 9,
       "Channels": [
        {
         "channelName": "Chan 1",

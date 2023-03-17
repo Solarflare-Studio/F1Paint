@@ -628,6 +628,7 @@ header {
 .patterndescription {
 	background-color: red;
 	width: 100%;
+	color: red;
 }
 .forceshow {
 	display:block!important;
