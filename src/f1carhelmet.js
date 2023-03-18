@@ -120,10 +120,10 @@ class F1CarHelmet {
             this.theVisorMaterial = new THREE.MeshStandardMaterial({ // pbr
                 name: 'theVisorMaterial',
                 fog: false,
-                // metalness: 0.6,
-                // roughness: 0.2,
-                metalness: 1.,
-                roughness: 1.,
+                metalness: 0.6,
+                roughness: 0.2,
+                // metalness: 1.,
+                // roughness: 1.,
                 emissiveIntensity:1,
                 aoMapIntensity: 1.0,
 
@@ -246,16 +246,16 @@ class F1CarHelmet {
                 filetypelist.push( 6 ); filecomplete.push(false);
 
                 // visor
-                filelist.push(f1fnames.helmet_files[11] ); // base
-                filetypelist.push( 20 ); filecomplete.push(false);
-                filelist.push(f1fnames.helmet_files[14] ); // metal
-                filetypelist.push( 21 ); filecomplete.push(false);
-                filelist.push(f1fnames.helmet_files[15] ); // rough
-                filetypelist.push( 22 ); filecomplete.push(false);
-                filelist.push(f1fnames.helmet_files[13] ); // ao
-                filetypelist.push( 23 ); filecomplete.push(false);
-                filelist.push(f1fnames.helmet_files[12] ); // normal
-                filetypelist.push( 24 ); filecomplete.push(false);
+                // filelist.push(f1fnames.helmet_files[11] ); // base
+                // filetypelist.push( 20 ); filecomplete.push(false);
+                // filelist.push(f1fnames.helmet_files[14] ); // metal
+                // filetypelist.push( 21 ); filecomplete.push(false);
+                // filelist.push(f1fnames.helmet_files[15] ); // rough
+                // filetypelist.push( 22 ); filecomplete.push(false);
+                // filelist.push(f1fnames.helmet_files[13] ); // ao
+                // filetypelist.push( 23 ); filecomplete.push(false);
+                // filelist.push(f1fnames.helmet_files[12] ); // normal
+                // filetypelist.push( 24 ); filecomplete.push(false);
 
 
 

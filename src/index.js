@@ -2565,9 +2565,12 @@ function tabTutorial(currElmId) {
 // }
 
 var tabboxes = new Array();
+// ben attempt fix
+var keepcurrentactivetab = 0;
 // Add click event listener to each box
 f1PaintTab.forEach((box) => {
-	tabboxes.push(box);
+	tabboxes.push(box); // ben so i can force a tab to become active after pressing confirm on a colour picker selection
+
 	box.addEventListener("click", (event) => {
 
 	  if(haveminimized) {
@@ -2604,15 +2607,30 @@ f1PaintTab.forEach((box) => {
 	  }
 	  //
 
-
-
-
-	  // ben below doesnt seem to work
 	  // Remove the active class from all boxes
 	  f1PaintTab.forEach((box) => {
 		const parentElm = box.closest("li");
 		parentElm.classList.remove("activeTab");
 	  });
+
+	  // ben attempt to fix problem where after pressing next, and then pressing on a tab, the previous tabs contents remains
+	  let tmpcurrTabId = parentElm.id;
+	  tmpcurrTabId = tmpcurrTabId.replace('li', 'tab');
+
+		if(keepcurrentactivetab!=parentElm.id) {
+			
+			tabContentWrp.forEach((elm) => {
+				const currElmId = `${elm.id}-tab`;
+				if (currElmId === tmpcurrTabId) {
+				elm.classList.remove("hidden");
+				} else {
+				elm.classList.add("hidden");
+				}
+			});
+		}
+		keepcurrentactivetab = parentElm.id;
+	  // 
+
 
 
 
@@ -2671,6 +2689,8 @@ nextBtn.addEventListener("click", () => {
 			changeTab(4);
 			break;	
 		}
+		keepcurrentactivetab = nextElement.id;
+
 	}
 
 	// todo launchar
@@ -2755,10 +2775,11 @@ prevBtn.addEventListener("click", () => {
 	const currTabId = previousElement.children[0].id; // bens alternative fix
 
 	if (previousElement) {
+		keepcurrentactivetab = previousElement.id;
 
 		// ben do my changetab function
 		switch (previousElement.id) {
-			case "patten-li":
+			case "pattern-li":
 				changeTab(1);
 				break;
 				case "paint-li":
