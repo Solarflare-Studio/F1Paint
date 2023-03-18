@@ -640,15 +640,15 @@ function expandDropdown(e) {
 	const classArray = _self.className.split(" ");
 	var wasshrunk = false;
 	classArray.forEach(element => {
-		if(element=="shrunk") {
+		if(element=="consoleshrunk") {
 			wasshrunk=true;
 		}
 	});
 	if(wasshrunk) {
-		_self.classList.remove('shrunk');
+		_self.classList.remove('consoleshrunk');
 	}
 	else {
-		_self.classList.add('shrunk');
+		_self.classList.add('consoleshrunk');
 	}
 }
 

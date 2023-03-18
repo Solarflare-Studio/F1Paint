@@ -288,12 +288,13 @@
                 clip-rule="evenodd"
               ></path>
             </svg>
-            <span class="sr-only">Close menu</span>
+            <span class="sr-only" id="LK_menu_close">Close menu</span>
           </button>
         </div>
         <div class="relative text-right mt-6">
           <h2
             class="text-netural text-2xl font-medium font-F1PaintShopBoldFont"
+            id="LK_menu_title"
           >
             MENU
           </h2>
@@ -308,7 +309,7 @@
           <h2
             class="text-netural text-2xl font-medium font-F1PaintShopBoldFont mb-2"
           >
-            <div id="LK_language">LANGUAGE</div>
+            <div id="LK_menu_language">LANGUAGE</div>
             <!--ben-->
           </h2>
           <div class="relative" id="languageSelect">
@@ -355,10 +356,10 @@
           </div>
           <hr class="border-netural border-t-2 mb-3 mt-6" />
           <ul class="relative text-right list-none py-3">
-            <li class="menu-item">T&CS</li>
-            <li class="menu-item"><div id="LK_security">SECURITY</div></li>
+            <li class="menu-item" id="LK_menu_terms">T&CS</li>
+            <li class="menu-item"><div id="LK_menu_security">SECURITY</div></li>
             <!--ben-->
-            <li class="menu-item"><div id="LK_otherlinks">OTHER LINKS</div></li>
+            <li class="menu-item"><div id="LK_menu_otherlinks">OTHER LINKS</div></li>
             <!--ben-->
           </ul>
         </div>
@@ -372,10 +373,11 @@
         <img src="./assets/images/rotate_image.svg" alt="Loading..." />
         <h1
           class="text-netural text-2xl font-medium mt-2 font-F1PaintShopBoldFont"
+          id="LK_turndevice_01"
         >
           TURN YOUR DEVICE
         </h1>
-        <p class="text-netural text-sm font-normal py-3 font-Titillium">
+        <p class="text-netural text-sm font-normal py-3 font-Titillium" id="LK_turndevice_02">
           This experience requires your device to be held<br />
           portrait, please turn to proceed.
         </p>
@@ -389,10 +391,11 @@
         <img src="./assets/images/loading.svg" alt="Loading..." />
         <h1
           class="text-netural text-2xl font-medium mt-2 font-F1PaintShopBoldFont"
+          id="LK_start_title"
         >
           F1 PAINTSHOP
         </h1>
-        <p class="text-netural text-sm font-normal py-3 font-Titillium">
+        <p class="text-netural text-sm font-normal py-3 font-Titillium"  id="LK_info_prepping">
           We’re just prepping the garage for you now...
         </p>
         <progress
@@ -408,9 +411,9 @@
         id="welcomeContent"
       >
         <!--ben added LK -->
-        <h1 id="LK_welcomeContent_01" class="heading">WELCOME</h1>
+        <h1 id="LK_welcome_heading" class="heading">WELCOME</h1>
         <p
-          id="LK_welcomeContent_02"
+          id="LK_welcome_01"
           class="text-netural text-xl leading-7 font-normal font-Titillium pt-3 pb-7"
         >
           Time to customise your very<br />
@@ -424,7 +427,7 @@
           class="bg-brand text-netural text-2xl px-16 py-3 rounded-md font-F1PaintShopFont"
           onclick="handleWelcomeNext()"
         >
-          NEXT
+          <div id="LK_welcome_03">NEXT</div>
         </button>
       </div>
       <!--end of welcome content -->
@@ -477,6 +480,7 @@
                     />
                   </figure>
                   <span class="ml-1 border-b-2 border-netural hidden"
+                    id="LK_tab_01"
                     >PATTERN</span
                   >
                 </button>
@@ -498,6 +502,7 @@
                     />
                   </figure>
                   <span class="ml-1 border-b-2 border-netural hidden"
+                    id="LK_tab_02"
                     >PAINT</span
                   >
                 </button>
@@ -518,7 +523,9 @@
                       class="w-5 h-5 min-w-[25px]"
                     />
                   </figure>
-                  <span class="ml-1 border-b-2 border-netural hidden">TAG</span>
+                  <span class="ml-1 border-b-2 border-netural hidden"
+                    id="LK_tab_03"
+                  >TAG</span>
                 </button>
               </li>
               <li id="sponsor-li" role="presentation" class="tab">
@@ -538,6 +545,7 @@
                     />
                   </figure>
                   <span class="ml-1 border-b-2 border-netural hidden"
+                    id="LK_tab_04"
                     >SPONSOR</span
                   >
                 </button>
@@ -1048,9 +1056,10 @@
                 id="finishSelectionContent"
                 class="w-full h-full flex flex-col justify-center items-center hidden"
               >
-                <h1 class="heading px-6">FINISH</h1>
+                <h1 class="heading px-6" id="LK_final_heading">FINISH</h1>
                 <p
                   class="text-netural text-xl leading-7 font-extralight pt-3 font-Titillium"
+                  id="LK_final_01"
                 >
                   If you’re happy, hit next, if you want to change, hit back to
                   amend your design.
@@ -1067,10 +1076,14 @@
                   class="prev-btn opacity-50"
                   disabled
                 >
+                  <div id="LK_final_back">
                   BACK
+                  </div>
                 </button>
                 <button type="button" id="nextBtn" class="next-btn">
+                  <div id="LK_final_next">
                   NEXT
+                  </div>
                 </button>
               </div>
               <!--end of next/Prev Button-->
@@ -1139,8 +1152,8 @@
           />
         </figure>
         <div class="tutorial-wrp">
-          <h1 class="tutorial-heading">TUTORIAL</h1>
-          <p class="tutorial-paragraph">
+          <h1 class="tutorial-heading"><div id="LK_tutorial_01">TUTORIAL</div></h1>
+          <p class="tutorial-paragraph" id="LK_tutorial_02">
             To take a look at your masterpiece, tap and drag the screen to move
             the camera around, and pinch to zoom in and out.
           </p>
@@ -1149,7 +1162,9 @@
             class="next-btn !py-3"
             onclick="handleTutorial()"
           >
+            <div id="LK_tutorial_03">
             OK!
+            </div>
           </button>
         </div>
       </div>
@@ -1159,8 +1174,8 @@
         class="hidden fixed top-0 h-screen w-full before:bg-black before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-50 flex justify-around items-center flex-col text-center z-40"
       >
         <div class="tutorial-wrp">
-          <h1 class="tutorial-heading">PATTERN</h1>
-          <p class="tutorial-paragraph min-h-[140px]">
+          <h1 class="tutorial-heading"><div id="LK_tutorial_04">PATTERN</div></h1>
+          <p class="tutorial-paragraph min-h-[140px]" id="LK_tutorial_05">
             Let’s get started then. Choose your pattern.
           </p>
           <!-- ben added id to handleCloseTutorial below -->
@@ -1169,7 +1184,9 @@
             class="next-btn !py-3"
             onclick="handleCloseTutorial(0)"
           >
+            <div id="LK_tutorial_06">
             OK!
+            </div>
           </button>
         </div>
         <div></div>
@@ -1183,9 +1200,11 @@
           <h1
             class="w-36 mx-auto text-2xl font-bold font-F1PaintShopBoldFont border-b-2 border-black"
           >
+            <div id="LK_tutorial_07">
             PAINT
+            </div>
           </h1>
-          <p class="tutorial-paragraph min-h-[140px]">
+          <p class="tutorial-paragraph min-h-[140px]" id="LK_tutorial_08">
             Looking good already, now get colourful.
           </p>
           <!-- ben added id to handleCloseTutorial below -->
@@ -1194,7 +1213,9 @@
             class="next-btn !py-3"
             onclick="handleCloseTutorial(1)"
           >
+            <div id="LK_tutorial_09">
             OK!
+            </div>
           </button>
         </div>
         <div></div>
@@ -1208,9 +1229,11 @@
           <h1
             class="w-36 mx-auto text-xl font-bold font-F1PaintShopBoldFont border-b-2 border-black pb-2"
           >
+            <div id="LK_tutorial_10">
             TAG
+            </div>
           </h1>
-          <p class="tutorial-paragraph min-h-[140px]">
+          <p class="tutorial-paragraph min-h-[140px]" id="LK_tutorial_11">
             Get personal, add your own tag.
           </p>
           <!-- ben added id to handleCloseTutorial below -->
@@ -1219,7 +1242,9 @@
             class="next-btn !py-3"
             onclick="handleCloseTutorial()"
           >
+            <div id="LK_tutorial_12">
             OK!
+            </div>
           </button>
         </div>
         <div></div>
@@ -1230,10 +1255,10 @@
         class="hidden fixed top-0 h-screen w-full before:bg-black before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-50 flex justify-around items-center flex-col text-center z-40 container-fluid"
       >
         <div class="bg-netural relative p-4 px-6 w-64 rounded-md opacity-95">
-          <h1 class="tutorial-heading">SPONSOR</h1>
+          <h1 class="tutorial-heading"><div id="LK_tutorial_13">SPONSOR</div></h1>
           <p
             class="text-xl font-medium font-Titillium leading-6 pt-3 pb-4 min-h-[150px] px-4"
-          >
+            id="LK_tutorial_14">
             Finishing touches... add some sponsors.
           </p>
           <button
@@ -1241,7 +1266,9 @@
             class="bg-brand text-netural text-2xl px-16 py-4 rounded-md font-F1PaintShopFont w-full"
             onclick="handleCloseTutorial()"
           >
+            <div id="LK_tutorial_15">
             OK!
+            </div>
           </button>
         </div>
         <div></div>
@@ -1259,10 +1286,12 @@
           />
           <h1
             class="text-netural text-2xl font-medium mt-2 font-F1PaintShopBoldFont"
+            id="LK_tutorial_16"
           >
             F1 PAINTSHOP
           </h1>
-          <p class="text-netural text-sm font-normal py-3 font-Titillium">
+          <p class="text-netural text-sm font-normal py-3 font-Titillium"
+            id="LK_tutorial_17">
             Your F1 design is being sprayed on...
           </p>
           <progress
@@ -1278,10 +1307,11 @@
         class="flex justify-center items-center flex-col h-[calc(100vh-118px)] text-center px-2 hidden container-fluid"
         id="comeToLifeContent"
       >
-        <h1 class="heading">COME TO LIFE</h1>
+        <h1 class="heading" id="LK_tutorial_18">COME TO LIFE</h1>
         <p
           class="text-netural text-xl leading-7 font-extralight font-Titillium pt-3 pb-7 px-6"
-        >
+          id="LK_tutorial_19"
+          >
           Time to see your custom design<br />
           in WebAR. Get ready to see your<br />
           work of art up close and<br />
@@ -1289,7 +1319,7 @@
         </p>
         <div class="flex flex-col justify-between items-center gap-y-3 w-full">
           <div id="launchbutton" class="!w-auto py-2 px-14 next-btn">
-            <a id="launchbuttonlink" target="_blank" href="www.mapflaps.com">LAUNCH AR</a>
+            <a id="launchbuttonlink" target="_blank" href="www.mapflaps.com"><div id="LK_tutorial_20">LAUNCH AR</div></a>
           </div>
           <!--
           <button
@@ -1306,12 +1336,15 @@
             id="prevBtn"
             class="!w-auto py-2.5 px-14 prev-btn"
             onclick="handleBackToTabs()"
+            id="LK_tutorial_21"
           >
             BACK
           </button>
         </div>
       </div>
       <!--end of Come To Life Content -->
+      <!-- this is in the AR experience -->
+      <!--
       <div
         id="cameraTutorial"
         class="hidden fixed top-0 h-screen w-full before:bg-black before:content-[''] before:absolute before:top-0 before:h-full before:w-full before:opacity-50 flex justify-around items-center flex-col text-center z-40 container-fluid"
@@ -1331,7 +1364,7 @@
           </button>
         </div>
       </div>
-      <!--end of Camera tutorial-->
+      
       <div id="WebAR" class="hidden">
         <video id="video" class="fixed h-screen top-0">
           Video stream not available.
@@ -1353,22 +1386,24 @@
             <button type="button" class="next-btn !py-3">OK!</button>
           </div>
         </div>
-        <!--end of scan Tutorial-->
         <div class="fixed bottom-0 w-full h-full">
           <button id="startbutton">Take photo</button>
         </div>
       </div>
+      -->
+      <!-- ben end of this is in the AR experience -->
+
       <!--end of Camera access-->
     </main>
     <!-- end of main -->
     <!-- admin console -->
-    <div id="versionid" onclick="onConsole(0)">v0.4.0.0</div><br><div id="fpsindicator" style="position: absolute;"></div>
+    <div id="versionid" onclick="onConsole(0)">v0.4.0.1</div><br><div id="fpsindicator" style="position: absolute;"></div>
     <div id="console" class="hidden">
       <div class="console">
         <div class="console_button expandbutton" onclick="expandDropdown('toneexpander');">Tone</div>
-        <div class="console_button shrunk expander" id="toneexpander">
-          <div id="c_tonemappingSliderTxt" class="slidertxt">toneMapping</div>
-          <input type="range" min="1" max="50" value="23" class="slider" id="c_tonemappingSlider"/>
+        <div class="console_button consoleshrunk consoleexpander" id="toneexpander">
+          <div id="c_tonemappingSliderTxt">toneMapping</div>
+          <input type="range" min="1" max="50" value="23" class="consoleslider" id="c_tonemappingSlider"/>
           <select id="c_tonemap" name="tonemap">
             <option value="linear">Linear</option>
             <option value="cineon">Cineon</option>
@@ -1377,9 +1412,9 @@
           </select>
         </div>
         <div class="console_button expandbutton" onclick="expandDropdown('envexpander');">Env map</div>
-        <div class="console_button shrunk expander" id="envexpander">
-          <div id="c_envStrengthSliderTxt" class="slidertxt">envStrength</div>
-          <input type="range" min="0" max="1500" value="500" class="slider" id="c_envStrengthSlider"/>
+        <div class="console_button consoleshrunk consoleexpander" id="envexpander">
+          <div id="c_envStrengthSliderTxt">envStrength</div>
+          <input type="range" min="0" max="1500" value="500" class="consoleslider" id="c_envStrengthSlider"/>
           <select id="c_envstrength" name="envstrength">
             <option value="car">Car</option>
             <option value="carstatic">Car static</option>
@@ -1387,7 +1422,7 @@
           </select>
         </div>
         <div class="console_button expandbutton" onclick="expandDropdown('lightexpander');">Lights</div>
-        <div class="console_button shrunk expander" id="lightexpander">
+        <div class="console_button consoleshrunk consoleexpander" id="lightexpander">
           <select id="c_whichlight" name="whichlight">
             <option value="point1">Point 1</option>
             <option value="point2">Point 2</option>
@@ -1397,41 +1432,41 @@
             <option value="dir2">Directional 2</option>
             <option value="amb">Ambient</option>
           </select>
-          <div id="c_lightIntensitySliderTxt" class="slidertxt">intensity</div>
+          <div id="c_lightIntensitySliderTxt">intensity</div>
           <input type="range" min="0" max="1000" value="500" class="slider" id="c_lightIntensitySlider"/>
           <div class="console_button expandbutton" onclick="expandDropdown('lightdetailexpander');">More lights</div>
-            <div class="console_button shrunk expander" id="lightdetailexpander">
-              <div id="c_lightXSliderTxt" class="slidertxt">x</div>
-              <input type="range" min="-200" max="200" value="80" class="slider" id="c_lightXSlider"/>
-              <div id="c_lightYSliderTxt" class="slidertxt">y</div>
-              <input type="range" min="-200" max="200" value="80" class="slider" id="c_lightYSlider"/>
-              <div id="c_lightZSliderTxt" class="slidertxt">z</div>
-              <input type="range" min="-200" max="200" value="80" class="slider" id="c_lightZSlider"/>
+            <div class="console_button consoleshrunk consoleexpander" id="lightdetailexpander">
+              <div id="c_lightXSliderTxt">x</div>
+              <input type="range" min="-200" max="200" value="80" class="consoleslider" id="c_lightXSlider"/>
+              <div id="c_lightYSliderTxt">y</div>
+              <input type="range" min="-200" max="200" value="80" class="consoleslider" id="c_lightYSlider"/>
+              <div id="c_lightZSliderTxt">z</div>
+              <input type="range" min="-200" max="200" value="80" class="consoleslider" id="c_lightZSlider"/>
             </div>
           </div>
           <div class="console_button expandbutton" onclick="expandDropdown('tagsexpander');">Tags</div>
-          <div class="console_button shrunk expander" id="tagsexpander">
+          <div class="console_button consoleshrunk consoleexpander" id="tagsexpander">
             <select id="c_whichtag" name="c_whichtag">
               <option value=0>Pos 1</option>
               <option value=1>Pos 2</option>
               <option value=2>Pos 3</option>
               <option value=2>Pos 4</option>
             </select>
-            <div id="c_tagXSliderTxt" class="slidertxt">pos X:</div>
-            <input type="range" min="-100" max="100" value="50" class="slider" id="c_tagXSlider"/>
-            <div id="c_tagYSliderTxt" class="slidertxt">pos Y:</div>
-            <input type="range" min="-100" max="100" value="50" class="slider" id="c_tagYSlider"/>
-            <div id="c_tagScaleSliderTxt" class="slidertxt">scale:</div>
-            <input type="range" min="0" max="200" value="100" class="slider" id="c_tagScaleSlider"/>
-            <div id="c_tagRotSliderTxt" class="slidertxt">rot:</div>
-            <input type="range" min="0" max="36000" value="0" class="slider" id="c_tagRotSlider"/>
+            <div id="c_tagXSliderTxt">pos X:</div>
+            <input type="range" min="-100" max="100" value="50" class="consoleslider" id="c_tagXSlider"/>
+            <div id="c_tagYSliderTxt">pos Y:</div>
+            <input type="range" min="-100" max="100" value="50" class="consoleslider" id="c_tagYSlider"/>
+            <div id="c_tagScaleSliderTxt">scale:</div>
+            <input type="range" min="0" max="200" value="100" class="consoleslider" id="c_tagScaleSlider"/>
+            <div id="c_tagRotSliderTxt">rot:</div>
+            <input type="range" min="0" max="36000" value="0" class="consoleslider" id="c_tagRotSlider"/>
           </div>                
           <div class="console_button expandbutton" onclick="expandDropdown('sfxexpander');">SFX</div>
-          <div class="console_button shrunk expander" id="sfxexpander">
-            <div id="c_sfxRibbonSliderTxt" class="slidertxt">ribbon bloom</div>
-            <input type="range" min="0" max="300" value="6" class="slider" id="c_sfxRibbonSlider"/>
-            <div id="c_sfxSliderTxt" class="slidertxt">bloom</div>
-            <input type="range" min="0" max="25" value="6" class="slider" id="c_sfxSlider"/>
+          <div class="console_button consoleshrunk consoleexpander" id="sfxexpander">
+            <div id="c_sfxRibbonSliderTxt">ribbon bloom</div>
+            <input type="range" min="0" max="300" value="6" class="consoleslider" id="c_sfxRibbonSlider"/>
+            <div id="c_sfxSliderTxt">bloom</div>
+            <input type="range" min="0" max="25" value="6" class="consoleslider" id="c_sfxSlider"/>
             <div class="console_button">
               <label for="ribbon_input"> xtras</label><br>
               <input  class="introbutton" onclick="onConsole(2)" type="checkbox" id="ribbon_input" name="check" checked/>
@@ -1452,12 +1487,12 @@
                   <option value=2>Y</option>
                   <option value=4>Z</option>
                 </select>
-                <div id="c_bendFSliderTxt" class="slidertxt">force</div>
-                <input type="range" min="-200" max="200" value="50" class="slider" id="c_bendFSlider"/>
-                <div id="c_bendPSliderTxt" class="slidertxt">pos</div>
-                <input type="range" min="0" max="100" value="0" class="slider" id="c_bendPSlider"/>
-                <div id="c_bendASliderTxt" class="slidertxt">angle</div>
-                <input type="range" min="-360" max="360" value="10" class="slider" id="c_bendASlider"/>
+                <div id="c_bendFSliderTxt">force</div>
+                <input type="range" min="-200" max="200" value="50" class="consoleslider" id="c_bendFSlider"/>
+                <div id="c_bendPSliderTxt">pos</div>
+                <input type="range" min="0" max="100" value="0" class="consoleslider" id="c_bendPSlider"/>
+                <div id="c_bendASliderTxt">angle</div>
+                <input type="range" min="-360" max="360" value="10" class="consoleslider" id="c_bendASlider"/>
               </div>
             </div>
           </div>

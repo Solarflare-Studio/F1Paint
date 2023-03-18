@@ -16,7 +16,7 @@ class F1AssetFileNames {
                             './assets/car/01_StaticMainMaps/V11/512/F1PS_Car_Static_V11_Metal.jpg',          // static base metal
                             './assets/car/01_StaticMainMaps/V11/512/F1PS_Car_Static_V11_Roughness.jpg'   ];  // static base rough
 
-        this.helmet_files = [ './assets/helmet/F1PS_Helmet_V08.glb',                // 3d model glb
+        this.helmet_files = [ './assets/helmet/F1PS_Helmet_V08_Centered.glb',                // 3d model glb
                                 './assets/textures/smallblackimage.jpg',     // customisable base colour map
                                 './assets/helmet/00_CustomMainMaps/V8/512/F1PS_Helmet_Custom_V8_Normal.jpg',        // customisable normal
                                 './assets/helmet/00_CustomMainMaps/V8/512/F1PS_Helmet_Custom_V8_AO.jpg',            // customisable ao
