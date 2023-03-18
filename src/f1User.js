@@ -37,7 +37,9 @@ class F1User {
         this.userCarOrHelmet = (params.get('m') ? params.get('m') : "c"); // car or helmet
 
         this.userConsole = (params.get('c') ? params.get('c') : 0); // console
-        this.languageCode = "ENG";
+        
+        this.languageCode = (params.get('l') ? params.get('l') : "ENG"); // language
+        // this.languageCode = "ENG";
         
         DEBUG_MODE=this.userConsole;
 

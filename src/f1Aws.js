@@ -6,6 +6,7 @@ class F1Aws {
 
     constructor() {
         this.languageSettingsJson = 0;
+        this.preloadlanguagecode = "";
         this.init();
     }
     init() {
@@ -47,9 +48,9 @@ class F1Aws {
     }
 
     //======================
-    haveLoadedLanguageFile(data) {
-        this.languageText = JSON.parse(data);
-        const dialogues = this.languageText['dialogues'];
+    haveLoadedLanguageFile(data,f1aws) {
+        f1aws.languageText = JSON.parse(data);
+        const dialogues = f1aws.languageText['dialogues'];
         for(var i=0;i<dialogues.length;i++) {
             const textElement = document.getElementById(dialogues[i].name);
             if(textElement)
@@ -57,23 +58,26 @@ class F1Aws {
         }
     }
     //======================
-    haveLoadedLanguageChoice(data) {
-        var _self = this;
+    haveLoadedLanguageChoice(data,f1Aws) {
+        var _self = f1Aws;
         if(DEBUG_MODE)
             console.log(">> have loaded language choice json file from aws.");
-        this.languageSettingsJson = JSON.parse(data);
+        _self.languageSettingsJson = JSON.parse(data);
 
         const languageChoiceDropdown = document.getElementById('languageChoices');
 
         // now interpret and put language choices in UI
         var lingos = new Array();
-        const langs = this.languageSettingsJson['languages'];
-        
+        const langs = _self.languageSettingsJson['languages'];
+        var preloadfile = "";
         for(var i = 0;i<langs.length;i++) {
             const alingo = langs[i].description;
             const lingofile = langs[i].file;
             const lingoISO =  langs[i].code;
             lingos.push( [ alingo, lingofile, lingoISO]);
+            if(lingoISO == _self.preloadlanguagecode) {
+                preloadfile = lingoISO + "/" + lingofile;
+            }
         }
         if(DEBUG_MODE)
             console.log(">> languages available : " + lingos);
@@ -85,10 +89,14 @@ class F1Aws {
             
             choicesHtml = choicesHtml + '<li class="language-option" onclick="handleLanguageChange(';
             choicesHtml = choicesHtml + "'" + lingos[i] + "'" + ')">' + lingos[i][0] + '</li>';
-
         }
         languageChoiceDropdown.innerHTML = choicesHtml;
 
+        // auto switch language if we had one passed via url
+        if(preloadfile!="")
+            _self.loadfromAWS('languages',preloadfile,1,null,_self);  
+
+        
 
 
 /*
@@ -255,10 +263,10 @@ class F1Aws {
                 // The Body object also has 'transformToByteArray' and 'transformToWebStream' methods.
                 switch(type) {
                     case 0:
-                        _self.haveLoadedLanguageChoice(await response.Body.transformToString());
+                        _self.haveLoadedLanguageChoice(await response.Body.transformToString(),self);
                         break;
                     case 1:
-                        _self.haveLoadedLanguageFile(await response.Body.transformToString());
+                        _self.haveLoadedLanguageFile(await response.Body.transformToString(),self);
                         break;
                     case 2:
                         callback(await response.Body.transformToString(),self,this); // pass back aws!

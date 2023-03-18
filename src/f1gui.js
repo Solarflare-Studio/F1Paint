@@ -14,13 +14,15 @@ export function uihandlelanguageSelect() {
     dropdownArrow.classList.toggle("rotate-180");
 }
 
+
+
 export function uihandlelanguageChange(e,f1Aws) {
   var languageArr = e.split(',');
   const langfile = languageArr[2] +"/" + languageArr[1]; // filename for language
   selectedLanguage.innerHTML = languageArr[0];
 //   console.log('>>>>>>      lingo = ' + languageArr[0]);
 
-  f1Aws.loadfromAWS('languages',langfile,1);  
+  f1Aws.loadfromAWS('languages',langfile,1,null,f1Aws);  
 }
 
 
@@ -227,10 +229,10 @@ class F1Gui {
                 document.getElementById('whichchanneltext').innerHTML = "SECONDARY COLOUR";
                 break;
             case 3:
-                document.getElementById('whichchanneltext').innerHTML = "TAG COLOUR";
+                document.getElementById('whichchanneltext').innerHTML = "STYLE COLOUR";
                 break;
             case 4:
-                document.getElementById('whichchanneltext').innerHTML = "STYLE COLOUR";
+                document.getElementById('whichchanneltext').innerHTML = "TAG COLOUR";
                 break;
             case 6:
                 document.getElementById('whichchanneltext').innerHTML = "SPONSOR COLOUR";

@@ -41,7 +41,7 @@ import { updateProgress } from './f1gui';
 import { getAutoSelectingPattern,setAutoSelectingPattern } from './f1gui.js';
 
 // new html
-import {uihandlelanguageSelect,uihandlelanguageChange} from './f1gui'
+import {uihandlelanguageSelect,uihandlelanguageChange, loadLanguageFromCode } from './f1gui'
 //import { setQuaternionFromProperEuler } from 'three/src/math/mathutils.js';
 
 
@@ -71,7 +71,6 @@ window.expandDropdown = expandDropdown;
 window.onMaterialbutton = onMaterialbutton;
 
 window.switchModel = switchModel;
-// window.onMinMax = onMinMax;
 window.onConsole = onConsole;
 
 //===================================
@@ -126,7 +125,9 @@ var interacting = false;
 // var fxStartTime = clock.getElapsedTime();
 
 var f1Aws = new F1Aws();
-f1Aws.loadfromAWS('languages','languages.json',0);
+f1Aws.preloadlanguagecode = f1User.languageCode;
+f1Aws.loadfromAWS('languages','languages.json',0,null,f1Aws);
+
 
 
 var patternItems = new PatternItems(!f1User.cookie_livery_value == "");
@@ -136,6 +137,8 @@ var f1Fonts = new F1Fonts();
 
 var f1Gui = new F1Gui(processJSON);
 updateProgress(5,'patterns');
+
+
 
 var f1Materials  = new F1Materials(f1Settings);
 var f1Layers = new F1Layers(f1User.isHelmet, customMapRenderSize,f1fnames);
@@ -655,7 +658,7 @@ function expandDropdown(e) {
 
 //==================================================
 var haveminimized = false;
-
+var wasincolourpicker = false;
 function minMax(tabstakencareof) {
 
   if(haveminimized) { // woz max
@@ -671,8 +674,14 @@ function minMax(tabstakencareof) {
 		haveminimized=false;
 	})
 	.onComplete(function () {
-		if(!tabstakencareof)
-			tabBody.classList.toggle("hidden");
+		if(!tabstakencareof) {
+			if (!wasincolourpicker) {
+				tabBody.classList.toggle("hidden");
+			}
+			else {
+				paintachannelblock.classList.remove("hidden");
+			}
+		}
 	})
 	.start()
 	f1Garage.startFloorMode(0);// lets wipe
@@ -690,8 +699,16 @@ function minMax(tabstakencareof) {
 		haveminimized=true;
 	})
 	.onComplete(function () {
-		if(!tabstakencareof)
-			tabBody.classList.toggle("hidden");
+		if(!tabstakencareof) {
+			if (paintachannelblock.classList.contains("hidden")) {
+				tabBody.classList.toggle("hidden");
+			}
+			else {
+				paintachannelblock.classList.add("hidden");
+				wasincolourpicker = true;
+			}
+
+		}
 	})
 	.start()
 	f1Garage.startFloorMode(2);// lets have the hex
@@ -874,11 +891,14 @@ function introNextPage(nextPage) {
 		// })		
 		// .start()
 
-
+		let consttarget = 19.0;
+		if(f1User.isHelmet) {
+			consttarget = 52.0;
+		}
 
 		new TWEEN.Tween(f1CarHelmet.clipPlanes[0])
 		.to({
-				constant: 19.0,
+				constant: consttarget,
 			},
 			carwireduration
 		)
@@ -1103,8 +1123,18 @@ function initScenes()
 	else
 		setupConsoleListeners();
 
-	controls.target = new THREE.Vector3(0,-8, 5); // with tabs infringing into 3d...
-	centredControlsTarget = new THREE.Vector3(0,-8, 5);
+
+	if(f1User.isHelmet) {
+		controls.target = new THREE.Vector3(0,8, 5); // with tabs infringing into 3d...
+		centredControlsTarget = new THREE.Vector3(0, 8, 5);
+		if(!DEBUG_MODE) {
+			controls.minDistance = 30;
+		}
+	}
+	else {
+		controls.target = new THREE.Vector3(0,-8, 5); // with tabs infringing into 3d...
+		centredControlsTarget = new THREE.Vector3(0,-8, 5);
+	}
 
 	controls.addEventListener('end', () => {
 		interacting=false;
@@ -2555,16 +2585,20 @@ f1PaintTab.forEach((box) => {
 
 	  // ben do my changetab function
 	  switch (parentElm.id) {
-		case "patten-li":
+		case "pattern-li":
+			// document.getElementById('pattern-li').classList.remove('activeTab');
 			changeTab(1);
 			break;
 		  case "paint-li":
+			// document.getElementById('paint-li').classList.remove('activeTab');
 			changeTab(2);
 			break;
 		  case "tag-li":
+			// document.getElementById('tag-li').classList.remove('activeTab');
 			changeTab(3);
 			break;
 		  case "sponsor-li":
+			// document.getElementById('sponsor-li').classList.remove('activeTab');
 			changeTab(4);
 			break;	
 	  }
@@ -2573,11 +2607,15 @@ f1PaintTab.forEach((box) => {
 
 
 
+	  // ben below doesnt seem to work
 	  // Remove the active class from all boxes
 	  f1PaintTab.forEach((box) => {
 		const parentElm = box.closest("li");
 		parentElm.classList.remove("activeTab");
 	  });
+
+
+
 	  // Add the active class to the clicked element
 	  parentElm.classList.add("activeTab");
 	  // Add a class to the previous element
@@ -2620,7 +2658,7 @@ nextBtn.addEventListener("click", () => {
 	// ben do my changetab function
 	if(nextElement) {
 		switch (nextElement.id) {
-		case "patten-li":
+		case "pattern-li":
 			changeTab(1);
 			break;
 			case "paint-li":
@@ -2658,7 +2696,15 @@ nextBtn.addEventListener("click", () => {
 	  move();
 	}
 	if (!nextElement) return;
-	const currTabId = nextElement.childNodes[1].id;
+
+	// console.log("we're here with =" + nextElement.children[0].id);
+	// console.log("also we're here with =" + nextElement.childNodes[1].id);
+
+
+	// bharti, this line below causes crash
+	// const currTabId = nextElement.childNodes[1].id;
+	const currTabId = nextElement.children[0].id; // bens alternative fix
+
 	if (nextElement) {
 	  tabContentWrp.forEach((elm) => {
 		const currElmId = `${elm.id}-tab`;
@@ -2699,7 +2745,15 @@ prevBtn.addEventListener("click", () => {
 	nextBtn.classList.remove("opacity-50");
 	let activeTab = document.querySelector(".activeTab");
 	const previousElement = activeTab.previousElementSibling;
-	const currTabId = previousElement.childNodes[1].id;
+
+	// console.log("we're here with =" + previousElement.children[0].id);
+	// console.log("also we're here with =" + previousElement.childNodes[1].id);
+
+
+	// bharti, this line below causes crash
+	// const currTabId = previousElement.childNodes[1].id;
+	const currTabId = previousElement.children[0].id; // bens alternative fix
+
 	if (previousElement) {
 
 		// ben do my changetab function

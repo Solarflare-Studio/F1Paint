@@ -271,6 +271,30 @@ class F1Materials {
                         tex.premultiplyAlpha = false;
                         f1Garage.backgroundImage = tex;
                         break;
+
+                    // visor
+                    case 20:         // base
+                        tex.encoding = THREE.sRGBEncoding; // for base texture map
+                        f1CarHelmet.theVisorMaterial.map = tex;
+                        f1CarHelmet.theVisorMaterial.needsUpdate = true;
+                    break;
+                    case 21:         // metal
+                        f1CarHelmet.theVisorMaterial.metalnessMap = tex;
+                        f1CarHelmet.theVisorMaterial.needsUpdate = true;
+                        break;
+                    case 22:         // rough
+                        f1CarHelmet.theVisorMaterial.roughnessMap = tex;
+                        f1CarHelmet.theVisorMaterial.needsUpdate = true;
+                        break;
+                    case 23:         // ao
+                        f1CarHelmet.theVisorMaterial.aoMap = tex;
+                        f1CarHelmet.theVisorMaterial.needsUpdate = true;
+                        break;
+                    case 24:         // normal
+                        f1CarHelmet.theVisorMaterial.normalMap = tex;
+                        f1CarHelmet.theVisorMaterial.needsUpdate = true;
+                        break;                    
+
                 }
             }
             this.sequentialLoadMaps(_filenames, _filecomplete,_types, _material1, _material2,f1Garage,f1CarHelmet,f1Ribbons);

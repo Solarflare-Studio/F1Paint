@@ -168,7 +168,19 @@
     {
       "name": "LK_final_next",
       "text": "NEXT"
+    },
+    {
+      "name": "LK_mat_gloss",
+      "text": "GLOSSE"
     },      
+    {
+      "name": "LK_mat_matte",
+      "text": "MATTE"
+    },      
+    {
+      "name": "LK_mat_metallic",
+      "text": "METALLIC"
+    },
     {
       "name": "LK_AR_welcome_1",
       "text": "test"

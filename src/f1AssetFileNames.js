@@ -26,8 +26,15 @@ class F1AssetFileNames {
                                 './assets/helmet/01_StaticMainMaps/V8/512/F1PS_Helmet_Static_V8_Normal.jpg',         // static base normal
                                 './assets/helmet/01_StaticMainMaps/V8/512/F1PS_Helmet_Static_V8_AO.jpg',             // static base ao
                                 './assets/helmet/01_StaticMainMaps/V8/512/F1PS_Helmet_Static_V8_Metal.jpg',          // static base metal
-                                './assets/helmet/01_StaticMainMaps/V8/512/F1PS_Helmet_Static_V8_Roughness.jpg'   ];  // static base rough
+                                './assets/helmet/01_StaticMainMaps/V8/512/F1PS_Helmet_Static_V8_Roughness.jpg',     // static base rough
+                                './assets/helmet/visor/V8/1k/F1PS_Helmet_Visor_V8_BaseColor.jpg',      // static base map always stays the same
+                                './assets/helmet/visor/V8/1k/F1PS_Helmet_Visor_V8_Normal.jpg',         // static base normal
+                                './assets/helmet/visor/V8/1k/F1PS_Helmet_Visor_V8_AO.jpg',             // static base ao
+                                './assets/helmet/visor/V8/1k/F1PS_Helmet_Visor_V8_Metal.jpg',          // static base metal
+                                './assets/helmet/visor/V8/1k/F1PS_Helmet_Visor_V8_Roughness.jpg'     // static base rough
 
+
+                            ];
 
     }
 
