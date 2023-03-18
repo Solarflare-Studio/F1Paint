@@ -18,7 +18,7 @@ export function uihandlelanguageChange(e,f1Aws) {
   var languageArr = e.split(',');
   const langfile = languageArr[2] +"/" + languageArr[1]; // filename for language
   selectedLanguage.innerHTML = languageArr[0];
-  console.log('>>>>>>      lingo = ' + languageArr[0]);
+//   console.log('>>>>>>      lingo = ' + languageArr[0]);
 
   f1Aws.loadfromAWS('languages',langfile,1);  
 }
@@ -681,8 +681,8 @@ class F1Gui {
     setSize(w,h,renderer,camera, colorPatternPicker ) {
 
         // TODO HTML calc sizes
-
-        this.setRendererSize(w,h, renderer,camera);
+        this.bestToolPosY = 360; // from html css
+        this.setRendererSize(w,h - this.bestToolPosY, renderer,camera);
 
         return;
         // TODO HTML

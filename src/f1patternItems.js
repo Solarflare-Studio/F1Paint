@@ -47,9 +47,9 @@ class PatternItems {
         let layer3count = 0;
         
 
-        // layer1PatternDiv.innerHTML="";
-        // layer2TagsDiv.innerHTML="";
-        // layer3DecalsDiv.innerHTML="";
+        layer1PatternDiv.innerHTML="";
+        layer2TagsDiv.innerHTML="";
+        layer3SponsorsDiv.innerHTML="";
 
         for(var i=0;i<patternsData['Patterns'].length;i++) {
 

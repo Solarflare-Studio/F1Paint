@@ -83,7 +83,7 @@ class F1Aws {
             if(i!=0)
                 choicesHtml = choicesHtml + '<hr class="border-netural border-t-2">';
             
-            choicesHtml = choicesHtml + '<li class="language-option" onclick="handlelanguageChange(';
+            choicesHtml = choicesHtml + '<li class="language-option" onclick="handleLanguageChange(';
             choicesHtml = choicesHtml + "'" + lingos[i] + "'" + ')">' + lingos[i][0] + '</li>';
 
         }

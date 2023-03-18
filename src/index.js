@@ -740,7 +740,7 @@ function introNextPage(nextPage) {
 		document.getElementById('welcomeContent').classList.add('hidden');
 
 		// HTML TODO
-		// document.getElementById('canvas-positioner').style.display='block';
+		document.getElementById('canvas-positioner').style.display='block';
 		// document.getElementById('oldmaincontainerblock').style.display ="block";
 
 
@@ -2322,7 +2322,7 @@ function handleLanguageSelect() {
   dropdownArrow.classList.toggle("rotate-180");
 }
 function handleLanguageChange(e) {
-  /*  uihandlelanguageChange(e,f1Aws);	*/
+  uihandlelanguageChange(e,f1Aws);
   selectedLanguage.innerHTML = e;
 }
 window.addEventListener("click", (event) => {

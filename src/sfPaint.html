@@ -235,7 +235,7 @@
   >
 
   <!-- ben putting webgl here -->
-  <div id="canvas-positioner">
+  <div id="canvas-positioner" style="position:absolute;">
     <div id="canvas-container"></div> <!-- this is where I append the webGL3D canvas -->
   </div>
   <!--ben end of webgl-->
@@ -243,7 +243,8 @@
     <header class="w-full pointer-events-none">
       <div class="mx-auto p-6 flex justify-between items-center">
         <figure>
-          <img src="./assets/images/F1_Logo.svg" alt="Logo" />
+          <!-- ben added style to show logo over 3d canvas-->
+          <img src="./assets/images/F1_Logo.svg" alt="Logo" style="z-index: 30; position: relative;"/> 
         </figure>
         <button
           class="text-white rounded-lg bg-netural p-3 invisible lg:hidden z-30 cursor-pointer pointer-events-auto"
