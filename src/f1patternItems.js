@@ -89,7 +89,7 @@ class PatternItems {
 
                     thumbLabel.setAttribute('for','patternt'+(layer1count+1));
                     thumbImage.setAttribute('alt','pattten '+(layer1count+1));
-                    thumbExtra2.innerHTML=patternsData['Patterns'][i].name;
+                    // thumbExtra2.innerHTML="  ";//patternsData['Patterns'][i].name;
 
                     if(layer1count!=0)
                         f1Aws.loadfromAWS('patterns',thethumbfile,5,this.haveReadThumb,this,thumbImage); // aws thumbs
@@ -106,7 +106,7 @@ class PatternItems {
 
                     thumbLabel.setAttribute('for','tag'+(layer2count+1));
                     thumbImage.setAttribute('alt','tag '+(layer2count+1));
-                    thumbExtra2.innerHTML=patternsData['Patterns'][i].name;
+                    // thumbExtra2.innerHTML=patternsData['Patterns'][i].name;
 
                     if(layer2count!=0)
                         f1Aws.loadfromAWS('patterns',thethumbfile,5,this.haveReadThumb,this,thumbImage); // aws thumbs
@@ -124,7 +124,7 @@ class PatternItems {
 
                     thumbLabel.setAttribute('for','sponsor'+(layer3count+1));
                     thumbImage.setAttribute('alt','sponsor '+(layer3count+1));
-                    thumbExtra2.innerHTML=patternsData['Patterns'][i].name;
+                    // thumbExtra2.innerHTML=patternsData['Patterns'][i].name;
 
                     if(layer3count!=0)
                         f1Aws.loadfromAWS('patterns',thethumbfile,5,this.haveReadThumb,this,thumbImage); // aws thumbs
@@ -136,6 +136,8 @@ class PatternItems {
 
             }
             thumbLabel.classList.add('relative');
+            thumbExtra2.innerHTML="  ";//patternsData['Patterns'][i].name;
+
 
             thumbImage.setAttribute('patternId', patternsData['Patterns'][i].id);
             thumbImage.setAttribute('onClick', "onPatternPicked("+ (i) +",'" + patternsData['Patterns'][i].image + "',this)");

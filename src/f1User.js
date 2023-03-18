@@ -31,7 +31,7 @@ class F1User {
         //     document.getElementById('introhelmetbutton').classList.add('hidden');
         // }
         
-        this.userID = (params.get('u') ? params.get('u') : "noID"); // user id
+        this.userID = (params.get('uuid') ? params.get('uuid') : "noID"); // user id
         this.userName = (params.get('n') ? params.get('n') : "no name"); // user name
         this.userEmail = (params.get('e') ? params.get('e') : "no email"); // user email
         this.userCarOrHelmet = (params.get('m') ? params.get('m') : "c"); // car or helmet

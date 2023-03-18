@@ -748,7 +748,7 @@ function introNextPage(nextPage) {
 		gameStage = 1;
 
 		// TODO NEW HTML
-		document.getElementById('welcomeContent').classList.add('hidden');
+		// document.getElementById('welcomeContent').classList.add('hidden');
 
 		// HTML TODO
 		document.getElementById('canvas-positioner').style.display='block';
@@ -1455,16 +1455,16 @@ function onRandomPaint() {
 
 	}
 }
-
-
+//==================================================
 //==================================================
 function onConfirm() {
 
 	f1Gui.pickingColour = false;
-	if(f1Gui.currentPage==5) { // final page so create map and launch AR
-		doBuildBasemap=true; // generate and save the images
-	}
-	else {
+	// if(f1Gui.currentPage==5) { // final page so create map and launch AR
+	// 	doBuildBasemap=true; // generate and save the images
+	// }
+	// else 
+	{
 
 		if(selectedChan<=2) { // was in paint colours
 			patternItems.useCustomBaseColours = true; // now no longer reading defaults when changing patterns, will use custom
@@ -2465,12 +2465,19 @@ function handleComeToLife() {
   
 // Back to Tab Handler
 function handleBackToTabs() {
+
+	document.getElementById('canvas-positioner').style.display='block';
+
+
 	comeToLifeContent.classList.add("hidden");
 	patternContent.classList.remove("hidden");
 }
 
 // Camera Tutorial Handler
 function handleCameraTutorial() {
+
+
+
 	cameraTutorial.classList.remove("hidden");
 }
 function handleCameraAccess(){
@@ -2629,6 +2636,12 @@ nextBtn.addEventListener("click", () => {
 	}
 	if (nextBtn.classList.contains("submit")) {
 	  finishSelectionLoading.classList.remove("hidden");
+
+	  // ben
+	  document.getElementById('canvas-positioner').style.display='none';
+
+	  doBuildBasemap=true; // start save process
+
 	  move();
 	}
 	if (!nextElement) return;
