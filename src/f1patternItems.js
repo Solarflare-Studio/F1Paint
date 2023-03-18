@@ -55,7 +55,7 @@ class PatternItems {
 
             var thumbContainer = document.createElement("div");
             // thumbContainer.classList.add("patternContainer");
-            thumbContainer.classList.add("pattent_check_wrp");
+            thumbContainer.classList.add("patternt_check_wrp");
 
             var thumbInput = document.createElement("input");
             thumbInput.classList.add('w-full');
@@ -64,14 +64,13 @@ class PatternItems {
             thumbInput.setAttribute('type','radio');
 
             var thumbLabel = document.createElement("label");
-            thumbLabel.classList.add('relative');
 
             var thumbFigure = document.createElement("figure");
             thumbFigure.classList.add("rounded-br-[18px]");
             var thumbImage = document.createElement("img");
-            thumbImage.classList.add("rounded-br-[18px]");
             thumbImage.classList.add("w-full");
             thumbImage.classList.add("h-full");
+            thumbImage.classList.add("rounded-br-[18px]");
             var thumbExtra = document.createElement("div");
             thumbExtra.classList.add('hidden');
             var thumbExtra2 = document.createElement("span");
@@ -89,7 +88,7 @@ class PatternItems {
                         thumbInput.setAttribute('checked','true');
 
                     thumbLabel.setAttribute('for','patternt'+(layer1count+1));
-                    thumbImage.setAttribute('alt','pattern '+(layer1count+1));
+                    thumbImage.setAttribute('alt','pattten '+(layer1count+1));
                     thumbExtra2.innerHTML=patternsData['Patterns'][i].name;
 
                     if(layer1count!=0)
@@ -136,10 +135,10 @@ class PatternItems {
                     break;                    
 
             }
+            thumbLabel.classList.add('relative');
 
             thumbImage.setAttribute('patternId', patternsData['Patterns'][i].id);
-            // thumbImage.setAttribute('onClick', "onPatternPicked("+ (i) +",'" + patternsData['Patterns'][i].image + "',this)");
-
+            thumbImage.setAttribute('onClick', "onPatternPicked("+ (i) +",'" + patternsData['Patterns'][i].image + "',this)");
 
             thumbFigure.appendChild(thumbImage);
             thumbLabel.appendChild(thumbFigure);
