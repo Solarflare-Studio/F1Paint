@@ -174,6 +174,7 @@ class F1CarHelmet {
                 _self.customMesh = theModelScene.getObjectByName('Helmet_main_1')
                 _self.customMesh.layers.set(2);
                 _self.customMesh.material = _self.theCustomMaterial;
+                _self.customMesh.material.normalScale = new THREE.Vector2(-0.1, 0.1),
                 _self.customMesh.castShadow = true;
                 _self.customMesh.receiveShadow = false;
 

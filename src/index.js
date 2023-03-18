@@ -71,7 +71,7 @@ window.expandDropdown = expandDropdown;
 window.onMaterialbutton = onMaterialbutton;
 
 window.switchModel = switchModel;
-window.onMinMax = onMinMax;
+// window.onMinMax = onMinMax;
 window.onConsole = onConsole;
 
 //===================================
@@ -656,8 +656,49 @@ function expandDropdown(e) {
 //==================================================
 var haveminimized = false;
 
-function onMinMax() {
+function minMax(tabstakencareof) {
 
+  if(haveminimized) { // woz max
+	var posy = window.innerHeight;
+	var top = window.innerHeight-f1Gui.bestToolPosY;
+
+	new TWEEN.Tween({ value: posy })
+	.to({ value: top },
+		500
+	)
+	.onUpdate(function(d) {
+		f1Gui.setRendererSize(window.innerWidth, d.value, renderer,camera);
+		haveminimized=false;
+	})
+	.onComplete(function () {
+		if(!tabstakencareof)
+			tabBody.classList.toggle("hidden");
+	})
+	.start()
+	f1Garage.startFloorMode(0);// lets wipe
+  }
+  else {
+	var posy = window.innerHeight - f1Gui.bestToolPosY;
+	var top = window.innerHeight;
+
+	new TWEEN.Tween({ value: posy })
+	.to({ value: top },
+		500
+	)
+	.onUpdate(function(d) {
+		f1Gui.setRendererSize(window.innerWidth, d.value, renderer,camera);
+		haveminimized=true;
+	})
+	.onComplete(function () {
+		if(!tabstakencareof)
+			tabBody.classList.toggle("hidden");
+	})
+	.start()
+	f1Garage.startFloorMode(2);// lets have the hex
+  }
+
+
+	/*
 	if(haveminimized) { // was maxed 3d, now return to bring back dialog
 		var posy = new THREE.Vector3(window.innerHeight - f1Gui.tabHeight,0,0);
 		var top = f1Gui.bestToolPosY;
@@ -706,6 +747,7 @@ function onMinMax() {
 		f1Garage.startFloorMode(2);// lets have the hex
 	}
 	haveminimized=!haveminimized;
+	*/
 }
 
 //==================================================
@@ -2415,42 +2457,8 @@ function handleTabToggle() {
   zoomIn.classList.toggle("hidden");
   zoomOut.classList.toggle("hidden");
 
-  if(haveminimized) { // woz max
-	var posy = window.innerHeight;
-	var top = window.innerHeight-f1Gui.bestToolPosY;
+  minMax();
 
-	new TWEEN.Tween({ value: posy })
-	.to({ value: top },
-		500
-	)
-	.onUpdate(function(d) {
-		f1Gui.setRendererSize(window.innerWidth, d.value, renderer,camera);
-		haveminimized=false;
-	})
-	.onComplete(function () {
-		tabBody.classList.toggle("hidden");
-	})
-	.start()
-	f1Garage.startFloorMode(0);// lets wipe
-  }
-  else {
-	var posy = window.innerHeight - f1Gui.bestToolPosY;
-	var top = window.innerHeight;
-
-	new TWEEN.Tween({ value: posy })
-	.to({ value: top },
-		500
-	)
-	.onUpdate(function(d) {
-		f1Gui.setRendererSize(window.innerWidth, d.value, renderer,camera);
-		haveminimized=true;
-	})
-	.onComplete(function () {
-		tabBody.classList.toggle("hidden");
-	})
-	.start()
-	f1Garage.startFloorMode(2);// lets have the hex
-  }
 
 
 }
@@ -2474,18 +2482,18 @@ function handleBackToTabs() {
 }
 
 // Camera Tutorial Handler
+// not used
 function handleCameraTutorial() {
-
-
-
 	cameraTutorial.classList.remove("hidden");
 }
+// not used
 function handleCameraAccess(){
 	WebAR.classList.remove('hidden')
 	cameraTutorial.classList.add('hidden')
 	comeToLifeContent.classList.add('hidden')
 	body.classList.add('!bg-webARBack')
 }
+//
   
 // Tab Tutorial Handler
 let alreadyShownPatternTutorial = true;
@@ -2531,6 +2539,11 @@ var tabboxes = new Array();
 f1PaintTab.forEach((box) => {
 	tabboxes.push(box);
 	box.addEventListener("click", (event) => {
+
+	  if(haveminimized) {
+		minMax(true);
+	  }
+
 	  const currTarget = event.target;
 	  // Get the previous element
 	  const parentElm = currTarget.closest("li");
