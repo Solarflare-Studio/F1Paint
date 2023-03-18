@@ -289,6 +289,10 @@ class PatternItems {
                     // f1Text.locations = patternsData['Patterns'][which].location; // todo
                     self.f1Text.locations = 1;
                     document.getElementById('taginput').classList.remove('disabledButton');
+                    document.getElementById('tagpaintbutton').classList.remove('disabledButton');
+                    document.getElementById('tagstylepaintbutton').classList.remove('disabledButton');
+
+
                     self.f1Text.fontstyle = self.liveryData['Layers'].tagfontstyle;
                     self.f1Text.fixText();
                     self.f1Text.composite();
@@ -462,6 +466,8 @@ class PatternItems {
                 isNone=true;
                 document.getElementById('layer2tags_ins').classList.remove('disabledButton');
                 document.getElementById('taginput').classList.add('disabledButton');
+                document.getElementById('tagpaintbutton').classList.add('disabledButton');
+                document.getElementById('tagstylepaintbutton').classList.add('disabledButton');                
                 mapUniforms.useTag.value = 0;
 
                 f1SpecialFX.mapUniforms.useTag.value = 0;

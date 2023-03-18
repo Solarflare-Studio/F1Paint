@@ -193,7 +193,8 @@ class F1Garage {
             )
             .easing(TWEEN.Easing.Quintic.InOut)
             .onUpdate(function (object) {
-                for(var y=13;y<23;y++) {
+                const starty = 14;
+                for(var y=starty;y<23;y++) {
                     var x = 21;
                     var i = x*3 + (y*64*3);
                     if(self.hexPixelBuffer[i]<object.value) self.hexPixelBuffer[i] = object.value;
@@ -206,11 +207,11 @@ class F1Garage {
                     if(self.hexPixelBuffer[i+2]<object.value) self.hexPixelBuffer[i+2] = object.value;
                 }
                 for(var x=21;x<44;x++) {
-                    var i = x*3 + (13*64*3);
+                    var i = x*3 + (starty*64*3);
                     if(self.hexPixelBuffer[i]<object.value) self.hexPixelBuffer[i] = object.value;
                     if(self.hexPixelBuffer[i+1]<object.value) self.hexPixelBuffer[i+1] = object.value;
                     if(self.hexPixelBuffer[i+2]<object.value) self.hexPixelBuffer[i+2] = object.value;
-                    i = x*3 + (12*64*3);
+                    i = x*3 + ((starty-1)*64*3);
                     if(self.hexPixelBuffer[i]<object.value) self.hexPixelBuffer[i] = object.value;
                     if(self.hexPixelBuffer[i+1]<object.value) self.hexPixelBuffer[i+1] = object.value;
                     if(self.hexPixelBuffer[i+2]<object.value) self.hexPixelBuffer[i+2] = object.value;

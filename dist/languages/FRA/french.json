@@ -1,197 +1,232 @@
 {
-  "dialogues": [  
-    {
-      "name": "LK_welcome_heading",
-      "text": "SALUT"
+  "dialogues": [
+  {
+  "name": "LK_welcome_heading",
+  "text": "BIENVENUE"
+  },
+  {
+  "name": "LK_welcome_01",
+  "text": "C'est le moment de personnaliser votre propre voiture de Formule 1. Préparez-vous à personnaliser votre livrée unique et à la rendre à votre image."
+  },
+  {
+  "name": "LK_welcome_02",
+  "text": "SUIVANT"
+  },
+  {
+  "name": "LK_tutorial_01",
+  "text": "TUTORIEL"
+  },
+  {
+  "name": "LK_tutorial_02",
+  "text": "Pour jeter un coup d'œil sur votre chef-d'œuvre, appuyez et faites glisser l'écran pour déplacer la caméra et pincez pour zoomer ou dézoomer."
+  },
+  {
+  "name": "LK_tutorial_03",
+  "text": "OK !"
+  },
+  {
+  "name": "LK_tutorial_04",
+  "text": "MOTIF"
+  },
+  {
+  "name": "LK_tutorial_05",
+  "text": "Commençons alors. Choisissez votre motif."
+  },
+  {
+  "name": "LK_tutorial_06",
+  "text": "OK !"
+  },
+  {
+  "name": "LK_tutorial_07",
+  "text": "PEINTURE"
+  },
+  {
+  "name": "LK_tutorial_08",
+  "text": "Ça commence à avoir de l'allure, maintenant apportez de la couleur."
+  },
+  {
+  "name": "LK_tutorial_09",
+  "text": "OK !"
+  },
+  {
+  "name": "LK_tutorial_10",
+  "text": "TAG"
+  },
+  {
+  "name": "LK_tutorial_11",
+  "text": "Personnalisez, ajoutez votre propre tag."
+  },
+  {
+  "name": "LK_tutorial_12",
+  "text": "OK !"
+  },
+  {
+  "name": "LK_tutorial_13",
+  "text": "PARRAINAGE"
+  },
+  {
+  "name": "LK_tutorial_14",
+  "text": "Les touches finales... ajoutez des sponsors."
+  },
+  {
+  "name": "LK_tutorial_15",
+  "text": "OK !"
+  },
+  {
+  "name": "LK_tutorial_16",
+  "text": "ATELIER DE PEINTURE F1"
+  },
+  {
+  "name": "LK_tutorial_17",
+  "text": "Votre design F1 est en train d'être pulvérisé..."
+  },
+  {
+  "name": "LK_tutorial_18",
+  "text": "RENDRE RÉEL"
+  },
+  {
+  "name": "LK_tutorial_19",
+  "text": "Il est temps de voir votre conception personnalisée en WebAR. Préparez-vous à voir votre œuvre d'art de près dans le monde réel."
+  },
+  {
+  "name": "LK_tutorial_20",
+  "text": "LANCEMENT AR"
+  },
+  {
+  "name": "LK_tutorial_21",
+  "text": "RETOUR"
+  },
+  {
+    "name": "LK_menu_title",
+    "text": "MENU"
     },
     {
-      "name": "LK_welcome_01",
-      "text": "Time to customise your very own F1 Car. Get ready to deck out your very own livery and make unique to your style."
+    "name": "LK_menu_close",
+    "text": "Fermer le menu"
     },
     {
-      "name": "LK_welcome_02",
-      "text": "NEXT"
+    "name": "LK_menu_language",
+    "text": "LANGUE"
     },
     {
-      "name": "LK_tutorial_01",
-      "text": "TUTORIAL"
+    "name": "LK_menu_terms",
+    "text": "CGV"
     },
     {
-      "name": "LK_tutorial_02",
-      "text": "To take a look at your masterpiece, tap and drag the screen to move the camera around, and pinch to zoom in and out."
+    "name": "LK_menu_security",
+    "text": "SÉCURITÉ"
     },
     {
-      "name": "LK_tutorial_03",
-      "text": "OK!"
+    "name": "LK_menu_otherlinks",
+    "text": "AUTRES LIENS"
     },
     {
-      "name": "LK_tutorial_04",
-      "text": "PATTERN"
+    "name": "LK_turndevice_01",
+    "text": "TOURNEZ VOTRE APPAREIL"
     },
     {
-      "name": "LK_tutorial_05",
-      "text": "Let’s get started then. Choose your pattern."
+    "name": "LK_turndevice_02",
+    "text": "Cette expérience nécessite que votre appareil soit maintenu en mode portrait, veuillez tourner pour continuer."
     },
     {
-      "name": "LK_tutorial_06",
-      "text": "OK!"
+    "name": "LK_start_title",
+    "text": "F1 PaintShop"
     },
     {
-      "name": "LK_tutorial_07",
-      "text": "PAINT"
+    "name": "LK_info_prepping",
+    "text": "Nous préparons juste le garage pour vous maintenant..."
     },
     {
-      "name": "LK_tutorial_08",
-      "text": "Looking good already, now get colourful."
+    "name": "LK_tab_01",
+    "text": "MODÈLE"
     },
     {
-      "name": "LK_tutorial_09",
-      "text": "OK!"
+    "name": "LK_tab_02",
+    "text": "PEINTURE"
     },
     {
-      "name": "LK_tutorial_10",
+    "name": "LK_tab_03",
+    "text": "ÉTIQUETTE"
+    },
+    {
+    "name": "LK_tab_04",
+    "text": "SPONSOR"
+    },
+    {
+    "name": "LK_final_heading",
+    "text": "FINIR"
+    },
+    {
+    "name": "LK_final_01",
+    "text": " Si vous êtes satisfait, appuyez sur suivant, si vous voulez changer, appuyez sur retour pour modifier votre conception."
+    },
+    {
+    "name": "LK_final_back",
+    "text": "RETOUR"
+    },
+    {
+    "name": "LK_final_next",
+    "text": "SUIVANT"
+    },
+    {
+    "name": "LK_mat_gloss",
+    "text": "BRILLANT"
+    },
+    {
+    "name": "LK_mat_matte",
+    "text": "MAT"
+    },
+    {
+    "name": "LK_mat_metallic",
+    "text": "MÉTALLIQUE"
+    },
+    {
+      "name": "LK_paint_base",
+      "text": "BASE"
+    },
+    {
+      "name": "LK_paint_primary",
+      "text": "PRIMARY"
+    },
+    {
+      "name": "LK_paint_secondary",
+      "text": "SECONDARY"
+    },
+    {
+      "name": "LK_paint_random",
+      "text": "RANDOMISE"
+    },
+    {
+      "name": "LK_tag_yours",
+      "text": "YOUR TAG"
+    },
+    {
+      "name": "LK_tag_paint",
       "text": "TAG"
     },
     {
-      "name": "LK_tutorial_11",
-      "text": "Get personal, add your own tag."
+      "name": "LK_tagstyle_paint",
+      "text": "STYLE"
     },
     {
-      "name": "LK_tutorial_12",
-      "text": "OK!"
-    },
-    {
-      "name": "LK_tutorial_13",
+      "name": "LK_sponsor_paint",
       "text": "SPONSOR"
     },
     {
-      "name": "LK_tutorial_14",
-      "text": "Finishing touches... add some sponsors."
+      "name": "LK_tagstyle_paint",
+      "text": "STYLE"
     },
     {
-      "name": "LK_tutorial_15",
-      "text": "OK!"
+      "name": "LK_colourConfirmButton",
+      "text": "CONFIRM"
     },
     {
-      "name": "LK_tutorial_16",
-      "text": "F1 PAINTSHOP"
+    "name": "LK_AR_welcome_1",
+    "text": "test"
     },
     {
-      "name": "LK_tutorial_17",
-      "text": "Your F1 design is being sprayed on..."
-    },
-    {
-      "name": "LK_tutorial_18",
-      "text": "COME TO LIFE"
-    },
-    {
-      "name": "LK_tutorial_19",
-      "text": "Time to see your custom design in WebAR. Get ready to see your work of art up close and personal in the real world."
-    },      
-    {
-      "name": "LK_tutorial_20",
-      "text": "LAUNCH AR"
-    },
-    {
-      "name": "LK_tutorial_21",
-      "text": "BACK"
-    },
-  
-    {
-      "name": "LK_menu_title",
-      "text": "MENU"
-    },
-    {
-      "name": "LK_menu_close",
-      "text": "Close menu"
-    },
-    {
-      "name": "LK_menu_language",
-      "text": "LANGUAGE"
-    },
-    {
-      "name": "LK_menu_terms",
-      "text": "T&CS"
-    },
-    {
-      "name": "LK_menu_security",
-      "text": "SECURITY"
-    },
-    {
-      "name": "LK_menu_otherlinks",
-      "text": "OTHER LINKS"
-    },
-    {
-      "name": "LK_turndevice_01",
-      "text": "TURN YOUR DEVICE"
-    },
-    {
-      "name": "LK_turndevice_02",
-      "text": "This experience requires your device to be held portrait, please turn to proceed."
-    },
-    {
-      "name": "LK_start_title",
-      "text": "F1 PaintShop"
-    },
-    {
-      "name": "LK_info_prepping",
-      "text": "We’re just prepping the garage for you now..."
-    },
-    {
-      "name": "LK_tab_01",
-      "text": "PATTERN"
-    },
-    {
-      "name": "LK_tab_02",
-      "text": "PAINT"
-    },
-    {
-      "name": "LK_tab_03",
-      "text": "TAG"
-    },    
-    {
-      "name": "LK_tab_04",
-      "text": "SPONSOR"
-    },    
-    {
-      "name": "LK_final_heading",
-      "text": "FINISH"
-    },    
-    {
-      "name": "LK_final_01",
-      "text": " If you’re happy, hit next, if you want to change, hit back to amend your design."
-    },    
-    {
-      "name": "LK_final_back",
-      "text": "BACK"
-    },    
-    {
-      "name": "LK_final_next",
-      "text": "NEXT"
-    },
-    {
-      "name": "LK_mat_gloss",
-      "text": "GLOSSE"
-    },      
-    {
-      "name": "LK_mat_matte",
-      "text": "MATTE"
-    },      
-    {
-      "name": "LK_mat_metallic",
-      "text": "METALLIC"
-    },
-    {
-      "name": "LK_AR_welcome_1",
-      "text": "test"
-    },
-    {
-      "name": "LK_AR_welcome_2",
-      "text": "test2"
+    "name": "LK_AR_welcome_2",
+    "text": "test2"
     }
-  
-  
-  ]
+    ]
   }
-  
-  

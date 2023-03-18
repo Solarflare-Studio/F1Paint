@@ -665,22 +665,34 @@ function minMax(tabstakencareof) {
 	var posy = window.innerHeight;
 	var top = window.innerHeight-f1Gui.bestToolPosY;
 
+	if(!tabstakencareof) {
+		if (!wasincolourpicker) {
+			tabBody.classList.toggle("hidden");
+		}
+		else {
+			paintachannelblock.classList.remove("hidden");
+		}
+		// document.getElementById('tabContent').style.bottom = 0;
+	}
+
 	new TWEEN.Tween({ value: posy })
 	.to({ value: top },
 		500
 	)
 	.onUpdate(function(d) {
 		f1Gui.setRendererSize(window.innerWidth, d.value, renderer,camera);
+		document.getElementById('tabContent').style.bottom = (-(d.value - (window.innerHeight - f1Gui.bestToolPosY))) + "px";
 		haveminimized=false;
 	})
 	.onComplete(function () {
 		if(!tabstakencareof) {
 			if (!wasincolourpicker) {
-				tabBody.classList.toggle("hidden");
+				// tabBody.classList.toggle("hidden");
 			}
 			else {
-				paintachannelblock.classList.remove("hidden");
+				// paintachannelblock.classList.remove("hidden");
 			}
+			document.getElementById('tabContent').style.bottom = 0;
 		}
 	})
 	.start()
@@ -696,6 +708,8 @@ function minMax(tabstakencareof) {
 	)
 	.onUpdate(function(d) {
 		f1Gui.setRendererSize(window.innerWidth, d.value, renderer,camera);
+		document.getElementById('tabContent').style.bottom = (-(d.value - (window.innerHeight - f1Gui.bestToolPosY))) + "px";
+
 		haveminimized=true;
 	})
 	.onComplete(function () {
@@ -707,7 +721,7 @@ function minMax(tabstakencareof) {
 				paintachannelblock.classList.add("hidden");
 				wasincolourpicker = true;
 			}
-
+			document.getElementById('tabContent').style.bottom = 0;
 		}
 	})
 	.start()
@@ -816,10 +830,8 @@ function introNextPage(nextPage) {
 
 		setSize(window.innerWidth,window.innerHeight );
 		// prep and do car intro
-		setAutoSelectingPattern(true);
-//premerge		seekPatternThumb(document.getElementById('layer1patterns_ins'),0).click();
-//premerge		setAutoSelectingPattern(false);		
-		changeTab(1,true);
+		// setAutoSelectingPattern(true);
+		// changeTab(1,true);
 
 		renderer.localClippingEnabled = true;	// for sfx intro
 
@@ -2136,6 +2148,10 @@ function animate()
 
 		processJSON.loadedLiveryJSON=2;
 		
+		setAutoSelectingPattern(true);
+		changeTab(1,true);
+
+
 		
 		requestAnimationFrame( animate );
 		return;

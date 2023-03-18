@@ -220,22 +220,22 @@ class F1Gui {
 
         switch (_index) {
             case 0:
-                document.getElementById('whichchanneltext').innerHTML = "BASE COLOUR";
+                document.getElementById('whichchanneltext').innerHTML = document.getElementById('LK_paint_base').innerHTML;//"BASE COLOUR";
                 break;
             case 1:
-                document.getElementById('whichchanneltext').innerHTML = "PRIMARY COLOUR";
+                document.getElementById('whichchanneltext').innerHTML = document.getElementById('LK_paint_primary').innerHTML;// "PRIMARY COLOUR";
                 break;
             case 2:
-                document.getElementById('whichchanneltext').innerHTML = "SECONDARY COLOUR";
+                document.getElementById('whichchanneltext').innerHTML = document.getElementById('LK_paint_secondary').innerHTML;// "SECONDARY COLOUR";
                 break;
             case 3:
-                document.getElementById('whichchanneltext').innerHTML = "STYLE COLOUR";
+                document.getElementById('whichchanneltext').innerHTML = document.getElementById('LK_tagstyle_paint').innerHTML;// "STYLE COLOUR";
                 break;
             case 4:
-                document.getElementById('whichchanneltext').innerHTML = "TAG COLOUR";
+                document.getElementById('whichchanneltext').innerHTML = document.getElementById('LK_tag_paint').innerHTML;// "TAG COLOUR";
                 break;
             case 6:
-                document.getElementById('whichchanneltext').innerHTML = "SPONSOR COLOUR";
+                document.getElementById('whichchanneltext').innerHTML = document.getElementById('LK_sponsor_paint').innerHTML;// "SPONSOR COLOUR";
                 break;
         }
 

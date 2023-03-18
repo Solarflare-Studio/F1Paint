@@ -70,6 +70,7 @@ class F1Aws {
         var lingos = new Array();
         const langs = _self.languageSettingsJson['languages'];
         var preloadfile = "";
+        var preloaddesc = "";
         for(var i = 0;i<langs.length;i++) {
             const alingo = langs[i].description;
             const lingofile = langs[i].file;
@@ -77,6 +78,7 @@ class F1Aws {
             lingos.push( [ alingo, lingofile, lingoISO]);
             if(lingoISO == _self.preloadlanguagecode) {
                 preloadfile = lingoISO + "/" + lingofile;
+                preloaddesc = alingo;
             }
         }
         if(DEBUG_MODE)
@@ -93,8 +95,10 @@ class F1Aws {
         languageChoiceDropdown.innerHTML = choicesHtml;
 
         // auto switch language if we had one passed via url
-        if(preloadfile!="")
+        if(preloadfile!="") {
             _self.loadfromAWS('languages',preloadfile,1,null,_self);  
+            document.getElementById('selectedLanguage').innerHTML=preloaddesc;
+        }
 
         
 
