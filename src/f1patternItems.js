@@ -270,7 +270,7 @@ class PatternItems {
                 else if(self.currentLayer==1)
                     document.getElementById('layer2tags_ins').classList.remove('disabledButton');
                 else if(self.currentLayer==2)
-                    document.getElementById('layer3decals_ins').classList.remove('disabledButton');
+                    document.getElementById('layer3sponsors_ins').classList.remove('disabledButton');
         
 
                 if(self.currentLayer==0) { // base
@@ -286,7 +286,7 @@ class PatternItems {
                     self.f1Text.tagPattern = tex;
                     // f1Text.locations = patternsData['Patterns'][which].location; // todo
                     self.f1Text.locations = 1;
-                    document.getElementById('taginputcontainer').classList.remove('disabledButton');
+                    document.getElementById('taginput').classList.remove('disabledButton');
                     self.f1Text.fontstyle = self.liveryData['Layers'].tagfontstyle;
                     self.f1Text.fixText();
                     self.f1Text.composite();
@@ -406,7 +406,7 @@ class PatternItems {
                         }
 
                         if(t==1) // 
-                            document.getElementById('decalpaintbutton').style.backgroundColor = newcol;//"rgb(255,0,0)";
+                            document.getElementById('sponsorpaintbutton').style.backgroundColor = newcol;//"rgb(255,0,0)";
         
                         var tmpv4 = new THREE.Vector4(colourconversion.r,colourconversion.g,colourconversion.b,1.0);
                         if(t==0)
@@ -459,7 +459,7 @@ class PatternItems {
             else if(currentLayer==1) {
                 isNone=true;
                 document.getElementById('layer2tags_ins').classList.remove('disabledButton');
-                document.getElementById('taginputcontainer').classList.add('disabledButton');
+                document.getElementById('taginput').classList.add('disabledButton');
                 mapUniforms.useTag.value = 0;
 
                 f1SpecialFX.mapUniforms.useTag.value = 0;
@@ -475,7 +475,7 @@ class PatternItems {
             else if(currentLayer==2) {
                 isNone=true;
 
-                document.getElementById('layer3decals_ins').classList.remove('disabledButton');
+                document.getElementById('layer3sponsors_ins').classList.remove('disabledButton');
                 mapUniforms.useDecal.value = 0;
                 f1MetalRoughmapUniforms.useDecal.value = 0;
 

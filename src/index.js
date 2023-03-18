@@ -185,9 +185,20 @@ const canvas = document.getElementById('canvas-container');
 //pattern colour picker
 var colorPatternPicker = 0;
 function createColourpicker() {
+	
 	// It's all sliders
-	const forcedsizeofcolourpicker = window.innerWidth * 0.5;
-	const forcedheightofcolourpicker = window.innerHeight * 0.08;
+	const confirmButtonElement = document.getElementById('LK_colourConfirmButton');
+	let forcedsizeofcolourpicker = 0;//confirmButtonElement.offsetWidth;
+	let forcedheightofcolourpicker = 0;//confirmButtonElement.offsetHeight * 1.;	
+	if(confirmButtonElement) {
+		forcedsizeofcolourpicker = confirmButtonElement.offsetWidth;
+		forcedheightofcolourpicker = confirmButtonElement.offsetHeight * 1.;	
+	}
+
+	if(forcedsizeofcolourpicker==0) {
+		forcedsizeofcolourpicker = document.getElementById('f1nextbackbuttons').offsetWidth;
+		forcedheightofcolourpicker =document.getElementById('f1nextbackbuttons').offsetHeight * 1.;
+	}
 
 	if(colorPatternPicker!=0) { // remove old
 		document.getElementById('colourWheelPicker').children[0].remove();
@@ -266,7 +277,7 @@ function createColourpicker() {
 				f1Layers.mapUniforms.tagTint.value = tmpv4;
 				break;
 			case 6: // decal
-				f1Gui.setBackgroundColourByID('decalpaintbutton',color.hexString);
+				f1Gui.setBackgroundColourByID('sponsorpaintbutton',color.hexString);
 				processJSON.liveryData['Layers'][currentLayer].Channels[1].tint = color.hexString;
 				f1Layers.mapUniforms.decal2Tint.value = tmpv4;
 				break;
@@ -1163,7 +1174,7 @@ function onPatternPicked(which,thefile,thepatternelement)
 	else if(currentLayer==1)
 		document.getElementById('layer2tags_ins').classList.add('disabledButton');
 	else if(currentLayer==2)
-		document.getElementById('layer3decals_ins').classList.add('disabledButton');
+		document.getElementById('layer3sponsors_ins').classList.add('disabledButton');
 
 
 	if(!getAutoSelectingPattern())	{
@@ -1223,6 +1234,33 @@ function onChangePaint(index) {
 	tabBody.classList.add("hidden");
 	paintachannelblock.classList.remove("hidden");
 	// TODO HTML
+
+	selectedChan=index;
+
+	var currentLayer = f1Gui.currentPage-1;
+	if(f1Gui.currentPage>1) currentLayer--;
+
+	// hide paint channel selector panel and show colour and material
+	var col = f1Gui.getElementColour(index);
+	document.getElementById('coloursample').style.backgroundColor = col;
+
+	col = new THREE.Color(col).getHexString();
+	colorPatternPicker.color.hexString = col;
+
+	// set up which gloss type button
+	var chan = selectedChan;
+	if(currentLayer==1) // tag
+		chan-=3;
+	else if(currentLayer==2) // decal
+		chan-=5;
+
+	
+	var metalroughtype = processJSON.liveryData['Layers'][currentLayer].Channels[chan].metalroughtype;
+
+	setMaterial(metalroughtype,selectedChan);
+
+	f1Gui.pickedChannelPaint(index);
+
 	return;
 
 
@@ -1552,19 +1590,28 @@ function setMaterial(glosstype,theChan) {
 	}
 
 	if(glosstype==0) { // gloss
-		document.getElementById('glossbutton').classList.add('whiteButton');
-		document.getElementById('mattebutton').classList.remove('whiteButton');
-		document.getElementById('metallicbutton').classList.remove('whiteButton');
+		document.getElementById('glossbutton').classList.add('bg-netural');
+		document.getElementById('glossbutton').classList.add('!text-brand');
+		document.getElementById('mattebutton').classList.remove('bg-netural');
+		document.getElementById('mattebutton').classList.remove('!text-brand');
+		document.getElementById('metallicbutton').classList.remove('bg-netural');
+		document.getElementById('metallicbutton').classList.remove('!text-brand');
 	}
 	else if(glosstype==1) { // matte
-		document.getElementById('glossbutton').classList.remove('whiteButton');
-		document.getElementById('mattebutton').classList.add('whiteButton');
-		document.getElementById('metallicbutton').classList.remove('whiteButton');
+		document.getElementById('glossbutton').classList.remove('bg-netural');
+		document.getElementById('glossbutton').classList.remove('!text-brand');
+		document.getElementById('mattebutton').classList.add('bg-netural');
+		document.getElementById('mattebutton').classList.add('!text-brand');
+		document.getElementById('metallicbutton').classList.remove('bg-netural');
+		document.getElementById('metallicbutton').classList.remove('!text-brand');
 	}
 	else if(glosstype==2) { // metallic
-		document.getElementById('glossbutton').classList.remove('whiteButton');
-		document.getElementById('mattebutton').classList.remove('whiteButton');
-		document.getElementById('metallicbutton').classList.add('whiteButton');
+		document.getElementById('glossbutton').classList.remove('bg-netural');
+		document.getElementById('glossbutton').classList.remove('!text-brand');
+		document.getElementById('mattebutton').classList.remove('bg-netural');
+		document.getElementById('mattebutton').classList.remove('!text-brand');
+		document.getElementById('metallicbutton').classList.add('bg-netural');
+		document.getElementById('metallicbutton').classList.add('!text-brand');
 	}
 }
 
@@ -1943,7 +1990,8 @@ function dolayerpattern(layer,patternblock) {
 		const id= patternblock.children[i].children[1].children[0].children[0].getAttribute('patternId');
 
 		if(processJSON.liveryData['Layers'][layer].patternId == id){
-			element = patternblock.children[i].children[0];
+			// element = patternblock.children[i].children[0];
+			element = patternblock.children[i].children[1].children[0].children[0];
 			index=i;
 			break;
 		}
@@ -1971,7 +2019,7 @@ function parseCookieLivery() {
 
 	dolayerpattern(0,document.getElementById('layer1patterns_ins'));
 	dolayerpattern(1,document.getElementById('layer2tags_ins'));
-	dolayerpattern(2,document.getElementById('layer3decals_ins'));
+	dolayerpattern(2,document.getElementById('layer3sponsors_ins'));
 
 }
 //==================================================
@@ -2434,6 +2482,28 @@ f1PaintTab.forEach((box) => {
 	  // Get the previous and next elements
 	  const previousElement = parentElm.previousElementSibling;
 	  const nextElement = parentElm.nextElementSibling;
+
+
+	  // ben do my changetab function
+	  switch (parentElm.id) {
+		case "patten-li":
+			changeTab(1);
+			break;
+		  case "paint-li":
+			changeTab(2);
+			break;
+		  case "tag-li":
+			changeTab(3);
+			break;
+		  case "sponsor-li":
+			changeTab(4);
+			break;	
+	  }
+	  //
+
+
+
+
 	  // Remove the active class from all boxes
 	  f1PaintTab.forEach((box) => {
 		const parentElm = box.closest("li");
@@ -2476,6 +2546,30 @@ nextBtn.addEventListener("click", () => {
 	prevBtn.removeAttribute("disabled");
 	const activeTab = document.querySelector(".activeTab");
 	const nextElement = activeTab.nextElementSibling;
+
+
+	// ben do my changetab function
+	switch (nextElement.id) {
+	case "patten-li":
+		changeTab(1);
+		break;
+		case "paint-li":
+		changeTab(2);
+		break;
+		case "tag-li":
+		changeTab(3);
+		break;
+		case "sponsor-li":
+		changeTab(4);
+		break;	
+	}
+	// todo launchar
+
+
+
+
+
+
 	if (!nextElement && !nextBtn.classList.contains("submit")) {
 	  TabHead.classList.add("hidden");
 	  allTabs.classList.toggle("hidden");
@@ -2533,6 +2627,28 @@ prevBtn.addEventListener("click", () => {
 	const previousElement = activeTab.previousElementSibling;
 	const currTabId = previousElement.childNodes[1].id;
 	if (previousElement) {
+
+		// ben do my changetab function
+		switch (previousElement.id) {
+			case "patten-li":
+				changeTab(1);
+				break;
+				case "paint-li":
+				changeTab(2);
+				break;
+				case "tag-li":
+				changeTab(3);
+				break;
+				case "sponsor-li":
+				changeTab(4);
+				break;	
+			}
+			// todo launchar
+
+
+
+
+
 	  tabContentWrp.forEach((elm) => {
 		const currElmId = `${elm.id}-tab`;
 		if (currElmId === currTabId) {
@@ -2576,6 +2692,7 @@ prevBtn.addEventListener("click", () => {
  *
  * BEN, unfortunately, i don't have the uncompressed source for colour wheel
  */
+/*
 !(function (t, n) {
 	"object" == typeof exports && "undefined" != typeof module
 	  ? (module.exports = n())
@@ -4555,4 +4672,4 @@ prevBtn.addEventListener("click", () => {
 	  xt
 	);
 });
-  
+  */

@@ -216,44 +216,65 @@ class F1Gui {
 //    pickedChannelPaint(_index) {
         this.pickingColour = true;
 
-        var layerMsg = "BASE COLOUR";
-        if(_index==1)
-            layerMsg = "PRIMARY COLOUR";
-        else if(_index==2)
-            layerMsg = "SECONDARY COLOUR";
-
-        if(_index<3) { // pattern colours
-            document.getElementById('patternColours').classList.add('hidden');
-        }
-        else if(_index<5) { // tag colour
-            document.getElementById('paintatagblock').classList.remove('hidden');
-            document.getElementById('tagblock').classList.add('hidden');
-            document.getElementById('layer2tags_ins').classList.add('hidden');
-
-            if(_index==3)
-                layerMsg = "TAG COLOUR";
-            else if(_index==4)
-                layerMsg = "STYLE COLOUR";
-        }
-        else if(_index==6) { // sponsor
-            document.getElementById('paintdecalblock').classList.remove('hidden');
-            document.getElementById('decalblock').classList.add('hidden');
-            document.getElementById('layer3decals_ins').classList.add('hidden');
-
-            layerMsg = "SPONSOR COLOUR";
-
+        switch (_index) {
+            case 0:
+                document.getElementById('whichchanneltext').innerHTML = "BASE COLOUR";
+                break;
+            case 1:
+                document.getElementById('whichchanneltext').innerHTML = "PRIMARY COLOUR";
+                break;
+            case 2:
+                document.getElementById('whichchanneltext').innerHTML = "SECONDARY COLOUR";
+                break;
+            case 3:
+                document.getElementById('whichchanneltext').innerHTML = "TAG COLOUR";
+                break;
+            case 4:
+                document.getElementById('whichchanneltext').innerHTML = "STYLE COLOUR";
+                break;
+            case 6:
+                document.getElementById('whichchanneltext').innerHTML = "SPONSOR COLOUR";
+                break;
         }
 
-        document.getElementById('backbutton').classList.add('hidden');
-        document.getElementById('nextbutton').classList.add('hidden');
-        document.getElementById('confirmbutton').classList.remove('hidden');
+        // var layerMsg = "BASE COLOUR";
+        // if(_index==1)
+        //     layerMsg = "PRIMARY COLOUR";
+        // else if(_index==2)
+        //     layerMsg = "SECONDARY COLOUR";
+
+        // if(_index<3) { // pattern colours
+        //     document.getElementById('patternColours').classList.add('hidden');
+        // }
+        // else if(_index<5) { // tag colour
+        //     document.getElementById('paintatagblock').classList.remove('hidden');
+        //     document.getElementById('tagblock').classList.add('hidden');
+        //     document.getElementById('layer2tags_ins').classList.add('hidden');
+
+        //     if(_index==3)
+        //         layerMsg = "TAG COLOUR";
+        //     else if(_index==4)
+        //         layerMsg = "STYLE COLOUR";
+        // }
+        // else if(_index==6) { // sponsor
+        //     document.getElementById('paintdecalblock').classList.remove('hidden');
+        //     document.getElementById('decalblock').classList.add('hidden');
+        //     document.getElementById('layer3decals_ins').classList.add('hidden');
+
+        //     layerMsg = "SPONSOR COLOUR";
+
+        // }
+
+        // document.getElementById('backbutton').classList.add('hidden');
+        // document.getElementById('nextbutton').classList.add('hidden');
+        // document.getElementById('confirmbutton').classList.remove('hidden');
 
 
-        document.getElementById('whichchanneltext').innerHTML = layerMsg;
+        // document.getElementById('whichchanneltext').innerHTML = layerMsg;
 
-        document.getElementById('paintachannelblock').classList.remove('hidden');
+        // document.getElementById('paintachannelblock').classList.remove('hidden');
 
-        document.getElementById('colourPickerContainer').classList.remove('hidden');
+        // document.getElementById('colourPickerContainer').classList.remove('hidden');
 
 
     }
@@ -277,7 +298,7 @@ class F1Gui {
         else if(_index==4) // tag colours
             elementID = 'tagpaintbutton';
         else if(_index==6) // decal colours (5 is untouchable)
-            elementID = 'decalpaintbutton';
+            elementID = 'sponsorpaintbutton';
 
         return window.getComputedStyle(  document.getElementById(elementID) ,null).getPropertyValue('background-color');
     }
@@ -362,10 +383,13 @@ class F1Gui {
             // TODO HTML
             if(this.processJSON.liveryData['Layers'][0].patternId == -1) {  // a none pattern
                 // no 1st pattern selected, so hide second and third paint choices
-                document.getElementById("flexpair").classList.add("hidden");
+                // document.getElementById("flexpair").classList.add("hidden");
+                document.getElementById('primesecondpaints').classList.add('f1hidden');
+                
             }
             else {
-                document.getElementById("flexpair").classList.remove("hidden");
+                document.getElementById('primesecondpaints').classList.remove('f1hidden');
+                // document.getElementById("flexpair").classList.remove("hidden");
             }
         }
         else if(_page==3) { // tags
@@ -466,7 +490,7 @@ class F1Gui {
             layerindex = 1;
         }
         else if(topage==4) { // sponsor
-            patternblock = document.getElementById('layer3decals_ins');
+            patternblock = document.getElementById('layer3sponsors_ins');
             layerindex = 2;
         }
 

@@ -62,8 +62,8 @@ class F1Text {
        this.locosstylemods2.push([ - 0.142, -0.264, 0.097, 180]);
        this.locosstylemods2.push([ - 0.175, -0.254, 0.153, 180]);
        this.locosstylemods2.push([ - 0.176, -0.254, 0.184, 180]);
-       this.locosstylemods2.push([ - 0.142, -0.264, 0.153, 180]);
-       this.locosstylemods2.push([ - 0.142, -0.264, 0.153, 180]);
+       this.locosstylemods2.push([ - 0.142, -0.264, 0.097, 180]);
+       this.locosstylemods2.push([ - 0.142, -0.264, 0.078, 180]);
 
        //nose
        this.locosstylemods3 = new Array();

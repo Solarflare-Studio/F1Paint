@@ -10,6 +10,8 @@
       content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no"
     />
     <!--ben-->
+    <link rel="stylesheet" href="./F1PaintShop.css">
+
     <!--    <link rel="stylesheet" href="./sfPaint.css">-->
     <!--ben, will remove as I remove my old html-->
 
@@ -747,7 +749,7 @@
                     ></div>
                     <!--ben-->
                   </div>
-                  <div class="flex gap-x-6 items-end">
+                  <div class="flex gap-x-6 items-end" id="primesecondpaints">
                     <div class="basis-1/2">
                       <span class="label">PRIMARY COLOUR</span>
                       <div
@@ -769,7 +771,7 @@
                   </div>
                   <hr class="my-4 border-netural border-b-2" />
                   <div>
-                    <span class="label">RANDOMISE COLOURS</span>
+                    <span class="label">RANDOMISE PAINT</span>
                     <div
                       class="color-picker bg-netural flex justify-center items-center"
                       onclick="onRandomPaint();"
@@ -1057,6 +1059,7 @@
               <!--end of Finish Tab Selection-->
               <div
                 class="flex justify-between items-center gap-x-2 w-full mt-4"
+                id="f1nextbackbuttons"
               >
                 <button
                   type="button"
@@ -1118,7 +1121,7 @@
                   </div>
                 </div>
               </div>
-              <button type="button" class="next-btn mt-4">CONFIRM</button>
+              <button type="button" class="next-btn mt-4" id="LK_colourConfirmButton">CONFIRM</button>
             </div>
           </div>
         </div>
