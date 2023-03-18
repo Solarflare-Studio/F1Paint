@@ -2287,7 +2287,7 @@ const finishSelectionLoading = document.querySelector(
 );
 let selectedLanguage = document.querySelector("#selectedLanguage");
 let loadingProgress = 0;
-selectedLanguage.innerHTML = "Language 1";
+// selectedLanguage.innerHTML = "Language 1";
 move();
 function move() {
   if (loadingProgress == 0) {
@@ -2323,7 +2323,7 @@ function handleLanguageSelect() {
 }
 function handleLanguageChange(e) {
   uihandlelanguageChange(e,f1Aws);
-  selectedLanguage.innerHTML = e;
+//   selectedLanguage.innerHTML = e;
 }
 window.addEventListener("click", (event) => {
   if (event.target.closest("#languageSelect") !== dropdownElm) {
