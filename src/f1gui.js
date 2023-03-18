@@ -280,8 +280,8 @@ class F1Gui {
     }
     //======================
     confirm(selectedChan) {
-        document.getElementById('confirmbutton').classList.add('hidden');
-        this.changedPage(this.currentPage); //refresh current page
+        // document.getElementById('confirmbutton').classList.add('hidden');
+        // this.changedPage(this.currentPage); //refresh current page
     }
 
     //======================

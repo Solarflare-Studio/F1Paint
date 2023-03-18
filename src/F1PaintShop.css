@@ -6,3 +6,10 @@
     pointer-events: none;
     opacity: 0.5;
 }
+
+#versionid {
+    position: absolute;
+    top:0;
+    color:yellow;
+    opacity:0.5;
+}

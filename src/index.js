@@ -1214,6 +1214,8 @@ function backNextPage(backornext) {
 // gui tabs
 function changeTab(which, dontdofloorfx) {
 	if(f1Gui.pickingColour) {
+		f1Gui.pickingColour = false;
+
 		// same as confirm
 		if(selectedChan<=2)
 			patternItems.useCustomBaseColours = true; // now no longer reading defaults when changing patterns, will use custom
@@ -1464,15 +1466,22 @@ function onConfirm() {
 	}
 	else {
 
-		if(selectedChan<=2)
+		if(selectedChan<=2) { // was in paint colours
 			patternItems.useCustomBaseColours = true; // now no longer reading defaults when changing patterns, will use custom
-		else if(selectedChan<=4)
+			tabboxes[1].click();
+		}
+		else if(selectedChan<=4) { // was in tag colours
 			patternItems.useCustomTagColours = true;
-		else if(selectedChan<=6)
+			tabboxes[2].click();
+		}
+		else if(selectedChan<=6) { // was in sponsor colours 
 			patternItems.useCustomSponsorColours = true;
+			tabboxes[3].click();
+		}
 			
+		// return to tab
 
-		f1Gui.confirm(selectedChan);
+		// f1Gui.confirm(selectedChan);
 	}
 }
 //==================================================
@@ -2405,7 +2414,45 @@ function handleCloseTutorial(id) {
 function handleTabToggle() {
   zoomIn.classList.toggle("hidden");
   zoomOut.classList.toggle("hidden");
-  tabBody.classList.toggle("hidden");
+
+  if(haveminimized) { // woz max
+	var posy = window.innerHeight;
+	var top = window.innerHeight-f1Gui.bestToolPosY;
+
+	new TWEEN.Tween({ value: posy })
+	.to({ value: top },
+		500
+	)
+	.onUpdate(function(d) {
+		f1Gui.setRendererSize(window.innerWidth, d.value, renderer,camera);
+		haveminimized=false;
+	})
+	.onComplete(function () {
+		tabBody.classList.toggle("hidden");
+	})
+	.start()
+	f1Garage.startFloorMode(0);// lets wipe
+  }
+  else {
+	var posy = window.innerHeight - f1Gui.bestToolPosY;
+	var top = window.innerHeight;
+
+	new TWEEN.Tween({ value: posy })
+	.to({ value: top },
+		500
+	)
+	.onUpdate(function(d) {
+		f1Gui.setRendererSize(window.innerWidth, d.value, renderer,camera);
+		haveminimized=true;
+	})
+	.onComplete(function () {
+		tabBody.classList.toggle("hidden");
+	})
+	.start()
+	f1Garage.startFloorMode(2);// lets have the hex
+  }
+
+
 }
 
 
@@ -2471,9 +2518,11 @@ function tabTutorial(currElmId) {
 // 	tabBody.classList.add("hidden");
 // 	paintachannelblock.classList.remove("hidden");
 // }
-  
+
+var tabboxes = new Array();
 // Add click event listener to each box
 f1PaintTab.forEach((box) => {
+	tabboxes.push(box);
 	box.addEventListener("click", (event) => {
 	  const currTarget = event.target;
 	  // Get the previous element
@@ -2549,25 +2598,24 @@ nextBtn.addEventListener("click", () => {
 
 
 	// ben do my changetab function
-	switch (nextElement.id) {
-	case "patten-li":
-		changeTab(1);
-		break;
-		case "paint-li":
-		changeTab(2);
-		break;
-		case "tag-li":
-		changeTab(3);
-		break;
-		case "sponsor-li":
-		changeTab(4);
-		break;	
+	if(nextElement) {
+		switch (nextElement.id) {
+		case "patten-li":
+			changeTab(1);
+			break;
+			case "paint-li":
+			changeTab(2);
+			break;
+			case "tag-li":
+			changeTab(3);
+			break;
+			case "sponsor-li":
+			changeTab(4);
+			break;	
+		}
 	}
+
 	// todo launchar
-
-
-
-
 
 
 	if (!nextElement && !nextBtn.classList.contains("submit")) {
