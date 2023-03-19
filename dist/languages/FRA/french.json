@@ -221,12 +221,12 @@
       "text": "CONFIRM"
     },
     {
-    "name": "LK_AR_welcome_1",
-    "text": "test"
+      "name": "LK_AR_welcome_1",
+      "text": "AUGMENTED REALITY!"
     },
     {
-    "name": "LK_AR_welcome_2",
-    "text": "test2"
+      "name": "LK_AR_welcome_2",
+      "text": "Get Ready!"
     }
     ]
   }
