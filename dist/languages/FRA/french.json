@@ -227,6 +227,46 @@
     {
       "name": "LK_AR_welcome_2",
       "text": "Get Ready!"
+    },
+    {
+      "name": "LK_AR_findMarker_1",
+      "text": "TUTORIAL"
+    },
+    {
+      "name": "LK_AR_findMarker_2",
+      "text": "Scan image target to see your F1 car design in front of you."
+    },
+    {
+      "name": "LK_AR_findMarker_3",
+      "text": "Scan image target to see your F1 helmet design in front of you."
+    },
+    {
+      "name": "LK_AR_findMarker_4",
+      "text": "FIND MARKER"
+    },
+    {
+      "name": "LK_AR_explore_4",
+      "text": "EXPLORE"
+    },
+    {
+      "name": "LK_AR_explore_5",
+      "text": "Now walk around and see your design! Tap the camera button to snap a photo or hit finish to end."
+    },
+    {
+      "name": "l_AR_text_3",
+      "text": "NEXT"
+    },
+    {
+      "name": "l_AR_text_4",
+      "text": "BACK"
+    },
+    {
+      "name": "l_AR_text_5",
+      "text": "OK"
+    },
+    {
+      "name": "l_AR_text_6",
+      "text": "FINISH"
     }
     ]
   }
