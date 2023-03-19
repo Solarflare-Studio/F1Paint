@@ -4,10 +4,11 @@ import {DEBUG_MODE} from './adminuser'
 class F1Text {
 
    
-    constructor(f1Layers_mapUniforms, f1MetalRough_mapUniforms) {
+    constructor(f1Layers_mapUniforms, f1MetalRough_mapUniforms,f1SpecialFX_mapUniforms) {
 
         this.f1Layers_mapUniforms = f1Layers_mapUniforms;
         this.f1MetalRough_mapUniforms = f1MetalRough_mapUniforms;
+        this.f1SpecialFX_mapUniforms = f1SpecialFX_mapUniforms;
         this.fontstyle = 0;
         this.processJSON = 0;
 
@@ -343,6 +344,8 @@ class F1Text {
         this.f1Layers_mapUniforms.texture2Tag.value = this.tagComposite;
         this.f1MetalRough_mapUniforms.texture2Tag.value = this.tagComposite;
 
+        this.f1SpecialFX_mapUniforms.texture1Base.value = this.tagComposite;
+
 
         canvas.remove(); // probably!
 
@@ -507,7 +510,8 @@ class F1Text {
         if(needsoutline) {
             context.strokeStyle = 'rgb(255,0,0)';
             if(styletype==8) {
-                context.fillStyle = 'rgb(0,0,0)';// 'red';
+                context.fillStyle = 'rgb(0,255,0)';// ;
+                // context.fillStyle = 'rgb(0,0,0)';// 'red';
                 context.strokeStyle = 'rgb(255,0,0)';
             }
             context.lineWidth = sizefont*0.08*sizemodifier;

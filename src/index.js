@@ -145,7 +145,7 @@ var f1Layers = new F1Layers(f1User.isHelmet, customMapRenderSize,f1fnames);
 var f1MetalRough = new F1MetalRough(f1User.isHelmet, customRoughMapRenderSize,f1fnames);
 // var f1PostRender = new F1PostRender(f1User.isHelmet, renderSize,f1fnames);
 var f1SpecialFX =  new F1SpecialFX(f1User.isHelmet, renderSize,f1fnames, sfxBloomRenderSize);
-var f1Text = new F1Text(f1Layers.mapUniforms, f1MetalRough.mapUniforms);
+var f1Text = new F1Text(f1Layers.mapUniforms, f1MetalRough.mapUniforms,f1SpecialFX.mapUniforms);
 var f1Ribbons = new F1Ribbons(f1Materials);
 
 
@@ -1308,6 +1308,18 @@ function changeTab(which, dontdofloorfx) {
 		else if(selectedChan<=6)
 			patternItems.useCustomSponsorColours = true;
 	}
+
+	if(which==1 || which==2) {
+		f1SpecialFX.finalPass.uniforms.bloomAmount.value = 0.4;
+	}
+	else if (which==3) { // tag
+		f1SpecialFX.finalPass.uniforms.bloomAmount.value = 0.9;
+
+	}
+	else if (which==4) { // sponsor
+		f1SpecialFX.finalPass.uniforms.bloomAmount.value = 0.9;
+	}
+
 	f1Gui.changedPage(which);
 	// if(!dontdofloorfx)
 	// 	f1Garage.startFloorMode(1); // radial 

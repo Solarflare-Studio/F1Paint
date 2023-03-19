@@ -321,9 +321,9 @@ class F1SpecialFX {
                     else
                       c1 = mix(c1,vec3(0,0,0),calc);
 
-
-                    gl_FragColor = vec4(c1,1.0-amnt);
-                  }                  
+                      // gl_FragColor = vec4(rc,1.-amnt);
+                      gl_FragColor = vec4(c1,1.0-amnt);
+                    }                  
                 }
                 else if(layer==4.0) {
                   if(leadin>=0.5) {
