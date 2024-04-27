@@ -13,3 +13,5 @@ dist/*.svg
 dist/*.webmanifest
 dist/*.html
 dist/main.js
+dist/patterns/car/smallblankimage.png
+dist/patterns/helmet/smallblankimage.png
